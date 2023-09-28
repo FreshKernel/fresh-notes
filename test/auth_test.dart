@@ -196,4 +196,15 @@ class MockAuthProvider extends AuthProvider {
   Future<void> deleteTheCurrentUser() {
     throw UnimplementedError();
   }
+
+  @override
+  bool get isAuthenticated => _user != null;
+
+  @override
+  bool get isInitialized => _isInitialized;
+
+  @override
+  AuthUser requireCurrentUser(String? errorMessage) {
+    throw UnimplementedError();
+  }
 }

@@ -1,9 +1,9 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '11.0'
+ platform :ios, '14.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
-
+  
 project 'Runner', {
   'Debug' => :debug,
   'Profile' => :release,
@@ -37,8 +37,43 @@ target 'Runner' do
   end
 end
 
+#post_install do |installer|
+#  installer.pods_project.targets.each do |target|
+#    flutter_additional_ios_build_settings(target)
+#  end
+#end
+
 post_install do |installer|
   installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+         
+      if Gem::Version.new(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']) < Gem::Version.new('13.0')
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      end
+
+    end
     flutter_additional_ios_build_settings(target)
   end
+end
+
+# Workaround for flutter_inappwebview
+
+post_integrate do |installer|
+  compiler_flags_key = 'COMPILER_FLAGS'
+  project_path = 'Pods/Pods.xcodeproj'
+
+  project = Xcodeproj::Project.open(project_path)
+  project.targets.each do |target|
+    target.build_phases.each do |build_phase|
+      if build_phase.is_a?(Xcodeproj::Project::Object::PBXSourcesBuildPhase)
+        build_phase.files.each do |file|
+          if !file.settings.nil? && file.settings.key?(compiler_flags_key)
+            compiler_flags = file.settings[compiler_flags_key]
+            file.settings[compiler_flags_key] = compiler_flags.gsub(/-DOS_OBJECT_USE_OBJC=0\s*/, '')
+          end
+        end
+      end
+    end
+  end
+  project.save()
 end

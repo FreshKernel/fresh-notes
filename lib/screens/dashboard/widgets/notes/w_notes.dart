@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/screens/dashboard/widgets/notes/w_note_item.dart';
-import 'package:my_notes/screens/save_note/s_save_note.dart';
 import 'package:my_notes/services/data/notes/s_notes_data.dart';
 
 import '../../../../models/note/m_note.dart';
@@ -38,7 +37,6 @@ class _NotesPageState extends State<NotesPage>
       stream: _noteStream,
       initialData: const <Note>[],
       builder: (context, snapshot) {
-        print(snapshot.connectionState.name);
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator.adaptive(),
@@ -50,6 +48,12 @@ class _NotesPageState extends State<NotesPage>
         }
 
         final notes = snapshot.requireData;
+
+        if (notes.isEmpty) {
+          return const Center(
+            child: Text("You don't have any notes yet, start add some!"),
+          );
+        }
 
         return ListView.builder(
           itemCount: notes.length,

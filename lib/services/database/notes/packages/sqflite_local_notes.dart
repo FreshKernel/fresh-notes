@@ -5,10 +5,10 @@ import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
 import 'package:path/path.dart' as path show join;
 
-import '../../local_database_exceptions.dart';
+import '../../shared/local_database_exceptions.dart';
 import '../models/m_local_note.dart';
 
-class SqfliteLocalNotes extends LocalNotesRepository {
+class SqfliteLocalNotesImpl extends LocalNotesRepository {
   Database? _database;
 
   static const databaseName = 'notes.db';
@@ -20,9 +20,10 @@ class SqfliteLocalNotes extends LocalNotesRepository {
   @override
   Future<void> initialize() async {
     if (isInitialized) {
-      // throw const LocalDatabaseAlreadyInitializedException(
-      //     'The database is already initlized');
-      _database?.close();
+      // throw const ServiceAlreadyInitlizedException(
+      //   'The database is already initlized',
+      // );
+      await close();
     }
     try {
       final documentsDirectory = await getApplicationDocumentsDirectory();

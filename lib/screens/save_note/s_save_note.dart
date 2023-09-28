@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:my_notes/core/log/logger.dart';
 import 'package:my_notes/models/note/m_note.dart';
-import 'package:my_notes/utils/bool.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
+import 'package:my_notes/services/native/image/s_image_picker.dart';
 
 import '../../services/data/notes/s_notes_data.dart';
 
@@ -27,21 +26,24 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   final _editorFocusNode = FocusNode();
   final _editorScrollController = ScrollController();
 
+  var _isReadOnly = false;
+
   @override
   void initState() {
     super.initState();
     _setupController();
   }
 
-  bool get isEditing => widget.note != null;
+  bool get _isEditing => widget.note != null;
 
   void _setupController() {
-    if (isEditing) {
+    if (_isEditing) {
       final json = jsonDecode(widget.note!.text);
       _controller = quill.QuillController(
         document: quill.Document.fromJson(json),
         selection: const TextSelection.collapsed(offset: 0),
       );
+      _isReadOnly = true;
       return;
     }
     _controller = quill.QuillController.basic();
@@ -51,6 +53,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   void dispose() {
     _controller.dispose();
     _editorFocusNode.dispose();
+    _editorScrollController.dispose();
     super.dispose();
   }
 
@@ -58,7 +61,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     final navigator = Navigator.of(context);
     final document = _controller.document;
 
-    await NotesDataService.getInstance().insertOneOrReplace(
+    await NotesDataService.getInstance().insertOrReplaceOne(
       document,
       currentId: widget.note?.id,
       isSyncedWithCloud: true,
@@ -71,13 +74,24 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Save note'),
+        title: Text(
+          _isEditing ? 'Edit note' : 'Add note',
+        ),
         actions: [
           IconButton(
+            tooltip: 'Save note',
             onPressed: _saveNote,
             icon: const Icon(Icons.save),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() => _isReadOnly = !_isReadOnly);
+        },
+        child: Icon(
+          _isReadOnly ? Icons.lock_rounded : Icons.edit,
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -86,33 +100,44 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
               controller: _controller,
               embedButtons: FlutterQuillEmbeds.buttons(
                 onImagePickCallback: (file) async {
-                  // ImagePicker().pickImage(source: ImageSource.gallery);
+                  AppLogger.log(
+                    'The path of the picked image is: ${file.path}',
+                  );
                   return file.path;
                 },
-                showCameraButton: false,
+                imageLinkRegExp: RegExp(
+                  r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
+                  caseSensitive: false,
+                ),
+                filePickImpl: (context) async {
+                  final imagePath = await ImagePickerService.getInstance()
+                      .pickImage(source: ImageSource.gallery);
+                  return imagePath?.path;
+                },
+                webImagePickImpl: (onImagePickCallback) async {
+                  final imagePath = await ImagePickerService.getInstance()
+                      .pickImage(source: ImageSource.gallery);
+                  return imagePath?.path;
+                },
               ),
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: SizedBox(
-                  height: 1000,
-                  child: quill.QuillEditor(
-                    controller: _controller,
-                    readOnly: false,
-                    autoFocus: false,
-                    expands: false,
-                    scrollable: true,
-                    focusNode: _editorFocusNode,
-                    scrollController: _editorScrollController,
-                    padding: const EdgeInsets.all(16),
-                    placeholder: 'Start your notes',
-                    // onImagePaste: (imageBytes) async {
-                    //   return 'https://www.gstatic.com/devrel-devsite/prod/va881901acfa784a302a2fcaebeaf9ea1e7654afe884686768d3a16b36e928e9f/android/images/rebrand/lockup.svg';
-                    // },
-                    embedBuilders: [
-                      ...FlutterQuillEmbeds.builders(),
-                    ],
-                  ),
+                child: quill.QuillEditor(
+                  controller: _controller,
+                  readOnly: _isReadOnly,
+                  autoFocus: false,
+                  expands: false,
+                  scrollable: true,
+                  focusNode: _editorFocusNode,
+                  scrollController: _editorScrollController,
+                  padding: const EdgeInsets.all(16),
+                  placeholder: 'Start your notes',
+                  minHeight: 1000,
+                  embedBuilders: [
+                    ...FlutterQuillEmbeds.builders(),
+                    if (kIsWeb) ...FlutterQuillEmbeds.webBuilders(),
+                  ],
                 ),
               ),
             )

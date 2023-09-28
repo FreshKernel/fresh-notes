@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:my_notes/models/note/m_note.dart';
 import 'package:my_notes/services/data/notes/s_notes_data.dart';
+import 'package:my_notes/utils/extensions/string.dart';
 
 import '../../../save_note/s_save_note.dart';
 
@@ -38,10 +39,17 @@ class NoteItem extends StatelessWidget {
         ));
       },
       child: ListTile(
-        title: const Text('My title'),
-        subtitle: Text(document.toPlainText()),
-        leading: const Text('Hi'),
+        title: Text(
+          document.toPlainText().limitToCharacters(30).removeWhiteSpaces(),
+        ),
+        subtitle: Text(
+          document.toPlainText().limitToCharacters(200).removeWhiteSpaces(),
+        ),
+        leading: CircleAvatar(
+          child: Text(note.id.toString()),
+        ),
         trailing: IconButton(
+          tooltip: 'Delete',
           onPressed: () async {
             await notesDataService.deleteOneById(note.id);
           },

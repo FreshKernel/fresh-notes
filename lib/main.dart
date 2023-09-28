@@ -1,5 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:my_notes/core/start/app_startup.dart';
 import 'package:my_notes/screens/auth/authentication/s_authentication.dart';
 import 'package:my_notes/screens/auth/email_not_verified/s_email_not_verified.dart';
 import 'package:my_notes/screens/dashboard/s_dashboard.dart';
@@ -7,8 +7,8 @@ import 'package:my_notes/services/auth/auth_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await AuthService.getInstance().initialize();
+
+  await AppStartup.getInstance().initialize();
   runApp(const MyApp());
 }
 

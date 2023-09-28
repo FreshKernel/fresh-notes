@@ -1,7 +1,7 @@
-class ApiException implements Exception {
-  final String? message;
+import 'package:my_notes/core/errors/exceptions.dart';
 
-  const ApiException(this.message);
+class ApiException extends AppException {
+  const ApiException(super.message);
 }
 
 class NetworkRequestException extends ApiException {

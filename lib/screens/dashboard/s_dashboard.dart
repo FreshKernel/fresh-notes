@@ -5,6 +5,7 @@ import 'package:my_notes/screens/dashboard/widgets/w_about.dart';
 import 'package:my_notes/screens/dashboard/widgets/notes/w_notes.dart';
 import 'package:my_notes/screens/dashboard/widgets/w_settings.dart';
 import 'package:my_notes/screens/save_note/s_save_note.dart';
+import 'package:my_notes/services/data/notes/s_notes_data.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -47,8 +48,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: Text(
           navigationItems[_selectedNavItemIndex].title,
         ),
-        actions: const [
-          LogoutIconButton(),
+        actions: [
+          const LogoutIconButton(),
+          IconButton(
+            tooltip: 'Delete All',
+            onPressed: () {
+              NotesDataService.getInstance().deleteAll();
+            },
+            icon: const Icon(Icons.delete_forever),
+          )
         ],
       ),
       body: PageView(

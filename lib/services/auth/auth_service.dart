@@ -3,16 +3,19 @@ import 'package:my_notes/services/auth/auth_provider.dart';
 import 'package:my_notes/services/auth/auth_user.dart';
 import 'package:my_notes/services/auth/packages/firebase.dart';
 
-class AuthService implements AuthProvider {
-  factory AuthService.firebase() => AuthService._(FirebaseAuthProvider());
+class AuthService extends AuthProvider {
+  factory AuthService.firebase() => AuthService._(FirebaseAuthProviderImpl());
   factory AuthService.getInstance() => AppModule.authService;
 
   final AuthProvider _authProvider;
 
-  const AuthService._(this._authProvider);
+  AuthService._(this._authProvider);
 
   @override
   Future<void> initialize() => _authProvider.initialize();
+
+  @override
+  bool get isInitialized => _authProvider.isInitialized;
 
   @override
   AuthUser? get currentUser => _authProvider.currentUser;

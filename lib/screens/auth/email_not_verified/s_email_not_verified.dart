@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/core/screens/page_route.dart';
 import 'package:my_notes/screens/auth/authentication/s_authentication.dart';
 import 'package:my_notes/screens/dashboard/s_dashboard.dart';
 import 'package:my_notes/services/auth/auth_service.dart';

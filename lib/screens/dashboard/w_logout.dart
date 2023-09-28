@@ -67,6 +67,7 @@ class _LogoutIconButtonState extends State<LogoutIconButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
+      tooltip: 'Logout',
       onPressed: _isLoading ? null : _onLogout,
       icon: const Icon(Icons.logout),
     );

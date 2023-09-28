@@ -1,10 +1,7 @@
-class AuthException implements Exception {
-  final String? message;
+import 'package:my_notes/core/errors/exceptions.dart';
 
-  const AuthException(this.message);
-
-  @override
-  String toString() => message.toString();
+class AuthException extends AppException {
+  const AuthException(super.message);
 }
 
 class UserNotFoundAuthException extends AuthException {

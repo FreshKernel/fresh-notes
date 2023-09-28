@@ -1,8 +1,7 @@
-import 'package:my_notes/services/auth/auth_exceptions.dart';
+import 'package:my_notes/core/services/service.dart';
 import 'package:my_notes/services/auth/auth_user.dart';
 
-abstract class AuthProvider {
-  Future<void> initialize();
+abstract class AuthProvider extends AppService {
   AuthUser? get currentUser;
   bool get isAuthenticated;
   AuthUser requireCurrentUser(String? errorMessage);

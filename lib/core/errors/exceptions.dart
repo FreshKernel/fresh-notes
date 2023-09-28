@@ -4,5 +4,5 @@ class AppException implements Exception {
   const AppException(this.message);
 
   @override
-  String toString() => 'App exception: $message';
+  String toString() => 'App exception of type $runtimeType: $message';
 }

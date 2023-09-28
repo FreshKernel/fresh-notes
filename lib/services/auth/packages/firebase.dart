@@ -6,11 +6,14 @@ import 'package:my_notes/services/auth/auth_user.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException, ConfirmationResult;
 
-class FirebaseAuthProvider extends AuthProvider {
+class FirebaseAuthProviderImpl extends AuthProvider {
   @override
   Future<void> initialize() async {
     // Nothing is required...
   }
+
+  @override
+  bool get isInitialized => true;
 
   @override
   AuthUser? get currentUser {
