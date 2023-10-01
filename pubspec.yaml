@@ -1,7 +1,15 @@
 name: my_notes
-description: A new Flutter project.
+description: A cross-platform, open-source notes app.
 publish_to: 'none'
 version: 1.0.0+1
+repository: https://github.com/ahmedhnewa/FreshNotes
+platforms:
+  android:
+  ios:
+  # linux:
+  macos:
+  # web:
+  # windows:
 
 environment:
   sdk: '>=3.1.2 <4.0.0'
@@ -36,8 +44,8 @@ dependencies:
   intl: ^0.18.1
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
-  flutter_platform_widgets: ^4.0.0-beta.3
-  flutter_quill: ^7.4.7
+  # flutter_platform_widgets: ^4.0.0-beta.3
+  flutter_quill: ^7.4.8
   flutter_quill_extensions:
     path: /Users/ahmedhnewa/development/playground/flutter-quill/flutter_quill_extensions
   # image_gallery_saver: '^2.0.3'
@@ -56,9 +64,9 @@ dev_dependencies:
 
   flutter_lints: ^2.0.3
   # test: ^1.24.6
-  test: ^1.24.3
+  # test: ^1.24.3
   build_runner: ^2.4.6
-  freezed: ^2.4.1
+  freezed: ^2.4.3
   json_serializable: ^6.7.1
   # bloc_test: ^9.1.4
 

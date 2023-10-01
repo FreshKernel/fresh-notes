@@ -1,7 +1,6 @@
-import 'package:my_notes/services/data/notes/models/m_note_input.dart';
-import 'package:my_notes/services/database/notes/models/m_local_note.dart';
-
+import '../../data/notes/models/m_note_input.dart';
 import '../shared/local_database_repository.dart';
+import 'models/m_local_note.dart';
 
 // I abstracted this functionallities of the notes
 // I don't plan to use another database or sql with different library

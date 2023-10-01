@@ -1,10 +1,12 @@
 import 'dart:io' show File;
 
-import 'package:my_notes/services/native/image/image_picker.dart';
 import 'package:image_picker/image_picker.dart' as image_picker_package;
 import 'package:image_picker_android/image_picker_android.dart';
+// ignore: depend_on_referenced_packages
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart'
     as image_picker_package_platform_interface;
+
+import '../image_picker.dart';
 
 class ImagePickerPackageImpl extends ImagePicker {
   image_picker_package.ImagePicker? _imagePicker;

@@ -1,4 +1,4 @@
-import 'package:my_notes/core/errors/exceptions.dart';
+import '../errors/exceptions.dart';
 
 class CrudException extends AppException {
   const CrudException(super.message);

@@ -1,12 +1,6 @@
 import 'package:flutter/widgets.dart' show Widget;
 
 class NavigationItem {
-  final String title;
-  final String label;
-  final Widget body;
-  final Widget icon;
-  final Widget? selectedIcon;
-  final String? tooltip;
 
   const NavigationItem({
     required this.label,
@@ -16,4 +10,10 @@ class NavigationItem {
     this.selectedIcon,
     this.tooltip,
   });
+  final String title;
+  final String label;
+  final Widget body;
+  final Widget icon;
+  final Widget? selectedIcon;
+  final String? tooltip;
 }

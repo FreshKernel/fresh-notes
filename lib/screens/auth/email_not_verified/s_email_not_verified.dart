@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/core/log/logger.dart';
-import 'package:my_notes/screens/auth/authentication/s_authentication.dart';
-import 'package:my_notes/screens/dashboard/s_dashboard.dart';
-import 'package:my_notes/services/auth/auth_exceptions.dart';
-import 'package:my_notes/services/auth/auth_service.dart';
+
+import '../../../core/log/logger.dart';
+import '../../../services/auth/auth_exceptions.dart';
+import '../../../services/auth/auth_service.dart';
+import '../../dashboard/s_dashboard.dart';
+import '../authentication/s_authentication.dart';
 
 class EmailIsNotVerifiedScreen extends StatefulWidget {
   const EmailIsNotVerifiedScreen({super.key});

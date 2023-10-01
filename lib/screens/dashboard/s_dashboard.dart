@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/screens/dashboard/models/m_navigation_item.dart';
-import 'package:my_notes/screens/dashboard/w_logout.dart';
-import 'package:my_notes/screens/dashboard/widgets/w_about.dart';
-import 'package:my_notes/screens/dashboard/widgets/notes/w_notes.dart';
-import 'package:my_notes/screens/dashboard/widgets/w_settings.dart';
-import 'package:my_notes/screens/save_note/s_save_note.dart';
-import 'package:my_notes/services/data/notes/s_notes_data.dart';
-import 'package:my_notes/utils/ui/dialog/w_yes_cancel_dialog.dart';
+
+import '../../services/data/notes/s_notes_data.dart';
+import '../../utils/ui/dialog/w_yes_cancel_dialog.dart';
+import '../save_note/s_save_note.dart';
+import 'models/m_navigation_item.dart';
+import 'w_logout.dart';
+import 'widgets/notes/cloud_sync/w_sync_notes.dart';
+import 'widgets/notes/w_notes.dart';
+import 'widgets/w_about.dart';
+import 'widgets/w_drawer.dart';
+import 'widgets/w_settings.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -50,6 +53,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           navigationItems[_selectedNavItemIndex].title,
         ),
         actions: [
+          const SyncNotesIconButton(),
           const LogoutIconButton(),
           IconButton(
             tooltip: 'Delete All',
@@ -72,6 +76,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           )
         ],
       ),
+      drawer: const DashboardDrawer(),
       body: PageView(
         controller: _pageController,
         children: navigationItems.map((e) => Center(child: e.body)).toList(),

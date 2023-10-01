@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/components/auth/w_email_field.dart';
-import 'package:my_notes/components/auth/w_password_field.dart';
-import 'package:my_notes/core/log/logger.dart';
-import 'package:my_notes/screens/auth/email_not_verified/s_email_not_verified.dart';
-import 'package:my_notes/screens/dashboard/s_dashboard.dart';
-import 'package:my_notes/services/api/api_exceptions.dart';
-import 'package:my_notes/services/auth/auth_exceptions.dart';
-import 'package:my_notes/services/auth/auth_service.dart';
-import 'package:my_notes/services/auth/auth_user.dart';
+
+import '../../../components/auth/w_email_field.dart';
+import '../../../components/auth/w_password_field.dart';
+import '../../../core/log/logger.dart';
+import '../../../services/api/api_exceptions.dart';
+import '../../../services/auth/auth_exceptions.dart';
+import '../../../services/auth/auth_service.dart';
+import '../../../services/data/notes/s_notes_data.dart';
+import '../../dashboard/s_dashboard.dart';
+import '../email_not_verified/s_email_not_verified.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   const AuthenticationScreen({super.key});
@@ -106,7 +107,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     try {
       setState(() => _isLoading = true);
       final authService = AuthService.getInstance();
-      final AuthUser user = isLogin
+      final user = isLogin
           ? await authService.signInWithEmailAndPassword(
               email: email,
               password: password,
@@ -127,6 +128,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         ));
         return;
       }
+      await NotesDataService.getInstance().syncCloudToLocal();
       navigator.pushReplacement(MaterialPageRoute(
         settings: const RouteSettings(name: DashboardScreen.routeName),
         builder: (context) {
@@ -160,19 +162,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               'Unknown error of type = ${e.type} and message = ${e.message}';
           break;
       }
-      // if (e is InvalidCredentialsAuthException) {
-      //   error = 'Invalid password or email address.';
-      // } else if (e is WeakPasswordAuthException) {
-      //   error = 'Please enter strong password.';
-      // } else if (e is NetworkRequestException) {
-      //   error = 'Please check your internet connection.';
-      // } else if (e is EmailAlreadyInUseAuthException) {
-      //   error = 'Please try using different email address.';
-      // } else if (e is UserDisabledAuthException) {
-      //   error =
-      //       'Your account is disabled. Please contact with the support for more information.';
-      // }
-      // }
+
       messenger.showSnackBar(SnackBar(
         content: Text(error),
       ));

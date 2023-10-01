@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/utils/validators/auth.dart';
+import '../../utils/validators/auth.dart';
 
 class EmailTextField extends StatelessWidget {
   const EmailTextField({
-    super.key,
-    required this.emailController,
+    required this.emailController, super.key,
     this.textInputAction = TextInputAction.next,
   });
 
@@ -28,7 +27,6 @@ class EmailTextField extends StatelessWidget {
         return null;
       },
       autocorrect: false,
-      enableSuggestions: true,
       autofillHints: const [AutofillHints.email],
       keyboardType: TextInputType.emailAddress,
       textInputAction: textInputAction,

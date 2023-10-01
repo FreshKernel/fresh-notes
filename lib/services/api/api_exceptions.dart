@@ -1,4 +1,4 @@
-import 'package:my_notes/core/errors/exceptions.dart';
+import '../../core/errors/exceptions.dart';
 
 class ApiException extends AppException {
   const ApiException(super.message);

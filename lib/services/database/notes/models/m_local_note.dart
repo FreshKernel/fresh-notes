@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_notes/models/note/m_note.dart';
-import 'package:my_notes/services/cloud/shared/sync_options.dart';
-import 'package:my_notes/services/data/notes/models/m_note_input.dart';
-import 'package:my_notes/utils/extensions/bool.dart';
-import 'package:my_notes/utils/extensions/int.dart';
 
+import '../../../../models/note/m_note.dart';
+import '../../../../utils/extensions/bool.dart';
+import '../../../../utils/extensions/int.dart';
+import '../../../cloud/shared/sync_options.dart';
+import '../../../data/notes/models/m_note_input.dart';
 import '../../shared/sql_data_type.dart';
 
 part 'm_local_note.freezed.dart';
@@ -22,9 +22,76 @@ class LocalNote with _$LocalNote {
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _LocalNote;
+  // ON UPDATE CURRENT_TIMESTAMP
+
+  factory LocalNote._fromInputSharedLogic({
+    required String id,
+    required String userId,
+    required String text,
+    required SyncOptions syncOptions,
+    required bool isPrivate,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+  }) =>
+      LocalNote(
+        id: id,
+        userId: userId,
+        text: text,
+        isPrivate: isPrivate,
+        cloudId: syncOptions.getCloudNoteId(),
+        isSyncWithCloud: syncOptions.isSyncWithCloud,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+
+  // To return a note after creating it
+  factory LocalNote.fromCreateNoteInput({
+    required CreateNoteInput input,
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+  }) =>
+      LocalNote._fromInputSharedLogic(
+        id: id,
+        userId: input.userId,
+        text: input.text,
+        syncOptions: input.syncOptions,
+        isPrivate: input.isPrivate,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+
+  // To return a note after updating it
+  factory LocalNote.fromUpdateNoteInput({
+    required UpdateNoteInput input,
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String userId,
+  }) =>
+      LocalNote._fromInputSharedLogic(
+        id: id,
+        userId: userId,
+        text: input.text,
+        syncOptions: input.syncOptions,
+        isPrivate: input.isPrivate,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
 
   factory LocalNote.fromJson(Map<String, Object?> json) =>
       _$LocalNoteFromJson(json);
+
+  // factory LocalNote.fromCloudNote(CloudNote note) => LocalNote(
+  //       id: note.id,
+  //       userId: note.userId,
+  //       text: note.text,
+  //       cloudId: note.id,
+  //       isSyncWithCloud: true,
+  //       isPrivate: note.isPrivate,
+  //       createdAt: note.createdAt,
+  //       updatedAt: note.updatedAt,
+  //     );
 
   // This time I decided to make life simple and easier by
   // use the same exact name of the variable in sqlite and dart.
@@ -99,62 +166,6 @@ class LocalNote with _$LocalNote {
       PRIMARY KEY("id" AUTOINCREMENT)
     );
     ''';
-  // ON UPDATE CURRENT_TIMESTAMP
-
-  factory LocalNote._fromInputSharedLogic({
-    required String id,
-    required String userId,
-    required String text,
-    required SyncOptions syncOptions,
-    required bool isPrivate,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-  }) =>
-      LocalNote(
-        id: id,
-        userId: userId,
-        text: text,
-        isPrivate: isPrivate,
-        cloudId: syncOptions.getCloudNoteId(),
-        isSyncWithCloud: syncOptions.isSyncWithCloud,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
-
-  // To return a note after creating it
-  factory LocalNote.fromCreateNoteInput({
-    required CreateNoteInput input,
-    required String id,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-  }) =>
-      LocalNote._fromInputSharedLogic(
-        id: id,
-        userId: input.userId,
-        text: input.text,
-        syncOptions: input.syncOptions,
-        isPrivate: input.isPrivate,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
-
-  // To return a note after updating it
-  factory LocalNote.fromUpdateNoteInput({
-    required UpdateNoteInput input,
-    required String id,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-    required String userId,
-  }) =>
-      LocalNote._fromInputSharedLogic(
-        id: id,
-        userId: userId,
-        text: input.text,
-        syncOptions: input.syncOptions,
-        isPrivate: input.isPrivate,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-      );
 }
 
 typedef LocalNoteProperties = NoteProperties;

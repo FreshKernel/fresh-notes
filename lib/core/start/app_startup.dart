@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:my_notes/core/services/s_app.dart';
-import 'package:my_notes/core/start/packages/firebase.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../services/auth/auth_service.dart';
 import '../../services/native/image/s_image_picker.dart';
 import '../log/logger.dart';
+import '../services/s_app.dart';
+import 'packages/firebase.dart';
 
 class AppStartup extends AppService {
+  factory AppStartup.getInstance() => _instance;
   AppStartup._();
 
   static final _instance = AppStartup._();
-  factory AppStartup.getInstance() => _instance;
 
   final _services = <AppService>[
     FirebaseService.getInstance(),

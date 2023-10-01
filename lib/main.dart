@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/core/start/app_startup.dart';
-import 'package:my_notes/screens/auth/authentication/s_authentication.dart';
-import 'package:my_notes/screens/auth/email_not_verified/s_email_not_verified.dart';
-import 'package:my_notes/screens/dashboard/s_dashboard.dart';
-import 'package:my_notes/services/auth/auth_service.dart';
+import 'core/start/app_startup.dart';
+import 'screens/auth/authentication/s_authentication.dart';
+import 'screens/auth/email_not_verified/s_email_not_verified.dart';
+import 'screens/dashboard/s_dashboard.dart';
+import 'services/auth/auth_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,13 +19,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Fresh notes',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.light,
         useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      darkTheme: ThemeData.dark(useMaterial3: true),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
       themeMode: ThemeMode.system,
       home: Builder(
         builder: (context) {

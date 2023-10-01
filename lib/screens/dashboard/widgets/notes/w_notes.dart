@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/screens/dashboard/widgets/notes/w_note_item.dart';
-import 'package:my_notes/services/data/notes/s_notes_data.dart';
 
 import '../../../../models/note/m_note.dart';
+import '../../../../services/data/notes/s_notes_data.dart';
+import 'w_note_item.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
@@ -26,7 +26,7 @@ class _NotesPageState extends State<NotesPage>
 
   @override
   void dispose() {
-    _notesDataService.close();
+    _notesDataService.deInitialize();
     super.dispose();
   }
 

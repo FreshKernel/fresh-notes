@@ -2,19 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:my_notes/models/note/m_note.dart';
-import 'package:my_notes/services/data/notes/s_notes_data.dart';
-import 'package:my_notes/utils/extensions/string.dart';
-import 'package:my_notes/utils/ui/dialog/w_yes_cancel_dialog.dart';
+import '../../../../models/note/m_note.dart';
+import '../../../../services/data/notes/s_notes_data.dart';
+import '../../../../utils/extensions/string.dart';
+import '../../../../utils/ui/dialog/w_yes_cancel_dialog.dart';
 
 import '../../../save_note/s_save_note.dart';
 
 class NoteItem extends StatelessWidget {
   const NoteItem({
-    super.key,
-    required this.notesDataService,
-    required this.note,
-    required this.index,
+    required this.notesDataService, required this.note, required this.index, super.key,
   });
 
   final NotesDataService notesDataService;
@@ -42,14 +39,14 @@ class NoteItem extends StatelessWidget {
         softWrap: true,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: materialTheme.primaryTextTheme.titleMedium,
+        // style: materialTheme.primaryTextTheme.titleMedium,
       ),
       subtitle: Text(
         document.toPlainText().removeWhiteSpaces(),
         softWrap: true,
         maxLines: 5,
         overflow: TextOverflow.ellipsis,
-        style: materialTheme.primaryTextTheme.bodyMedium,
+        // style: materialTheme.primaryTextTheme.bodyMedium,
       ),
       leading: CircleAvatar(
         child: Text(note.id.toString()),

@@ -4,21 +4,20 @@ import 'w_app_dialog.dart';
 
 @immutable
 class OkDialogOptions {
-  final String title;
-  final String message;
-  final String? okLabel;
 
   const OkDialogOptions({
     required this.title,
     required this.message,
     this.okLabel,
   });
+  final String title;
+  final String message;
+  final String? okLabel;
 }
 
 class OkDialog extends StatelessWidget {
   const OkDialog({
-    super.key,
-    required this.options,
+    required this.options, super.key,
   });
 
   final OkDialogOptions options;

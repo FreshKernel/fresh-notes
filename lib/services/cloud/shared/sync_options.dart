@@ -1,9 +1,25 @@
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:my_notes/core/log/logger.dart';
+import '../../../core/log/logger.dart';
 
 @immutable
 abstract class SyncOptions {
-  const SyncOptions();
+
+  factory SyncOptions.getSyncOptions({
+    required bool isSyncWithCloud,
+    required String? existingCloudNoteId,
+  }) {
+    if (isSyncWithCloud) {
+      if (existingCloudNoteId == null) {
+        return SyncOptions.syncWithCloud();
+      }
+      if (existingCloudNoteId.trim().isEmpty) {
+        return SyncOptions.syncWithCloud();
+      }
+      return SyncOptions.syncWithExistingCloudId(existingCloudNoteId);
+    }
+    return SyncOptions.noSync();
+  }
+  const SyncOptions._();
 
   bool get isSyncWithCloud;
   String? get cloudId;
@@ -36,22 +52,6 @@ abstract class SyncOptions {
     return false;
   }
 
-  factory SyncOptions.getSyncOptions({
-    required bool isSyncWithCloud,
-    required String? existingCloudNoteId,
-  }) {
-    if (isSyncWithCloud) {
-      if (existingCloudNoteId == null) {
-        return SyncOptions.syncWithCloud();
-      }
-      if (existingCloudNoteId.trim().isEmpty) {
-        return SyncOptions.syncWithCloud();
-      }
-      return SyncOptions.syncWithExistingCloudId(existingCloudNoteId);
-    }
-    return SyncOptions.noSync();
-  }
-
   String? getCloudNoteId() {
     return cloudId;
     // final syncOptions = this;
@@ -66,7 +66,7 @@ abstract class SyncOptions {
 }
 
 class NoSyncOption extends SyncOptions {
-  const NoSyncOption._() : super();
+  const NoSyncOption._() : super._();
 
   @override
   bool get isSyncWithCloud => false;
@@ -81,7 +81,7 @@ class NoSyncOption extends SyncOptions {
 }
 
 class SyncWithCloudOption extends SyncOptions {
-  const SyncWithCloudOption._() : super();
+  const SyncWithCloudOption._() : super._();
 
   static const emptyCloudNoteId = '';
 
@@ -98,14 +98,14 @@ class SyncWithCloudOption extends SyncOptions {
 }
 
 class SyncWithExistingCloudIdOption extends SyncOptions {
-  final String _cloudId;
-  SyncWithExistingCloudIdOption._(this._cloudId) : super() {
+  SyncWithExistingCloudIdOption._(this._cloudId) : super._() {
     if (_cloudId.trim().isEmpty) {
       AppLogger.error(
           'Trying to sync cloud note id with existing note and that is empty!!');
       throw ArgumentError('cloud note id can not be empty!!');
     }
   }
+  final String _cloudId;
 
   @override
   String? get cloudId => _cloudId;

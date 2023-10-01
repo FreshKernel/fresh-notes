@@ -1,4 +1,4 @@
-import 'package:my_notes/core/errors/exceptions.dart';
+import '../errors/exceptions.dart';
 
 // TODO: All of the app exceptions should implements AppException
 // TODO: All services should implements AppService

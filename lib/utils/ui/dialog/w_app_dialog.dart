@@ -11,14 +11,6 @@ import 'package:flutter/widgets.dart'
 
 @immutable
 class DialogOptions {
-  final bool? barrierDismissible;
-  final Color? barrierColor;
-  final String? barrierLabel;
-  final bool useSafeArea;
-  final bool useRootNavigator;
-  final RouteSettings? routeSettings;
-  final Offset? anchorPoint;
-  final TraversalEdgeBehavior? traversalEdgeBehavior;
   const DialogOptions({
     this.barrierDismissible,
     this.barrierColor = Colors.black54,
@@ -29,6 +21,14 @@ class DialogOptions {
     this.anchorPoint,
     this.traversalEdgeBehavior,
   });
+  final bool? barrierDismissible;
+  final Color? barrierColor;
+  final String? barrierLabel;
+  final bool useSafeArea;
+  final bool useRootNavigator;
+  final RouteSettings? routeSettings;
+  final Offset? anchorPoint;
+  final TraversalEdgeBehavior? traversalEdgeBehavior;
 }
 
 Future<T?> showAppDialog<T>({

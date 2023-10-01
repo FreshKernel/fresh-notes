@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:my_notes/core/data/crud_exceptions.dart';
-import 'package:my_notes/core/log/logger.dart';
-import 'package:my_notes/models/note/m_note.dart';
-import 'package:my_notes/services/auth/auth_service.dart';
-import 'package:my_notes/services/cloud/note/s_cloud_notes.dart';
-import 'package:my_notes/services/cloud/shared/sync_options.dart';
-import 'package:my_notes/services/database/notes/s_local_notes.dart';
-import 'package:path/path.dart';
+import '../../../core/data/crud_exceptions.dart';
+import '../../../core/log/logger.dart';
+import '../../../models/note/m_note.dart';
+import '../../auth/auth_service.dart';
+import '../../cloud/note/s_cloud_notes.dart';
+import '../../cloud/shared/sync_options.dart';
+import '../../database/notes/s_local_notes.dart';
+import '../../../utils/list.dart';
+import '../../../utils/others/differnce_result.dart';
 
 import 'dart:convert' show jsonEncode;
 
@@ -15,10 +16,10 @@ import '../../../utils/packages/quill.dart';
 import 'models/m_note_input.dart';
 
 class NotesDataService {
+  factory NotesDataService.getInstance() => _instance;
   NotesDataService._();
 
   static final _instance = NotesDataService._();
-  factory NotesDataService.getInstance() => _instance;
 
   final List<Note> _notes = [];
   final StreamController<List<Note>> _notesStreamController =
@@ -57,7 +58,7 @@ class NotesDataService {
   bool get isInitialized => _localNotesService.isInitialized && true; // Cloud
 
   // @override
-  Future<void> close() async {
+  Future<void> deInitialize() async {
     await _localNotesService.deInitialize();
   }
 
@@ -84,9 +85,7 @@ class NotesDataService {
 
   Future<void> insertOrReplaceOne(
     QuillDocument document, {
-    String? currentId,
-    required SyncOptions syncOptions,
-    required bool isPrivate,
+    required SyncOptions syncOptions, required bool isPrivate, String? currentId,
   }) async {
     AppLogger.log('Sync option = ${syncOptions.toString()}');
     final isEditing = currentId != null;
@@ -105,7 +104,7 @@ class NotesDataService {
     );
 
     // Then we want to replace all the cached images with the saved ones
-    String documentInJson = jsonEncode(document.toDelta().toJson());
+    var documentInJson = jsonEncode(document.toDelta().toJson());
     AppLogger.log(
       'The document data before replace the cached images with saved one: $documentInJson',
     );
@@ -179,7 +178,7 @@ class NotesDataService {
       limit: limit,
       page: page,
     ))
-        .map((e) => Note.fromLocalNote(e))
+        .map(Note.fromLocalNote)
         .toList();
     _notes.addAll(localNotes);
     _notesStreamController.add(_notes);
@@ -194,7 +193,7 @@ class NotesDataService {
     }
     final isCurrentLocalNoteExistsInTheCloud = localNote.cloudId != null;
 
-    bool shouldUpdateInTheCloud = false;
+    var shouldUpdateInTheCloud = false;
     var newUpdateInput = updateInput;
 
     final isSyncWithCloudNewInput = updateInput.syncOptions.isSyncWithCloud;
@@ -227,7 +226,7 @@ class NotesDataService {
         syncOptions: SyncOptions.syncWithExistingCloudId(cloudNote.id),
       );
     } else if (!isSyncWithCloudNewInput &&
-        (isCurrentLocalNoteExistsInTheCloud)) {
+        isCurrentLocalNoteExistsInTheCloud) {
       // If the current note is exists and the user want to unsync the note.
       AppLogger.log(
         'Delete the existing note in the cloud since the user no longer want to sync it',
@@ -247,7 +246,7 @@ class NotesDataService {
       shouldUpdateInTheCloud = true;
     }
 
-    var newNote = Note.fromLocalNote(
+    final newNote = Note.fromLocalNote(
       await _localNotesService.updateOne(newUpdateInput, currentId),
     );
 
@@ -274,6 +273,85 @@ class NotesDataService {
     }
     AppLogger.error(
       "We couldn't find the index for the currentId of the updating note in NoteDataService, the id is = $currentId",
+    );
+  }
+
+  Future<void> syncCloudToLocal() async {
+    if (!isInitialized) {
+      await initialize();
+    }
+    // Get the cloud notes with no pagination
+    final cloudNotes = await _cloudNotesService.getAll(limit: -1, page: 1);
+    if (cloudNotes.isEmpty) {
+      return;
+    }
+    final createInputs = cloudNotes.map((cloudNote) {
+      return CreateNoteInput.fromCloudNote(cloudNote);
+    }).toList();
+
+    // Delete all the local notes that have synced to insert the new ones
+    final localNotes = await _localNotesService.getAll(limit: -1, page: 1);
+    final localNotesIdsWithSync = localNotes
+        .where((note) => note.isSyncWithCloud)
+        .map((note) => note.id)
+        .whereType<String>()
+        .where((noteId) => noteId.trim().isNotEmpty)
+        .toList();
+
+    if (localNotesIdsWithSync.isNotEmpty) {
+      await _localNotesService.deleteByIds(localNotesIdsWithSync);
+    }
+
+    await _localNotesService.createMultiples(createInputs);
+  }
+
+  Future<ListDifferenceResult<Note>> getCloudToLocalNotesDifferences() async {
+    final cloudNotes = (await _cloudNotesService.getAll(limit: -1, page: 1))
+        .map(Note.fromCloudNote)
+        .toList();
+    final localNotes = (await _localNotesService.getAll(limit: -1, page: 1))
+        .map(Note.fromLocalNote)
+        .toList();
+
+    AppLogger.log('The cloud notes length is = ${cloudNotes.length}');
+    AppLogger.log('The local notes length is = ${localNotes.length}');
+
+    final cloudNotesTextx = cloudNotes.map((e) => e.text);
+    final localNotesTextx = localNotes.map((e) => e.text);
+
+    final commonsNotesByText = findCommons(
+      cloudNotesTextx,
+      localNotesTextx,
+    ).toList();
+    final commons = commonsNotesByText.asMap().entries.map(
+          (e) => cloudNotes[e.key].copyWith(text: e.value),
+        );
+    AppLogger.log('Commons Length = ${commons.length} is $commons');
+
+    final notesDifferencesByText = findDifferences(
+      cloudNotesTextx,
+      cloudNotesTextx,
+      commonItems: commonsNotesByText,
+    ).toList();
+    final differences = notesDifferencesByText.asMap().entries.map((e) {
+      return cloudNotes[e.key].copyWith(text: e.value);
+    });
+    AppLogger.log('Differences Length = ${differences.length} is $differences');
+
+    final missingNotesByText = findMissings(
+      cloudNotesTextx,
+      localNotesTextx,
+      // differences: notesDifferencesByText,
+    ).toList();
+    final missings = missingNotesByText.asMap().entries.map(
+          (e) => cloudNotes[e.key].copyWith(text: e.value),
+        );
+    AppLogger.log('Missings Length = ${missings.length} is $missings');
+
+    return ListDifferenceResult(
+      differences: differences.toList(),
+      commons: commons.toList(),
+      missingsItems: missings.toList(),
     );
   }
 

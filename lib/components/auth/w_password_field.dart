@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/utils/validators/auth.dart';
+import '../../utils/validators/auth.dart';
 
 class PasswordTextField extends StatelessWidget {
   const PasswordTextField({
-    super.key,
-    required this.passwordController,
+    required this.passwordController, super.key,
     this.textInputAction = TextInputAction.done,
     this.onEditingComplete,
   });

@@ -1,9 +1,10 @@
 import 'dart:math' show Random;
 
+// import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:my_notes/services/auth/auth_exceptions.dart';
 import 'package:my_notes/services/auth/auth_provider.dart';
 import 'package:my_notes/services/auth/auth_user.dart';
-import 'package:test/test.dart';
 
 void main() {
   group('Mock Authentication', () {
@@ -24,7 +25,7 @@ void main() {
       expect(provider._isInitialized, true);
     });
 
-    test('We can\'t be able to initialize the provider again', () async {
+    test("We can't be able to initialize the provider again", () async {
       expect(
         provider.initialize(),
         throwsA(const TypeMatcher<AlreadyInitalizedException>()),

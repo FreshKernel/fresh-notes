@@ -1,4 +1,4 @@
-import 'package:my_notes/core/data/crud_exceptions.dart';
+import '../../../core/data/crud_exceptions.dart';
 
 class LocalDatabaseException extends CrudException {
   const LocalDatabaseException(super.message);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/services/auth/auth_service.dart';
+import '../../services/auth/auth_service.dart';
 
 import '../../utils/ui/dialog/w_yes_cancel_dialog.dart';
 import '../auth/authentication/s_authentication.dart';

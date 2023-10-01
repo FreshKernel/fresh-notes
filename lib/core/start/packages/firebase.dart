@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_notes/core/services/s_app.dart';
+import '../../services/s_app.dart';
 
 class FirebaseService extends AppService {
+  factory FirebaseService.getInstance() => _instance;
   FirebaseService._();
   static final _instance = FirebaseService._();
-  factory FirebaseService.getInstance() => _instance;
 
   var _isFirebaseInitialized = false;
 

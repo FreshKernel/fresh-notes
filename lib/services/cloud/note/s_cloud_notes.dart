@@ -1,8 +1,8 @@
-import 'package:my_notes/core/app_module.dart';
-import 'package:my_notes/services/cloud/note/models/cloud_note_repository.dart';
-import 'package:my_notes/services/cloud/note/models/m_cloud_note.dart';
-import 'package:my_notes/services/cloud/note/packages/firebase_cloud_notes.dart';
-import 'package:my_notes/services/data/notes/models/m_note_input.dart';
+import '../../../core/app_module.dart';
+import 'models/cloud_note_repository.dart';
+import 'models/m_cloud_note.dart';
+import 'packages/firebase_cloud_notes.dart';
+import '../../data/notes/models/m_note_input.dart';
 
 class CloudNotesService extends CloudNotesRepository {
   CloudNotesService._(this._provider);

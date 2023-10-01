@@ -30,3 +30,13 @@ already ignored in the .gitignore
 	<string>To save images into the library, we need permission from you</string>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
 	<false/>"
+
+3- Create firebase firestore index
+
+Composite indexes:
+userId: Ascending
+updatedAt: Descending
+__name__ Descending
+
+Instead of defining a composite index manually, try to run all the queries in the app by testing everything to get a links for generating the required index.
+[Example](https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?create_composite=Cktwcm9qZWN0cy9teW5vdGVzLWViNzE3L2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9ub3Rlcy9pbmRleGVzL18QARoKCgZ1c2VySWQQARoNCgl1cGRhdGVkQXQQAhoMCghfX25hbWVfXxAC)

@@ -1,4 +1,4 @@
-import 'package:my_notes/core/services/exceptions.dart';
+import 'exceptions.dart';
 
 abstract class AppService {
   Future<void> initialize();

@@ -1,9 +1,9 @@
-import 'package:my_notes/core/data/crud_exceptions.dart';
-import 'package:my_notes/models/note/m_note.dart';
-import 'package:my_notes/services/auth/auth_service.dart';
-import 'package:my_notes/services/cloud/note/models/cloud_note_repository.dart';
-import 'package:my_notes/services/cloud/note/models/m_cloud_note.dart';
-import 'package:my_notes/services/data/notes/models/m_note_input.dart';
+import '../../../../core/data/crud_exceptions.dart';
+import '../../../../models/note/m_note.dart';
+import '../../../auth/auth_service.dart';
+import '../models/cloud_note_repository.dart';
+import '../models/m_cloud_note.dart';
+import '../../../data/notes/models/m_note_input.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseCloudNotesImpl extends CloudNotesRepository {
@@ -98,6 +98,10 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
         .where(
           NoteProperties.userId,
           isEqualTo: userId,
+        )
+        .orderBy(
+          NoteProperties.updatedAt,
+          descending: true,
         )
         .get();
     if (documents.docs.isEmpty) {

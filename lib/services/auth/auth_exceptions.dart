@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart' show describeEnum;
-import 'package:my_notes/core/errors/exceptions.dart';
+import '../../core/errors/exceptions.dart';
 
 enum AuthErrorType {
   userNotFound,
@@ -28,9 +28,9 @@ enum AuthErrorType {
 }
 
 class AuthException extends AppException {
-  final AuthErrorType type;
 
   const AuthException(String message, {required this.type}) : super(message);
+  final AuthErrorType type;
 
   @override
   String toString() {

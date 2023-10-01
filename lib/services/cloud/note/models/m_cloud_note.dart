@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_notes/models/note/m_note.dart';
-import 'package:my_notes/services/data/notes/models/m_note_input.dart';
+import '../../../../models/note/m_note.dart';
+import '../../../data/notes/models/m_note_input.dart';
 // import 'package:my_notes/services/database/notes/models/m_local_note.dart';
 
 part 'm_cloud_note.freezed.dart';
@@ -10,7 +10,7 @@ part 'm_cloud_note.g.dart';
 @freezed
 class CloudNote with _$CloudNote {
   const factory CloudNote({
-    required String id,
+    required String id, // the document id
     required String userId,
     required String text,
     required bool isPrivate,

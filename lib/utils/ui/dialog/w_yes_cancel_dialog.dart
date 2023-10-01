@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/utils/ui/dialog/w_app_dialog.dart';
+import 'w_app_dialog.dart';
 
 class YesOrCancelDialogOptions {
-  final String title;
-  final String message;
-  final String? yesLabel;
-  final String? cancelLabel;
 
   const YesOrCancelDialogOptions({
     required this.title,
@@ -13,12 +9,15 @@ class YesOrCancelDialogOptions {
     this.yesLabel,
     this.cancelLabel,
   });
+  final String title;
+  final String message;
+  final String? yesLabel;
+  final String? cancelLabel;
 }
 
 class YesOrCancelDialog extends StatelessWidget {
   const YesOrCancelDialog({
-    super.key,
-    required this.options,
+    required this.options, super.key,
   });
 
   final YesOrCancelDialogOptions options;

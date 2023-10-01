@@ -20,7 +20,7 @@ CloudNote _$CloudNoteFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CloudNote {
-  String get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError; // the document id
   String get userId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
@@ -175,6 +175,7 @@ class _$_CloudNote implements _CloudNote {
 
   @override
   final String id;
+// the document id
   @override
   final String userId;
   @override
@@ -240,7 +241,7 @@ abstract class _CloudNote implements CloudNote {
 
   @override
   String get id;
-  @override
+  @override // the document id
   String get userId;
   @override
   String get text;

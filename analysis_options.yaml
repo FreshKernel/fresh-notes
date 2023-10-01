@@ -23,7 +23,31 @@ linter:
   rules:
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     prefer_single_quotes: true
+    prefer_const_constructors: true
     always_declare_return_types: true
+    # sort_pub_dependencies: true
+    always_put_required_named_parameters_first: true
+    annotate_overrides: true
+    avoid_empty_else: true
+    avoid_escaping_inner_quotes: true
+    avoid_print: true
+    avoid_types_on_closure_parameters: true
+    avoid_void_async: true
+    directives_ordering: true
+    # - lines_longer_than_80_chars
+    prefer_const_constructors_in_immutables: true
+    prefer_const_declarations: true
+    prefer_final_fields: true
+    prefer_final_in_for_each: true
+    prefer_final_locals: true
+    prefer_initializing_formals: true
+    prefer_interpolation_to_compose_strings: true
+    prefer_relative_imports: true
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
+    unnecessary_lambdas: true
+    unnecessary_parenthesis: true
+    unnecessary_string_interpolations: true
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

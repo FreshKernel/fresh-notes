@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:path/path.dart' as path;
-import 'package:my_notes/core/utils/platform_checker.dart';
-import 'package:my_notes/utils/bool.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../core/errors/exceptions.dart';
 import '../../core/log/logger.dart';
+import '../../core/utils/platform_checker.dart';
+import '../bool.dart';
 
 typedef QuillDocument = quill.Document;
 

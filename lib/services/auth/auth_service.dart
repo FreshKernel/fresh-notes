@@ -1,15 +1,15 @@
-import 'package:my_notes/core/app_module.dart';
-import 'package:my_notes/services/auth/auth_provider.dart';
-import 'package:my_notes/services/auth/auth_user.dart';
-import 'package:my_notes/services/auth/packages/firebase_provider.dart';
+import '../../core/app_module.dart';
+import 'auth_provider.dart';
+import 'auth_user.dart';
+import 'packages/firebase_provider.dart';
 
 class AuthService extends AuthProvider {
+
+  AuthService._(this._authProvider);
   factory AuthService.firebase() => AuthService._(FirebaseAuthProviderImpl());
   factory AuthService.getInstance() => AppModule.authService;
 
   final AuthProvider _authProvider;
-
-  AuthService._(this._authProvider);
 
   @override
   Future<void> initialize() => _authProvider.initialize();

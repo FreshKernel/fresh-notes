@@ -1,10 +1,10 @@
-import 'package:my_notes/services/api/api_exceptions.dart';
-import 'package:my_notes/services/auth/auth_exceptions.dart';
-import 'package:my_notes/services/auth/auth_provider.dart';
-import 'package:my_notes/services/auth/auth_user.dart';
-
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException, ConfirmationResult;
+
+import '../../api/api_exceptions.dart';
+import '../auth_exceptions.dart';
+import '../auth_provider.dart';
+import '../auth_user.dart';
 
 // TODO: Improve this firebase implementation and auth service in general later
 // TODO: Improve errors for the exceptions
@@ -231,7 +231,7 @@ class FirebaseAuthProviderImpl extends AuthProvider {
           );
         case 'weak-password':
           throw const AuthException(
-            'The firebase sdk doesn\'t allow this password and mark it as weak',
+            "The firebase sdk doesn't allow this password and mark it as weak",
             type: AuthErrorType.weakPassword,
           );
         case 'email-already-in-use':
@@ -292,7 +292,7 @@ class FirebaseAuthProviderImpl extends AuthProvider {
           );
         case 'weak-password':
           throw const AuthException(
-            'The firebase sdk doesn\'t allow this password and mark it as weak.',
+            "The firebase sdk doesn't allow this password and mark it as weak.",
             type: AuthErrorType.weakPassword,
           );
         case 'operation-not-allowed':

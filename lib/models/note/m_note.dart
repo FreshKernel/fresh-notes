@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_notes/services/cloud/shared/sync_options.dart';
-import 'package:my_notes/services/database/notes/models/m_local_note.dart';
+import '../../services/cloud/note/models/m_cloud_note.dart';
+import '../../services/cloud/shared/sync_options.dart';
+import '../../services/database/notes/models/m_local_note.dart';
 
 part 'm_note.freezed.dart';
 
@@ -52,6 +53,22 @@ class Note with _$Note {
         syncOptions: SyncOptions.getSyncOptions(
           isSyncWithCloud: note.isSyncWithCloud,
           existingCloudNoteId: note.cloudId,
+        ),
+        isPrivate: note.isPrivate,
+        createdAt: note.createdAt,
+        updatedAt: note.updatedAt,
+      );
+
+  factory Note.fromCloudNote(
+    CloudNote note,
+  ) =>
+      Note(
+        id: note.id,
+        userId: note.userId,
+        text: note.text,
+        syncOptions: SyncOptions.getSyncOptions(
+          isSyncWithCloud: true,
+          existingCloudNoteId: note.id,
         ),
         isPrivate: note.isPrivate,
         createdAt: note.createdAt,

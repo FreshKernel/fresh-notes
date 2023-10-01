@@ -3,17 +3,18 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-
 // import 'package:flutter_quill_extensions/embeds/builders.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart'
     as quill_extensions;
-import 'package:my_notes/core/log/logger.dart';
-import 'package:my_notes/models/note/m_note.dart';
-import 'package:my_notes/screens/save_note/w_select_image_source_dialog.dart';
-import 'package:my_notes/services/cloud/shared/sync_options.dart';
-import 'package:my_notes/services/native/image/s_image_picker.dart';
-import 'package:my_notes/utils/ui/dialog/w_yes_cancel_dialog.dart';
+
+import '../../core/log/logger.dart';
+import '../../models/note/m_note.dart';
+import '../../services/cloud/shared/sync_options.dart';
 import '../../services/data/notes/s_notes_data.dart';
+import '../../services/native/image/s_image_picker.dart';
+import '../../services/native/share/s_app_share.dart';
+import '../../utils/ui/dialog/w_yes_cancel_dialog.dart';
+import 'w_select_image_source_dialog.dart';
 
 class SaveNoteScreen extends StatefulWidget {
   const SaveNoteScreen({super.key, this.note});
@@ -151,6 +152,22 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
             tooltip: 'Private',
             onPressed: () => setState(() => _isPrivate = !_isPrivate),
             icon: Icon(_isPrivate ? Icons.lock : Icons.public),
+          ),
+          IconButton(
+            tooltip: 'Share',
+            onPressed: () async {
+              final messenger = ScaffoldMessenger.of(context);
+              final plainText = _controller.document.toPlainText(_embedBuilder);
+              if (plainText.trim().isEmpty) {
+                messenger.showSnackBar(const SnackBar(
+                    content: Text(
+                  'Please enter a text before sharing it',
+                )));
+                return;
+              }
+              await AppShareService.getInstance().shareText(plainText);
+            },
+            icon: const Icon(Icons.link),
           ),
           IconButton(
             tooltip: 'Save note',

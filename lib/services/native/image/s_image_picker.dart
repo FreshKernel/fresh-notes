@@ -1,19 +1,18 @@
 import 'dart:io' show File;
 
-import 'package:my_notes/core/app_module.dart';
-import 'package:my_notes/services/native/image/packages/image_picker_package_impl.dart';
-
+import '../../../core/app_module.dart';
 import 'image_picker.dart';
+import 'packages/image_picker_package_impl.dart';
+
 export './image_picker.dart';
 
 class ImagePickerService extends ImagePicker {
+  ImagePickerService._(this._picker);
   factory ImagePickerService.packageImagePicker() =>
       ImagePickerService._(ImagePickerPackageImpl());
 
   factory ImagePickerService.getInstance() => AppModule.imagePickerService;
   final ImagePicker _picker;
-
-  ImagePickerService._(this._picker);
 
   @override
   Future<void> initialize() => _picker.initialize();

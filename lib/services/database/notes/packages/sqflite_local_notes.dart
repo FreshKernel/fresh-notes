@@ -1,14 +1,14 @@
-import 'package:my_notes/core/data/crud_exceptions.dart';
-import 'package:my_notes/services/auth/auth_service.dart';
-import 'package:my_notes/services/data/notes/models/m_note_input.dart';
-import 'package:my_notes/services/database/notes/local_notes_repository.dart';
-import 'package:my_notes/services/database/shared/sql_data_type.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as path show join;
 import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
-import 'package:path/path.dart' as path show join;
+import 'package:sqflite/sqflite.dart';
 
+import '../../../../core/data/crud_exceptions.dart';
+import '../../../auth/auth_service.dart';
+import '../../../data/notes/models/m_note_input.dart';
 import '../../shared/local_database_exceptions.dart';
+import '../../shared/sql_data_type.dart';
+import '../local_notes_repository.dart';
 import '../models/m_local_note.dart';
 
 /// Make sure when you use this class to required the database
@@ -175,7 +175,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       if (results.isEmpty) {
         return List.empty();
       }
-      return results.map((e) => LocalNote.fromSqlite(e)).toList();
+      return results.map(LocalNote.fromSqlite).toList();
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(
           'Unknown error while get all notes ${e.toString()}');
@@ -217,7 +217,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       if (results.isEmpty) {
         return List.empty();
       }
-      return results.map((e) => LocalNote.fromSqlite(e)).toList();
+      return results.map(LocalNote.fromSqlite).toList();
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(
           'Unknown error while get all by ids ${e.toString()}');

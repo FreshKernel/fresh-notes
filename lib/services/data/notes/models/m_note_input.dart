@@ -1,10 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_notes/services/cloud/shared/sync_options.dart';
+import '../../../cloud/note/models/m_cloud_note.dart';
+import '../../../cloud/shared/sync_options.dart';
 
 part 'm_note_input.freezed.dart';
 
-/// This is for creating a note but also for updating a note
-/// it might changed in the future
 @freezed
 class CreateNoteInput with _$CreateNoteInput {
   const factory CreateNoteInput({
@@ -13,9 +12,18 @@ class CreateNoteInput with _$CreateNoteInput {
     required bool isPrivate,
     required String userId,
   }) = _CreateNoteInput;
+  factory CreateNoteInput.fromCloudNote(CloudNote note) => CreateNoteInput(
+        text: note.text,
+        syncOptions: SyncOptions.getSyncOptions(
+          isSyncWithCloud: true,
+          existingCloudNoteId: note.id,
+        ),
+        isPrivate: note.isPrivate,
+        userId: note.userId,
+      );
 }
 
-// If it works, then don't touch it for now.
+// extension CreateNoteInputExtensions on CreateNoteInput {}
 
 @freezed
 class UpdateNoteInput with _$UpdateNoteInput {
