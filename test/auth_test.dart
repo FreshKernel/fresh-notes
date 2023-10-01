@@ -59,7 +59,13 @@ void main() {
 
         expect(
           badEmailUser,
-          throwsA(const TypeMatcher<UserNotFoundAuthException>()),
+          throwsA(
+            const TypeMatcher<AuthException>().having(
+              (p0) => p0.type,
+              'User not found',
+              AuthErrorType.userNotFound,
+            ),
+          ),
         );
 
         // Should not be await
@@ -68,7 +74,13 @@ void main() {
 
         expect(
           badPasswordUser,
-          throwsA(const TypeMatcher<WrongPasswordAuthException>()),
+          throwsA(
+            const TypeMatcher<AuthException>().having(
+              (p0) => p0.type,
+              'Error type',
+              AuthErrorType.wrongPassword,
+            ),
+          ),
         );
 
         // Should be await
@@ -126,11 +138,16 @@ class MockAuthProvider extends AuthProvider {
     if (!_isInitialized) throw NotInitializedException();
     await Future.delayed(Duration(seconds: Random().nextInt(2)));
     if (email == 'foo@bar.com') {
-      throw const UserNotFoundAuthException(
-          'Wrong emaill address for testing.');
+      throw const AuthException(
+        'Wrong emaill address for testing.',
+        type: AuthErrorType.userNotFound,
+      );
     }
     if (password == 'foobar') {
-      throw const WrongPasswordAuthException('Wrong Password for testing.');
+      throw const AuthException(
+        'Wrong Password for testing.',
+        type: AuthErrorType.wrongPassword,
+      );
     }
     const user = AuthUser(
         isEmailVerified: false,
@@ -152,8 +169,10 @@ class MockAuthProvider extends AuthProvider {
   Future<void> logout() async {
     if (!_isInitialized) throw NotInitializedException();
     if (_user == null) {
-      throw const UserNotFoundAuthException(
-          'User is not found. can not logout');
+      throw const AuthException(
+        'User is not found. can not logout',
+        type: AuthErrorType.userNotFound,
+      );
     }
     await Future.delayed(Duration(milliseconds: Random().nextInt(800)));
     _user = null;
@@ -163,8 +182,9 @@ class MockAuthProvider extends AuthProvider {
   Future<void> sendEmailVerification() async {
     if (!_isInitialized) throw NotInitializedException();
     if (_user == null) {
-      throw const UserNotFoundAuthException(
-        'User is not found. can not logout',
+      throw const AuthException(
+        'User is not found. can not send email verification',
+        type: AuthErrorType.userNotFound,
       );
     }
     await Future.delayed(Duration(seconds: Random().nextInt(4)));
@@ -205,6 +225,11 @@ class MockAuthProvider extends AuthProvider {
 
   @override
   AuthUser requireCurrentUser(String? errorMessage) {
+    throw UnimplementedError(errorMessage);
+  }
+
+  @override
+  Future<void> deInitialize() {
     throw UnimplementedError();
   }
 }

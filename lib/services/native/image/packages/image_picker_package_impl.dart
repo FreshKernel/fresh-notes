@@ -20,6 +20,11 @@ class ImagePickerPackageImpl extends ImagePicker {
   }
 
   @override
+  Future<void> deInitialize() async {
+    _imagePicker = null;
+  }
+
+  @override
   bool get isInitialized => _imagePicker != null;
 
   @override
@@ -51,7 +56,7 @@ class ImagePickerPackageImpl extends ImagePicker {
 
 // I want to use depened on third party packages as much as possible.
 
-extension on ImageSource {
+extension ImagePickerPackageImageSource on ImageSource {
   image_picker_package.ImageSource toImageSourceOfImagePickerPackage() {
     switch (this) {
       case ImageSource.camera:
@@ -62,7 +67,7 @@ extension on ImageSource {
   }
 }
 
-extension on CameraDevice {
+extension ImagePickerPackageCameraDevice on CameraDevice {
   image_picker_package.CameraDevice toCameraDeviceOfImagePickerPackage() {
     switch (this) {
       case CameraDevice.rear:

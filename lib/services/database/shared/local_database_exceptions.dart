@@ -1,6 +1,6 @@
-import 'package:my_notes/core/errors/exceptions.dart';
+import 'package:my_notes/core/data/crud_exceptions.dart';
 
-class LocalDatabaseException extends AppException {
+class LocalDatabaseException extends CrudException {
   const LocalDatabaseException(super.message);
 }
 
@@ -18,12 +18,4 @@ class LocalDatabaseAlreadyInitializedException extends LocalDatabaseException {
 
 class FailedToInitalizeLocalDatabaseException extends LocalDatabaseException {
   const FailedToInitalizeLocalDatabaseException(super.message);
-}
-
-class ParametersErrorLocalDatabaseException extends LocalDatabaseException {
-  const ParametersErrorLocalDatabaseException(super.message);
-}
-
-class LocalDatabaseOperationFaieldException extends LocalDatabaseException {
-  const LocalDatabaseOperationFaieldException(super.message);
 }

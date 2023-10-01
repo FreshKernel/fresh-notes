@@ -9,4 +9,6 @@ abstract class AppService {
           errorMessage ?? 'To use this service, please initialize it first.');
     }
   }
+
+  Future<void> deInitialize();
 }

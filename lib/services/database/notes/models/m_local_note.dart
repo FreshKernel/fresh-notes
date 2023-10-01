@@ -1,5 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:my_notes/models/note/m_note.dart';
+import 'package:my_notes/services/cloud/shared/sync_options.dart';
+import 'package:my_notes/services/data/notes/models/m_note_input.dart';
+import 'package:my_notes/utils/extensions/bool.dart';
+import 'package:my_notes/utils/extensions/int.dart';
+
+import '../../shared/sql_data_type.dart';
 
 part 'm_local_note.freezed.dart';
 part 'm_local_note.g.dart';
@@ -10,7 +16,9 @@ class LocalNote with _$LocalNote {
     required String id,
     required String userId,
     required String text,
-    @Default(true) bool isSyncedWithCloud,
+    required String? cloudId,
+    required bool isSyncWithCloud,
+    required bool isPrivate,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _LocalNote;
@@ -21,35 +29,132 @@ class LocalNote with _$LocalNote {
   // This time I decided to make life simple and easier by
   // use the same exact name of the variable in sqlite and dart.
   factory LocalNote.fromSqlite(Map<String, Object?> map) => LocalNote(
-        id: (map['id'] as int).toString(),
-        userId: map['userId'] as String,
-        text: map['text'] as String,
-        isSyncedWithCloud: (map['isSyncedWithCloud'] as int) == 1,
-        createdAt: DateTime.parse(map['updatedAt'] as String),
-        updatedAt: DateTime.parse(map['updatedAt'] as String),
+        id: (map[LocalNoteProperties.id] as int).toString(),
+        userId: map[LocalNoteProperties.userId] as String,
+        text: map[LocalNoteProperties.text] as String,
+        cloudId: map[LocalNoteProperties.cloudId] as String?,
+        isSyncWithCloud:
+            (map[LocalNoteProperties.isSyncWithCloud] as int).toBoolean(),
+        isPrivate: (map[LocalNoteProperties.isPrivate] as int).toBoolean(),
+        createdAt: DateTime.parse(map[LocalNoteProperties.createdAt] as String),
+        updatedAt: DateTime.parse(map[LocalNoteProperties.updatedAt] as String),
       );
 
-  static Map<String, Object?> toSqlite(NoteInput instance) {
+  static SqlMapData _toSqliteMapSharedLogic({
+    required String text,
+    required SyncOptions syncOptions,
+    required bool isPrivate,
+  }) {
     return {
-      'userId': instance.userId,
-      'text': instance.text,
-      'isSyncedWithCloud': instance.isSyncedWithCloud ? 1 : 0,
-      'updatedAt': DateTime.now().toIso8601String(),
+      LocalNoteProperties.text: SqlValue.string(text),
+      LocalNoteProperties.cloudId:
+          SqlValue.string(syncOptions.getCloudNoteId()),
+      LocalNoteProperties.isSyncWithCloud:
+          SqlValue.num(syncOptions.isSyncWithCloud.toInt()),
+      LocalNoteProperties.isPrivate: SqlValue.num(isPrivate.toInt()),
     };
   }
 
-  static const sqlTableName = 'notes';
+  static SqlMapData toSqliteMapFromCreateInput(
+      {required CreateNoteInput input}) {
+    final sharedInputData = _toSqliteMapSharedLogic(
+      text: input.text,
+      syncOptions: input.syncOptions,
+      isPrivate: input.isPrivate,
+    );
+    final SqlMapData data = {
+      ...sharedInputData,
+      LocalNoteProperties.userId: SqlValue.string(input.userId),
+    };
+    return data;
+  }
+
+  static SqlMapData toSqliteMapFromUpdateInput({
+    required UpdateNoteInput input,
+  }) {
+    final sharedInputData = _toSqliteMapSharedLogic(
+      text: input.text,
+      syncOptions: input.syncOptions,
+      isPrivate: input.isPrivate,
+    );
+    return {
+      ...sharedInputData,
+      LocalNoteProperties.updatedAt:
+          SqlValue.string(DateTime.now().toIso8601String()),
+    };
+  }
+
+  static const sqlTableName = NoteProperties.notes;
 
   static const createSqlTable = '''
     CREATE TABLE IF NOT EXISTS "$sqlTableName" (
-      "id"	INTEGER NOT NULL UNIQUE,
-      "userId"	TEXT NOT NULL,
-      "text"	TEXT NOT NULL,
-      "isSyncedWithCloud"	INTEGER NOT NULL DEFAULT 1,
-      "createdAt"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      "updatedAt"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      "${LocalNoteProperties.id}"	INTEGER NOT NULL UNIQUE,
+      "${LocalNoteProperties.userId}"	TEXT NOT NULL,
+      "${LocalNoteProperties.text}"	TEXT NOT NULL,
+      "${LocalNoteProperties.cloudId}" TEXT,
+      "${LocalNoteProperties.isSyncWithCloud}" INTEGER NOT NULL,
+      "${LocalNoteProperties.isPrivate}"	INTEGER NOT NULL,
+      "${LocalNoteProperties.createdAt}"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      "${LocalNoteProperties.updatedAt}"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY("id" AUTOINCREMENT)
     );
     ''';
   // ON UPDATE CURRENT_TIMESTAMP
+
+  factory LocalNote._fromInputSharedLogic({
+    required String id,
+    required String userId,
+    required String text,
+    required SyncOptions syncOptions,
+    required bool isPrivate,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+  }) =>
+      LocalNote(
+        id: id,
+        userId: userId,
+        text: text,
+        isPrivate: isPrivate,
+        cloudId: syncOptions.getCloudNoteId(),
+        isSyncWithCloud: syncOptions.isSyncWithCloud,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+
+  // To return a note after creating it
+  factory LocalNote.fromCreateNoteInput({
+    required CreateNoteInput input,
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+  }) =>
+      LocalNote._fromInputSharedLogic(
+        id: id,
+        userId: input.userId,
+        text: input.text,
+        syncOptions: input.syncOptions,
+        isPrivate: input.isPrivate,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+
+  // To return a note after updating it
+  factory LocalNote.fromUpdateNoteInput({
+    required UpdateNoteInput input,
+    required String id,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String userId,
+  }) =>
+      LocalNote._fromInputSharedLogic(
+        id: id,
+        userId: userId,
+        text: input.text,
+        syncOptions: input.syncOptions,
+        isPrivate: input.isPrivate,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
 }
+
+typedef LocalNoteProperties = NoteProperties;

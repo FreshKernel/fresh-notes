@@ -1,6 +1,6 @@
 import 'dart:io' show File;
 
-import 'package:my_notes/core/services/service.dart';
+import 'package:my_notes/core/services/s_app.dart';
 
 import 'enums/camera_device.dart';
 import 'enums/image_source.dart';

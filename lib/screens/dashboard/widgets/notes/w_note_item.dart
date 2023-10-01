@@ -5,6 +5,7 @@ import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:my_notes/models/note/m_note.dart';
 import 'package:my_notes/services/data/notes/s_notes_data.dart';
 import 'package:my_notes/utils/extensions/string.dart';
+import 'package:my_notes/utils/ui/dialog/w_yes_cancel_dialog.dart';
 
 import '../../../save_note/s_save_note.dart';
 
@@ -24,13 +25,11 @@ class NoteItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final document = quill.Document.fromJson(jsonDecode(note.text));
     final materialTheme = Theme.of(context);
-    return GestureDetector(
+    return ListTile(
+      contentPadding: const EdgeInsets.all(12),
       onTap: () {
-        final navigator = Navigator.of(context);
-        navigator.push(MaterialPageRoute(
-          settings: const RouteSettings(
-            name: SaveNoteScreen.routeName,
-          ),
+        Navigator.of(context).push(MaterialPageRoute(
+          settings: const RouteSettings(name: SaveNoteScreen.routeName),
           builder: (context) {
             return SaveNoteScreen(
               note: note,
@@ -38,24 +37,54 @@ class NoteItem extends StatelessWidget {
           },
         ));
       },
-      child: ListTile(
-        title: Text(
-          document.toPlainText().limitToCharacters(30).removeWhiteSpaces(),
-        ),
-        subtitle: Text(
-          document.toPlainText().limitToCharacters(200).removeWhiteSpaces(),
-        ),
-        leading: CircleAvatar(
-          child: Text(note.id.toString()),
-        ),
-        trailing: IconButton(
-          tooltip: 'Delete',
-          onPressed: () async {
-            await notesDataService.deleteOneById(note.id);
-          },
-          icon: const Icon(Icons.delete),
-          color: materialTheme.colorScheme.error,
-        ),
+      title: Text(
+        document.toPlainText(),
+        softWrap: true,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: materialTheme.primaryTextTheme.titleMedium,
+      ),
+      subtitle: Text(
+        document.toPlainText().removeWhiteSpaces(),
+        softWrap: true,
+        maxLines: 5,
+        overflow: TextOverflow.ellipsis,
+        style: materialTheme.primaryTextTheme.bodyMedium,
+      ),
+      leading: CircleAvatar(
+        child: Text(note.id.toString()),
+      ),
+      trailing: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 450) {
+            return TextButton.icon(
+              onPressed: () => notesDataService.deleteOneById(note.id),
+              icon: const Icon(Icons.delete),
+              label: const Text('Delete'),
+              style: TextButton.styleFrom(
+                foregroundColor: materialTheme.colorScheme.error,
+              ),
+            );
+          }
+          return IconButton(
+            tooltip: 'Delete',
+            onPressed: () async {
+              final deletedConfirmed = await showYesCancelDialog(
+                context: context,
+                options: const YesOrCancelDialogOptions(
+                  title: 'Delete note',
+                  message: 'Are you sure you want to delete this note',
+                ),
+              );
+              if (!deletedConfirmed) {
+                return;
+              }
+              notesDataService.deleteOneById(note.id);
+            },
+            icon: const Icon(Icons.delete),
+            color: materialTheme.colorScheme.error,
+          );
+        },
       ),
     );
   }

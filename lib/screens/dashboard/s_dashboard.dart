@@ -6,6 +6,7 @@ import 'package:my_notes/screens/dashboard/widgets/notes/w_notes.dart';
 import 'package:my_notes/screens/dashboard/widgets/w_settings.dart';
 import 'package:my_notes/screens/save_note/s_save_note.dart';
 import 'package:my_notes/services/data/notes/s_notes_data.dart';
+import 'package:my_notes/utils/ui/dialog/w_yes_cancel_dialog.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -52,7 +53,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const LogoutIconButton(),
           IconButton(
             tooltip: 'Delete All',
-            onPressed: () {
+            onPressed: () async {
+              final deletedAllConfirmed = await showYesCancelDialog(
+                context: context,
+                options: const YesOrCancelDialogOptions(
+                  title: 'Delete all notes',
+                  message:
+                      'Are you sure you want to delete all of your notes??',
+                  yesLabel: 'Delete all',
+                ),
+              );
+              if (!deletedAllConfirmed) {
+                return;
+              }
               NotesDataService.getInstance().deleteAll();
             },
             icon: const Icon(Icons.delete_forever),

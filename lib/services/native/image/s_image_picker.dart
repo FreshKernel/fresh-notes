@@ -11,15 +11,18 @@ class ImagePickerService extends ImagePicker {
       ImagePickerService._(ImagePickerPackageImpl());
 
   factory ImagePickerService.getInstance() => AppModule.imagePickerService;
-  final ImagePicker _service;
+  final ImagePicker _picker;
 
-  ImagePickerService._(this._service);
-
-  @override
-  Future<void> initialize() => _service.initialize();
+  ImagePickerService._(this._picker);
 
   @override
-  bool get isInitialized => _service.isInitialized;
+  Future<void> initialize() => _picker.initialize();
+
+  @override
+  Future<void> deInitialize() => _picker.deInitialize();
+
+  @override
+  bool get isInitialized => _picker.isInitialized;
 
   @override
   Future<File?> pickImage(
@@ -29,7 +32,7 @@ class ImagePickerService extends ImagePicker {
           int? imageQuality,
           CameraDevice preferredCameraDevice = CameraDevice.rear,
           bool requestFullMetadata = true}) =>
-      _service.pickImage(
+      _picker.pickImage(
         source: source,
         maxWidth: maxWidth,
         maxHeight: maxHeight,

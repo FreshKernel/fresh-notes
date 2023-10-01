@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/services/auth/auth_service.dart';
 
+import '../../utils/ui/dialog/w_yes_cancel_dialog.dart';
 import '../auth/authentication/s_authentication.dart';
 
 class LogoutIconButton extends StatefulWidget {
@@ -16,26 +17,14 @@ class _LogoutIconButtonState extends State<LogoutIconButton> {
   Future<void> _onLogout() async {
     final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
-    final logoutConfirmed = await showAdaptiveDialog<bool>(
-          context: context,
-          builder: (context) {
-            return AlertDialog.adaptive(
-              title: const Text('Sign out'),
-              content: const Text('Are you sure you want to sign out?'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Logout'),
-                ),
-              ],
-            );
-          },
-        ) ??
-        false;
+    final logoutConfirmed = await showYesCancelDialog(
+      context: context,
+      options: const YesOrCancelDialogOptions(
+        title: 'Sign out',
+        message: 'Are you sure you want to sign out?',
+        yesLabel: 'Logout',
+      ),
+    );
 
     if (!logoutConfirmed) {
       return;

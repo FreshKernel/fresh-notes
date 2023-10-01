@@ -95,7 +95,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
     messenger.clearSnackBars();
     if (!isValid) {
-      // messenger.clearSnackBars();
       messenger.showSnackBar(
         const SnackBar(
           content: Text('Please enter your data.'),
@@ -103,6 +102,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       );
       return;
     }
+    _formKey.currentState?.save(); // Not required
     try {
       setState(() => _isLoading = true);
       final authService = AuthService.getInstance();
@@ -141,38 +141,44 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       );
       var error =
           'Unknown auth error. Please contact support with ${e.message}';
-      if (e is InvalidCredentialsAuthException) {
-        error = 'Invalid password or email address.';
-      } else if (e is WeakPasswordAuthException) {
-        error = 'Please enter strong password.';
-      } else if (e is NetworkRequestException) {
-        error = 'Please check your internet connection.';
-      } else if (e is EmailAlreadyInUseAuthException) {
-        error = 'Please try using different email address.';
-      } else if (e is UserDisabledAuthException) {
-        error =
-            'Your account is disabled. Please contact with the support for more information.';
+      switch (e.type) {
+        case AuthErrorType.invalidCredentials:
+          error = 'Invalid password or email address.';
+          break;
+        case AuthErrorType.weakPassword:
+          error = 'Please enter strong password.';
+          break;
+        case AuthErrorType.emailAlreadyInUse:
+          error = 'Please try using different email address.';
+          break;
+        case AuthErrorType.userAccountIsDisabled:
+          error =
+              'Your account is disabled. Please contact with the support for more information.';
+          break;
+        default:
+          error =
+              'Unknown error of type = ${e.type} and message = ${e.message}';
+          break;
       }
-      // switch (e) {
-      //   case 'INVALID_LOGIN_CREDENTIALS':
-      //     error = 'Invalid password or email address.';
-      //     break;
-      //   case 'weak-password':
-      //     error = 'Please enter strong password.';
-      //     break;
-      //   case 'network-request-failed':
-      //     error = 'Please check your internet connection.';
-      //     break;
-      //   case 'email-already-in-use':
-      //     error = 'Please try using different email address.';
-      //     break;
-      //   case 'user-disabled':
-      //     error =
-      //         'Your account is disabled. Please contact with the support for more information.';
-      //     break;
+      // if (e is InvalidCredentialsAuthException) {
+      //   error = 'Invalid password or email address.';
+      // } else if (e is WeakPasswordAuthException) {
+      //   error = 'Please enter strong password.';
+      // } else if (e is NetworkRequestException) {
+      //   error = 'Please check your internet connection.';
+      // } else if (e is EmailAlreadyInUseAuthException) {
+      //   error = 'Please try using different email address.';
+      // } else if (e is UserDisabledAuthException) {
+      //   error =
+      //       'Your account is disabled. Please contact with the support for more information.';
+      // }
       // }
       messenger.showSnackBar(SnackBar(
         content: Text(error),
+      ));
+    } on NetworkRequestException {
+      messenger.showSnackBar(const SnackBar(
+        content: Text('Please check your internet connection.'),
       ));
     } catch (e) {
       setState(() => _isLoading = false);

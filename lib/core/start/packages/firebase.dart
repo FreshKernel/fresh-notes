@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_notes/core/services/service.dart';
+import 'package:my_notes/core/services/s_app.dart';
 
 class FirebaseService extends AppService {
   FirebaseService._();
@@ -12,6 +12,11 @@ class FirebaseService extends AppService {
   Future<void> initialize() async {
     await Firebase.initializeApp();
     _isFirebaseInitialized = true;
+  }
+
+  @override
+  Future<void> deInitialize() async {
+    await Firebase.apps.first.delete();
   }
 
   @override

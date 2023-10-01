@@ -11,8 +11,8 @@ class AppLogger {
     return kDebugMode;
   }
 
-  static log(
-    String message, {
+  static void log<T>(
+    T message, {
     DateTime? time,
     int? sequenceNumber,
     int level = 0,
@@ -24,7 +24,7 @@ class AppLogger {
       return;
     }
     dev.log(
-      message,
+      message.toString(),
       time: time,
       sequenceNumber: sequenceNumber,
       level: level,
@@ -34,7 +34,7 @@ class AppLogger {
     );
   }
 
-  static error(
+  static void error(
     String message, {
     DateTime? time,
     int? sequenceNumber,

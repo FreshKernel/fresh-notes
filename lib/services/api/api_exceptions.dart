@@ -7,7 +7,3 @@ class ApiException extends AppException {
 class NetworkRequestException extends ApiException {
   const NetworkRequestException(super.message);
 }
-
-class TooManyNetworkRequestsException extends NetworkRequestException {
-  const TooManyNetworkRequestsException(super.message);
-}

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_notes/core/log/logger.dart';
 import 'package:my_notes/screens/auth/authentication/s_authentication.dart';
 import 'package:my_notes/screens/dashboard/s_dashboard.dart';
+import 'package:my_notes/services/auth/auth_exceptions.dart';
 import 'package:my_notes/services/auth/auth_service.dart';
 
 class EmailIsNotVerifiedScreen extends StatefulWidget {
@@ -49,20 +51,17 @@ class _EmailIsNotVerifiedScreenState extends State<EmailIsNotVerifiedScreen> {
 
     messenger.clearSnackBars();
 
+    final authService = AuthService.getInstance();
+
     try {
-      final user = AuthService.getInstance().currentUser;
-      if (user == null) {
+      final reloadedUser = await authService.reloadTheCurrentUser();
+      if (reloadedUser == null) {
         messenger.showSnackBar(const SnackBar(content: Text('Logging out...')));
-        navigator.pushReplacement(MaterialPageRoute(
-          settings: const RouteSettings(name: AuthenticationScreen.routeName),
-          builder: (context) {
-            return const AuthenticationScreen();
-          },
-        ));
+        _backToAuthenticationScreen(navigator);
         return;
       }
 
-      if (!user.isEmailVerified) {
+      if (!reloadedUser.isEmailVerified) {
         messenger.showSnackBar(const SnackBar(
             content: Text('Email address is still not verified.')));
         return;
@@ -76,7 +75,20 @@ class _EmailIsNotVerifiedScreenState extends State<EmailIsNotVerifiedScreen> {
           },
         ),
       );
-    } catch (e) {
+    } on AuthException catch (e) {
+      if (e.type == AuthErrorType.userAccountIsDisabled) {
+        messenger.showSnackBar(const SnackBar(
+          content: Text('Your account has been disabled by an admin...'),
+        ));
+        _backToAuthenticationScreen(navigator);
+        return;
+      }
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text('Error: type = ${e.type}, message = \n ${e.message}'),
+        ),
+      );
+    } catch (e, stacktrace) {
       messenger.showSnackBar(
         SnackBar(
           content: Text(
@@ -84,9 +96,22 @@ class _EmailIsNotVerifiedScreenState extends State<EmailIsNotVerifiedScreen> {
           ),
         ),
       );
+      AppLogger.error(
+        e.toString(),
+        stackTrace: stacktrace,
+      );
     } finally {
       setState(() => _isLoading = false);
     }
+  }
+
+  void _backToAuthenticationScreen(NavigatorState navigator) {
+    navigator.pushReplacement(MaterialPageRoute(
+      settings: const RouteSettings(name: AuthenticationScreen.routeName),
+      builder: (context) {
+        return const AuthenticationScreen();
+      },
+    ));
   }
 
   @override

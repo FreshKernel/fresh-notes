@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       darkTheme: ThemeData.dark(useMaterial3: true),
       themeMode: ThemeMode.system,
@@ -31,11 +32,11 @@ class MyApp extends StatelessWidget {
           final user = AuthService.getInstance().currentUser;
           if (user == null) {
             return const AuthenticationScreen();
-          } else if (!user.isEmailVerified) {
-            return const EmailIsNotVerifiedScreen();
-          } else {
-            return const DashboardScreen();
           }
+          if (!user.isEmailVerified) {
+            return const EmailIsNotVerifiedScreen();
+          }
+          return const DashboardScreen();
         },
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:my_notes/core/services/service.dart';
+import 'package:my_notes/core/services/s_app.dart';
 import 'package:my_notes/services/auth/auth_user.dart';
 
 abstract class AuthProvider extends AppService {

@@ -15,165 +15,12 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$NoteInput {
-  String get text => throw _privateConstructorUsedError;
-  bool get isSyncedWithCloud => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $NoteInputCopyWith<NoteInput> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $NoteInputCopyWith<$Res> {
-  factory $NoteInputCopyWith(NoteInput value, $Res Function(NoteInput) then) =
-      _$NoteInputCopyWithImpl<$Res, NoteInput>;
-  @useResult
-  $Res call({String text, bool isSyncedWithCloud, String userId});
-}
-
-/// @nodoc
-class _$NoteInputCopyWithImpl<$Res, $Val extends NoteInput>
-    implements $NoteInputCopyWith<$Res> {
-  _$NoteInputCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? text = null,
-    Object? isSyncedWithCloud = null,
-    Object? userId = null,
-  }) {
-    return _then(_value.copyWith(
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
-      isSyncedWithCloud: null == isSyncedWithCloud
-          ? _value.isSyncedWithCloud
-          : isSyncedWithCloud // ignore: cast_nullable_to_non_nullable
-              as bool,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$_NoteInputCopyWith<$Res> implements $NoteInputCopyWith<$Res> {
-  factory _$$_NoteInputCopyWith(
-          _$_NoteInput value, $Res Function(_$_NoteInput) then) =
-      __$$_NoteInputCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String text, bool isSyncedWithCloud, String userId});
-}
-
-/// @nodoc
-class __$$_NoteInputCopyWithImpl<$Res>
-    extends _$NoteInputCopyWithImpl<$Res, _$_NoteInput>
-    implements _$$_NoteInputCopyWith<$Res> {
-  __$$_NoteInputCopyWithImpl(
-      _$_NoteInput _value, $Res Function(_$_NoteInput) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? text = null,
-    Object? isSyncedWithCloud = null,
-    Object? userId = null,
-  }) {
-    return _then(_$_NoteInput(
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
-      isSyncedWithCloud: null == isSyncedWithCloud
-          ? _value.isSyncedWithCloud
-          : isSyncedWithCloud // ignore: cast_nullable_to_non_nullable
-              as bool,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$_NoteInput implements _NoteInput {
-  const _$_NoteInput(
-      {required this.text,
-      required this.isSyncedWithCloud,
-      required this.userId});
-
-  @override
-  final String text;
-  @override
-  final bool isSyncedWithCloud;
-  @override
-  final String userId;
-
-  @override
-  String toString() {
-    return 'NoteInput(text: $text, isSyncedWithCloud: $isSyncedWithCloud, userId: $userId)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_NoteInput &&
-            (identical(other.text, text) || other.text == text) &&
-            (identical(other.isSyncedWithCloud, isSyncedWithCloud) ||
-                other.isSyncedWithCloud == isSyncedWithCloud) &&
-            (identical(other.userId, userId) || other.userId == userId));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, text, isSyncedWithCloud, userId);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$_NoteInputCopyWith<_$_NoteInput> get copyWith =>
-      __$$_NoteInputCopyWithImpl<_$_NoteInput>(this, _$identity);
-}
-
-abstract class _NoteInput implements NoteInput {
-  const factory _NoteInput(
-      {required final String text,
-      required final bool isSyncedWithCloud,
-      required final String userId}) = _$_NoteInput;
-
-  @override
-  String get text;
-  @override
-  bool get isSyncedWithCloud;
-  @override
-  String get userId;
-  @override
-  @JsonKey(ignore: true)
-  _$$_NoteInputCopyWith<_$_NoteInput> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
 mixin _$Note {
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
-  bool get isSyncedWithCloud => throw _privateConstructorUsedError;
+  SyncOptions get syncOptions => throw _privateConstructorUsedError;
+  bool get isPrivate => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
@@ -190,7 +37,8 @@ abstract class $NoteCopyWith<$Res> {
       {String id,
       String userId,
       String text,
-      bool isSyncedWithCloud,
+      SyncOptions syncOptions,
+      bool isPrivate,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -211,7 +59,8 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
     Object? id = null,
     Object? userId = null,
     Object? text = null,
-    Object? isSyncedWithCloud = null,
+    Object? syncOptions = null,
+    Object? isPrivate = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -228,9 +77,13 @@ class _$NoteCopyWithImpl<$Res, $Val extends Note>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      isSyncedWithCloud: null == isSyncedWithCloud
-          ? _value.isSyncedWithCloud
-          : isSyncedWithCloud // ignore: cast_nullable_to_non_nullable
+      syncOptions: null == syncOptions
+          ? _value.syncOptions
+          : syncOptions // ignore: cast_nullable_to_non_nullable
+              as SyncOptions,
+      isPrivate: null == isPrivate
+          ? _value.isPrivate
+          : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -254,7 +107,8 @@ abstract class _$$_NoteCopyWith<$Res> implements $NoteCopyWith<$Res> {
       {String id,
       String userId,
       String text,
-      bool isSyncedWithCloud,
+      SyncOptions syncOptions,
+      bool isPrivate,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -271,7 +125,8 @@ class __$$_NoteCopyWithImpl<$Res> extends _$NoteCopyWithImpl<$Res, _$_Note>
     Object? id = null,
     Object? userId = null,
     Object? text = null,
-    Object? isSyncedWithCloud = null,
+    Object? syncOptions = null,
+    Object? isPrivate = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -288,9 +143,13 @@ class __$$_NoteCopyWithImpl<$Res> extends _$NoteCopyWithImpl<$Res, _$_Note>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      isSyncedWithCloud: null == isSyncedWithCloud
-          ? _value.isSyncedWithCloud
-          : isSyncedWithCloud // ignore: cast_nullable_to_non_nullable
+      syncOptions: null == syncOptions
+          ? _value.syncOptions
+          : syncOptions // ignore: cast_nullable_to_non_nullable
+              as SyncOptions,
+      isPrivate: null == isPrivate
+          ? _value.isPrivate
+          : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -311,7 +170,8 @@ class _$_Note implements _Note {
       {required this.id,
       required this.userId,
       required this.text,
-      this.isSyncedWithCloud = true,
+      required this.syncOptions,
+      required this.isPrivate,
       required this.createdAt,
       required this.updatedAt});
 
@@ -322,8 +182,9 @@ class _$_Note implements _Note {
   @override
   final String text;
   @override
-  @JsonKey()
-  final bool isSyncedWithCloud;
+  final SyncOptions syncOptions;
+  @override
+  final bool isPrivate;
   @override
   final DateTime createdAt;
   @override
@@ -331,7 +192,7 @@ class _$_Note implements _Note {
 
   @override
   String toString() {
-    return 'Note(id: $id, userId: $userId, text: $text, isSyncedWithCloud: $isSyncedWithCloud, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Note(id: $id, userId: $userId, text: $text, syncOptions: $syncOptions, isPrivate: $isPrivate, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -342,8 +203,10 @@ class _$_Note implements _Note {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.text, text) || other.text == text) &&
-            (identical(other.isSyncedWithCloud, isSyncedWithCloud) ||
-                other.isSyncedWithCloud == isSyncedWithCloud) &&
+            (identical(other.syncOptions, syncOptions) ||
+                other.syncOptions == syncOptions) &&
+            (identical(other.isPrivate, isPrivate) ||
+                other.isPrivate == isPrivate) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -351,8 +214,8 @@ class _$_Note implements _Note {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, userId, text, isSyncedWithCloud, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, id, userId, text, syncOptions,
+      isPrivate, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -366,7 +229,8 @@ abstract class _Note implements Note {
       {required final String id,
       required final String userId,
       required final String text,
-      final bool isSyncedWithCloud,
+      required final SyncOptions syncOptions,
+      required final bool isPrivate,
       required final DateTime createdAt,
       required final DateTime updatedAt}) = _$_Note;
 
@@ -377,7 +241,9 @@ abstract class _Note implements Note {
   @override
   String get text;
   @override
-  bool get isSyncedWithCloud;
+  SyncOptions get syncOptions;
+  @override
+  bool get isPrivate;
   @override
   DateTime get createdAt;
   @override

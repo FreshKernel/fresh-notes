@@ -1,4 +1,5 @@
-import 'package:my_notes/core/services/service.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:my_notes/core/services/s_app.dart';
 import 'package:my_notes/core/start/packages/firebase.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -23,11 +24,19 @@ class AppStartup extends AppService {
     for (final service in _services) {
       await service.initialize();
     }
-    // TODO: Remove later
-    final dir = await getApplicationDocumentsDirectory();
-    dir.list().listen((event) {
-      AppLogger.log(event.toString());
-    });
+    if (kDebugMode) {
+      final dir = await getApplicationDocumentsDirectory();
+      dir.list().listen((event) {
+        AppLogger.log(event.toString());
+      });
+    }
+  }
+
+  @override
+  Future<void> deInitialize() async {
+    for (final service in _services) {
+      await service.initialize();
+    }
   }
 
   @override

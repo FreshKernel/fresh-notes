@@ -20,7 +20,7 @@ class _NotesPageState extends State<NotesPage>
   void initState() {
     super.initState();
     _notesDataService = NotesDataService.getInstance();
-    _notesDataService.loadNotesAndCacheThem();
+    _notesDataService.startAndFetchAllNotes();
     _noteStream = _notesDataService.notesStreamController.stream;
   }
 
@@ -49,7 +49,7 @@ class _NotesPageState extends State<NotesPage>
 
         final notes = snapshot.requireData;
 
-        if (notes.isEmpty) {
+        if (notes.isEmpty || !snapshot.hasData) {
           return const Center(
             child: Text("You don't have any notes yet, start add some!"),
           );
@@ -57,7 +57,6 @@ class _NotesPageState extends State<NotesPage>
 
         return ListView.builder(
           itemCount: notes.length,
-          padding: const EdgeInsets.all(16),
           itemBuilder: (context, index) {
             final note = notes[index];
             return NoteItem(

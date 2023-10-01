@@ -1,5 +1,8 @@
-import 'package:my_notes/models/note/m_note.dart';
+import 'package:my_notes/core/data/crud_exceptions.dart';
+import 'package:my_notes/services/auth/auth_service.dart';
+import 'package:my_notes/services/data/notes/models/m_note_input.dart';
 import 'package:my_notes/services/database/notes/local_notes_repository.dart';
+import 'package:my_notes/services/database/shared/sql_data_type.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart'
     show MissingPlatformDirectoryException, getApplicationDocumentsDirectory;
@@ -8,6 +11,9 @@ import 'package:path/path.dart' as path show join;
 import '../../shared/local_database_exceptions.dart';
 import '../models/m_local_note.dart';
 
+/// Make sure when you use this class to required the database
+/// to be initalized in the parent class
+/// otherwise you will get [NullThrownError]
 class SqfliteLocalNotesImpl extends LocalNotesRepository {
   Database? _database;
 
@@ -23,7 +29,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       // throw const ServiceAlreadyInitlizedException(
       //   'The database is already initlized',
       // );
-      await close();
+      await deInitialize(); // TODO: I might need to change this
     }
     try {
       final documentsDirectory = await getApplicationDocumentsDirectory();
@@ -32,6 +38,11 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
         databasePath,
         onCreate: (db, version) async {
           await db.execute(LocalNote.createSqlTable);
+        },
+        onUpgrade: (db, oldVersion, newVersion) {
+          throw UnimplementedError(
+            'On database upgrade is not implemented yet.',
+          );
         },
         version: databaseVersion,
       );
@@ -46,9 +57,10 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<void> close() async {
+  Future<void> deInitialize() async {
     try {
-      await _database?.close();
+      await _database!.close();
+      _database = null;
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(
           'Error while closing the database ${e.toString()}');
@@ -56,23 +68,43 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<LocalNote> createOne(entity) async {
+  Future<LocalNote> createOne(CreateNoteInput createInput) async {
     try {
-      final id = await _database?.insert(
+      final id = await _database!.insert(
         LocalNote.sqlTableName,
-        LocalNote.toSqlite(entity),
+        LocalNote.toSqliteMapFromCreateInput(input: createInput).toMap(),
       );
-      if (id == null) {
-        throw const LocalDatabaseOperationFaieldException(
-          'The id of the inserted new data is null',
-        );
-      }
-      return NoteInput.toLocalNote(
-        entity,
+      final currentDate = DateTime.now();
+      return LocalNote.fromCreateNoteInput(
+        input: createInput,
         id: id.toString(),
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
+        createdAt: currentDate,
+        updatedAt: currentDate,
       );
+    } on DatabaseException catch (e) {
+      throw UnknownLocalDatabaseErrorException(
+          'Unknown error while insert a note ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<List<LocalNote>> createMultiples(List<CreateNoteInput> list) async {
+    try {
+      final notesFutures = list.map((createInput) async {
+        final id = await _database!.insert(
+          LocalNote.sqlTableName,
+          LocalNote.toSqliteMapFromCreateInput(input: createInput).toMap(),
+        );
+        final currentDate = DateTime.now();
+        return LocalNote.fromCreateNoteInput(
+          input: createInput,
+          id: id.toString(),
+          createdAt: currentDate,
+          updatedAt: currentDate,
+        );
+      });
+      final notes = await Future.wait(notesFutures);
+      return notes;
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(
           'Unknown error while insert a note ${e.toString()}');
@@ -82,14 +114,13 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   @override
   Future<void> deleteOneById(String id) async {
     try {
-      final deletedCount = await _database?.delete(
-            LocalNote.sqlTableName,
-            where: 'id = ?',
-            whereArgs: [id],
-          ) ??
-          -1;
+      final deletedCount = await _database!.delete(
+        LocalNote.sqlTableName,
+        where: '${LocalNoteProperties.id} = ?',
+        whereArgs: [id],
+      );
       if (deletedCount != 1) {
-        throw LocalDatabaseOperationFaieldException(
+        throw CrudOperationFaieldException(
             'The deletedCount in sqflite should be only one but it $deletedCount');
       }
     } on DatabaseException catch (e) {
@@ -101,7 +132,16 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   @override
   Future<void> deleteAll() async {
     try {
-      await _database?.delete(LocalNote.sqlTableName);
+      final currentUserId = AuthService.getInstance()
+          .requireCurrentUser(
+            'In order to insert note in local database, user must be authenticated.',
+          )
+          .id;
+      await _database!.delete(
+        LocalNote.sqlTableName,
+        where: '${LocalNoteProperties.userId} = ?',
+        whereArgs: [currentUserId],
+      );
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(
           'Unknown error while delete all notes ${e.toString()}');
@@ -109,14 +149,25 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<List<LocalNote>> getAll({int limit = -1, int page = 1}) async {
+  Future<List<LocalNote>> getAll({
+    required int limit,
+    required int page,
+  }) async {
     try {
       final hasNoLimit = limit == -1;
       final offset = (page - 1) * limit;
 
+      final currentUserId = AuthService.getInstance()
+          .requireCurrentUser(
+            'In order to insert note in local database, user must be authenticated.',
+          )
+          .id;
+
       final results = await _database!.query(
         LocalNote.sqlTableName,
-        orderBy: 'updatedAt DESC',
+        orderBy: '${LocalNoteProperties.updatedAt} DESC',
+        where: '${LocalNoteProperties.userId} = ?',
+        whereArgs: [currentUserId],
         limit: hasNoLimit ? null : limit, // limit of each row
         offset: hasNoLimit ? null : offset, // rows to skip
       );
@@ -136,7 +187,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
     try {
       final results = await _database!.query(
         LocalNote.sqlTableName,
-        where: 'id = ?',
+        where: '${LocalNoteProperties.id} = ?',
         whereArgs: [id],
         limit: 1,
       );
@@ -154,14 +205,14 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   Future<List<LocalNote>> getAllByIds(List<String> ids) async {
     try {
       if (ids.isEmpty) {
-        throw const ParametersErrorLocalDatabaseException(
+        throw const InvalidParameterCrudException(
             'To get itmes by thier ids, the ids should not be empty');
       }
       final idList = ids.join(', ');
       final results = await _database!.query(
         LocalNote.sqlTableName,
-        where: 'id IN ($idList)',
-        orderBy: 'updatedAt DESC',
+        where: '${LocalNoteProperties.id} IN ($idList)',
+        orderBy: '${LocalNoteProperties.updatedAt} DESC',
       );
       if (results.isEmpty) {
         return List.empty();
@@ -174,36 +225,36 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<LocalNote> updateOne(NoteInput entity, String currentId) async {
+  Future<LocalNote> updateOne(
+      UpdateNoteInput updateInput, String currentId) async {
     try {
       final currentNote = await getOneById(currentId);
       if (currentNote == null) {
-        throw LocalDatabaseOperationFaieldException(
+        throw CrudOperationFaieldException(
             'There is no note with this id $currentId to update');
       }
-      final updatedItemsCount = await _database?.update(
+      final updatedItemsCount = await _database!.update(
         LocalNote.sqlTableName,
-        LocalNote.toSqlite(entity),
-        where: 'id = ?',
+        LocalNote.toSqliteMapFromUpdateInput(input: updateInput).toMap(),
+        where: '${LocalNoteProperties.id} = ?',
         whereArgs: [currentId],
       );
-      if (updatedItemsCount == null) {
-        throw const LocalDatabaseOperationFaieldException(
-            'the updatedItemsCount is null, please make sure the database is initlized.');
-      }
       if (updatedItemsCount == -1) {
-        throw LocalDatabaseOperationFaieldException(
+        throw CrudOperationFaieldException(
             'updatedItemsCount = $updatedItemsCount, the database instance of sqflite could be null.');
       }
       if (updatedItemsCount != 1) {
-        throw LocalDatabaseOperationFaieldException(
+        throw CrudOperationFaieldException(
             'updatedItemsCount = $updatedItemsCount, you asked to delete only one item but we found even more.');
       }
-      return NoteInput.toLocalNote(
-        entity,
+      final currnetUser = AuthService.getInstance().requireCurrentUser(
+          'To update a note, the user must be authenticated');
+      return LocalNote.fromUpdateNoteInput(
+        input: updateInput,
         id: currentId,
         createdAt: currentNote.createdAt,
         updatedAt: DateTime.now(),
+        userId: currnetUser.id,
       );
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(
@@ -215,24 +266,20 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   Future<void> deleteByIds(List<String> ids) async {
     try {
       if (ids.isEmpty) {
-        throw const ParametersErrorLocalDatabaseException(
+        throw const InvalidParameterCrudException(
             'To delete items by ids, the ids should not be empty');
       }
       final idList = ids.join(', ');
-      final deletedCount = await _database?.delete(
+      final deletedCount = await _database!.delete(
         LocalNote.sqlTableName,
-        where: 'id IN ($idList)',
+        where: '${LocalNoteProperties.id} IN ($idList)',
       );
-      if (deletedCount == null) {
-        throw const LocalDatabaseOperationFaieldException(
-            'The deleted count is null, please make sure you have initlized the database');
-      }
       if (deletedCount == 0) {
-        throw LocalDatabaseOperationFaieldException(
+        throw CrudOperationFaieldException(
             'We did not find any matching items. The deleted count is $deletedCount, please check your ids');
       }
       if (deletedCount != ids.length) {
-        throw LocalDatabaseOperationFaieldException(
+        throw CrudOperationFaieldException(
             'The deleted items count is $deletedCount while the length of the ids is ${ids.length}, so not all items has been deleted. Make sure all the ids are exists');
       }
     } on DatabaseException catch (e) {

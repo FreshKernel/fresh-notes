@@ -1,5 +1,6 @@
 import 'package:my_notes/core/app_module.dart';
-import 'package:my_notes/models/note/m_note.dart';
+import 'package:my_notes/core/log/logger.dart';
+import 'package:my_notes/services/data/notes/models/m_note_input.dart';
 import 'package:my_notes/services/database/notes/local_notes_repository.dart';
 import 'package:my_notes/services/database/notes/models/m_local_note.dart';
 import 'package:my_notes/services/database/notes/packages/sqflite_local_notes.dart';
@@ -16,16 +17,25 @@ class LocalNotesService extends LocalNotesRepository {
   factory LocalNotesService.getInstance() => AppModule.localNotesService;
 
   @override
-  Future<void> close() async {
+  Future<void> deInitialize() async {
     requireToBeInitialized();
-    await _provider.close();
+    AppLogger.log('Closing the notes database...');
+    await _provider.deInitialize();
+    AppLogger.log('The notes database has been successfully closed.');
   }
 
   @override
-  Future<LocalNote> createOne(NoteInput entity) async {
+  Future<LocalNote> createOne(CreateNoteInput createInput) async {
     requireToBeInitialized();
-    final note = await _provider.createOne(entity);
+    final note = await _provider.createOne(createInput);
     return note;
+  }
+
+  @override
+  Future<List<LocalNote>> createMultiples(List<CreateNoteInput> list) async {
+    requireToBeInitialized();
+    final notes = await _provider.createMultiples(list);
+    return notes.cast(); // TODO: Search about why do I have to cast this?
   }
 
   @override
@@ -35,7 +45,10 @@ class LocalNotesService extends LocalNotesRepository {
   }
 
   @override
-  Future<List<LocalNote>> getAll({int limit = -1, int page = 1}) async {
+  Future<List<LocalNote>> getAll({
+    required int limit,
+    required int page,
+  }) async {
     requireToBeInitialized();
     final notes = await _provider.getAll(limit: limit, page: page);
     return notes.cast();
@@ -56,9 +69,10 @@ class LocalNotesService extends LocalNotesRepository {
   }
 
   @override
-  Future<LocalNote> updateOne(NoteInput newEntity, String currentId) async {
+  Future<LocalNote> updateOne(
+      UpdateNoteInput updateInput, String currentId) async {
     requireToBeInitialized();
-    final note = await _provider.updateOne(newEntity, currentId);
+    final note = await _provider.updateOne(updateInput, currentId);
     return note;
   }
 
@@ -76,7 +90,9 @@ class LocalNotesService extends LocalNotesRepository {
 
   @override
   Future<void> initialize() async {
+    AppLogger.log('Initializing the notes database...');
     await _provider.initialize();
+    AppLogger.log('The notes database has been successfully Initialized.');
   }
 
   @override

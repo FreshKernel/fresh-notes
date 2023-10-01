@@ -6,6 +6,8 @@
 	<string>We need access to the photo library so you take a photo</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to the photo library so you pick image</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To save images into the library, we need permission from you</string>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
 	<false/>
 	<key>CFBundleDevelopmentRegion</key>
