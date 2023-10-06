@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../logic/auth/auth_cubit.dart';
+import '../../../logic/auth/cubit/auth_cubit.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 
 class LogoutIconButton extends StatefulWidget {

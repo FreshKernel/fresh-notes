@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../models/note/m_note.dart';
-import '../../../../../services/data/notes/s_notes_data.dart';
+import '../../../../../data/notes/universal/models/m_note.dart';
+import '../../../../../data/notes/universal/s_notes_data.dart';
 import 'w_note_item.dart';
 
 class NotesPage extends StatefulWidget {
@@ -13,13 +13,13 @@ class NotesPage extends StatefulWidget {
 
 class _NotesPageState extends State<NotesPage>
     with AutomaticKeepAliveClientMixin {
-  late final NotesDataService _notesDataService;
-  late final Stream<List<Note>> _noteStream;
+  late final UniversalNotesService _notesDataService;
+  late final Stream<List<UniversalNote>> _noteStream;
 
   @override
   void initState() {
     super.initState();
-    _notesDataService = NotesDataService.getInstance();
+    _notesDataService = UniversalNotesService.getInstance();
     _notesDataService.startAndFetchAllNotes();
     _noteStream = _notesDataService.notesStreamController.stream;
   }
@@ -35,7 +35,7 @@ class _NotesPageState extends State<NotesPage>
     super.build(context);
     return StreamBuilder(
       stream: _noteStream,
-      initialData: const <Note>[],
+      initialData: const <UniversalNote>[],
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(

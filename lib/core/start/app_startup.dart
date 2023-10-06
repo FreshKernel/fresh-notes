@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:path_provider/path_provider.dart';
 
-import '../../services/auth/auth_service.dart';
-import '../../services/native/image/s_image_picker.dart';
+import '../../logic/auth/auth_service.dart';
+import '../../logic/native/image/s_image_picker.dart';
 import '../log/logger.dart';
 import '../services/s_app.dart';
 import 'packages/firebase.dart';

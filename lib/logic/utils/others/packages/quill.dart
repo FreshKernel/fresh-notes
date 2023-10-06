@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/log/logger.dart';
-import '../../../../core/utils/platform_checker.dart';
+import '../../platform_checker.dart';
 import '../../bool.dart';
 
 typedef QuillDocument = quill.Document;

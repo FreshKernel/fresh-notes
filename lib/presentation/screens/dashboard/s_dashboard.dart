@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../services/data/notes/s_notes_data.dart';
+import '../../../data/notes/universal/s_notes_data.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../save_note/s_save_note.dart';
 import 'models/m_navigation_item.dart';
@@ -70,7 +70,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               if (!deletedAllConfirmed) {
                 return;
               }
-              NotesDataService.getInstance().deleteAll();
+              UniversalNotesService.getInstance().deleteAll();
             },
             icon: const Icon(Icons.delete_forever),
           )

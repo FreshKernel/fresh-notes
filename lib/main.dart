@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/start/app_startup.dart';
-import 'logic/auth/auth_cubit.dart';
+import 'logic/auth/cubit/auth_cubit.dart';
 import 'presentation/screens/auth/authentication/s_authentication.dart';
 import 'presentation/screens/auth/verify_account/s_verify_account.dart';
 import 'presentation/screens/dashboard/s_dashboard.dart';
@@ -52,13 +52,6 @@ class _HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<_HomeWidget> {
-  @override
-  void initState() {
-    super.initState();
-    // final authBloc = context.read<AuthBloc>();
-    // authBloc.add(const AuthEventGetUser());
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(

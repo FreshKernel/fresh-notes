@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../../services/data/notes/s_notes_data.dart';
 
+import '../../../../../../data/notes/universal/s_notes_data.dart';
 import '../../../../../utils/dialog/w_app_dialog.dart';
 import 'w_differences.dart';
 
@@ -19,7 +19,7 @@ class _SyncNotesIconButtonState extends State<SyncNotesIconButton> {
       final messenger = ScaffoldMessenger.of(context);
 
       setState(() => _isLoading = true);
-      final listDifferencesResult = await NotesDataService.getInstance()
+      final listDifferencesResult = await UniversalNotesService.getInstance()
           .getCloudToLocalNotesDifferences();
       final differences = listDifferencesResult.differences;
       final missings = listDifferencesResult.missingsItems;

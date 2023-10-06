@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../logic/auth/auth_cubit.dart';
-import '../../../../services/api/api_exceptions.dart';
-import '../../../../services/auth/auth_exceptions.dart';
+import '../../../../logic/auth/auth_exceptions.dart';
+import '../../../../logic/auth/cubit/auth_cubit.dart';
+import '../../../../logic/core/api/api_exceptions.dart';
 import '../../../components/auth/w_email_field.dart';
 import '../../../components/auth/w_password_field.dart';
 import '../../../utils/dialog/w_app_dialog.dart';

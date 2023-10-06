@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../data/notes/universal/models/m_note.dart';
 import '../../../../../../logic/utils/others/differnce_result.dart';
-import '../../../../../../models/note/m_note.dart';
 
 class SyncCloudToLocalNotesDifferences extends StatelessWidget {
   const SyncCloudToLocalNotesDifferences(
       {required this.differenceResult, super.key});
 
-  final ListDifferenceResult<Note> differenceResult;
+  final ListDifferenceResult<UniversalNote> differenceResult;
 
   List<Widget> _buildItem({
-    required List<Note> notes,
+    required List<UniversalNote> notes,
     required String label,
   }) {
     return [
@@ -61,7 +61,7 @@ class NotesDifferencesResults extends StatefulWidget {
     super.key,
   });
 
-  final List<Note> notes;
+  final List<UniversalNote> notes;
 
   @override
   State<NotesDifferencesResults> createState() =>
@@ -69,7 +69,7 @@ class NotesDifferencesResults extends StatefulWidget {
 }
 
 class _NotesDifferencesResultsState extends State<NotesDifferencesResults> {
-  List<Note> get _notes => widget.notes;
+  List<UniversalNote> get _notes => widget.notes;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class _NoteDifferenceItem extends StatefulWidget {
     required this.onChanged,
     super.key,
   });
-  final Note note;
+  final UniversalNote note;
   final ValueChanged<bool> onChanged;
 
   @override
@@ -102,7 +102,7 @@ class _NoteDifferenceItem extends StatefulWidget {
 }
 
 class _NoteDifferenceItemState extends State<_NoteDifferenceItem> {
-  Note get note => widget.note;
+  UniversalNote get note => widget.note;
   var _selected = true;
 
   @override

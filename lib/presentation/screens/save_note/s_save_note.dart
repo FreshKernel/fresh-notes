@@ -8,11 +8,11 @@ import 'package:flutter_quill_extensions/flutter_quill_extensions.dart'
     as quill_extensions;
 
 import '../../../core/log/logger.dart';
-import '../../../models/note/m_note.dart';
-import '../../../services/cloud/shared/sync_options.dart';
-import '../../../services/data/notes/s_notes_data.dart';
-import '../../../services/native/image/s_image_picker.dart';
-import '../../../services/native/share/s_app_share.dart';
+import '../../../data/core/cloud/sync_options.dart';
+import '../../../data/notes/universal/models/m_note.dart';
+import '../../../data/notes/universal/s_notes_data.dart';
+import '../../../logic/native/image/s_image_picker.dart';
+import '../../../logic/native/share/s_app_share.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import 'w_select_image_source_dialog.dart';
 
@@ -21,7 +21,7 @@ class SaveNoteScreen extends StatefulWidget {
 
   static const routeName = '/save-note';
 
-  final Note? note;
+  final UniversalNote? note;
 
   @override
   State<SaveNoteScreen> createState() => _SaveNoteScreenState();
@@ -82,7 +82,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     final document = _controller.document;
 
     final isDocumentContentEmpty = document.toPlainText().trim().isEmpty;
-    final notesDataService = NotesDataService.getInstance();
+    final notesDataService = UniversalNotesService.getInstance();
 
     if (isDocumentContentEmpty) {
       messenger.clearSnackBars();
@@ -120,7 +120,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     if (isDocumentContentEmpty) {
       return;
     }
-    final notesDataService = NotesDataService.getInstance();
+    final notesDataService = UniversalNotesService.getInstance();
     try {
       setState(() => _isLoading = true);
       await notesDataService.insertOrReplaceOne(

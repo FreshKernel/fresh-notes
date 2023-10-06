@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 
+import '../../../../../data/notes/universal/models/m_note.dart';
+import '../../../../../data/notes/universal/s_notes_data.dart';
 import '../../../../../logic/utils/extensions/string.dart';
-import '../../../../../models/note/m_note.dart';
-import '../../../../../services/data/notes/s_notes_data.dart';
 import '../../../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../../save_note/s_save_note.dart';
 
@@ -17,8 +17,8 @@ class NoteItem extends StatelessWidget {
     super.key,
   });
 
-  final NotesDataService notesDataService;
-  final Note note;
+  final UniversalNotesService notesDataService;
+  final UniversalNote note;
   final int index;
 
   @override
