@@ -35,14 +35,14 @@ class AppStartup extends AppService {
   @override
   Future<void> deInitialize() async {
     for (final service in _services) {
-      await service.initialize();
+      await service.deInitialize();
     }
   }
 
   @override
   bool get isInitialized {
-    final anyServiceIsNotInitalized =
+    final anyServiceIsNotInitialized =
         _services.any((service) => !service.isInitialized);
-    return !anyServiceIsNotInitalized;
+    return !anyServiceIsNotInitialized;
   }
 }

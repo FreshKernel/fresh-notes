@@ -4,9 +4,9 @@ import 'auth_user.dart';
 import 'packages/firebase_provider.dart';
 
 class AuthService extends AuthProvider {
-
-  AuthService._(this._authProvider);
-  factory AuthService.firebase() => AuthService._(FirebaseAuthProviderImpl());
+  const AuthService._(this._authProvider);
+  factory AuthService.firebase() =>
+      const AuthService._(FirebaseAuthProviderImpl());
   factory AuthService.getInstance() => AppModule.authService;
 
   final AuthProvider _authProvider;
@@ -67,4 +67,8 @@ class AuthService extends AuthProvider {
   @override
   AuthUser requireCurrentUser(String? errorMessage) =>
       _authProvider.requireCurrentUser(errorMessage);
+
+  @override
+  Future<void> sendResetPasswordLinkToEmail({required String email}) =>
+      _authProvider.sendResetPasswordLinkToEmail(email: email);
 }

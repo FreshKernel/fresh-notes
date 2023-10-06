@@ -6,10 +6,10 @@ import '../errors/exceptions.dart';
 // TODO: See the app again and try to share common things, for example
 // isInitialized should be shared into the AppService and not repeeat it again and again
 
-class ServiceNotInitalizedException extends AppException {
-  const ServiceNotInitalizedException(super.message);
+class ServiceNotInitializedException extends AppException {
+  const ServiceNotInitializedException(super.message);
 }
 
-class ServiceAlreadyInitlizedException extends AppException {
-  const ServiceAlreadyInitlizedException(super.message);
+class ServiceAlreadyInitilizedException extends AppException {
+  const ServiceAlreadyInitilizedException(super.message);
 }

@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import '../../services/exceptions.dart';
 import '../../services/s_app.dart';
 
 class FirebaseService extends AppService {
@@ -16,7 +17,13 @@ class FirebaseService extends AppService {
 
   @override
   Future<void> deInitialize() async {
-    await Firebase.apps.first.delete();
+    final apps = Firebase.apps;
+    if (apps.isEmpty) {
+      throw const ServiceNotInitializedException(
+        'To deInitialize firebase, it must be initialize first.',
+      );
+    }
+    await apps.first.delete();
   }
 
   @override

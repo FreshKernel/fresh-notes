@@ -6,7 +6,8 @@ part of 'm_local_note.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_LocalNote _$$_LocalNoteFromJson(Map<String, dynamic> json) => _$_LocalNote(
+_$LocalNoteImpl _$$LocalNoteImplFromJson(Map<String, dynamic> json) =>
+    _$LocalNoteImpl(
       id: json['id'] as String,
       userId: json['userId'] as String,
       text: json['text'] as String,
@@ -17,7 +18,7 @@ _$_LocalNote _$$_LocalNoteFromJson(Map<String, dynamic> json) => _$_LocalNote(
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
-Map<String, dynamic> _$$_LocalNoteToJson(_$_LocalNote instance) =>
+Map<String, dynamic> _$$LocalNoteImplToJson(_$LocalNoteImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,

@@ -16,6 +16,6 @@ class LocalDatabaseAlreadyInitializedException extends LocalDatabaseException {
   const LocalDatabaseAlreadyInitializedException(super.message);
 }
 
-class FailedToInitalizeLocalDatabaseException extends LocalDatabaseException {
-  const FailedToInitalizeLocalDatabaseException(super.message);
+class FailedToInitializeLocalDatabaseException extends LocalDatabaseException {
+  const FailedToInitializeLocalDatabaseException(super.message);
 }

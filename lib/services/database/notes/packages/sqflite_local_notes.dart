@@ -12,7 +12,7 @@ import '../local_notes_repository.dart';
 import '../models/m_local_note.dart';
 
 /// Make sure when you use this class to required the database
-/// to be initalized in the parent class
+/// to be initialized in the parent class
 /// otherwise you will get [NullThrownError]
 class SqfliteLocalNotesImpl extends LocalNotesRepository {
   Database? _database;
@@ -48,7 +48,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       );
       _database = database;
     } on MissingPlatformDirectoryException catch (e) {
-      throw FailedToInitalizeLocalDatabaseException(
+      throw FailedToInitializeLocalDatabaseException(
           'Error while get the documents directory ${e.message}');
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(

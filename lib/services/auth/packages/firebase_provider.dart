@@ -10,6 +10,23 @@ import '../auth_user.dart';
 // TODO: Improve errors for the exceptions
 
 class FirebaseAuthProviderImpl extends AuthProvider {
+  const FirebaseAuthProviderImpl();
+
+  @override
+  bool get isAuthenticated => FirebaseAuth.instance.currentUser != null;
+
+  @override
+  AuthUser requireCurrentUser(String? errorMessage) {
+    if (!isAuthenticated) {
+      throw AuthException(
+        errorMessage ??
+            'User is required to be authenticated to do this action.',
+        type: AuthErrorType.userRequiredToLoggedIn,
+      );
+    }
+    return currentUser!;
+  }
+
   @override
   Future<void> initialize() async {
     // Nothing is required...
@@ -149,6 +166,7 @@ class FirebaseAuthProviderImpl extends AuthProvider {
       await user.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       _defaultErrorsHanlders(e);
+      _defaultErrorHandlersForAuth(e);
       switch (e.code) {
         default:
           throw AuthException(
@@ -222,7 +240,7 @@ class FirebaseAuthProviderImpl extends AuthProvider {
       return newUser;
     } on FirebaseAuthException catch (e) {
       _defaultErrorsHanlders(e);
-      _defaultErrorHandlersForAuthentication(e);
+      _defaultErrorHandlersForAuth(e);
       switch (e.code) {
         case 'invalid-email':
           throw const AuthException(
@@ -272,8 +290,8 @@ class FirebaseAuthProviderImpl extends AuthProvider {
       }
       return newUser;
     } on FirebaseAuthException catch (e) {
+      _defaultErrorHandlersForAuth(e);
       _defaultErrorsHanlders(e);
-      _defaultErrorHandlersForAuthentication(e);
       switch (e.code) {
         case 'invalid-email':
           throw const AuthException(
@@ -317,6 +335,35 @@ class FirebaseAuthProviderImpl extends AuthProvider {
     }
   }
 
+  @override
+  Future<void> sendResetPasswordLinkToEmail({
+    required String email,
+  }) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      _defaultErrorHandlersForAuth(e);
+      _defaultErrorsHanlders(e);
+      switch (e.code) {
+        case 'user-not-found':
+          throw const AuthException(
+            'Can not find user with this email to send reset password link to email',
+            type: AuthErrorType.userNotFound,
+          );
+        default:
+          throw AuthException(
+            'Unknown error while send . ${e.message}, ${e.code}',
+            type: AuthErrorType.unknownAuthError,
+          );
+      }
+    } catch (e) {
+      throw AuthException(
+        'Generic error while sendResetPasswordLinkToEmail $e',
+        type: AuthErrorType.genericAuthError,
+      );
+    }
+  }
+
   void _defaultErrorsHanlders(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-disabled':
@@ -331,7 +378,7 @@ class FirebaseAuthProviderImpl extends AuthProvider {
     }
   }
 
-  void _defaultErrorHandlersForAuthentication(FirebaseAuthException e) {
+  void _defaultErrorHandlersForAuth(FirebaseAuthException e) {
     switch (e.code) {
       case 'too-many-requests':
         throw const AuthException(
@@ -339,20 +386,5 @@ class FirebaseAuthProviderImpl extends AuthProvider {
           type: AuthErrorType.tooManyAuthenticateRequests,
         );
     }
-  }
-
-  @override
-  bool get isAuthenticated => FirebaseAuth.instance.currentUser != null;
-
-  @override
-  AuthUser requireCurrentUser(String? errorMessage) {
-    if (!isAuthenticated) {
-      throw AuthException(
-        errorMessage ??
-            'User is required to be authenticated to do this action.',
-        type: AuthErrorType.userRequiredToLoggedIn,
-      );
-    }
-    return currentUser!;
   }
 }

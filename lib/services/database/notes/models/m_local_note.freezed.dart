@@ -111,10 +111,11 @@ class _$LocalNoteCopyWithImpl<$Res, $Val extends LocalNote>
 }
 
 /// @nodoc
-abstract class _$$_LocalNoteCopyWith<$Res> implements $LocalNoteCopyWith<$Res> {
-  factory _$$_LocalNoteCopyWith(
-          _$_LocalNote value, $Res Function(_$_LocalNote) then) =
-      __$$_LocalNoteCopyWithImpl<$Res>;
+abstract class _$$LocalNoteImplCopyWith<$Res>
+    implements $LocalNoteCopyWith<$Res> {
+  factory _$$LocalNoteImplCopyWith(
+          _$LocalNoteImpl value, $Res Function(_$LocalNoteImpl) then) =
+      __$$LocalNoteImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -129,11 +130,11 @@ abstract class _$$_LocalNoteCopyWith<$Res> implements $LocalNoteCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LocalNoteCopyWithImpl<$Res>
-    extends _$LocalNoteCopyWithImpl<$Res, _$_LocalNote>
-    implements _$$_LocalNoteCopyWith<$Res> {
-  __$$_LocalNoteCopyWithImpl(
-      _$_LocalNote _value, $Res Function(_$_LocalNote) _then)
+class __$$LocalNoteImplCopyWithImpl<$Res>
+    extends _$LocalNoteCopyWithImpl<$Res, _$LocalNoteImpl>
+    implements _$$LocalNoteImplCopyWith<$Res> {
+  __$$LocalNoteImplCopyWithImpl(
+      _$LocalNoteImpl _value, $Res Function(_$LocalNoteImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -148,7 +149,7 @@ class __$$_LocalNoteCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
-    return _then(_$_LocalNote(
+    return _then(_$LocalNoteImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -187,8 +188,8 @@ class __$$_LocalNoteCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_LocalNote implements _LocalNote {
-  const _$_LocalNote(
+class _$LocalNoteImpl implements _LocalNote {
+  const _$LocalNoteImpl(
       {required this.id,
       required this.userId,
       required this.text,
@@ -198,8 +199,8 @@ class _$_LocalNote implements _LocalNote {
       required this.createdAt,
       required this.updatedAt});
 
-  factory _$_LocalNote.fromJson(Map<String, dynamic> json) =>
-      _$$_LocalNoteFromJson(json);
+  factory _$LocalNoteImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LocalNoteImplFromJson(json);
 
   @override
   final String id;
@@ -227,7 +228,7 @@ class _$_LocalNote implements _LocalNote {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_LocalNote &&
+            other is _$LocalNoteImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.text, text) || other.text == text) &&
@@ -250,12 +251,12 @@ class _$_LocalNote implements _LocalNote {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LocalNoteCopyWith<_$_LocalNote> get copyWith =>
-      __$$_LocalNoteCopyWithImpl<_$_LocalNote>(this, _$identity);
+  _$$LocalNoteImplCopyWith<_$LocalNoteImpl> get copyWith =>
+      __$$LocalNoteImplCopyWithImpl<_$LocalNoteImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LocalNoteToJson(
+    return _$$LocalNoteImplToJson(
       this,
     );
   }
@@ -270,10 +271,10 @@ abstract class _LocalNote implements LocalNote {
       required final bool isSyncWithCloud,
       required final bool isPrivate,
       required final DateTime createdAt,
-      required final DateTime updatedAt}) = _$_LocalNote;
+      required final DateTime updatedAt}) = _$LocalNoteImpl;
 
   factory _LocalNote.fromJson(Map<String, dynamic> json) =
-      _$_LocalNote.fromJson;
+      _$LocalNoteImpl.fromJson;
 
   @override
   String get id;
@@ -293,6 +294,6 @@ abstract class _LocalNote implements LocalNote {
   DateTime get updatedAt;
   @override
   @JsonKey(ignore: true)
-  _$$_LocalNoteCopyWith<_$_LocalNote> get copyWith =>
+  _$$LocalNoteImplCopyWith<_$LocalNoteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

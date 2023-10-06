@@ -233,4 +233,10 @@ class MockAuthProvider extends AuthProvider {
   Future<void> deInitialize() {
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> sendResetPasswordLinkToEmail({required String email}) {
+    // TODO: implement sendResetPasswordLinkToEmail
+    throw UnimplementedError();
+  }
 }

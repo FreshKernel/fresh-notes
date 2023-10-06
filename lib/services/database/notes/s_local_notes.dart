@@ -17,7 +17,7 @@ class LocalNotesService extends LocalNotesRepository {
   @override
   Future<void> initialize() async {
     if (isInitialized) {
-      AppLogger.log('Local database is already initalized.');
+      AppLogger.log('Local database is already initialized.');
     }
     AppLogger.log('Initializing the notes database...');
     await _provider.initialize();

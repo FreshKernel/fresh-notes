@@ -76,11 +76,11 @@ class _$CreateNoteInputCopyWithImpl<$Res, $Val extends CreateNoteInput>
 }
 
 /// @nodoc
-abstract class _$$_CreateNoteInputCopyWith<$Res>
+abstract class _$$CreateNoteInputImplCopyWith<$Res>
     implements $CreateNoteInputCopyWith<$Res> {
-  factory _$$_CreateNoteInputCopyWith(
-          _$_CreateNoteInput value, $Res Function(_$_CreateNoteInput) then) =
-      __$$_CreateNoteInputCopyWithImpl<$Res>;
+  factory _$$CreateNoteInputImplCopyWith(_$CreateNoteInputImpl value,
+          $Res Function(_$CreateNoteInputImpl) then) =
+      __$$CreateNoteInputImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -88,11 +88,11 @@ abstract class _$$_CreateNoteInputCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CreateNoteInputCopyWithImpl<$Res>
-    extends _$CreateNoteInputCopyWithImpl<$Res, _$_CreateNoteInput>
-    implements _$$_CreateNoteInputCopyWith<$Res> {
-  __$$_CreateNoteInputCopyWithImpl(
-      _$_CreateNoteInput _value, $Res Function(_$_CreateNoteInput) _then)
+class __$$CreateNoteInputImplCopyWithImpl<$Res>
+    extends _$CreateNoteInputCopyWithImpl<$Res, _$CreateNoteInputImpl>
+    implements _$$CreateNoteInputImplCopyWith<$Res> {
+  __$$CreateNoteInputImplCopyWithImpl(
+      _$CreateNoteInputImpl _value, $Res Function(_$CreateNoteInputImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -103,7 +103,7 @@ class __$$_CreateNoteInputCopyWithImpl<$Res>
     Object? isPrivate = null,
     Object? userId = null,
   }) {
-    return _then(_$_CreateNoteInput(
+    return _then(_$CreateNoteInputImpl(
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -126,8 +126,8 @@ class __$$_CreateNoteInputCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CreateNoteInput implements _CreateNoteInput {
-  const _$_CreateNoteInput(
+class _$CreateNoteInputImpl implements _CreateNoteInput {
+  const _$CreateNoteInputImpl(
       {required this.text,
       required this.syncOptions,
       required this.isPrivate,
@@ -151,7 +151,7 @@ class _$_CreateNoteInput implements _CreateNoteInput {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CreateNoteInput &&
+            other is _$CreateNoteInputImpl &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.syncOptions, syncOptions) ||
                 other.syncOptions == syncOptions) &&
@@ -167,8 +167,9 @@ class _$_CreateNoteInput implements _CreateNoteInput {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CreateNoteInputCopyWith<_$_CreateNoteInput> get copyWith =>
-      __$$_CreateNoteInputCopyWithImpl<_$_CreateNoteInput>(this, _$identity);
+  _$$CreateNoteInputImplCopyWith<_$CreateNoteInputImpl> get copyWith =>
+      __$$CreateNoteInputImplCopyWithImpl<_$CreateNoteInputImpl>(
+          this, _$identity);
 }
 
 abstract class _CreateNoteInput implements CreateNoteInput {
@@ -176,7 +177,7 @@ abstract class _CreateNoteInput implements CreateNoteInput {
       {required final String text,
       required final SyncOptions syncOptions,
       required final bool isPrivate,
-      required final String userId}) = _$_CreateNoteInput;
+      required final String userId}) = _$CreateNoteInputImpl;
 
   @override
   String get text;
@@ -188,7 +189,7 @@ abstract class _CreateNoteInput implements CreateNoteInput {
   String get userId;
   @override
   @JsonKey(ignore: true)
-  _$$_CreateNoteInputCopyWith<_$_CreateNoteInput> get copyWith =>
+  _$$CreateNoteInputImplCopyWith<_$CreateNoteInputImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -247,22 +248,22 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
 }
 
 /// @nodoc
-abstract class _$$_UpdateNoteInputCopyWith<$Res>
+abstract class _$$UpdateNoteInputImplCopyWith<$Res>
     implements $UpdateNoteInputCopyWith<$Res> {
-  factory _$$_UpdateNoteInputCopyWith(
-          _$_UpdateNoteInput value, $Res Function(_$_UpdateNoteInput) then) =
-      __$$_UpdateNoteInputCopyWithImpl<$Res>;
+  factory _$$UpdateNoteInputImplCopyWith(_$UpdateNoteInputImpl value,
+          $Res Function(_$UpdateNoteInputImpl) then) =
+      __$$UpdateNoteInputImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String text, SyncOptions syncOptions, bool isPrivate});
 }
 
 /// @nodoc
-class __$$_UpdateNoteInputCopyWithImpl<$Res>
-    extends _$UpdateNoteInputCopyWithImpl<$Res, _$_UpdateNoteInput>
-    implements _$$_UpdateNoteInputCopyWith<$Res> {
-  __$$_UpdateNoteInputCopyWithImpl(
-      _$_UpdateNoteInput _value, $Res Function(_$_UpdateNoteInput) _then)
+class __$$UpdateNoteInputImplCopyWithImpl<$Res>
+    extends _$UpdateNoteInputCopyWithImpl<$Res, _$UpdateNoteInputImpl>
+    implements _$$UpdateNoteInputImplCopyWith<$Res> {
+  __$$UpdateNoteInputImplCopyWithImpl(
+      _$UpdateNoteInputImpl _value, $Res Function(_$UpdateNoteInputImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -272,7 +273,7 @@ class __$$_UpdateNoteInputCopyWithImpl<$Res>
     Object? syncOptions = null,
     Object? isPrivate = null,
   }) {
-    return _then(_$_UpdateNoteInput(
+    return _then(_$UpdateNoteInputImpl(
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -291,8 +292,8 @@ class __$$_UpdateNoteInputCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UpdateNoteInput implements _UpdateNoteInput {
-  const _$_UpdateNoteInput(
+class _$UpdateNoteInputImpl implements _UpdateNoteInput {
+  const _$UpdateNoteInputImpl(
       {required this.text, required this.syncOptions, required this.isPrivate});
 
   @override
@@ -311,7 +312,7 @@ class _$_UpdateNoteInput implements _UpdateNoteInput {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UpdateNoteInput &&
+            other is _$UpdateNoteInputImpl &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.syncOptions, syncOptions) ||
                 other.syncOptions == syncOptions) &&
@@ -325,15 +326,16 @@ class _$_UpdateNoteInput implements _UpdateNoteInput {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UpdateNoteInputCopyWith<_$_UpdateNoteInput> get copyWith =>
-      __$$_UpdateNoteInputCopyWithImpl<_$_UpdateNoteInput>(this, _$identity);
+  _$$UpdateNoteInputImplCopyWith<_$UpdateNoteInputImpl> get copyWith =>
+      __$$UpdateNoteInputImplCopyWithImpl<_$UpdateNoteInputImpl>(
+          this, _$identity);
 }
 
 abstract class _UpdateNoteInput implements UpdateNoteInput {
   const factory _UpdateNoteInput(
       {required final String text,
       required final SyncOptions syncOptions,
-      required final bool isPrivate}) = _$_UpdateNoteInput;
+      required final bool isPrivate}) = _$UpdateNoteInputImpl;
 
   @override
   String get text;
@@ -343,6 +345,6 @@ abstract class _UpdateNoteInput implements UpdateNoteInput {
   bool get isPrivate;
   @override
   @JsonKey(ignore: true)
-  _$$_UpdateNoteInputCopyWith<_$_UpdateNoteInput> get copyWith =>
+  _$$UpdateNoteInputImplCopyWith<_$UpdateNoteInputImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

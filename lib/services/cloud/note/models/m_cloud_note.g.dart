@@ -6,7 +6,8 @@ part of 'm_cloud_note.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_CloudNote _$$_CloudNoteFromJson(Map<String, dynamic> json) => _$_CloudNote(
+_$CloudNoteImpl _$$CloudNoteImplFromJson(Map<String, dynamic> json) =>
+    _$CloudNoteImpl(
       id: json['id'] as String,
       userId: json['userId'] as String,
       text: json['text'] as String,
@@ -15,7 +16,7 @@ _$_CloudNote _$$_CloudNoteFromJson(Map<String, dynamic> json) => _$_CloudNote(
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
-Map<String, dynamic> _$$_CloudNoteToJson(_$_CloudNote instance) =>
+Map<String, dynamic> _$$CloudNoteImplToJson(_$CloudNoteImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,

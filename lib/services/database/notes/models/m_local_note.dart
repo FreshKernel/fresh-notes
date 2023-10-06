@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../logic/utils/extensions/bool.dart';
+import '../../../../logic/utils/extensions/int.dart';
 import '../../../../models/note/m_note.dart';
-import '../../../../utils/extensions/bool.dart';
-import '../../../../utils/extensions/int.dart';
 import '../../../cloud/shared/sync_options.dart';
 import '../../../data/notes/models/m_note_input.dart';
 import '../../shared/sql_data_type.dart';

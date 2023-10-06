@@ -1,18 +1,16 @@
 import 'dart:async';
+import 'dart:convert' show jsonEncode;
 
 import '../../../core/data/crud_exceptions.dart';
 import '../../../core/log/logger.dart';
+import '../../../logic/utils/list.dart';
+import '../../../logic/utils/others/differnce_result.dart';
+import '../../../logic/utils/others/packages/quill.dart';
 import '../../../models/note/m_note.dart';
 import '../../auth/auth_service.dart';
 import '../../cloud/note/s_cloud_notes.dart';
 import '../../cloud/shared/sync_options.dart';
 import '../../database/notes/s_local_notes.dart';
-import '../../../utils/list.dart';
-import '../../../utils/others/differnce_result.dart';
-
-import 'dart:convert' show jsonEncode;
-
-import '../../../utils/packages/quill.dart';
 import 'models/m_note_input.dart';
 
 class NotesDataService {
@@ -55,7 +53,7 @@ class NotesDataService {
     await _localNotesService.initialize();
   }
 
-  bool get isInitialized => _localNotesService.isInitialized && true; // Cloud
+  bool get isInitialized => _localNotesService.isInitialized;
 
   // @override
   Future<void> deInitialize() async {
@@ -85,7 +83,9 @@ class NotesDataService {
 
   Future<void> insertOrReplaceOne(
     QuillDocument document, {
-    required SyncOptions syncOptions, required bool isPrivate, String? currentId,
+    required SyncOptions syncOptions,
+    required bool isPrivate,
+    String? currentId,
   }) async {
     AppLogger.log('Sync option = ${syncOptions.toString()}');
     final isEditing = currentId != null;
@@ -150,6 +150,7 @@ class NotesDataService {
     await _localNotesService.deleteByIds(ids);
     _notes.removeWhere((note) => ids.contains(note.id));
     _notesStreamController.add(_notes);
+    await _cloudNotesService.deleteByIds(ids);
   }
 
   Future<void> deleteOneById(String id) async {
@@ -225,8 +226,7 @@ class NotesDataService {
       newUpdateInput = newUpdateInput.copyWith(
         syncOptions: SyncOptions.syncWithExistingCloudId(cloudNote.id),
       );
-    } else if (!isSyncWithCloudNewInput &&
-        isCurrentLocalNoteExistsInTheCloud) {
+    } else if (!isSyncWithCloudNewInput && isCurrentLocalNoteExistsInTheCloud) {
       // If the current note is exists and the user want to unsync the note.
       AppLogger.log(
         'Delete the existing note in the cloud since the user no longer want to sync it',
@@ -276,7 +276,7 @@ class NotesDataService {
     );
   }
 
-  Future<void> syncCloudToLocal() async {
+  Future<void> syncLocalNotesFromCloud() async {
     if (!isInitialized) {
       await initialize();
     }
@@ -285,6 +285,8 @@ class NotesDataService {
     if (cloudNotes.isEmpty) {
       return;
     }
+
+    // Map them to inputs
     final createInputs = cloudNotes.map((cloudNote) {
       return CreateNoteInput.fromCloudNote(cloudNote);
     }).toList();

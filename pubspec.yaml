@@ -2,7 +2,7 @@ name: my_notes
 description: A cross-platform, open-source notes app.
 publish_to: 'none'
 version: 1.0.0+1
-repository: https://github.com/ahmedhnewa/FreshNotes
+repository: https://github.com/freshtechtips/FreshNotes
 platforms:
   android:
   ios:
@@ -22,7 +22,7 @@ dependencies:
 
   cupertino_icons: ^1.0.6
 
-  # Firebase
+  # Firebase packages && plugins
   firebase_core: ^2.16.0
   firebase_auth: ^4.10.0
   cloud_firestore: ^4.9.2
@@ -30,11 +30,14 @@ dependencies:
 
   # Core plugins
   path_provider: ^2.1.1
+  sqflite: ^2.3.0
 
   # Other plugins
   image_picker: ^1.0.4
   image_picker_android: ^0.8.8+1
-  sqflite: ^2.3.0
+  google_sign_in: ^6.1.5
+  sign_in_with_apple: ^5.0.0
+  share_plus: ^7.1.0
 
   # Core packages
   path: ^1.8.3
@@ -44,19 +47,15 @@ dependencies:
   intl: ^0.18.1
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
+  equatable: ^2.0.5
   # flutter_platform_widgets: ^4.0.0-beta.3
+
   flutter_quill: ^7.4.8
-  flutter_quill_extensions:
-    path: /Users/ahmedhnewa/development/playground/flutter-quill/flutter_quill_extensions
-  # image_gallery_saver: '^2.0.3'
+  flutter_quill_extensions: ^0.5.0
 
   # Other packages
-  share_plus: ^7.1.0
   flutter_dotenv: ^5.1.0
   lottie: ^2.6.0
-
-# dependency_overrides:
-#   flutter_inappwebview: ^6.0.0-beta.24+1
 
 dev_dependencies:
   flutter_test:

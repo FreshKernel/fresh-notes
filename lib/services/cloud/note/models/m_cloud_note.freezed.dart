@@ -97,10 +97,11 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
 }
 
 /// @nodoc
-abstract class _$$_CloudNoteCopyWith<$Res> implements $CloudNoteCopyWith<$Res> {
-  factory _$$_CloudNoteCopyWith(
-          _$_CloudNote value, $Res Function(_$_CloudNote) then) =
-      __$$_CloudNoteCopyWithImpl<$Res>;
+abstract class _$$CloudNoteImplCopyWith<$Res>
+    implements $CloudNoteCopyWith<$Res> {
+  factory _$$CloudNoteImplCopyWith(
+          _$CloudNoteImpl value, $Res Function(_$CloudNoteImpl) then) =
+      __$$CloudNoteImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -113,11 +114,11 @@ abstract class _$$_CloudNoteCopyWith<$Res> implements $CloudNoteCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_CloudNoteCopyWithImpl<$Res>
-    extends _$CloudNoteCopyWithImpl<$Res, _$_CloudNote>
-    implements _$$_CloudNoteCopyWith<$Res> {
-  __$$_CloudNoteCopyWithImpl(
-      _$_CloudNote _value, $Res Function(_$_CloudNote) _then)
+class __$$CloudNoteImplCopyWithImpl<$Res>
+    extends _$CloudNoteCopyWithImpl<$Res, _$CloudNoteImpl>
+    implements _$$CloudNoteImplCopyWith<$Res> {
+  __$$CloudNoteImplCopyWithImpl(
+      _$CloudNoteImpl _value, $Res Function(_$CloudNoteImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -130,7 +131,7 @@ class __$$_CloudNoteCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
-    return _then(_$_CloudNote(
+    return _then(_$CloudNoteImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -161,8 +162,8 @@ class __$$_CloudNoteCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_CloudNote implements _CloudNote {
-  const _$_CloudNote(
+class _$CloudNoteImpl implements _CloudNote {
+  const _$CloudNoteImpl(
       {required this.id,
       required this.userId,
       required this.text,
@@ -170,8 +171,8 @@ class _$_CloudNote implements _CloudNote {
       required this.createdAt,
       required this.updatedAt});
 
-  factory _$_CloudNote.fromJson(Map<String, dynamic> json) =>
-      _$$_CloudNoteFromJson(json);
+  factory _$CloudNoteImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CloudNoteImplFromJson(json);
 
   @override
   final String id;
@@ -196,7 +197,7 @@ class _$_CloudNote implements _CloudNote {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CloudNote &&
+            other is _$CloudNoteImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.text, text) || other.text == text) &&
@@ -216,12 +217,12 @@ class _$_CloudNote implements _CloudNote {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CloudNoteCopyWith<_$_CloudNote> get copyWith =>
-      __$$_CloudNoteCopyWithImpl<_$_CloudNote>(this, _$identity);
+  _$$CloudNoteImplCopyWith<_$CloudNoteImpl> get copyWith =>
+      __$$CloudNoteImplCopyWithImpl<_$CloudNoteImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CloudNoteToJson(
+    return _$$CloudNoteImplToJson(
       this,
     );
   }
@@ -234,10 +235,10 @@ abstract class _CloudNote implements CloudNote {
       required final String text,
       required final bool isPrivate,
       required final DateTime createdAt,
-      required final DateTime updatedAt}) = _$_CloudNote;
+      required final DateTime updatedAt}) = _$CloudNoteImpl;
 
   factory _CloudNote.fromJson(Map<String, dynamic> json) =
-      _$_CloudNote.fromJson;
+      _$CloudNoteImpl.fromJson;
 
   @override
   String get id;
@@ -253,6 +254,6 @@ abstract class _CloudNote implements CloudNote {
   DateTime get updatedAt;
   @override
   @JsonKey(ignore: true)
-  _$$_CloudNoteCopyWith<_$_CloudNote> get copyWith =>
+  _$$CloudNoteImplCopyWith<_$CloudNoteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

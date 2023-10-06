@@ -7,9 +7,9 @@ enum AuthErrorType {
   invalidCredentials,
   wrongPassword,
   weakPassword,
-  signUp,
   emailAlreadyInUse,
   invalidEmail,
+  accountNotVerified,
   unknownAuthError,
   genericAuthError,
   userRequiredToLoggedIn,
@@ -17,7 +17,6 @@ enum AuthErrorType {
   userAccountIsDisabled,
   actionRequiresRecentLogin,
   deleteUserRequiresRecentLogin,
-  signOutUserRequiresRecentLogin,
   authProviderNotEnabled,
   tooManyAuthenticateRequests;
 
@@ -28,7 +27,6 @@ enum AuthErrorType {
 }
 
 class AuthException extends AppException {
-
   const AuthException(String message, {required this.type}) : super(message);
   final AuthErrorType type;
 
