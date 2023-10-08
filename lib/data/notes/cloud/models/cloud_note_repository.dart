@@ -1,4 +1,4 @@
-import '../../../../data/core/cloud/cloud_database_repository.dart';
+import '../../../core/cloud/database/cloud_database_repository.dart';
 import '../../universal/models/m_note_inputs.dart';
 import 'm_cloud_note.dart';
 

@@ -1,12 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, FirebaseAuthException, ConfirmationResult;
+    show
+        ConfirmationResult,
+        FirebaseAuth,
+        FirebaseAuthException,
+        GoogleAuthProvider;
 
 import '../../core/api/api_exceptions.dart';
 import '../auth_exceptions.dart';
-import '../auth_provider.dart';
+import '../auth_repository.dart';
+import '../auth_custom_provider.dart';
 import '../auth_user.dart';
 
-class FirebaseAuthProviderImpl extends AuthProvider {
+class FirebaseAuthProviderImpl extends AuthRepository {
   const FirebaseAuthProviderImpl();
 
   @override
@@ -333,6 +338,101 @@ class FirebaseAuthProviderImpl extends AuthProvider {
   }
 
   @override
+  Future<AuthUser> authenticateWithCustomProvider(
+    AuthCustomProvider authCustomProvider,
+  ) async {
+    try {
+      switch (authCustomProvider) {
+        case GoogleAuthCustomProvider():
+          final result = await FirebaseAuth.instance.signInWithCredential(
+            GoogleAuthProvider.credential(
+              accessToken: authCustomProvider.accessToken,
+              idToken: authCustomProvider.idToken,
+            ),
+          );
+          final user = result.user;
+          if (user == null) {
+            throw const AuthException(
+              'We have logged in but firebase sdk stil return the user as nullable.',
+              type: AuthErrorType.userStillNotLoggedIn,
+            );
+          }
+          return AuthUser.fromFirebase(user);
+      }
+    } on FirebaseAuthException catch (e) {
+      _defaultErrorsHanlders(e);
+      _defaultErrorHandlersForAuth(e);
+      switch (e.code) {
+        case 'account-exists-with-different-credential':
+          throw const AuthException(
+            'In firebase: Thrown if there already exists an account with the email '
+            'address asserted by the credential. Resolve this by calling '
+            '[fetchSignInMethodsForEmail] and then asking the user to sign in '
+            'using one of the returned providers.'
+            'Once the user is signed in, the original credential can be linked '
+            'to the user with [linkWithCredential]',
+            type: AuthErrorType.accountExistsWithDifferentCredential,
+          );
+        case 'invalid-credential':
+          throw const AuthException(
+            'in firebase: Thrown if the credential is malformed or has expired.',
+            type: AuthErrorType.invalidCredentials,
+          );
+        case 'operation-not-allowed':
+          throw const AuthException(
+            'in firebase: Thrown if the type of account corresponding to the '
+            'credential is '
+            'not enabled. Enable the account type in the Firebase Console, '
+            'under the Auth tab.',
+            type: AuthErrorType.authProviderNotEnabled,
+          );
+        case 'user-disabled':
+          throw const AuthException(
+            'Thrown if the user corresponding to the given credential has been'
+            'disabled.',
+            type: AuthErrorType.userAccountIsDisabled,
+          );
+        case 'user-not-found':
+          throw const AuthException(
+            'Thrown if signing in with a credential from [EmailAuthProvider.credential]'
+            'and there is no user corresponding to the given email.',
+            type: AuthErrorType.userNotFound,
+          );
+        case 'wrong-password':
+          throw const AuthException(
+            'Thrown if signing in with a credential from '
+            '[EmailAuthProvider.credential]'
+            'and the password is invalid for the given email, or if the account'
+            ' corresponding to the email does not have a password set.',
+            type: AuthErrorType.wrongPassword,
+          );
+        case 'invalid-verification-code':
+          throw const AuthException(
+            'Thrown if the credential is a [PhoneAuthProvider.credential] and the'
+            'verification code of the credential is not valid.',
+            type: AuthErrorType.invalidVerificationCode,
+          );
+        case 'invalid-verification-id':
+          throw const AuthException(
+            'Thrown if the credential is a [PhoneAuthProvider.credential] and the'
+            'verification ID of the credential is not valid.id.',
+            type: AuthErrorType.invalidVerificationId,
+          );
+        default:
+          throw AuthException(
+            'Unknown error while authenticate with third party provider using firebase. ${e.message}, ${e.code}',
+            type: AuthErrorType.unknownAuthError,
+          );
+      }
+    } catch (e) {
+      throw AuthException(
+        'Generic error while authenticateWithCustomProvider $e',
+        type: AuthErrorType.genericAuthError,
+      );
+    }
+  }
+
+  @override
   Future<void> sendResetPasswordLinkToEmail({
     required String email,
   }) async {
@@ -347,6 +447,9 @@ class FirebaseAuthProviderImpl extends AuthProvider {
             'Can not find user with this email to send reset password link to email',
             type: AuthErrorType.userNotFound,
           );
+        case 'invalid-email':
+          throw const AuthException('message',
+              type: AuthErrorType.invalidEmail);
         default:
           throw AuthException(
             'Unknown error while send . ${e.message}, ${e.code}',

@@ -1,15 +1,16 @@
 import '../../core/app_module.dart';
-import 'auth_provider.dart';
+import 'auth_repository.dart';
+import 'auth_custom_provider.dart';
 import 'auth_user.dart';
 import 'packages/firebase_provider.dart';
 
-class AuthService extends AuthProvider {
+class AuthService extends AuthRepository {
   const AuthService._(this._authProvider);
   factory AuthService.firebase() =>
       const AuthService._(FirebaseAuthProviderImpl());
   factory AuthService.getInstance() => AppModule.authService;
 
-  final AuthProvider _authProvider;
+  final AuthRepository _authProvider;
 
   @override
   Future<void> initialize() => _authProvider.initialize();
@@ -71,4 +72,9 @@ class AuthService extends AuthProvider {
   @override
   Future<void> sendResetPasswordLinkToEmail({required String email}) =>
       _authProvider.sendResetPasswordLinkToEmail(email: email);
+
+  @override
+  Future<AuthUser> authenticateWithCustomProvider(
+          AuthCustomProvider authCustomProvider) =>
+      _authProvider.authenticateWithCustomProvider(authCustomProvider);
 }

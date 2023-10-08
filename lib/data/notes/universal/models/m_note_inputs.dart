@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../../../data/core/cloud/sync_options.dart';
 import '../../../../data/notes/cloud/models/m_cloud_note.dart';
+import '../../../core/cloud/database/sync_options.dart';
 
-part 'm_note_input.freezed.dart';
+part 'm_note_inputs.freezed.dart';
 
 @freezed
 class CreateNoteInput with _$CreateNoteInput {

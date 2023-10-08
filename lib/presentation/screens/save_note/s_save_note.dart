@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 // import 'package:flutter_quill_extensions/embeds/builders.dart';
@@ -8,20 +7,32 @@ import 'package:flutter_quill_extensions/flutter_quill_extensions.dart'
     as quill_extensions;
 
 import '../../../core/log/logger.dart';
-import '../../../data/core/cloud/sync_options.dart';
+import '../../../data/core/cloud/database/sync_options.dart';
 import '../../../data/notes/universal/models/m_note.dart';
-import '../../../data/notes/universal/s_notes_data.dart';
+import '../../../data/notes/universal/s_universal_notes.dart';
 import '../../../logic/native/image/s_image_picker.dart';
 import '../../../logic/native/share/s_app_share.dart';
+import '../../../logic/utils/platform_checker.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import 'w_select_image_source_dialog.dart';
 
+class SaveNoteScreenArgs {
+  const SaveNoteScreenArgs({
+    this.note,
+  });
+
+  final UniversalNote? note;
+}
+
 class SaveNoteScreen extends StatefulWidget {
-  const SaveNoteScreen({super.key, this.note});
+  const SaveNoteScreen({
+    super.key,
+    this.args = const SaveNoteScreenArgs(),
+  });
 
   static const routeName = '/save-note';
 
-  final UniversalNote? note;
+  final SaveNoteScreenArgs args;
 
   @override
   State<SaveNoteScreen> createState() => _SaveNoteScreenState();
@@ -36,14 +47,16 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   var _isPrivate = true;
   var _isSyncWithCloud = false;
 
-  bool get _isEditing => widget.note != null;
+  UniversalNote? get _note => widget.args.note;
+
+  bool get _isEditing => _note != null;
 
   var _isLoading = false;
 
   SyncOptions get _getSyncOptions {
     return SyncOptions.getSyncOptions(
       isSyncWithCloud: _isSyncWithCloud,
-      existingCloudNoteId: widget.note?.syncOptions.getCloudNoteId(),
+      existingCloudNoteId: _note?.syncOptions.getCloudNoteId(),
     );
   }
 
@@ -55,14 +68,14 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
 
   void _setupController() {
     if (_isEditing) {
-      final json = jsonDecode(widget.note!.text);
+      final json = jsonDecode(_note!.text);
       _controller = quill.QuillController(
         document: quill.Document.fromJson(json),
         selection: const TextSelection.collapsed(offset: 0),
       );
       // _isReadOnly = true; // TODO: Later change this to better way
       // Default option is false
-      _isSyncWithCloud = widget.note?.syncOptions.isSyncWithCloud ?? false;
+      _isSyncWithCloud = _note?.syncOptions.isSyncWithCloud ?? false;
       return;
     }
     _controller = quill.QuillController.basic();
@@ -89,7 +102,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
 
       // Delete the note if the contnet is empty in edit mode
       if (_isEditing) {
-        await notesDataService.deleteOneById(widget.note!.id);
+        await notesDataService.deleteOneById(_note!.id);
         messenger.showSnackBar(const SnackBar(
           content: Text('Note has been deleted.'),
         ));
@@ -125,7 +138,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
       setState(() => _isLoading = true);
       await notesDataService.insertOrReplaceOne(
         document,
-        currentId: widget.note?.id,
+        currentId: _note?.id,
         syncOptions: _getSyncOptions,
         isPrivate: _isPrivate,
       );
@@ -222,6 +235,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
                         .pickImage(source: ImageSource.gallery);
                     return imagePath?.path;
                   },
+                  showFormulaButton: false,
                 ),
               ),
             Expanded(
@@ -248,7 +262,9 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   }
 
   Iterable<quill.EmbedBuilder> get _embedBuilder {
-    if (kIsWeb) return quill_extensions.FlutterQuillEmbeds.webBuilders();
+    if (PlatformChecker.isWeb()) {
+      return quill_extensions.FlutterQuillEmbeds.webBuilders();
+    }
     return [
       ...quill_extensions.FlutterQuillEmbeds.builders(
         onImageRemovedCallback: (imageFile) async {

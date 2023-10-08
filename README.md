@@ -11,15 +11,18 @@ already ignored in the .gitignore
 2- Permissions
 
     Android:
-        "<uses-feature
+        `
+         <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="29" />"
+        android:maxSdkVersion="29" />
+        `
 
     Ios:
     "<key>NSCameraUsageDescription</key>
@@ -31,7 +34,46 @@ already ignored in the .gitignore
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
 	<false/>"
 
-3- Create firebase firestore index
+3- Localizations in Android and iOS
+    iOS in info.plist:
+    `
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>ar</string>
+	</array>
+    `
+    Android:
+    Create a file called res/xml/locales_config.xml and specify your app's languages, including your app's ultimate fallback locale, which is the locale specified in res/values/strings.xml.
+    `
+    <?xml version="1.0" encoding="utf-8"?>
+    <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+        <locale android:name="en"/>
+        <locale android:name="ar"/>
+    </locale-config>
+    `
+    In the manifest, add a line pointing to this new file:
+    <manifest>
+        ...
+        <application
+            ...
+            android:localeConfig="@xml/locales_config">
+        </application>
+    </manifest>
+    Specify supported languages in Gradle
+    If not already present, specify the same languages using the resourceConfigurations property in your app's module-level build.gradle file:
+
+    `
+    android {
+        ...
+        defaultConfig {
+            resourceConfigurations += ["en", "ar"]
+        }
+    }
+    `
+
+
+4- Create firebase firestore index
 
 Composite indexes:
 userId: Ascending
@@ -39,4 +81,6 @@ updatedAt: Descending
 __name__ Descending
 
 Instead of defining a composite index manually, try to run all the queries in the app by testing everything to get a links for generating the required index.
-[Example](https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?create_composite=Cktwcm9qZWN0cy9teW5vdGVzLWViNzE3L2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9ub3Rlcy9pbmRleGVzL18QARoKCgZ1c2VySWQQARoNCgl1cGRhdGVkQXQQAhoMCghfX25hbWVfXxAC)
+[Example: https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?create_composite=Cktwcm9qZWN0cy9teW5vdGVzLWViNzE3L2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9ub3Rlcy9pbmRleGVzL18QARoKCgZ1c2VySWQQARoNCgl1cGRhdGVkQXQQAhoMCghfX25hbWVfXxAC](https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?create_composite=Cktwcm9qZWN0cy9teW5vdGVzLWViNzE3L2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9ub3Rlcy9pbmRleGVzL18QARoKCgZ1c2VySWQQARoNCgl1cGRhdGVkQXQQAhoMCghfX25hbWVfXxAC)
+
+5- Don't forgot to change app name, app icons, notifications icons, branding and applicationId and everything that is releated to this app when republish it again

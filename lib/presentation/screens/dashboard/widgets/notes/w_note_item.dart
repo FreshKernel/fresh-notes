@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 
 import '../../../../../data/notes/universal/models/m_note.dart';
-import '../../../../../data/notes/universal/s_notes_data.dart';
+import '../../../../../data/notes/universal/s_universal_notes.dart';
 import '../../../../../logic/utils/extensions/string.dart';
 import '../../../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../../save_note/s_save_note.dart';
@@ -25,17 +25,16 @@ class NoteItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final document = quill.Document.fromJson(jsonDecode(note.text));
     final materialTheme = Theme.of(context);
+
     return ListTile(
       contentPadding: const EdgeInsets.all(12),
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          settings: const RouteSettings(name: SaveNoteScreen.routeName),
-          builder: (context) {
-            return SaveNoteScreen(
-              note: note,
-            );
-          },
-        ));
+        Navigator.of(context).pushNamed(
+          SaveNoteScreen.routeName,
+          arguments: SaveNoteScreenArgs(
+            note: note,
+          ),
+        );
       },
       title: Text(
         document.toPlainText(),
@@ -52,7 +51,11 @@ class NoteItem extends StatelessWidget {
         // style: materialTheme.primaryTextTheme.bodyMedium,
       ),
       leading: CircleAvatar(
-        child: Text(note.id.toString()),
+        child: Text(
+          note.id.limitToCharacters(2),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
       trailing: LayoutBuilder(
         builder: (context, constraints) {

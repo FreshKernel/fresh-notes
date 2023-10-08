@@ -18,7 +18,10 @@ enum AuthErrorType {
   actionRequiresRecentLogin,
   deleteUserRequiresRecentLogin,
   authProviderNotEnabled,
-  tooManyAuthenticateRequests;
+  tooManyAuthenticateRequests,
+  accountExistsWithDifferentCredential,
+  invalidVerificationCode,
+  invalidVerificationId;
 
   @override
   String toString() {

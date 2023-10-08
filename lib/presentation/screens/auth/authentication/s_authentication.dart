@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../logic/auth/auth_custom_provider.dart';
 import '../../../../logic/auth/auth_exceptions.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
+import '../../../../logic/connection/cubit/connection_cubit.dart';
 import '../../../../logic/core/api/api_exceptions.dart';
 import '../../../components/auth/w_email_field.dart';
 import '../../../components/auth/w_password_field.dart';
@@ -50,7 +52,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           if (state.lastAction ==
               AuthStateUnAuthenticatedAction.sendResetPasswordLinkToEmail) {
             messenger.showSnackBar(const SnackBar(
-              content: Text('Please check your email inbox'),
+              content: Text(
+                'If your emaill adress is exists. Please check your email inbox',
+              ),
             ));
           }
           return;
@@ -61,8 +65,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             'Unknown error. Please contact support with ${e.toString()}';
         if (e is AuthException) {
           switch (e.type) {
+            case AuthErrorType.userNotFound:
+              error = 'We could not find this user.';
+              break;
             case AuthErrorType.invalidCredentials:
-              error = 'Invalid password or email address.';
+              error = 'Invalid credentials.';
               break;
             case AuthErrorType.weakPassword:
               error = 'Please enter strong password.';
@@ -102,51 +109,76 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           child: Form(
             key: _formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Center(
-              child: Builder(builder: (context) {
-                if (_isLoading) {
-                  return const CircularProgressIndicator.adaptive();
-                }
-                return SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const FlutterLogo(size: 200),
-                      const SizedBox(height: 20),
-                      EmailTextField(
-                        emailController: _emailController,
-                        inputDecoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      PasswordTextField(
-                        passwordController: _passwordController,
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => _onSubmit(isSignUp: false),
-                            child: const Text('Login'),
-                          ),
-                          const SizedBox(width: 8),
-                          OutlinedButton(
-                            onPressed: _onSubmit,
-                            child: const Text('Register'),
-                          ),
-                        ],
-                      ),
-                      TextButton(
-                        onPressed: _forgotPassword,
-                        child: const Text('Forgot password?'),
-                      ),
-                    ],
-                  ),
+            child: Builder(builder: (context) {
+              if (_isLoading) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
                 );
-              }),
-            ),
+              }
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const FlutterLogo(size: 200),
+                    const SizedBox(height: 20),
+                    EmailTextField(
+                      emailController: _emailController,
+                      inputDecoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    PasswordTextField(
+                      passwordController: _passwordController,
+                    ),
+                    const SizedBox(height: 8),
+                    BlocBuilder<ConnectionCubit, ConnState>(
+                      builder: (context, state) {
+                        if (state is ConnStateInternetDisconnected) {
+                          return const Text(
+                            'Internet connection is required.',
+                          );
+                        }
+                        return Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () => _onSubmit(isSignUp: false),
+                                  child: const Text('Login'),
+                                ),
+                                const SizedBox(width: 8),
+                                OutlinedButton(
+                                  onPressed: _onSubmit,
+                                  child: const Text('Register'),
+                                ),
+                              ],
+                            ),
+                            TextButton(
+                              onPressed: _forgotPassword,
+                              child: const Text('Forgot password?'),
+                            ),
+                            OutlinedButton.icon(
+                              onPressed: () async {
+                                final authBloc = context.read<AuthCubit>();
+                                setState(() => _isLoading = true);
+                                await authBloc.authenticateWithCustomProvider(
+                                  AuthProvider.google,
+                                );
+                                setState(() => _isLoading = false);
+                              },
+                              icon: const Icon(Icons.facebook),
+                              label: const Text('Google'),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }),
           ),
         ),
       ),

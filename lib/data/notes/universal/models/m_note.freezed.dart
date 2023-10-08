@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$Note {
+mixin _$UniversalNote {
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
@@ -25,15 +25,15 @@ mixin _$Note {
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $NoteCopyWith<UniversalNote> get copyWith =>
+  $UniversalNoteCopyWith<UniversalNote> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $NoteCopyWith<$Res> {
-  factory $NoteCopyWith(
+abstract class $UniversalNoteCopyWith<$Res> {
+  factory $UniversalNoteCopyWith(
           UniversalNote value, $Res Function(UniversalNote) then) =
-      _$NoteCopyWithImpl<$Res, UniversalNote>;
+      _$UniversalNoteCopyWithImpl<$Res, UniversalNote>;
   @useResult
   $Res call(
       {String id,
@@ -46,9 +46,9 @@ abstract class $NoteCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$NoteCopyWithImpl<$Res, $Val extends UniversalNote>
-    implements $NoteCopyWith<$Res> {
-  _$NoteCopyWithImpl(this._value, this._then);
+class _$UniversalNoteCopyWithImpl<$Res, $Val extends UniversalNote>
+    implements $UniversalNoteCopyWith<$Res> {
+  _$UniversalNoteCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -100,10 +100,11 @@ class _$NoteCopyWithImpl<$Res, $Val extends UniversalNote>
 }
 
 /// @nodoc
-abstract class _$$NoteImplCopyWith<$Res> implements $NoteCopyWith<$Res> {
-  factory _$$NoteImplCopyWith(
-          _$NoteImpl value, $Res Function(_$NoteImpl) then) =
-      __$$NoteImplCopyWithImpl<$Res>;
+abstract class _$$UniversalNoteImplCopyWith<$Res>
+    implements $UniversalNoteCopyWith<$Res> {
+  factory _$$UniversalNoteImplCopyWith(
+          _$UniversalNoteImpl value, $Res Function(_$UniversalNoteImpl) then) =
+      __$$UniversalNoteImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -117,10 +118,11 @@ abstract class _$$NoteImplCopyWith<$Res> implements $NoteCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$NoteImplCopyWithImpl<$Res>
-    extends _$NoteCopyWithImpl<$Res, _$NoteImpl>
-    implements _$$NoteImplCopyWith<$Res> {
-  __$$NoteImplCopyWithImpl(_$NoteImpl _value, $Res Function(_$NoteImpl) _then)
+class __$$UniversalNoteImplCopyWithImpl<$Res>
+    extends _$UniversalNoteCopyWithImpl<$Res, _$UniversalNoteImpl>
+    implements _$$UniversalNoteImplCopyWith<$Res> {
+  __$$UniversalNoteImplCopyWithImpl(
+      _$UniversalNoteImpl _value, $Res Function(_$UniversalNoteImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -134,7 +136,7 @@ class __$$NoteImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
-    return _then(_$NoteImpl(
+    return _then(_$UniversalNoteImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -169,8 +171,8 @@ class __$$NoteImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$NoteImpl implements _Note {
-  const _$NoteImpl(
+class _$UniversalNoteImpl implements _UniversalNote {
+  const _$UniversalNoteImpl(
       {required this.id,
       required this.userId,
       required this.text,
@@ -196,14 +198,14 @@ class _$NoteImpl implements _Note {
 
   @override
   String toString() {
-    return 'Note(id: $id, userId: $userId, text: $text, syncOptions: $syncOptions, isPrivate: $isPrivate, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'UniversalNote(id: $id, userId: $userId, text: $text, syncOptions: $syncOptions, isPrivate: $isPrivate, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$NoteImpl &&
+            other is _$UniversalNoteImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.text, text) || other.text == text) &&
@@ -224,19 +226,19 @@ class _$NoteImpl implements _Note {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$NoteImplCopyWith<_$NoteImpl> get copyWith =>
-      __$$NoteImplCopyWithImpl<_$NoteImpl>(this, _$identity);
+  _$$UniversalNoteImplCopyWith<_$UniversalNoteImpl> get copyWith =>
+      __$$UniversalNoteImplCopyWithImpl<_$UniversalNoteImpl>(this, _$identity);
 }
 
-abstract class _Note implements UniversalNote {
-  const factory _Note(
+abstract class _UniversalNote implements UniversalNote {
+  const factory _UniversalNote(
       {required final String id,
       required final String userId,
       required final String text,
       required final SyncOptions syncOptions,
       required final bool isPrivate,
       required final DateTime createdAt,
-      required final DateTime updatedAt}) = _$NoteImpl;
+      required final DateTime updatedAt}) = _$UniversalNoteImpl;
 
   @override
   String get id;
@@ -254,6 +256,6 @@ abstract class _Note implements UniversalNote {
   DateTime get updatedAt;
   @override
   @JsonKey(ignore: true)
-  _$$NoteImplCopyWith<_$NoteImpl> get copyWith =>
+  _$$UniversalNoteImplCopyWith<_$UniversalNoteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

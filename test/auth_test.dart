@@ -2,8 +2,9 @@ import 'dart:math' show Random;
 
 // import 'package:test/test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:my_notes/logic/auth/auth_custom_provider.dart';
 import 'package:my_notes/logic/auth/auth_exceptions.dart';
-import 'package:my_notes/logic/auth/auth_provider.dart';
+import 'package:my_notes/logic/auth/auth_repository.dart';
 import 'package:my_notes/logic/auth/auth_user.dart';
 
 void main() {
@@ -117,7 +118,7 @@ class NotInitializedException implements Exception {}
 
 class AlreadyInitalizedException implements Exception {}
 
-class MockAuthProvider extends AuthProvider {
+class MockAuthProvider extends AuthRepository {
   AuthUser? _user;
   bool _isInitialized = false;
 
@@ -153,7 +154,8 @@ class MockAuthProvider extends AuthProvider {
     const user = AuthUser(
         isEmailVerified: false,
         emailAddress: 'test@flutter.dart',
-        id: 'doesn-not-matter');
+        id: 'doesn-not-matter',
+        data: UserData(displayName: 'Hello', photoUrl: 'asd'));
     _user = user;
     return user;
   }
@@ -192,7 +194,8 @@ class MockAuthProvider extends AuthProvider {
     _user = AuthUser(
         isEmailVerified: true,
         emailAddress: _user?.emailAddress,
-        id: 'doesn-not-matter');
+        id: 'doesn-not-matter',
+        data: const UserData(displayName: 'displayName', photoUrl: 'photoUrl'));
   }
 
   @override
@@ -237,6 +240,13 @@ class MockAuthProvider extends AuthProvider {
   @override
   Future<void> sendResetPasswordLinkToEmail({required String email}) {
     // TODO: implement sendResetPasswordLinkToEmail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AuthUser> authenticateWithCustomProvider(
+      AuthCustomProvider authCustomProvider) {
+    // TODO: implement authenticateWithCustomProvider
     throw UnimplementedError();
   }
 }

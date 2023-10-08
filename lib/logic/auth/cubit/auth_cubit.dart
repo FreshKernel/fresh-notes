@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:meta/meta.dart';
 
 import '../../../core/log/logger.dart';
-import '../../../data/notes/universal/s_notes_data.dart';
+import '../../../data/notes/universal/s_universal_notes.dart';
+import '../auth_custom_provider.dart';
 import '../auth_exceptions.dart';
 import '../auth_service.dart';
 import '../auth_user.dart';
@@ -35,12 +38,6 @@ class AuthCubit extends Cubit<AuthState> {
             type: AuthErrorType.accountNotVerified,
           ),
         ));
-        // emit(AuthStateNeedAccountVerification(
-        //   AuthException(
-        //     'Account is still not verified. ${DateTime.now()}', // Workaround for now
-        //     type: AuthErrorType.accountNotVerified,
-        //   ),
-        // ));
         return;
       }
 
@@ -79,7 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
         ));
         return;
       }
-      await _notesService.syncLocalNotesFromCloud();
+      await _sharedAuthenticateLogic(user);
       emit(AuthStateAuthenticated(
         user: user,
         exception: null,
@@ -87,6 +84,51 @@ class AuthCubit extends Cubit<AuthState> {
     } on Exception catch (e) {
       emit(AuthStateUnAuthenticated(exception: e));
     }
+  }
+
+  Future<void> authenticateWithCustomProvider(
+    AuthProvider provider,
+  ) async {
+    try {
+      final AuthCustomProvider authCustomProvider;
+      switch (provider) {
+        case AuthProvider.google:
+          final googleSignIn = GoogleSignIn();
+          await googleSignIn.signOut();
+          final googleUser = await googleSignIn.signIn();
+          final googleAuth = await googleUser?.authentication;
+          if (googleAuth?.accessToken == null && googleAuth?.idToken == null) {
+            return;
+          }
+          authCustomProvider = GoogleAuthCustomProvider(
+            idToken: googleAuth?.idToken,
+            accessToken: googleAuth?.accessToken,
+          );
+          break;
+      }
+      final user =
+          await _authService.authenticateWithCustomProvider(authCustomProvider);
+      final isEmailVerified = user.isEmailVerified;
+      if (!isEmailVerified) {
+        await _authService.sendEmailVerification();
+        emit(AuthStateAuthenticated(
+          user: user,
+          exception: null,
+        ));
+        return;
+      }
+      await _sharedAuthenticateLogic(user);
+      emit(AuthStateAuthenticated(
+        user: user,
+        exception: null,
+      ));
+    } on Exception catch (e) {
+      emit(AuthStateUnAuthenticated(exception: e));
+    }
+  }
+
+  Future<void> _sharedAuthenticateLogic(AuthUser user) async {
+    await _notesService.syncLocalNotesFromCloud();
   }
 
   Future<void> logout() async {
@@ -104,9 +146,12 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       await _authService.sendResetPasswordLinkToEmail(email: email);
-      emit(const AuthStateUnAuthenticated(
-        exception: null,
-      ));
+      emit(AuthStateUnAuthenticated(
+          exception: null,
+          lastAction:
+              AuthStateUnAuthenticatedAction.sendResetPasswordLinkToEmail,
+          message: DateTime.now().toIso8601String() // Workaround
+          ));
     } on Exception catch (e) {
       emit(AuthStateUnAuthenticated(exception: e));
     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/notes/universal/s_notes_data.dart';
+import '../../../data/notes/universal/s_universal_notes.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../save_note/s_save_note.dart';
 import 'models/m_navigation_item.dart';
@@ -86,12 +86,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            settings: const RouteSettings(
-              name: SaveNoteScreen.routeName,
-            ),
-            builder: (context) => const SaveNoteScreen(),
-          ));
+          Navigator.of(context).pushNamed(
+            SaveNoteScreen.routeName,
+            arguments: const SaveNoteScreenArgs(),
+          );
         },
         child: const Icon(Icons.add),
       ),

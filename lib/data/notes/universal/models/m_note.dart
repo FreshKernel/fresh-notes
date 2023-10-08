@@ -1,13 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../core/cloud/sync_options.dart';
+import '../../../core/cloud/database/sync_options.dart';
 import '../../cloud/models/m_cloud_note.dart';
-import '../../database/models/m_local_note.dart';
+import '../../local/models/m_local_note.dart';
 
 part 'm_note.freezed.dart';
 
 @freezed
-class UniversalNote with _$Note {
+class UniversalNote with _$UniversalNote {
   const factory UniversalNote({
     required String id,
     required String userId,
@@ -16,7 +16,7 @@ class UniversalNote with _$Note {
     required bool isPrivate,
     required DateTime createdAt,
     required DateTime updatedAt,
-  }) = _Note;
+  }) = _UniversalNote;
   factory UniversalNote.fromLocalNote(
     LocalNote note,
   ) =>

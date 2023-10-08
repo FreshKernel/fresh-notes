@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../logic/auth/auth_service.dart';
-import '../../../core/crud_exceptions.dart';
+import '../../../core/shared/database_operations_exceptions.dart';
 import '../../universal/models/m_note_inputs.dart';
 import '../models/cloud_note_repository.dart';
 import '../models/m_cloud_note.dart';
@@ -160,7 +160,7 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   ) async {
     final currentNote = await getOneById(currentId);
     if (currentNote == null) {
-      throw const CrudCannotFindResourcesexception(
+      throw const DatabaseOperationCannotFindResourcesException(
         'We could not find this note to update it.',
       );
     }

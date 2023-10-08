@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'w_app_dialog.dart';
 
 @immutable
 class OkDialogOptions {
-
   const OkDialogOptions({
     required this.title,
     required this.message,
@@ -17,7 +15,8 @@ class OkDialogOptions {
 
 class OkDialog extends StatelessWidget {
   const OkDialog({
-    required this.options, super.key,
+    required this.options,
+    super.key,
   });
 
   final OkDialogOptions options;

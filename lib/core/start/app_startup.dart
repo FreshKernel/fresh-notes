@@ -16,7 +16,7 @@ class AppStartup extends AppService {
   final _services = <AppService>[
     FirebaseService.getInstance(),
     AuthService.getInstance(),
-    ImagePickerService.getInstance()
+    ImagePickerService.getInstance(),
   ];
 
   @override
