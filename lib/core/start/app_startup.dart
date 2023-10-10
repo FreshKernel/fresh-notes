@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart'
+    show getApplicationDocumentsDirectory;
 
 import '../../logic/auth/auth_service.dart';
 import '../../logic/native/image/s_image_picker.dart';

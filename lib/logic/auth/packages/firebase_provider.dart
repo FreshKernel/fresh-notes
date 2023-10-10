@@ -6,9 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart'
         GoogleAuthProvider;
 
 import '../../core/api/api_exceptions.dart';
+import '../auth_custom_provider.dart';
 import '../auth_exceptions.dart';
 import '../auth_repository.dart';
-import '../auth_custom_provider.dart';
 import '../auth_user.dart';
 
 class FirebaseAuthProviderImpl extends AuthRepository {
@@ -459,6 +459,50 @@ class FirebaseAuthProviderImpl extends AuthRepository {
     } catch (e) {
       throw AuthException(
         'Generic error while sendResetPasswordLinkToEmail $e',
+        type: AuthErrorType.genericAuthError,
+      );
+    }
+  }
+
+  @override
+  Future<AuthUser> updateUserData(UserData userData) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        throw const AuthException(
+          'The user should be logged in when he wants to update his profile',
+          type: AuthErrorType.userRequiredToLoggedIn,
+        );
+      }
+      final displayName = userData.displayName;
+      final photoUrl = userData.photoUrl;
+      if (displayName != null) {
+        await user.updateDisplayName(displayName);
+      }
+      if (photoUrl != null) {
+        await user.updatePhotoURL(photoUrl);
+      }
+      final appAuthUser = requireCurrentUser(null);
+
+      return appAuthUser.copyWith(
+        data: appAuthUser.data.copyWith(
+          displayName: displayName,
+          photoUrl: photoUrl,
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      _defaultErrorHandlersForAuth(e);
+      _defaultErrorsHanlders(e);
+      switch (e.code) {
+        default:
+          throw AuthException(
+            'Unknown auth error: ${e.toString()}',
+            type: AuthErrorType.unknownAuthError,
+          );
+      }
+    } catch (e) {
+      throw AuthException(
+        'Generic error while updateUserData $e',
         type: AuthErrorType.genericAuthError,
       );
     }

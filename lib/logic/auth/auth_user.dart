@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase
     show User, ConfirmationResult;
 import 'package:meta/meta.dart';
 
-import '../../core/log/logger.dart';
-
 @immutable
 class AuthUser {
   const AuthUser({
@@ -26,6 +24,20 @@ class AuthUser {
   final bool isEmailVerified;
   final String? emailAddress;
   final UserData data;
+
+  AuthUser copyWith({
+    String? id,
+    bool? isEmailVerified,
+    String? emailAddress,
+    UserData? data,
+  }) {
+    return AuthUser(
+      id: id ?? this.id,
+      isEmailVerified: isEmailVerified ?? this.isEmailVerified,
+      emailAddress: emailAddress ?? this.emailAddress,
+      data: data ?? this.data,
+    );
+  }
 }
 
 @immutable
@@ -39,8 +51,17 @@ class UserData {
   final String? photoUrl;
 
   bool get hasUserData {
-    AppLogger.log('Data $displayName == $photoUrl');
-    return displayName != null && photoUrl != null;
+    return displayName != null;
+  }
+
+  UserData copyWith({
+    String? displayName,
+    String? photoUrl,
+  }) {
+    return UserData(
+      displayName: displayName ?? this.displayName,
+      photoUrl: photoUrl ?? this.photoUrl,
+    );
   }
 }
 

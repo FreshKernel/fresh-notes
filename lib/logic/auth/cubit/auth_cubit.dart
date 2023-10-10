@@ -156,4 +156,25 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthStateUnAuthenticated(exception: e));
     }
   }
+
+  Future<void> updateUserProfile({
+    required String displayName,
+  }) async {
+    final currentUser = _authService.requireCurrentUser(
+      'To update the user profile '
+      'user must be authenticated',
+    );
+    try {
+      final newUser = await _authService.updateUserData(UserData(
+        displayName: displayName,
+        photoUrl: null,
+      ));
+      emit(AuthStateAuthenticated(user: newUser, exception: null));
+    } on Exception catch (e) {
+      emit(AuthStateAuthenticated(
+        user: currentUser,
+        exception: e,
+      ));
+    }
+  }
 }

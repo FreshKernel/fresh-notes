@@ -249,4 +249,10 @@ class MockAuthProvider extends AuthRepository {
     // TODO: implement authenticateWithCustomProvider
     throw UnimplementedError();
   }
+
+  @override
+  Future<AuthUser> updateUserData(UserData userData) {
+    // TODO: implement updateUserData
+    throw UnimplementedError();
+  }
 }

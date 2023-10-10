@@ -1,6 +1,6 @@
 import '../../core/app_module.dart';
-import 'auth_repository.dart';
 import 'auth_custom_provider.dart';
+import 'auth_repository.dart';
 import 'auth_user.dart';
 import 'packages/firebase_provider.dart';
 
@@ -77,4 +77,8 @@ class AuthService extends AuthRepository {
   Future<AuthUser> authenticateWithCustomProvider(
           AuthCustomProvider authCustomProvider) =>
       _authProvider.authenticateWithCustomProvider(authCustomProvider);
+
+  @override
+  Future<AuthUser> updateUserData(UserData userData) =>
+      _authProvider.updateUserData(userData);
 }

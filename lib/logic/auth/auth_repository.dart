@@ -32,4 +32,5 @@ abstract class AuthRepository extends AppService {
   Future<void> logout();
   Future<void> sendEmailVerification();
   Future<void> deleteTheCurrentUser();
+  Future<AuthUser> updateUserData(UserData userData);
 }
