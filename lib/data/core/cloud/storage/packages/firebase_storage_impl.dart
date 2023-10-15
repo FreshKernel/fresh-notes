@@ -34,7 +34,7 @@ class FirebaseCloudStorageImpl extends CloudStorageRepository {
   }
 
   @override
-  Future<String?> uploadFile(String path, File file) async {
+  Future<String> uploadFile(String path, File file) async {
     try {
       final ref = _storage.ref().child(path);
       final result = await ref.putFile(file);
@@ -48,13 +48,20 @@ class FirebaseCloudStorageImpl extends CloudStorageRepository {
   }
 
   @override
-  Future<Iterable<String?>> uploadMultipleFiles(
+  Future<Iterable<String>> uploadMultipleFiles(
       Iterable<(String, File)> list) async {
-    final fileUrls = <String?>[];
+    final fileUrls = <String>[];
     for (final (path, file) in list) {
       final url = await uploadFile(path, file);
       fileUrls.add(url);
     }
     return fileUrls;
+  }
+
+  @override
+  Future<void> deleteMultipleFiles(Iterable<String> paths) async {
+    for (final path in paths) {
+      await deleteFile(path);
+    }
   }
 }

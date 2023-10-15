@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../data/notes/universal/models/m_note.dart';
 import '../../../../../../logic/utils/others/differnce_result.dart';
+import '../../../../../utils/dialog/w_dialog_action.dart';
 
 class SyncCloudToLocalNotesDifferences extends StatelessWidget {
   const SyncCloudToLocalNotesDifferences(
@@ -26,11 +27,11 @@ class SyncCloudToLocalNotesDifferences extends StatelessWidget {
     return AlertDialog.adaptive(
       title: const Text('Note differneces'),
       actions: [
-        TextButton(
+        DialogAction(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        TextButton(
+        DialogAction(
           onPressed: () {},
           child: const Text('Ok'),
         ),

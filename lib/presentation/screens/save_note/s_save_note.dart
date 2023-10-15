@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 // import 'package:flutter_quill_extensions/embeds/builders.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart'
@@ -12,16 +13,20 @@ import '../../../data/notes/universal/models/m_note.dart';
 import '../../../data/notes/universal/s_universal_notes.dart';
 import '../../../logic/native/image/s_image_picker.dart';
 import '../../../logic/native/share/s_app_share.dart';
+import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../logic/utils/platform_checker.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
+import '../../utils/extensions/build_context_extensions.dart';
 import 'w_select_image_source_dialog.dart';
 
 class SaveNoteScreenArgs {
   const SaveNoteScreenArgs({
+    this.isForceReadOnly = false,
     this.note,
   });
 
   final UniversalNote? note;
+  final bool isForceReadOnly;
 }
 
 class SaveNoteScreen extends StatefulWidget {
@@ -30,7 +35,7 @@ class SaveNoteScreen extends StatefulWidget {
     this.args = const SaveNoteScreenArgs(),
   });
 
-  static const routeName = '/save-note';
+  static const routeName = '/note';
 
   final SaveNoteScreenArgs args;
 
@@ -74,11 +79,14 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
         selection: const TextSelection.collapsed(offset: 0),
       );
       // _isReadOnly = true; // TODO: Later change this to better way
+
       // Default option is false
       _isSyncWithCloud = _note?.syncOptions.isSyncWithCloud ?? false;
       return;
     }
     _controller = quill.QuillController.basic();
+    _isSyncWithCloud =
+        context.read<SettingsCubit>().state.syncWithCloudDefaultValue;
   }
 
   @override
@@ -90,37 +98,33 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   }
 
   Future<void> _onSaveNoteClick() async {
-    final navigator = Navigator.of(context);
-    final messenger = ScaffoldMessenger.of(context);
+    final navigator = context.navigator;
+    final messenger = context.messenger;
     final document = _controller.document;
 
     final isDocumentContentEmpty = document.toPlainText().trim().isEmpty;
     final notesDataService = UniversalNotesService.getInstance();
 
     if (isDocumentContentEmpty) {
-      messenger.clearSnackBars();
-
       // Delete the note if the contnet is empty in edit mode
       if (_isEditing) {
         await notesDataService.deleteOneById(_note!.id);
-        messenger.showSnackBar(const SnackBar(
-          content: Text('Note has been deleted.'),
-        ));
+        messenger.showMessage(
+          'Note has been deleted.',
+        );
         navigator.pop();
         return;
       }
       // User can't save empty note
-      messenger.showSnackBar(const SnackBar(
-        content: Text('The document is empty.'),
-      ));
+      messenger.showMessage(
+        'The document is empty.',
+      );
       return;
     }
     try {
       await _saveNote();
     } catch (e, stacktrace) {
-      messenger.showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
+      messenger.showMessage('Error while save the note: ${e.toString()}');
       AppLogger.error(e.toString(), stackTrace: stacktrace);
     }
 
@@ -169,18 +173,17 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
           IconButton(
             tooltip: 'Share',
             onPressed: () async {
-              final messenger = ScaffoldMessenger.of(context);
+              final messenger = context.messenger;
               final plainText = _controller.document.toPlainText(_embedBuilder);
               if (plainText.trim().isEmpty) {
-                messenger.showSnackBar(const SnackBar(
-                    content: Text(
+                messenger.showMessage(
                   'Please enter a text before sharing it',
-                )));
+                );
                 return;
               }
               await AppShareService.getInstance().shareText(plainText);
             },
-            icon: const Icon(Icons.link),
+            icon: const Icon(Icons.share),
           ),
           IconButton(
             tooltip: 'Save note',
@@ -189,12 +192,14 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => _isReadOnly = !_isReadOnly),
-        child: Icon(
-          _isReadOnly ? Icons.lock_rounded : Icons.edit,
-        ),
-      ),
+      floatingActionButton: widget.args.isForceReadOnly
+          ? const SizedBox.shrink()
+          : FloatingActionButton(
+              onPressed: () => setState(() => _isReadOnly = !_isReadOnly),
+              child: Icon(
+                _isReadOnly ? Icons.lock_rounded : Icons.edit,
+              ),
+            ),
       body: SafeArea(
         child: Column(
           children: [

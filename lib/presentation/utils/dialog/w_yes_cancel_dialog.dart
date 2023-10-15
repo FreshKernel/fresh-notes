@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'w_app_dialog.dart';
+import 'w_dialog_action.dart';
 
 class YesOrCancelDialogOptions {
-
   const YesOrCancelDialogOptions({
     required this.title,
     required this.message,
@@ -17,7 +17,8 @@ class YesOrCancelDialogOptions {
 
 class YesOrCancelDialog extends StatelessWidget {
   const YesOrCancelDialog({
-    required this.options, super.key,
+    required this.options,
+    super.key,
   });
 
   final YesOrCancelDialogOptions options;
@@ -27,14 +28,21 @@ class YesOrCancelDialog extends StatelessWidget {
     final materialTheme = Theme.of(context);
     return AlertDialog.adaptive(
       actions: [
-        TextButton(
+        DialogAction(
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(options.cancelLabel ?? 'Cancel'),
         ),
-        TextButton(
+        DialogAction(
           onPressed: () => Navigator.of(context).pop(true),
-          style: TextButton.styleFrom(
-            foregroundColor: materialTheme.colorScheme.error,
+          options: DialogActionOptions(
+            materialDialogActionOptions: MaterialDialogActionOptions(
+              textStyle: TextButton.styleFrom(
+                foregroundColor: materialTheme.colorScheme.error,
+              ),
+            ),
+            cupertinoDialogActionOptions: const CupertinoDialogActionOptions(
+              isDefaultAction: true,
+            ),
           ),
           child: Text(options.yesLabel ?? 'Yes'),
         ),

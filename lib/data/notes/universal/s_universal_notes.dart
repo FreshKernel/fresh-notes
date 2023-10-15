@@ -118,12 +118,15 @@ class UniversalNotesService extends AppService {
       newFileStartsWith: 'note-image-',
     ).toList();
 
-    // await _cloudStorageService.uploadMultipleFiles(
-    //   newFileNames.asMap().entries.map((e) {
-    //     final file = cachedImagesFiles[e.key];
-    //     return ('/notes/${e.value}', file);
-    //   }),
-    // );
+    if (syncOptions.isSyncWithCloud) {
+      await _cloudStorageService.uploadMultipleFiles(
+        newFileNames.asMap().entries.map((e) {
+          final file = cachedImagesFiles[e.key];
+          return ('/notes/${e.value}', file);
+        }),
+      );
+    }
+
     final newLocalFilePaths = await _localStorageService.copyMultipleFile(
       files: cachedImagesFiles.toList(),
       names: newFileNames.toList(),
@@ -216,11 +219,11 @@ class UniversalNotesService extends AppService {
     );
     allNotes.addAll(localNotes.map(UniversalNote.fromLocalNote));
 
-    final cloudNotes = await _cloudNotesService.getAll(
-      limit: limit,
-      page: page,
-    );
-    allNotes.addAll(cloudNotes.map(UniversalNote.fromCloudNote));
+    // final cloudNotes = await _cloudNotesService.getAll(
+    //   limit: limit,
+    //   page: page,
+    // );
+    // allNotes.addAll(cloudNotes.map(UniversalNote.fromCloudNote));
 
     _notes.addAll(allNotes);
     _notesStreamController.add(_notes);

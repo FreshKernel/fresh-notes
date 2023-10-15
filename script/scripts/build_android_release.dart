@@ -16,6 +16,8 @@ Future<void> buildAndroidRelease(List<String> args) async {
       args: [
         'build',
         'appbundle',
+        '--obfuscate',
+        '--split-debug-info=./build',
       ],
     );
   } on ProcessException catch (e) {

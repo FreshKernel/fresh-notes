@@ -22,19 +22,22 @@ class CloudStorageService extends CloudStorageRepository {
   Future<String?> getFileURL(String path) => _provider.getFileURL(path);
 
   @override
-  Future<String?> uploadFile(String path, File file) async {
+  Future<String> uploadFile(String path, File file) async {
     final fileExists = await file.exists();
     if (!fileExists) {
       throw CloudStorageFileNoFoundException(
         "The file: ${file.path} does not exists so can't upload it to $path",
       );
     }
-    await _provider.uploadFile(path, file);
-    return null;
+    final downloadUrl = await _provider.uploadFile(path, file);
+    return downloadUrl;
   }
 
   @override
-  Future<Iterable<String?>> uploadMultipleFiles(
-          Iterable<(String, File)> list) =>
+  Future<Iterable<String>> uploadMultipleFiles(Iterable<(String, File)> list) =>
       _provider.uploadMultipleFiles(list);
+
+  @override
+  Future<void> deleteMultipleFiles(Iterable<String> paths) =>
+      _provider.deleteMultipleFiles(paths);
 }

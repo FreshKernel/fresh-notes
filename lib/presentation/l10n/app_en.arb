@@ -1,6 +1,6 @@
 {
-    "helloWorld": "Hello World!",
-    "@helloWorld": {
-      "description": "The conventional newborn programmer greeting"
-    }
+    "app_name": "Fresh Notes",
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "report": "Report"
 }

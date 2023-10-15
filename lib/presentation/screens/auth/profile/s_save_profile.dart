@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../logic/auth/auth_user.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
 
 class SaveProfileScreen extends StatelessWidget {

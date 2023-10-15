@@ -7,6 +7,7 @@ import '../../logic/native/image/s_image_picker.dart';
 import '../log/logger.dart';
 import '../services/s_app.dart';
 import 'packages/firebase.dart';
+import 'packages/hydrated_bloc.dart';
 
 class AppStartup extends AppService {
   factory AppStartup.getInstance() => _instance;
@@ -15,6 +16,7 @@ class AppStartup extends AppService {
   static final _instance = AppStartup._();
 
   final _services = <AppService>[
+    HydratedBlocService(),
     FirebaseService.getInstance(),
     AuthService.getInstance(),
     ImagePickerService.getInstance(),

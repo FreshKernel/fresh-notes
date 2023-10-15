@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../logic/auth/cubit/auth_cubit.dart';
+import '../../utils/dialog/w_error_dialog.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
+import '../../utils/extensions/build_context_extensions.dart';
 
 class LogoutIconButton extends StatefulWidget {
   const LogoutIconButton({super.key});
@@ -45,11 +47,14 @@ class _LogoutIconButtonState extends State<LogoutIconButton> {
           return;
         }
         setState(() => _isLoading = false);
-        final messenger = ScaffoldMessenger.of(context);
 
-        messenger.showSnackBar(SnackBar(
-          content: Text('Unknown error: ${e.toString()}'),
-        ));
+        showErrorDialog(
+          context: context,
+          options: ErrorDialogOptions(
+            message: 'Unknown error: ${e.toString()}',
+            developerError: null,
+          ),
+        );
       },
       child: IconButton(
         tooltip: 'Logout',

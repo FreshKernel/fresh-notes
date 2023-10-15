@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../core/log/logger.dart';
 import '../../../data/notes/universal/s_universal_notes.dart';
+import '../../utils/platform_checker.dart';
 import '../auth_custom_provider.dart';
 import '../auth_exceptions.dart';
 import '../auth_service.dart';
@@ -105,6 +107,57 @@ class AuthCubit extends Cubit<AuthState> {
             accessToken: googleAuth?.accessToken,
           );
           break;
+        case AuthProvider.apple:
+          if (!PlatformChecker.isAppleSystem()) {
+            authCustomProvider = const AppleAuthCustomProvider(
+              identityToken: null,
+              authorizationCode: null,
+              userIdentifier: null,
+            );
+          } else {
+            try {
+              final credential = await SignInWithApple.getAppleIDCredential(
+                scopes: [
+                  AppleIDAuthorizationScopes.email,
+                  AppleIDAuthorizationScopes.fullName,
+                ],
+              );
+              final identitiyToken = credential.identityToken;
+              if (identitiyToken == null) {
+                AppLogger.error('Identity token is null');
+                return;
+              }
+              authCustomProvider = AppleAuthCustomProvider(
+                identityToken: identitiyToken,
+                authorizationCode: credential.authorizationCode,
+                userIdentifier: credential.userIdentifier,
+              );
+            } on SignInWithAppleException catch (e) {
+              if (e is SignInWithAppleAuthorizationException) {
+                print('My message is ${e.code}');
+                AppLogger.log('My message is ${e.code}');
+                switch (e.code) {
+                  case AuthorizationErrorCode.canceled:
+                    return;
+                  case AuthorizationErrorCode.failed:
+                    rethrow;
+                  case AuthorizationErrorCode.invalidResponse:
+                    rethrow;
+                  case AuthorizationErrorCode.notHandled:
+                    rethrow;
+                  case AuthorizationErrorCode.notInteractive:
+                    return;
+                  case AuthorizationErrorCode.unknown:
+                    // return;
+                    rethrow;
+                }
+              }
+              AppLogger.error(
+                'Error in sign in with apple: ${e.toString()} ${e.runtimeType}',
+              );
+              rethrow;
+            }
+          }
       }
       final user =
           await _authService.authenticateWithCustomProvider(authCustomProvider);

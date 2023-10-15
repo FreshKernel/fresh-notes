@@ -34,8 +34,8 @@ class AppLogger {
     );
   }
 
-  static void error(
-    String message, {
+  static void error<T>(
+    T message, {
     DateTime? time,
     int? sequenceNumber,
     int level = 0,
@@ -49,7 +49,7 @@ class AppLogger {
     }
 
     dev.log(
-      message,
+      message.toString(),
       time: time,
       sequenceNumber: sequenceNumber,
       level: level,

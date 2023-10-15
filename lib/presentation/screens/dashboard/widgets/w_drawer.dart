@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
+import '../../settings/s_settings.dart';
 
 class DashboardDrawer extends StatelessWidget {
   const DashboardDrawer({super.key});
@@ -20,8 +21,8 @@ class DashboardDrawer extends StatelessWidget {
       subtitle: Text(subtitle),
       onTap: () {
         final navigator = Navigator.of(context);
-        onTap();
         navigator.pop();
+        onTap();
       },
       leading: icon,
     );
@@ -62,10 +63,12 @@ class DashboardDrawer extends StatelessWidget {
             ),
             _buildItem(
               context: context,
-              title: 'My title',
-              subtitle: 'My sub title',
-              icon: const Icon(Icons.add),
-              onTap: () {},
+              title: 'Settings',
+              subtitle: 'Edit your settings',
+              icon: const Icon(Icons.settings),
+              onTap: () {
+                Navigator.of(context).pushNamed(SettingsScreen.routeName);
+              },
             ),
             const ListBody(),
           ],

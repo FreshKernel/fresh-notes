@@ -1,4 +1,8 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart'
+    show FlutterError, PlatformDispatcher, kDebugMode;
 import '../../services/exceptions.dart';
 import '../../services/s_app.dart';
 
@@ -12,6 +16,19 @@ class FirebaseService extends AppService {
   @override
   Future<void> initialize() async {
     await Firebase.initializeApp();
+    if (kDebugMode) {
+      await FirebaseAppCheck.instance.activate(
+        androidProvider: AndroidProvider.debug,
+        appleProvider: AppleProvider.debug,
+      );
+    } else {
+      await FirebaseAppCheck.instance.activate();
+    }
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
     _isFirebaseInitialized = true;
   }
 

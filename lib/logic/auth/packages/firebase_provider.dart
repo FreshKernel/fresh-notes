@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart'
     show
+        AppleAuthCredential,
+        AppleAuthProvider,
         ConfirmationResult,
         FirebaseAuth,
         FirebaseAuthException,
@@ -350,6 +352,22 @@ class FirebaseAuthProviderImpl extends AuthRepository {
               idToken: authCustomProvider.idToken,
             ),
           );
+          final user = result.user;
+          if (user == null) {
+            throw const AuthException(
+              'We have logged in but firebase sdk stil return the user as nullable.',
+              type: AuthErrorType.userStillNotLoggedIn,
+            );
+          }
+          return AuthUser.fromFirebase(user);
+        case AppleAuthCustomProvider():
+          final identityToken = authCustomProvider.identityToken;
+          final result = identityToken != null
+              ? await FirebaseAuth.instance.signInWithCredential(
+                  AppleAuthProvider.credential(identityToken),
+                )
+              : await FirebaseAuth.instance
+                  .signInWithProvider(AppleAuthProvider());
           final user = result.user;
           if (user == null) {
             throw const AuthException(

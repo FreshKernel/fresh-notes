@@ -1,0 +1,80 @@
+rules_version = '2';
+
+service cloud.firestore {
+
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+  	    return request.auth != null;
+    }
+    
+    function isAccountVerified() {
+        return request.auth.token.email_verified;
+    }
+    
+    function getUserId() {
+        return request.auth.uid;
+    } 
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    match /notes/{noteId} {
+    // To allow sharing notes
+   	 allow get: if isAuthenticated() && resource.data != null && 
+     resource.data.isPrivate == false;
+
+     // For the user notes
+     allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+     // Validate the inputs
+     allow create: if isAuthenticated() && isValidCreateNoteInput();
+     allow update: if isAuthenticated() && isValidUpdateNoteInput();
+
+     // Only the user can delete his own notes
+     allow delete: if isAuthenticated() && canDeleteResource();
+     
+     function isValidCreateNoteInput() {
+     	let resourceData = request.resource.data;
+     	return isAccountVerified() &&
+      resourceData.keys().toSet().hasOnly([
+      'userId','text', 
+      'isPrivate',
+      'createdAt',
+      'updatedAt'
+      ]) &&
+      resourceData.userId is string &&
+      resourceData.userId == getUserId() &&
+      resourceData.createdAt == request.time &&
+      resourceData.updatedAt == request.time &&
+      resourceData.text is string &&
+      resourceData.isPrivate is bool;
+     }
+     
+     function isValidUpdateNoteInput() {
+     	let resourceData = request.resource.data;
+     	return isAccountVerified() &&
+      resource.data.userId != getUserId() &&
+      resourceData.keys().toSet().hasOnly([
+        'text', 'isPrivate', 'updatedAt'
+        ]) &&
+      resourceData.updatedAt == request.time &&
+      resourceData.text is string &&
+      resourceData.isPrivate is bool;
+     }
+
+     function canDeleteResource() {
+        let resourceData = resource.data;
+        return resourceData != null &&
+          resourceData.userId == getUserId();
+      }
+
+    function canReadResource() {
+      let resourceData = resource.data;
+      return resourceData != null &&
+          (resourceData.isPrivate == false || resourceData.userId == getUserId());
+    	}
+		}
+    
+  }
+  
+}

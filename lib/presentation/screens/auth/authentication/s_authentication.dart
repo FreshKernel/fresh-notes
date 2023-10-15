@@ -9,6 +9,8 @@ import '../../../../logic/core/api/api_exceptions.dart';
 import '../../../components/auth/w_email_field.dart';
 import '../../../components/auth/w_password_field.dart';
 import '../../../utils/dialog/w_app_dialog.dart';
+import '../../../utils/dialog/w_error_dialog.dart';
+import '../../../utils/extensions/build_context_extensions.dart';
 import 'w_forgot_password.dart';
 
 class AuthenticationScreen extends StatefulWidget {
@@ -42,48 +44,52 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         // If the user logged in in the new state
         // then we don't want to rebuilt the widget
         // since he will navigate to new screen anyway
+
         if (state is! AuthStateUnAuthenticated) {
           return;
         }
-        final messenger = ScaffoldMessenger.of(context);
+        final messenger = context.messenger;
 
         final e = state.exception;
         if (e == null) {
           if (state.lastAction ==
               AuthStateUnAuthenticatedAction.sendResetPasswordLinkToEmail) {
-            messenger.showSnackBar(const SnackBar(
-              content: Text(
-                'If your emaill adress is exists. Please check your email inbox',
-              ),
-            ));
+            messenger.showMessage(
+              'If your emaill adress is exists. Please check your email inbox',
+            );
           }
           return;
         }
-        messenger.clearSnackBars();
 
-        var error =
-            'Unknown error. Please contact support with ${e.toString()}';
+        var error = 'Unknown error. ${e.toString()}';
+        var isDevError = true;
         if (e is AuthException) {
           switch (e.type) {
             case AuthErrorType.userNotFound:
               error = 'We could not find this user.';
+              isDevError = false;
               break;
             case AuthErrorType.invalidCredentials:
               error = 'Invalid credentials.';
+              isDevError = false;
               break;
             case AuthErrorType.weakPassword:
               error = 'Please enter strong password.';
+              isDevError = false;
               break;
             case AuthErrorType.emailAlreadyInUse:
               error = 'Please try using different email address.';
+              isDevError = false;
               break;
             case AuthErrorType.userAccountIsDisabled:
               error =
                   'Your account is disabled. Please contact with the support for more information.';
+              isDevError = false;
               break;
             case AuthErrorType.tooManyAuthenticateRequests:
               error =
                   'You have sent too many requests. Please try again later.';
+              isDevError = false;
               break;
             default:
               error =
@@ -94,11 +100,22 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
         if (e is NetworkRequestException) {
           error = 'Please check your internet connection.';
+          isDevError = false;
         }
 
-        messenger.showSnackBar(SnackBar(
-          content: Text(error),
-        ));
+        showErrorDialog(
+          context: context,
+          options: ErrorDialogOptions(
+            title: 'Authentication error',
+            message: error,
+            developerError: isDevError
+                ? DeveloperErrorDialog(
+                    exception: e,
+                    stackTrace: StackTrace.current,
+                  )
+                : null,
+          ),
+        );
       },
       child: Scaffold(
         appBar: AppBar(
@@ -171,6 +188,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               icon: const Icon(Icons.facebook),
                               label: const Text('Google'),
                             ),
+                            OutlinedButton.icon(
+                              onPressed: () async {
+                                final authBloc = context.read<AuthCubit>();
+                                setState(() => _isLoading = true);
+                                await authBloc.authenticateWithCustomProvider(
+                                  AuthProvider.apple,
+                                );
+                                setState(() => _isLoading = false);
+                              },
+                              icon: const Icon(Icons.apple),
+                              label: const Text('Apple'),
+                            ),
                           ],
                         );
                       },
@@ -211,14 +240,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     final password = _passwordController.text;
     final isValid = _formKey.currentState?.validate() ?? false;
 
-    final messenger = ScaffoldMessenger.of(context);
-
-    messenger.clearSnackBars();
+    final messenger = context.messenger;
     if (!isValid) {
-      messenger.showSnackBar(
-        const SnackBar(
-          content: Text('Please enter your data.'),
-        ),
+      messenger.showMessage(
+        'Please enter your data.',
       );
       return;
     }

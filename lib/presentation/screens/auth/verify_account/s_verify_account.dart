@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../logic/auth/auth_exceptions.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
 import '../../../../logic/core/api/api_exceptions.dart';
+import '../../../utils/dialog/w_error_dialog.dart';
+import '../../../utils/extensions/build_context_extensions.dart';
 
 class VerifyAccountScreen extends StatefulWidget {
   const VerifyAccountScreen({super.key});
@@ -32,23 +34,17 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
     setState(() => _isLoading = false);
   }
 
-  void _showErrorMessage(
-    String error, {
-    required ScaffoldMessengerState messenger,
-  }) {
-    messenger.clearSnackBars();
-    messenger.showSnackBar(SnackBar(content: Text(error)));
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        final messenger = ScaffoldMessenger.of(context);
+        final messenger = context.messenger;
 
         // When user account is deleted for example.
         if (state is AuthStateUnAuthenticated) {
-          _showErrorMessage('Logging out...', messenger: messenger);
+          messenger.showMessage(
+            'Logging out...',
+          );
           return;
         }
         // We don't want to handle any other
@@ -64,15 +60,17 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
         }
         // If it network exception
         if (exception is NetworkRequestException) {
-          _showErrorMessage('Please check your internet connection.',
-              messenger: messenger);
+          messenger.showMessage(
+            'Please check your internet connection.',
+            useSnackBar: false,
+          );
           return;
         }
         // If it's not AuthException
         if (exception is! AuthException) {
-          _showErrorMessage(
+          messenger.showMessage(
             'Unknown error: ${exception.toString()}',
-            messenger: messenger,
+            useSnackBar: false,
           );
           return;
         }
@@ -80,27 +78,33 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
         // AuthException
         switch (exception.type) {
           case AuthErrorType.accountNotVerified:
-            _showErrorMessage(
+            messenger.showMessage(
               'Your account is still not verified.',
-              messenger: messenger,
+              useSnackBar: false,
             );
             break;
           case AuthErrorType.tooManyAuthenticateRequests:
-            _showErrorMessage(
+            messenger.showMessage(
               'Too many requests. Please try again later.',
-              messenger: messenger,
+              useSnackBar: false,
             );
             break;
           case AuthErrorType.userAccountIsDisabled:
-            _showErrorMessage(
+            messenger.showMessage(
               'Your account has been disabled. Please contact the support for more information.',
-              messenger: messenger,
+              useSnackBar: false,
             );
             break;
           default:
-            _showErrorMessage(
-              'Unknown auth error: $exception',
-              messenger: messenger,
+            showErrorDialog(
+              context: context,
+              options: ErrorDialogOptions(
+                message: 'Unknown auth error: $exception',
+                developerError: DeveloperErrorDialog(
+                  exception: exception,
+                  stackTrace: StackTrace.current,
+                ),
+              ),
             );
             break;
         }

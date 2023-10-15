@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 
 import '../../../../../data/notes/universal/models/m_note.dart';
 import '../../../../../data/notes/universal/s_universal_notes.dart';
+import '../../../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../../../logic/utils/extensions/string.dart';
 import '../../../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../../save_note/s_save_note.dart';
@@ -72,13 +74,17 @@ class NoteItem extends StatelessWidget {
           return IconButton(
             tooltip: 'Delete',
             onPressed: () async {
-              final deletedConfirmed = await showYesCancelDialog(
-                context: context,
-                options: const YesOrCancelDialogOptions(
-                  title: 'Delete note',
-                  message: 'Are you sure you want to delete this note',
-                ),
-              );
+              final shouldConfirmDelete =
+                  context.read<SettingsCubit>().state.confirmDeleteNote;
+              final deletedConfirmed = shouldConfirmDelete
+                  ? await showYesCancelDialog(
+                      context: context,
+                      options: const YesOrCancelDialogOptions(
+                        title: 'Delete note',
+                        message: 'Are you sure you want to delete this note',
+                      ),
+                    )
+                  : true;
               if (!deletedConfirmed) {
                 return;
               }
