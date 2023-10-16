@@ -1,3 +1,5 @@
+# App is not ready and it's expermintal for now
+
 `dart run build_runner build --delete-conflicting-outputs`
 `flutter pub upgrade --major-versions`
 

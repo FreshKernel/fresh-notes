@@ -176,30 +176,38 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               onPressed: _forgotPassword,
                               child: const Text('Forgot password?'),
                             ),
-                            OutlinedButton.icon(
-                              onPressed: () async {
-                                final authBloc = context.read<AuthCubit>();
-                                setState(() => _isLoading = true);
-                                await authBloc.authenticateWithCustomProvider(
-                                  AuthProvider.google,
-                                );
-                                setState(() => _isLoading = false);
-                              },
-                              icon: const Icon(Icons.facebook),
-                              label: const Text('Google'),
-                            ),
-                            OutlinedButton.icon(
-                              onPressed: () async {
-                                final authBloc = context.read<AuthCubit>();
-                                setState(() => _isLoading = true);
-                                await authBloc.authenticateWithCustomProvider(
-                                  AuthProvider.apple,
-                                );
-                                setState(() => _isLoading = false);
-                              },
-                              icon: const Icon(Icons.apple),
-                              label: const Text('Apple'),
-                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                OutlinedButton.icon(
+                                  onPressed: () async {
+                                    final authBloc = context.read<AuthCubit>();
+                                    setState(() => _isLoading = true);
+                                    await authBloc
+                                        .authenticateWithCustomProvider(
+                                      AuthProvider.google,
+                                    );
+                                    setState(() => _isLoading = false);
+                                  },
+                                  icon: const Icon(Icons.facebook),
+                                  label: const Text('Google'),
+                                ),
+                                const SizedBox(width: 8),
+                                OutlinedButton.icon(
+                                  onPressed: () async {
+                                    final authBloc = context.read<AuthCubit>();
+                                    setState(() => _isLoading = true);
+                                    await authBloc
+                                        .authenticateWithCustomProvider(
+                                      AuthProvider.apple,
+                                    );
+                                    setState(() => _isLoading = false);
+                                  },
+                                  icon: const Icon(Icons.apple),
+                                  label: const Text('Apple'),
+                                ),
+                              ],
+                            )
                           ],
                         );
                       },

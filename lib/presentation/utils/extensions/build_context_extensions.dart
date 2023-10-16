@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart'
     show BuildContext, ModalRoute, Navigator, NavigatorState;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,5 +31,9 @@ extension BuildContextExtensions on BuildContext {
 
   NavigatorState get navigator {
     return Navigator.of(this);
+  }
+
+  bool get isDark {
+    return Theme.of(this).brightness == Brightness.dark;
   }
 }

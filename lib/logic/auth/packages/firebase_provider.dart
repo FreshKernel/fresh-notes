@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart'
     show
-        AppleAuthCredential,
         AppleAuthProvider,
         ConfirmationResult,
         FirebaseAuth,
         FirebaseAuthException,
-        GoogleAuthProvider;
+        GoogleAuthProvider,
+        OAuthProvider;
 
 import '../../core/api/api_exceptions.dart';
 import '../auth_custom_provider.dart';
@@ -142,6 +142,8 @@ class FirebaseAuthProviderImpl extends AuthRepository {
     } on FirebaseAuthException catch (e) {
       _defaultErrorsHanlders(e);
       switch (e.code) {
+        case 'user-token-expired':
+          return null;
         case 'user-not-found':
           return null; // handle when the user is not logged in anymore
         default:
@@ -170,7 +172,7 @@ class FirebaseAuthProviderImpl extends AuthRepository {
       await user.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       _defaultErrorsHanlders(e);
-      _defaultErrorHandlersForAuth(e);
+      _defaultErrorHandlersForAuthProcess(e);
       switch (e.code) {
         default:
           throw AuthException(
@@ -244,7 +246,7 @@ class FirebaseAuthProviderImpl extends AuthRepository {
       return newUser;
     } on FirebaseAuthException catch (e) {
       _defaultErrorsHanlders(e);
-      _defaultErrorHandlersForAuth(e);
+      _defaultErrorHandlersForAuthProcess(e);
       switch (e.code) {
         case 'invalid-email':
           throw const AuthException(
@@ -294,7 +296,7 @@ class FirebaseAuthProviderImpl extends AuthRepository {
       }
       return newUser;
     } on FirebaseAuthException catch (e) {
-      _defaultErrorHandlersForAuth(e);
+      _defaultErrorHandlersForAuthProcess(e);
       _defaultErrorsHanlders(e);
       switch (e.code) {
         case 'invalid-email':
@@ -362,12 +364,17 @@ class FirebaseAuthProviderImpl extends AuthRepository {
           return AuthUser.fromFirebase(user);
         case AppleAuthCustomProvider():
           final identityToken = authCustomProvider.identityToken;
+          final oAuthProvider = OAuthProvider('apple.com');
+
           final result = identityToken != null
               ? await FirebaseAuth.instance.signInWithCredential(
-                  AppleAuthProvider.credential(identityToken),
+                  oAuthProvider.credential(
+                    accessToken: authCustomProvider.authorizationCode,
+                    idToken: identityToken,
+                  ),
                 )
               : await FirebaseAuth.instance
-                  .signInWithProvider(AppleAuthProvider());
+                  .signInWithProvider(AppleAuthProvider()..addScope('email'));
           final user = result.user;
           if (user == null) {
             throw const AuthException(
@@ -379,7 +386,7 @@ class FirebaseAuthProviderImpl extends AuthRepository {
       }
     } on FirebaseAuthException catch (e) {
       _defaultErrorsHanlders(e);
-      _defaultErrorHandlersForAuth(e);
+      _defaultErrorHandlersForAuthProcess(e);
       switch (e.code) {
         case 'account-exists-with-different-credential':
           throw const AuthException(
@@ -457,7 +464,7 @@ class FirebaseAuthProviderImpl extends AuthRepository {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      _defaultErrorHandlersForAuth(e);
+      _defaultErrorHandlersForAuthProcess(e);
       _defaultErrorsHanlders(e);
       switch (e.code) {
         case 'user-not-found':
@@ -509,7 +516,7 @@ class FirebaseAuthProviderImpl extends AuthRepository {
         ),
       );
     } on FirebaseAuthException catch (e) {
-      _defaultErrorHandlersForAuth(e);
+      _defaultErrorHandlersForAuthProcess(e);
       _defaultErrorsHanlders(e);
       switch (e.code) {
         default:
@@ -540,12 +547,17 @@ class FirebaseAuthProviderImpl extends AuthRepository {
     }
   }
 
-  void _defaultErrorHandlersForAuth(FirebaseAuthException e) {
+  void _defaultErrorHandlersForAuthProcess(FirebaseAuthException e) {
     switch (e.code) {
       case 'too-many-requests':
         throw const AuthException(
           'Firebase sdk told us that the user is trying to authenticate with wrong informations too many times, please ask him to try again.',
           type: AuthErrorType.tooManyAuthenticateRequests,
+        );
+      case 'user-token-expired':
+        throw const AuthException(
+          'The user is no longer authenticated since his token has been expired',
+          type: AuthErrorType.userNotLoggedInAnymore,
         );
     }
   }

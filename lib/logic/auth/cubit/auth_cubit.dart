@@ -20,6 +20,8 @@ class AuthCubit extends Cubit<AuthState> {
   final _notesService = UniversalNotesService.getInstance();
 
   Future<void> verifyAccountVerification() async {
+    final currentUser = _authService.requireCurrentUser(
+        'In order to verify the account, user must be authenticated.');
     try {
       final reloadedUser = await _authService.reloadTheCurrentUser();
       if (reloadedUser == null) {
@@ -46,7 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthStateAuthenticated(user: reloadedUser, exception: null));
     } on Exception catch (e, stacktrace) {
       emit(AuthStateAuthenticated(
-        user: _authService.requireCurrentUser(null),
+        user: currentUser,
         exception: e,
       ));
       AppLogger.error(
@@ -108,7 +110,13 @@ class AuthCubit extends Cubit<AuthState> {
           );
           break;
         case AuthProvider.apple:
+          final isAvaliable = await SignInWithApple.isAvailable();
+          if (!isAvaliable) {
+            AppLogger.error('Sign in with apple is not avaliable.');
+            return;
+          }
           if (!PlatformChecker.isAppleSystem()) {
+            // Let firebase handle the web sign in for us
             authCustomProvider = const AppleAuthCustomProvider(
               identityToken: null,
               authorizationCode: null,
@@ -134,8 +142,7 @@ class AuthCubit extends Cubit<AuthState> {
               );
             } on SignInWithAppleException catch (e) {
               if (e is SignInWithAppleAuthorizationException) {
-                print('My message is ${e.code}');
-                AppLogger.log('My message is ${e.code}');
+                AppLogger.log('Sign in with apple result is ${e.code}');
                 switch (e.code) {
                   case AuthorizationErrorCode.canceled:
                     return;

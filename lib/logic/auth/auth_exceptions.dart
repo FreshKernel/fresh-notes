@@ -35,6 +35,6 @@ class AuthException extends AppException {
 
   @override
   String toString() {
-    return 'Auth exception of type: ${type.name}';
+    return 'Auth exception of type: ${type.name} and message $message';
   }
 }

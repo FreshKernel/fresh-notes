@@ -32,6 +32,4 @@ final class AppleAuthCustomProvider extends AuthCustomProvider {
   final String? identityToken;
   final String? authorizationCode;
   final String? userIdentifier;
-
-  void get accessToken {}
 }

@@ -12,9 +12,13 @@ _$SettingsStateImpl _$$SettingsStateImplFromJson(Map<String, dynamic> json) =>
       syncWithCloudDefaultValue:
           json['syncWithCloudDefaultValue'] as bool? ?? false,
       onlySaveDataWhenClick: json['onlySaveDataWhenClick'] as bool? ?? true,
+      darkDuringDayInAutoMode: json['darkDuringDayInAutoMode'] ?? false,
       themeMode:
           $enumDecodeNullable(_$AppThemeModeEnumMap, json['themeMode']) ??
               AppThemeMode.system,
+      appLanguague:
+          $enumDecodeNullable(_$AppLanguagueEnumMap, json['appLanguague']) ??
+              AppLanguague.system,
     );
 
 Map<String, dynamic> _$$SettingsStateImplToJson(_$SettingsStateImpl instance) =>
@@ -22,11 +26,20 @@ Map<String, dynamic> _$$SettingsStateImplToJson(_$SettingsStateImpl instance) =>
       'confirmDeleteNote': instance.confirmDeleteNote,
       'syncWithCloudDefaultValue': instance.syncWithCloudDefaultValue,
       'onlySaveDataWhenClick': instance.onlySaveDataWhenClick,
+      'darkDuringDayInAutoMode': instance.darkDuringDayInAutoMode,
       'themeMode': _$AppThemeModeEnumMap[instance.themeMode]!,
+      'appLanguague': _$AppLanguagueEnumMap[instance.appLanguague]!,
     };
 
 const _$AppThemeModeEnumMap = {
   AppThemeMode.dark: 'dark',
   AppThemeMode.light: 'light',
   AppThemeMode.system: 'system',
+  AppThemeMode.auto: 'auto',
+};
+
+const _$AppLanguagueEnumMap = {
+  AppLanguague.en: 'en',
+  AppLanguague.ar: 'ar',
+  AppLanguague.system: 'system',
 };

@@ -17,7 +17,7 @@ import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../logic/utils/platform_checker.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../utils/extensions/build_context_extensions.dart';
-import 'w_select_image_source_dialog.dart';
+import 'w_select_image_source.dart';
 
 class SaveNoteScreenArgs {
   const SaveNoteScreenArgs({

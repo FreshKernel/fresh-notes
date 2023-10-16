@@ -23,7 +23,9 @@ mixin _$SettingsState {
   bool get confirmDeleteNote => throw _privateConstructorUsedError;
   bool get syncWithCloudDefaultValue => throw _privateConstructorUsedError;
   bool get onlySaveDataWhenClick => throw _privateConstructorUsedError;
+  dynamic get darkDuringDayInAutoMode => throw _privateConstructorUsedError;
   AppThemeMode get themeMode => throw _privateConstructorUsedError;
+  AppLanguague get appLanguague => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +43,9 @@ abstract class $SettingsStateCopyWith<$Res> {
       {bool confirmDeleteNote,
       bool syncWithCloudDefaultValue,
       bool onlySaveDataWhenClick,
-      AppThemeMode themeMode});
+      dynamic darkDuringDayInAutoMode,
+      AppThemeMode themeMode,
+      AppLanguague appLanguague});
 }
 
 /// @nodoc
@@ -60,7 +64,9 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
     Object? confirmDeleteNote = null,
     Object? syncWithCloudDefaultValue = null,
     Object? onlySaveDataWhenClick = null,
+    Object? darkDuringDayInAutoMode = freezed,
     Object? themeMode = null,
+    Object? appLanguague = null,
   }) {
     return _then(_value.copyWith(
       confirmDeleteNote: null == confirmDeleteNote
@@ -75,10 +81,18 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
           ? _value.onlySaveDataWhenClick
           : onlySaveDataWhenClick // ignore: cast_nullable_to_non_nullable
               as bool,
+      darkDuringDayInAutoMode: freezed == darkDuringDayInAutoMode
+          ? _value.darkDuringDayInAutoMode
+          : darkDuringDayInAutoMode // ignore: cast_nullable_to_non_nullable
+              as dynamic,
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
               as AppThemeMode,
+      appLanguague: null == appLanguague
+          ? _value.appLanguague
+          : appLanguague // ignore: cast_nullable_to_non_nullable
+              as AppLanguague,
     ) as $Val);
   }
 }
@@ -95,7 +109,9 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
       {bool confirmDeleteNote,
       bool syncWithCloudDefaultValue,
       bool onlySaveDataWhenClick,
-      AppThemeMode themeMode});
+      dynamic darkDuringDayInAutoMode,
+      AppThemeMode themeMode,
+      AppLanguague appLanguague});
 }
 
 /// @nodoc
@@ -112,7 +128,9 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
     Object? confirmDeleteNote = null,
     Object? syncWithCloudDefaultValue = null,
     Object? onlySaveDataWhenClick = null,
+    Object? darkDuringDayInAutoMode = freezed,
     Object? themeMode = null,
+    Object? appLanguague = null,
   }) {
     return _then(_$SettingsStateImpl(
       confirmDeleteNote: null == confirmDeleteNote
@@ -127,10 +145,17 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
           ? _value.onlySaveDataWhenClick
           : onlySaveDataWhenClick // ignore: cast_nullable_to_non_nullable
               as bool,
+      darkDuringDayInAutoMode: freezed == darkDuringDayInAutoMode
+          ? _value.darkDuringDayInAutoMode!
+          : darkDuringDayInAutoMode,
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
               as AppThemeMode,
+      appLanguague: null == appLanguague
+          ? _value.appLanguague
+          : appLanguague // ignore: cast_nullable_to_non_nullable
+              as AppLanguague,
     ));
   }
 }
@@ -142,7 +167,9 @@ class _$SettingsStateImpl implements _SettingsState {
       {this.confirmDeleteNote = true,
       this.syncWithCloudDefaultValue = false,
       this.onlySaveDataWhenClick = true,
-      this.themeMode = AppThemeMode.system});
+      this.darkDuringDayInAutoMode = false,
+      this.themeMode = AppThemeMode.system,
+      this.appLanguague = AppLanguague.system});
 
   factory _$SettingsStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$SettingsStateImplFromJson(json);
@@ -158,11 +185,17 @@ class _$SettingsStateImpl implements _SettingsState {
   final bool onlySaveDataWhenClick;
   @override
   @JsonKey()
+  final dynamic darkDuringDayInAutoMode;
+  @override
+  @JsonKey()
   final AppThemeMode themeMode;
+  @override
+  @JsonKey()
+  final AppLanguague appLanguague;
 
   @override
   String toString() {
-    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, themeMode: $themeMode)';
+    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, themeMode: $themeMode, appLanguague: $appLanguague)';
   }
 
   @override
@@ -177,14 +210,24 @@ class _$SettingsStateImpl implements _SettingsState {
                 other.syncWithCloudDefaultValue == syncWithCloudDefaultValue) &&
             (identical(other.onlySaveDataWhenClick, onlySaveDataWhenClick) ||
                 other.onlySaveDataWhenClick == onlySaveDataWhenClick) &&
+            const DeepCollectionEquality().equals(
+                other.darkDuringDayInAutoMode, darkDuringDayInAutoMode) &&
             (identical(other.themeMode, themeMode) ||
-                other.themeMode == themeMode));
+                other.themeMode == themeMode) &&
+            (identical(other.appLanguague, appLanguague) ||
+                other.appLanguague == appLanguague));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, confirmDeleteNote,
-      syncWithCloudDefaultValue, onlySaveDataWhenClick, themeMode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      confirmDeleteNote,
+      syncWithCloudDefaultValue,
+      onlySaveDataWhenClick,
+      const DeepCollectionEquality().hash(darkDuringDayInAutoMode),
+      themeMode,
+      appLanguague);
 
   @JsonKey(ignore: true)
   @override
@@ -205,7 +248,9 @@ abstract class _SettingsState implements SettingsState {
       {final bool confirmDeleteNote,
       final bool syncWithCloudDefaultValue,
       final bool onlySaveDataWhenClick,
-      final AppThemeMode themeMode}) = _$SettingsStateImpl;
+      final dynamic darkDuringDayInAutoMode,
+      final AppThemeMode themeMode,
+      final AppLanguague appLanguague}) = _$SettingsStateImpl;
 
   factory _SettingsState.fromJson(Map<String, dynamic> json) =
       _$SettingsStateImpl.fromJson;
@@ -217,7 +262,11 @@ abstract class _SettingsState implements SettingsState {
   @override
   bool get onlySaveDataWhenClick;
   @override
+  dynamic get darkDuringDayInAutoMode;
+  @override
   AppThemeMode get themeMode;
+  @override
+  AppLanguague get appLanguague;
   @override
   @JsonKey(ignore: true)
   _$$SettingsStateImplCopyWith<_$SettingsStateImpl> get copyWith =>

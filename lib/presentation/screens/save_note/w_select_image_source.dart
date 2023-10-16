@@ -7,7 +7,7 @@ class SelectImageSourceDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 150,
+      height: 230,
       width: double.infinity,
       child: SingleChildScrollView(
         child: Column(

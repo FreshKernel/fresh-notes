@@ -18,11 +18,11 @@ class AppRouter {
       'pathSegments ${pathSegments.toString()}, length ${pathSegments.length}',
     );
 
-    if (name == HomeWidget.routeName) {
+    if (name == MyHomeWidget.routeName) {
       return MaterialPageRoute(
-        settings: const RouteSettings(name: HomeWidget.routeName),
+        settings: const RouteSettings(name: MyHomeWidget.routeName),
         builder: (context) {
-          return const HomeWidget();
+          return const MyHomeWidget();
         },
       );
     }

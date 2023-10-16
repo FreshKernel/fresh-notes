@@ -50,12 +50,21 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (previous, current) {
-          return previous.themeMode != current.themeMode;
+          // Rebuild the whole app only if the themeMode
+          // darkDuringDayInAutoMode or appLanguague changes
+
+          return previous.themeMode != current.themeMode ||
+              previous.darkDuringDayInAutoMode !=
+                  current.darkDuringDayInAutoMode ||
+              previous.appLanguague != current.appLanguague;
         },
         builder: (context, state) {
           AppLogger.log('Building the MyApp() widget...');
           return MaterialApp(
             debugShowCheckedModeBanner: false,
+            locale: state.appLanguague == AppLanguague.system
+                ? null
+                : Locale(state.appLanguague.name),
             title: 'Fresh notes',
             theme: ThemeData(
               brightness: Brightness.light,
@@ -69,7 +78,10 @@ class MyApp extends StatelessWidget {
               visualDensity: VisualDensity.adaptivePlatformDensity,
               colorScheme: darkColorScheme,
             ),
-            themeMode: state.themeMode.toMaterialThemeMode(),
+            themeMode: state.themeMode.toMaterialThemeMode(
+              darkDuringDayInAutoMode: state.darkDuringDayInAutoMode,
+            ),
+            initialRoute: MyHomeWidget.routeName,
             onGenerateRoute: AppRouter.onGenerateRoute,
             onUnknownRoute: AppRouter.onUnknownRoute,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -84,8 +96,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomeWidget extends StatelessWidget {
-  const HomeWidget({super.key});
+class MyHomeWidget extends StatelessWidget {
+  const MyHomeWidget({super.key});
 
   static const routeName = '/';
 
