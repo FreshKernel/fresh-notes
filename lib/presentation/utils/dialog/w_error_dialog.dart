@@ -53,7 +53,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
       content: Text(widget.options.message),
       actions: [
         if (_isDevError)
-          DialogAction(
+          AppDialogAction(
             onPressed: _isLoading
                 ? null
                 : () async {
@@ -83,7 +83,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
             ),
             child: Text(context.loc.report),
           ),
-        DialogAction(
+        AppDialogAction(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(context.loc.ok),
         ),

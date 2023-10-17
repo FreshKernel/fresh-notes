@@ -35,6 +35,9 @@ class FirebaseService extends AppService {
     };
     if (kDebugMode) {
       const host = 'localhost';
+      // if (PlatformChecker.isAndroid()) {
+      //   host = '10.0.0.2';
+      // }
       try {
         FirebaseFirestore.instance.useFirestoreEmulator(host, 8082);
         await FirebaseAuth.instance.useAuthEmulator(host, 9092);

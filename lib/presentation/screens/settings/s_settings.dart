@@ -104,6 +104,25 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  if (context.isMaterial)
+                    CheckboxListTile.adaptive(
+                      title: const Text('Use classic material'),
+                      subtitle: const Text(
+                        'Do you want to use the good old material 2 theme design?',
+                      ),
+                      secondary: const Icon(Icons.android),
+                      value: state.themeSystem == AppThemeSystem.material2,
+                      onChanged: (value) {
+                        final settingsBloc = context.read<SettingsCubit>();
+                        settingsBloc.updateSettings(
+                          settingsBloc.state.copyWith(
+                            themeSystem: (value ?? false)
+                                ? AppThemeSystem.material2
+                                : AppThemeSystem.material3,
+                          ),
+                        );
+                      },
+                    ),
                 ],
               ),
             );

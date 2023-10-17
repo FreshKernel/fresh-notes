@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill_extensions/embeds/embed_types.dart';
+
+import 'w_note_editor_toolbar.dart';
 
 class SelectImageSourceDialog extends StatelessWidget {
   const SelectImageSourceDialog({super.key});
@@ -18,7 +19,7 @@ class SelectImageSourceDialog extends StatelessWidget {
                 'Pick a photo from your gallery',
               ),
               leading: const Icon(Icons.photo_sharp),
-              onTap: () => Navigator.of(context).pop(MediaPickSetting.Gallery),
+              onTap: () => Navigator.of(context).pop(InsertImageSource.gallery),
             ),
             ListTile(
               title: const Text('Camera'),
@@ -26,7 +27,7 @@ class SelectImageSourceDialog extends StatelessWidget {
                 'Take a photo using your phone camera',
               ),
               leading: const Icon(Icons.camera),
-              onTap: () => Navigator.of(context).pop(MediaPickSetting.Camera),
+              onTap: () => Navigator.of(context).pop(InsertImageSource.camera),
             ),
             ListTile(
               title: const Text('Link'),
@@ -34,7 +35,7 @@ class SelectImageSourceDialog extends StatelessWidget {
                 'Paste a photo using https link',
               ),
               leading: const Icon(Icons.link),
-              onTap: () => Navigator.of(context).pop(MediaPickSetting.Link),
+              onTap: () => Navigator.of(context).pop(InsertImageSource.link),
             ),
           ],
         ),

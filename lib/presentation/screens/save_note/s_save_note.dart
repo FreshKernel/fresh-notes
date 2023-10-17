@@ -15,9 +15,10 @@ import '../../../logic/native/image/s_image_picker.dart';
 import '../../../logic/native/share/s_app_share.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../logic/utils/platform_checker.dart';
+import '../../components/note/editor_toolbar/w_note_editor_toolbar.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../utils/extensions/build_context_extensions.dart';
-import 'w_select_image_source.dart';
+import '../../components/note/editor_toolbar/w_select_image_source.dart';
 
 class SaveNoteScreenArgs {
   const SaveNoteScreenArgs({
@@ -48,7 +49,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   final _editorFocusNode = FocusNode();
   final _editorScrollController = ScrollController();
 
-  var _isReadOnly = false;
+  final _isReadOnly = false;
   var _isPrivate = true;
   var _isSyncWithCloud = false;
 
@@ -192,74 +193,84 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
           ),
         ],
       ),
-      floatingActionButton: widget.args.isForceReadOnly
-          ? const SizedBox.shrink()
-          : FloatingActionButton(
-              onPressed: () => setState(() => _isReadOnly = !_isReadOnly),
-              child: Icon(
-                _isReadOnly ? Icons.lock_rounded : Icons.edit,
-              ),
-            ),
+      // floatingActionButton: widget.args.isForceReadOnly
+      //     ? const SizedBox.shrink()
+      //     : FloatingActionButton(
+      //         onPressed: () => setState(() => _isReadOnly = !_isReadOnly),
+      //         child: Icon(
+      //           _isReadOnly ? Icons.lock_rounded : Icons.edit,
+      //         ),
+      //       ),
       body: SafeArea(
         child: Column(
           children: [
             if (!_isReadOnly)
               quill.QuillToolbar.basic(
                 controller: _controller,
-                embedButtons: quill_extensions.FlutterQuillEmbeds.buttons(
-                  mediaPickSettingSelector: (context) async {
-                    final mediaPickSetting = await showModalBottomSheet<
-                        quill_extensions.MediaPickSetting>(
-                      showDragHandle: true,
-                      context: context,
-                      constraints: const BoxConstraints(maxWidth: 640),
-                      builder: (context) => const SelectImageSourceDialog(),
-                    );
-                    if (mediaPickSetting == null) {
-                      return null;
-                    }
-                    return mediaPickSetting;
-                  },
-                  onImagePickCallback: (file) async {
-                    AppLogger.log(
-                      'The path of the picked image is: ${file.path}',
-                    );
-                    return file.path;
-                  },
-                  imageLinkRegExp: RegExp(
-                    r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
-                    caseSensitive: false,
-                  ),
-                  filePickImpl: (context) async {
-                    final imagePath = await ImagePickerService.getInstance()
-                        .pickImage(source: ImageSource.gallery);
-                    return imagePath?.path;
-                  },
-                  webImagePickImpl: (onImagePickCallback) async {
-                    final imagePath = await ImagePickerService.getInstance()
-                        .pickImage(source: ImageSource.gallery);
-                    return imagePath?.path;
-                  },
-                  showFormulaButton: false,
+                showAlignmentButtons: true,
+                iconTheme: const quill.QuillIconTheme(
+                  borderRadius: 20,
                 ),
+                embedButtons: true
+                    ? null
+                    // ignore: dead_code
+                    : quill_extensions.FlutterQuillEmbeds.buttons(
+                        mediaPickSettingSelector: (context) async {
+                          final mediaPickSetting = await showModalBottomSheet<
+                              quill_extensions.MediaPickSetting>(
+                            showDragHandle: true,
+                            context: context,
+                            constraints: const BoxConstraints(maxWidth: 640),
+                            builder: (context) =>
+                                const SelectImageSourceDialog(),
+                          );
+                          return mediaPickSetting;
+                        },
+                        onImagePickCallback: (file) async {
+                          AppLogger.log(
+                            'The path of the picked image is: ${file.path}',
+                          );
+                          return file.path;
+                        },
+                        imageLinkRegExp: RegExp(
+                          r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
+                          caseSensitive: false,
+                        ),
+                        filePickImpl: (context) async {
+                          final imagePath =
+                              await ImagePickerService.getInstance()
+                                  .pickImage(source: ImageSource.gallery);
+                          return imagePath?.path;
+                        },
+                        webImagePickImpl: (onImagePickCallback) async {
+                          final imagePath =
+                              await ImagePickerService.getInstance()
+                                  .pickImage(source: ImageSource.gallery);
+                          return imagePath?.path;
+                        },
+                        showFormulaButton: false,
+                      ),
               ),
             Expanded(
-              child: SingleChildScrollView(
-                child: quill.QuillEditor(
-                  controller: _controller,
-                  readOnly: _isReadOnly,
-                  autoFocus: false,
-                  expands: false,
-                  scrollable: true,
-                  focusNode: _editorFocusNode,
-                  scrollController: _editorScrollController,
-                  padding: const EdgeInsets.all(16),
-                  placeholder: 'Start your notes',
-                  minHeight: 1000,
-                  embedBuilders: _embedBuilder,
+              child: Scrollbar(
+                child: SingleChildScrollView(
+                  child: quill.QuillEditor(
+                    controller: _controller,
+                    readOnly: _isReadOnly,
+                    autoFocus: false,
+                    expands: false,
+                    scrollable: true,
+                    focusNode: _editorFocusNode,
+                    scrollController: _editorScrollController,
+                    padding: const EdgeInsets.all(16),
+                    placeholder: 'Start your notes',
+                    minHeight: 1000,
+                    embedBuilders: _embedBuilder,
+                  ),
                 ),
               ),
-            )
+            ),
+            NoteEditorToolbar(controller: _controller),
           ],
         ),
       ),

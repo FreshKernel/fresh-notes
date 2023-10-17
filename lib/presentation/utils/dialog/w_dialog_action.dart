@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/extensions.dart';
+
+import '../../../logic/utils/platform_checker.dart';
 
 @immutable
 final class CupertinoDialogActionOptions {
@@ -31,11 +32,11 @@ class DialogActionOptions {
   final MaterialDialogActionOptions? materialDialogActionOptions;
 }
 
-class DialogAction extends StatelessWidget {
-  const DialogAction({
+class AppDialogAction extends StatelessWidget {
+  const AppDialogAction({
     required this.child,
+    required this.onPressed,
     super.key,
-    this.onPressed,
     this.options,
   });
 
@@ -45,7 +46,7 @@ class DialogAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isAppleOS()) {
+    if (PlatformChecker.isAppleSystem()) {
       return CupertinoDialogAction(
         onPressed: onPressed,
         isDefaultAction:

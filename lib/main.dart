@@ -51,12 +51,14 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: (previous, current) {
           // Rebuild the whole app only if the themeMode
-          // darkDuringDayInAutoMode or appLanguague changes
+          // darkDuringDayInAutoMode, appLanguague changes
+          // or theme sytem
 
           return previous.themeMode != current.themeMode ||
               previous.darkDuringDayInAutoMode !=
                   current.darkDuringDayInAutoMode ||
-              previous.appLanguague != current.appLanguague;
+              previous.appLanguague != current.appLanguague ||
+              previous.themeSystem != current.themeSystem;
         },
         builder: (context, state) {
           AppLogger.log('Building the MyApp() widget...');
@@ -68,12 +70,12 @@ class MyApp extends StatelessWidget {
             title: 'Fresh notes',
             theme: ThemeData(
               brightness: Brightness.light,
-              useMaterial3: true,
+              useMaterial3: state.themeSystem == AppThemeSystem.material3,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               colorScheme: lightColorScheme,
             ),
             darkTheme: ThemeData(
-              useMaterial3: true,
+              useMaterial3: state.themeSystem == AppThemeSystem.material3,
               brightness: Brightness.dark,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               colorScheme: darkColorScheme,

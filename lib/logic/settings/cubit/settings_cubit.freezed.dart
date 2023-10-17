@@ -26,6 +26,7 @@ mixin _$SettingsState {
   dynamic get darkDuringDayInAutoMode => throw _privateConstructorUsedError;
   AppThemeMode get themeMode => throw _privateConstructorUsedError;
   AppLanguague get appLanguague => throw _privateConstructorUsedError;
+  AppThemeSystem get themeSystem => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +46,8 @@ abstract class $SettingsStateCopyWith<$Res> {
       bool onlySaveDataWhenClick,
       dynamic darkDuringDayInAutoMode,
       AppThemeMode themeMode,
-      AppLanguague appLanguague});
+      AppLanguague appLanguague,
+      AppThemeSystem themeSystem});
 }
 
 /// @nodoc
@@ -67,6 +69,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
     Object? darkDuringDayInAutoMode = freezed,
     Object? themeMode = null,
     Object? appLanguague = null,
+    Object? themeSystem = null,
   }) {
     return _then(_value.copyWith(
       confirmDeleteNote: null == confirmDeleteNote
@@ -93,6 +96,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
           ? _value.appLanguague
           : appLanguague // ignore: cast_nullable_to_non_nullable
               as AppLanguague,
+      themeSystem: null == themeSystem
+          ? _value.themeSystem
+          : themeSystem // ignore: cast_nullable_to_non_nullable
+              as AppThemeSystem,
     ) as $Val);
   }
 }
@@ -111,7 +118,8 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
       bool onlySaveDataWhenClick,
       dynamic darkDuringDayInAutoMode,
       AppThemeMode themeMode,
-      AppLanguague appLanguague});
+      AppLanguague appLanguague,
+      AppThemeSystem themeSystem});
 }
 
 /// @nodoc
@@ -131,6 +139,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
     Object? darkDuringDayInAutoMode = freezed,
     Object? themeMode = null,
     Object? appLanguague = null,
+    Object? themeSystem = null,
   }) {
     return _then(_$SettingsStateImpl(
       confirmDeleteNote: null == confirmDeleteNote
@@ -156,6 +165,10 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
           ? _value.appLanguague
           : appLanguague // ignore: cast_nullable_to_non_nullable
               as AppLanguague,
+      themeSystem: null == themeSystem
+          ? _value.themeSystem
+          : themeSystem // ignore: cast_nullable_to_non_nullable
+              as AppThemeSystem,
     ));
   }
 }
@@ -169,7 +182,8 @@ class _$SettingsStateImpl implements _SettingsState {
       this.onlySaveDataWhenClick = true,
       this.darkDuringDayInAutoMode = false,
       this.themeMode = AppThemeMode.system,
-      this.appLanguague = AppLanguague.system});
+      this.appLanguague = AppLanguague.system,
+      this.themeSystem = AppThemeSystem.material3});
 
   factory _$SettingsStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$SettingsStateImplFromJson(json);
@@ -192,10 +206,13 @@ class _$SettingsStateImpl implements _SettingsState {
   @override
   @JsonKey()
   final AppLanguague appLanguague;
+  @override
+  @JsonKey()
+  final AppThemeSystem themeSystem;
 
   @override
   String toString() {
-    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, themeMode: $themeMode, appLanguague: $appLanguague)';
+    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, themeMode: $themeMode, appLanguague: $appLanguague, themeSystem: $themeSystem)';
   }
 
   @override
@@ -215,7 +232,9 @@ class _$SettingsStateImpl implements _SettingsState {
             (identical(other.themeMode, themeMode) ||
                 other.themeMode == themeMode) &&
             (identical(other.appLanguague, appLanguague) ||
-                other.appLanguague == appLanguague));
+                other.appLanguague == appLanguague) &&
+            (identical(other.themeSystem, themeSystem) ||
+                other.themeSystem == themeSystem));
   }
 
   @JsonKey(ignore: true)
@@ -227,7 +246,8 @@ class _$SettingsStateImpl implements _SettingsState {
       onlySaveDataWhenClick,
       const DeepCollectionEquality().hash(darkDuringDayInAutoMode),
       themeMode,
-      appLanguague);
+      appLanguague,
+      themeSystem);
 
   @JsonKey(ignore: true)
   @override
@@ -250,7 +270,8 @@ abstract class _SettingsState implements SettingsState {
       final bool onlySaveDataWhenClick,
       final dynamic darkDuringDayInAutoMode,
       final AppThemeMode themeMode,
-      final AppLanguague appLanguague}) = _$SettingsStateImpl;
+      final AppLanguague appLanguague,
+      final AppThemeSystem themeSystem}) = _$SettingsStateImpl;
 
   factory _SettingsState.fromJson(Map<String, dynamic> json) =
       _$SettingsStateImpl.fromJson;
@@ -267,6 +288,8 @@ abstract class _SettingsState implements SettingsState {
   AppThemeMode get themeMode;
   @override
   AppLanguague get appLanguague;
+  @override
+  AppThemeSystem get themeSystem;
   @override
   @JsonKey(ignore: true)
   _$$SettingsStateImplCopyWith<_$SettingsStateImpl> get copyWith =>

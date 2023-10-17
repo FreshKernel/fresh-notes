@@ -28,11 +28,11 @@ class YesOrCancelDialog extends StatelessWidget {
     final materialTheme = Theme.of(context);
     return AlertDialog.adaptive(
       actions: [
-        DialogAction(
+        AppDialogAction(
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(options.cancelLabel ?? 'Cancel'),
         ),
-        DialogAction(
+        AppDialogAction(
           onPressed: () => Navigator.of(context).pop(true),
           options: DialogActionOptions(
             materialDialogActionOptions: MaterialDialogActionOptions(

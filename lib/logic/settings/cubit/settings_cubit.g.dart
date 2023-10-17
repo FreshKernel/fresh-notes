@@ -19,6 +19,9 @@ _$SettingsStateImpl _$$SettingsStateImplFromJson(Map<String, dynamic> json) =>
       appLanguague:
           $enumDecodeNullable(_$AppLanguagueEnumMap, json['appLanguague']) ??
               AppLanguague.system,
+      themeSystem:
+          $enumDecodeNullable(_$AppThemeSystemEnumMap, json['themeSystem']) ??
+              AppThemeSystem.material3,
     );
 
 Map<String, dynamic> _$$SettingsStateImplToJson(_$SettingsStateImpl instance) =>
@@ -29,6 +32,7 @@ Map<String, dynamic> _$$SettingsStateImplToJson(_$SettingsStateImpl instance) =>
       'darkDuringDayInAutoMode': instance.darkDuringDayInAutoMode,
       'themeMode': _$AppThemeModeEnumMap[instance.themeMode]!,
       'appLanguague': _$AppLanguagueEnumMap[instance.appLanguague]!,
+      'themeSystem': _$AppThemeSystemEnumMap[instance.themeSystem]!,
     };
 
 const _$AppThemeModeEnumMap = {
@@ -42,4 +46,11 @@ const _$AppLanguagueEnumMap = {
   AppLanguague.en: 'en',
   AppLanguague.ar: 'ar',
   AppLanguague.system: 'system',
+};
+
+const _$AppThemeSystemEnumMap = {
+  AppThemeSystem.material3: 'material3',
+  AppThemeSystem.material2: 'material2',
+  AppThemeSystem.cupertino: 'cupertino',
+  AppThemeSystem.fluentUi: 'fluentUi',
 };

@@ -21,38 +21,14 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final navigationItems = [
-    const NavigationItem(
+  final _navigationItems = [
+    NavigationItem(
       title: 'Manage notes',
       label: 'Notes',
-      icon: Icon(Icons.notes),
-      body: NotesPage(),
-    ),
-    const NavigationItem(
-      title: 'Change the settings',
-      label: 'Settings',
-      icon: Icon(Icons.settings),
-      body: SettingsPage(),
-    ),
-    const NavigationItem(
-      title: 'About the App',
-      label: 'About',
-      icon: Icon(Icons.info),
-      body: AboutPage(),
-    ),
-  ];
-
-  var _selectedNavItemIndex = 0;
-  final _pageController = PageController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          navigationItems[_selectedNavItemIndex].title,
-        ),
-        actions: [
+      icon: const Icon(Icons.notes),
+      body: const NotesPage(),
+      actionsBuilder: (context) {
+        return [
           const SyncNotesIconButton(),
           const LogoutIconButton(),
           IconButton(
@@ -74,32 +50,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
             },
             icon: const Icon(Icons.delete_forever),
           )
-        ],
+        ];
+      },
+      actionButtonBuilder: (context) {
+        return FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(
+              SaveNoteScreen.routeName,
+              arguments: const SaveNoteScreenArgs(),
+            );
+          },
+          child: const Icon(Icons.add),
+        );
+      },
+    ),
+    const NavigationItem(
+      title: 'Change the settings',
+      label: 'Settings',
+      icon: Icon(Icons.settings),
+      body: SettingsPage(),
+    ),
+    const NavigationItem(
+      title: 'About the App',
+      label: 'About',
+      icon: Icon(Icons.info),
+      body: AboutPage(),
+    ),
+  ];
+
+  var _selectedNavItemIndex = 0;
+  final _pageController = PageController();
+
+  @override
+  Widget build(BuildContext context) {
+    final actions =
+        _navigationItems[_selectedNavItemIndex].actionsBuilder?.call(context);
+    final actionButton = _navigationItems[_selectedNavItemIndex]
+        .actionButtonBuilder
+        ?.call(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          _navigationItems[_selectedNavItemIndex].title,
+        ),
+        actions: actions,
       ),
       drawer: const DashboardDrawer(),
       body: PageView(
         controller: _pageController,
-        children: navigationItems.map((e) => Center(child: e.body)).toList(),
+        children: _navigationItems.map((e) => Center(child: e.body)).toList(),
         onPageChanged: (newPageIndex) {
           setState(() => _selectedNavItemIndex = newPageIndex);
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed(
-            SaveNoteScreen.routeName,
-            arguments: const SaveNoteScreenArgs(),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: actionButton,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedNavItemIndex,
         onDestinationSelected: (newPageIndex) {
           _pageController.jumpToPage(newPageIndex);
           setState(() => _selectedNavItemIndex = newPageIndex);
         },
-        destinations: navigationItems.map((e) {
+        destinations: _navigationItems.map((e) {
           return NavigationDestination(
             icon: e.icon,
             label: e.label,

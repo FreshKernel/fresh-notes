@@ -27,7 +27,7 @@ class OkDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
       actions: [
-        DialogAction(
+        AppDialogAction(
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(options.okLabel ?? context.loc.ok),
         ),

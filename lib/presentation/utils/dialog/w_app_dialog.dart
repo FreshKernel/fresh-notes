@@ -49,3 +49,18 @@ Future<T?> showAppDialog<T>({
     traversalEdgeBehavior: options?.traversalEdgeBehavior,
   );
 }
+
+@immutable
+class AppDialogMessenger {
+  const AppDialogMessenger({
+    required this.context,
+  });
+
+  final BuildContext context;
+
+  Future<T?> showDialog<T>({
+    required WidgetBuilder builder,
+    DialogOptions? options,
+  }) =>
+      showAppDialog(context: context, builder: builder, options: options);
+}

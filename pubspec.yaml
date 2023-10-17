@@ -65,6 +65,8 @@ dependencies:
   lottie: ^2.6.0
   cached_network_image: ^3.3.0
 
+  # Other ui packages
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

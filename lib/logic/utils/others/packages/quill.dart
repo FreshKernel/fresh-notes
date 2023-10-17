@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:path/path.dart' as path;
 
-import '../../bool.dart';
+import '../../extensions/string.dart';
 
 typedef QuillDocument = quill.Document;
 
@@ -163,7 +163,7 @@ class QuillImageUtilities {
           if (imageSource is! String) {
             return false;
           }
-          if (onlyLocalImages && isHttpBasedUrl(imageSource)) {
+          if (onlyLocalImages && imageSource.isHttpBasedUrl()) {
             return false;
           }
           return imageSource.trim().isNotEmpty;

@@ -27,11 +27,11 @@ class SyncCloudToLocalNotesDifferences extends StatelessWidget {
     return AlertDialog.adaptive(
       title: const Text('Note differneces'),
       actions: [
-        DialogAction(
+        AppDialogAction(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        DialogAction(
+        AppDialogAction(
           onPressed: () {},
           child: const Text('Ok'),
         ),
