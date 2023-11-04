@@ -1,35 +1,37 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill/flutter_quill.dart';
 
-import '../../../../../utils/dialog/w_app_dialog.dart';
-import '../../../../../utils/extensions/build_context_extensions.dart';
 import '../../../../others/app_scroll_bar.dart';
+import '../../w_note_editor_toolbar.dart';
 
 class NoteEditorToolbarTextOptionsButton extends StatelessWidget {
   const NoteEditorToolbarTextOptionsButton({
-    required quill.QuillController controller,
+    required QuillController controller,
+    required this.onShowPopup,
+    required this.onClose,
     super.key,
   }) : _controller = controller;
 
-  final quill.QuillController _controller;
+  final QuillController _controller;
+  final NoteEditorToolbarPopupCallback onShowPopup;
+  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      tooltip: 'Text options',
       onPressed: () {
-        showAppDialog(
-          context: context,
-          builder: (context) {
-            return _TextOptionsWidget(
-              controller: _controller,
-              onButtonPressed: () {
-                context.navigator.pop();
-              },
-            );
-          },
+        //popup a attachments toast
+        final cancel = BotToast.showAttachedWidget(
+          attachedBuilder: (_) => _TextOptionsWidget(
+            controller: _controller,
+          ),
+          duration: const Duration(seconds: 2),
+          target: const Offset(520, 520),
         );
+        // cancel(); //close
       },
+      tooltip: 'Text options',
       icon: const Icon(Icons.text_fields),
     );
   }
@@ -37,14 +39,14 @@ class NoteEditorToolbarTextOptionsButton extends StatelessWidget {
 
 class _TextOptionsWidget extends StatelessWidget {
   const _TextOptionsWidget({
-    required quill.QuillController controller,
+    required QuillController controller,
     // ignore: unused_element
     super.key,
     // ignore: unused_element
     this.onButtonPressed,
   }) : _controller = controller;
 
-  final quill.QuillController _controller;
+  final QuillController _controller;
   final VoidCallback? onButtonPressed;
 
   @override
@@ -64,15 +66,17 @@ class _TextOptionsWidget extends StatelessWidget {
                     buttons: [
                       _ToggleStyleButton(
                         iconData: Icons.format_list_bulleted,
+                        toggledIconData: Icons.format_list_bulleted_outlined,
                         controller: _controller,
-                        attribute: quill.Attribute.ul,
+                        attribute: Attribute.ul,
                         onButtonPressed: onButtonPressed,
                         tooltip: 'Bullet list',
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_list_numbered,
+                        toggledIconData: Icons.format_list_numbered_outlined,
                         controller: _controller,
-                        attribute: quill.Attribute.ol,
+                        attribute: Attribute.ol,
                         onButtonPressed: onButtonPressed,
                         tooltip: 'Numbered list',
                       ),
@@ -84,7 +88,7 @@ class _TextOptionsWidget extends StatelessWidget {
                         tooltip: 'Align left',
                         onPressed: () {
                           _controller.formatSelection(
-                            quill.Attribute.leftAlignment,
+                            Attribute.leftAlignment,
                           );
                         },
                         icon: const Icon(Icons.format_align_left),
@@ -93,7 +97,7 @@ class _TextOptionsWidget extends StatelessWidget {
                         tooltip: 'Align center',
                         onPressed: () {
                           _controller.formatSelection(
-                            quill.Attribute.centerAlignment,
+                            Attribute.centerAlignment,
                           );
                         },
                         icon: const Icon(Icons.format_align_center),
@@ -102,7 +106,7 @@ class _TextOptionsWidget extends StatelessWidget {
                         tooltip: 'Align right',
                         onPressed: () {
                           _controller.formatSelection(
-                            quill.Attribute.rightAlignment,
+                            Attribute.rightAlignment,
                           );
                         },
                         icon: const Icon(Icons.format_align_right),
@@ -111,7 +115,7 @@ class _TextOptionsWidget extends StatelessWidget {
                         tooltip: 'Align justify',
                         onPressed: () {
                           _controller.formatSelection(
-                            quill.Attribute.justifyAlignment,
+                            Attribute.justifyAlignment,
                           );
                         },
                         icon: const Icon(Icons.format_align_justify),
@@ -130,30 +134,34 @@ class _TextOptionsWidget extends StatelessWidget {
                   _TextOptionSection(
                     buttons: [
                       _ToggleStyleButton(
-                        attribute: quill.Attribute.bold,
+                        attribute: Attribute.bold,
                         iconData: Icons.format_bold,
+                        toggledIconData: Icons.format_bold_outlined,
                         controller: _controller,
                         onButtonPressed: onButtonPressed,
                         tooltip: 'Bold',
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_italic,
+                        toggledIconData: Icons.format_italic_outlined,
                         controller: _controller,
-                        attribute: quill.Attribute.italic,
+                        attribute: Attribute.italic,
                         onButtonPressed: onButtonPressed,
                         tooltip: 'Italic',
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_underline,
+                        toggledIconData: Icons.format_underline_outlined,
                         controller: _controller,
-                        attribute: quill.Attribute.underline,
+                        attribute: Attribute.underline,
                         onButtonPressed: onButtonPressed,
                         tooltip: 'Underline',
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_strikethrough,
+                        toggledIconData: Icons.format_strikethrough_outlined,
                         controller: _controller,
-                        attribute: quill.Attribute.strikeThrough,
+                        attribute: Attribute.strikeThrough,
                         onButtonPressed: onButtonPressed,
                         tooltip: 'Strike through',
                       ),
@@ -226,7 +234,8 @@ class _TextOptionSection extends StatelessWidget {
 class _ToggleStyleButton extends StatelessWidget {
   const _ToggleStyleButton({
     required this.iconData,
-    required quill.QuillController controller,
+    required this.toggledIconData,
+    required QuillController controller,
     required this.attribute,
     required this.tooltip,
     required this.onButtonPressed,
@@ -234,38 +243,53 @@ class _ToggleStyleButton extends StatelessWidget {
     super.key,
   }) : _controller = controller;
 
-  final quill.QuillController _controller;
-  final quill.Attribute attribute;
+  final QuillController _controller;
+  final Attribute attribute;
   final IconData iconData;
+  final IconData toggledIconData;
   final VoidCallback? onButtonPressed;
   final String? tooltip;
 
   @override
   Widget build(BuildContext context) {
-    return quill.ToggleStyleButton(
-      attribute: attribute,
-      icon: iconData,
+    return QuillToolbarToggleStyleButton(
       controller: _controller,
-      childBuilder: (context, attribute, icon, fillColor, isToggled, onPressed,
-          afterPressed,
-          [iconSize = -1, iconTheme]) {
-        return IconButton(
-          tooltip: tooltip,
-          onPressed: () {
-            onPressed?.call();
-            afterPressed?.call();
-            onButtonPressed?.call(); // of this widget
-          },
-          icon: Icon(iconData),
-        );
-      },
+      attribute: attribute,
+      options: QuillToolbarToggleStyleButtonOptions(
+        iconData: iconData,
+        controller: _controller,
+        childBuilder: (options, extraOptions) {
+          void sharedOnPressed() {
+            extraOptions.onPressed?.call();
+            onButtonPressed?.call(); // of this widget;
+          }
+
+          if (extraOptions.isToggled) {
+            return IconButton.filled(
+              tooltip: tooltip,
+              onPressed: sharedOnPressed,
+              icon: Icon(
+                iconData,
+              ),
+            );
+          }
+
+          return IconButton(
+            tooltip: tooltip,
+            onPressed: sharedOnPressed,
+            icon: Icon(
+              iconData,
+            ),
+          );
+        },
+      ),
     );
   }
 }
 
 class _IndentTextButton extends StatelessWidget {
   const _IndentTextButton({
-    required quill.QuillController controller,
+    required QuillController controller,
     required this.isIncrease,
     required this.onButtonPressed,
     required this.tooltip,
@@ -273,7 +297,7 @@ class _IndentTextButton extends StatelessWidget {
     super.key,
   }) : _controller = controller;
 
-  final quill.QuillController _controller;
+  final QuillController _controller;
   final bool isIncrease;
   final VoidCallback? onButtonPressed;
   final String? tooltip;

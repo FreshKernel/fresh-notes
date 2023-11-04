@@ -43,11 +43,12 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+*.env
+
 # Google && Firebase
 **/google-services.json
 **/GoogleService-Info.plist
 **/firebase_app_id_file.json
-*.env
 
 # Android App Links
 firebase/public/.well-known/assetlinks.json

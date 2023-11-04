@@ -30,7 +30,7 @@ enum AuthErrorType {
 }
 
 class AuthException extends AppException {
-  const AuthException(String message, {required this.type}) : super(message);
+  const AuthException(String super.message, {required this.type});
   final AuthErrorType type;
 
   @override

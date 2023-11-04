@@ -20,7 +20,11 @@ Future<void> buildProject() async {
 
     await commandLine(
       executalbe: 'flutter',
-      args: ['pub', 'get'],
+      args: [
+        'pub',
+        'get',
+        '--no-example',
+      ],
     );
 
     log.info(

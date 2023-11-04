@@ -329,6 +329,11 @@ class FirebaseAuthProviderImpl extends AuthRepository {
             'This account is disabled. Please contact with the support for more information.',
             type: AuthErrorType.userAccountIsDisabled,
           );
+        case 'user-not-found':
+          throw const AuthException(
+            'Can not find user with this email to sign in',
+            type: AuthErrorType.userNotFound,
+          );
         default:
           throw AuthException(
             'Unknown error while sign in with firebase. ${e.message}, ${e.code}',

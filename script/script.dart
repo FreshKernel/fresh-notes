@@ -6,6 +6,7 @@ import 'scripts/build_android_release.dart';
 void main(List<String> args) async {
   final log = Logger('script.dart/main');
   Logger.root.onRecord.listen((record) {
+    // ignore: avoid_print
     print('${record.level.name} in ${record.loggerName}: ${record.message}');
   });
   if (args.isEmpty) {

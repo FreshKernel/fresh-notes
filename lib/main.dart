@@ -1,3 +1,5 @@
+import 'package:bot_toast/bot_toast.dart'
+    show BotToastInit, BotToastNavigatorObserver;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,6 +90,10 @@ class MyApp extends StatelessWidget {
             onUnknownRoute: AppRouter.onUnknownRoute,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
+            builder: BotToastInit(),
+            navigatorObservers: [
+              BotToastNavigatorObserver(),
+            ],
             onGenerateTitle: (context) {
               return context.loc.app_name;
             },

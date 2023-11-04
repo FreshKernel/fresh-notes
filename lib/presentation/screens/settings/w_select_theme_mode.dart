@@ -70,11 +70,9 @@ class _SelectThemeModeDialogState extends State<SelectThemeModeDialog> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            ...AppThemeMode.values
-                .map(
-                  getItemByThemeMode,
-                )
-                .toList()
+            ...AppThemeMode.values.map(
+              getItemByThemeMode,
+            )
           ],
         ),
       ),

@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
-// import 'package:flutter_quill_extensions/embeds/builders.dart';
-import 'package:flutter_quill_extensions/flutter_quill_extensions.dart'
-    as quill_extensions;
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:fresh_quill_extensions/fresh_quill_extensions.dart';
 
 import '../../../core/log/logger.dart';
 import '../../../data/core/cloud/database/sync_options.dart';
@@ -16,9 +14,9 @@ import '../../../logic/native/share/s_app_share.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../logic/utils/platform_checker.dart';
 import '../../components/note/editor_toolbar/w_note_editor_toolbar.dart';
+import '../../components/note/editor_toolbar/w_select_image_source.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../utils/extensions/build_context_extensions.dart';
-import '../../components/note/editor_toolbar/w_select_image_source.dart';
 
 class SaveNoteScreenArgs {
   const SaveNoteScreenArgs({
@@ -45,11 +43,11 @@ class SaveNoteScreen extends StatefulWidget {
 }
 
 class _SaveNoteScreenState extends State<SaveNoteScreen> {
-  late final quill.QuillController _controller;
+  late final QuillController _controller;
   final _editorFocusNode = FocusNode();
   final _editorScrollController = ScrollController();
 
-  final _isReadOnly = false;
+  var _isReadOnly = false;
   var _isPrivate = true;
   var _isSyncWithCloud = false;
 
@@ -75,8 +73,8 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   void _setupController() {
     if (_isEditing) {
       final json = jsonDecode(_note!.text);
-      _controller = quill.QuillController(
-        document: quill.Document.fromJson(json),
+      _controller = QuillController(
+        document: Document.fromJson(json),
         selection: const TextSelection.collapsed(offset: 0),
       );
       // _isReadOnly = true; // TODO: Later change this to better way
@@ -85,7 +83,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
       _isSyncWithCloud = _note?.syncOptions.isSyncWithCloud ?? false;
       return;
     }
-    _controller = quill.QuillController.basic();
+    _controller = QuillController.basic();
     _isSyncWithCloud =
         context.read<SettingsCubit>().state.syncWithCloudDefaultValue;
   }
@@ -193,79 +191,102 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
           ),
         ],
       ),
-      // floatingActionButton: widget.args.isForceReadOnly
-      //     ? const SizedBox.shrink()
-      //     : FloatingActionButton(
-      //         onPressed: () => setState(() => _isReadOnly = !_isReadOnly),
-      //         child: Icon(
-      //           _isReadOnly ? Icons.lock_rounded : Icons.edit,
-      //         ),
-      //       ),
+      floatingActionButton: widget.args.isForceReadOnly
+          ? const SizedBox.shrink()
+          : FloatingActionButton(
+              onPressed: () => setState(() => _isReadOnly = !_isReadOnly),
+              child: Icon(
+                _isReadOnly ? Icons.lock_rounded : Icons.edit,
+              ),
+            ),
       body: SafeArea(
         child: Column(
           children: [
-            if (!_isReadOnly)
-              quill.QuillToolbar.basic(
-                controller: _controller,
-                showAlignmentButtons: true,
-                iconTheme: const quill.QuillIconTheme(
-                  borderRadius: 20,
-                ),
-                embedButtons: true
-                    ? null
-                    // ignore: dead_code
-                    : quill_extensions.FlutterQuillEmbeds.buttons(
-                        mediaPickSettingSelector: (context) async {
-                          final mediaPickSetting = await showModalBottomSheet<
-                              quill_extensions.MediaPickSetting>(
-                            showDragHandle: true,
-                            context: context,
-                            constraints: const BoxConstraints(maxWidth: 640),
-                            builder: (context) =>
-                                const SelectImageSourceDialog(),
-                          );
-                          return mediaPickSetting;
-                        },
-                        onImagePickCallback: (file) async {
-                          AppLogger.log(
-                            'The path of the picked image is: ${file.path}',
-                          );
-                          return file.path;
-                        },
-                        imageLinkRegExp: RegExp(
-                          r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
-                          caseSensitive: false,
-                        ),
-                        filePickImpl: (context) async {
-                          final imagePath =
-                              await ImagePickerService.getInstance()
-                                  .pickImage(source: ImageSource.gallery);
-                          return imagePath?.path;
-                        },
-                        webImagePickImpl: (onImagePickCallback) async {
-                          final imagePath =
-                              await ImagePickerService.getInstance()
-                                  .pickImage(source: ImageSource.gallery);
-                          return imagePath?.path;
-                        },
-                        showFormulaButton: false,
-                      ),
-              ),
             Expanded(
-              child: Scrollbar(
-                child: SingleChildScrollView(
-                  child: quill.QuillEditor(
+              child: SingleChildScrollView(
+                child: QuillProvider(
+                  configurations: QuillConfigurations(
                     controller: _controller,
-                    readOnly: _isReadOnly,
-                    autoFocus: false,
-                    expands: false,
-                    scrollable: true,
-                    focusNode: _editorFocusNode,
-                    scrollController: _editorScrollController,
-                    padding: const EdgeInsets.all(16),
-                    placeholder: 'Start your notes',
-                    minHeight: 1000,
-                    embedBuilders: _embedBuilder,
+                    // toolbarConfigurations: const QuillToolbarConfigurations(
+                    //   // buttonOptions: QuillToolbarButtonOptions(
+                    //   //     // fontFamily: QuillToolbarFontFamilyButtonOptions(),
+                    //   //     ),
+                    // ),
+                  ),
+                  child: Column(
+                    children: [
+                      if (!_isReadOnly)
+                        QuillToolbar(
+                          configurations: QuillToolbarConfigurations(
+                            showAlignmentButtons: true,
+                            embedButtons: [
+                              ...FlutterQuillEmbeds.toolbarButtons(
+                                imageButtonOptions:
+                                    QuillToolbarImageButtonOptions(
+                                  mediaPickSettingSelector: (context) async {
+                                    final mediaPickSetting =
+                                        await showModalBottomSheet<
+                                            MediaPickSetting>(
+                                      showDragHandle: true,
+                                      context: context,
+                                      constraints:
+                                          const BoxConstraints(maxWidth: 640),
+                                      builder: (context) =>
+                                          const SelectImageSourceDialog(),
+                                    );
+                                    return mediaPickSetting;
+                                  },
+                                  onImagePickCallback: (file) async {
+                                    AppLogger.log(
+                                      'The path of the picked image is: ${file.path}',
+                                    );
+                                    return file.path;
+                                  },
+                                  linkRegExp: RegExp(
+                                    r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
+                                    caseSensitive: false,
+                                  ),
+                                  filePickImpl: (context) async {
+                                    final imagePath =
+                                        await ImagePickerService.getInstance()
+                                            .pickImage(
+                                                source: ImageSource.gallery);
+                                    return imagePath?.path;
+                                  },
+                                  webImagePickImpl:
+                                      (onImagePickCallback) async {
+                                    final imagePath =
+                                        await ImagePickerService.getInstance()
+                                            .pickImage(
+                                                source: ImageSource.gallery);
+                                    return imagePath?.path;
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      Scrollbar(
+                        child: SingleChildScrollView(
+                          child: QuillEditor(
+                            configurations: QuillEditorConfigurations(
+                              readOnly: _isReadOnly,
+                              placeholder: 'Start your notes',
+                              padding: const EdgeInsets.all(16),
+                              minHeight: 1000,
+                              embedBuilders: _embedBuilder,
+                              autoFocus: false,
+                              expands: false,
+                              scrollable: true,
+                              unknownEmbedBuilder:
+                                  QuillEditorUnknownEmbedBuilder(),
+                            ),
+                            focusNode: _editorFocusNode,
+                            scrollController: _editorScrollController,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -277,34 +298,36 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     );
   }
 
-  Iterable<quill.EmbedBuilder> get _embedBuilder {
+  Iterable<EmbedBuilder> get _embedBuilder {
     if (PlatformChecker.isWeb()) {
-      return quill_extensions.FlutterQuillEmbeds.webBuilders();
+      return FlutterQuillEmbeds.editorsWebBuilders();
     }
     return [
-      ...quill_extensions.FlutterQuillEmbeds.builders(
-        onImageRemovedCallback: (imageFile) async {
-          if (await imageFile.exists()) {
-            await imageFile.delete();
-            AppLogger.log(
-              'Image exists and we have removed it from the local storage and not just from the editor.',
+      ...FlutterQuillEmbeds.editorBuilders(
+        imageEmbedConfigurations: QuillEditorImageEmbedConfigurations(
+          onImageRemovedCallback: (imageFile) async {
+            if (await imageFile.exists()) {
+              await imageFile.delete();
+              AppLogger.log(
+                'Image exists and we have removed it from the local storage and not just from the editor.',
+              );
+              _saveNote();
+              return;
+            }
+            AppLogger.log('Image does not exists');
+          },
+          shouldRemoveImageCallback: (imageFile) async {
+            final remove = await showYesCancelDialog(
+              context: context,
+              options: const YesOrCancelDialogOptions(
+                title: 'Deleting an image',
+                message:
+                    'Are you sure you want to delete this image from the editor?',
+              ),
             );
-            _saveNote();
-            return;
-          }
-          AppLogger.log('Image does not exists');
-        },
-        shouldRemoveImageCallback: (imageFile) async {
-          final remove = await showYesCancelDialog(
-            context: context,
-            options: const YesOrCancelDialogOptions(
-              title: 'Deleting an image',
-              message:
-                  'Are you sure you want to delete this image from the editor?',
-            ),
-          );
-          return remove;
-        },
+            return remove;
+          },
+        ),
       ),
     ];
   }
