@@ -79,6 +79,7 @@ dependency_overrides:
     path: ../flutter-quill/flutter_quill_test
 
 dev_dependencies:
+  test: ^1.24.3
   flutter_test:
     sdk: flutter
 
