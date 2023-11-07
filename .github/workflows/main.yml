@@ -24,7 +24,7 @@ jobs:
         run: touch .env
 
       - name: Create generated firebase_options.dart
-        run: ./g_firebase_options.sh
+        run: mv lib/firebase_options.g.dart lib/firebase_options.dart
 
       - name: Install dependencies
         run: flutter pub get
