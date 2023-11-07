@@ -55,3 +55,6 @@ firebase/public/.well-known/assetlinks.json
 
 # Apple Universal Links
 firebase/public/.well-known/apple-app-site-association
+
+# FlutterFire for Firebase
+lib/firebase_options.dart

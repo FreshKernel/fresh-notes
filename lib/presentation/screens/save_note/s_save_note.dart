@@ -1,22 +1,50 @@
 import 'dart:convert';
+import 'dart:io' show File;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:fresh_quill_extensions/fresh_quill_extensions.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:flutter_quill_extensions/logic/services/image_saver/image_saver.dart';
 
 import '../../../core/log/logger.dart';
 import '../../../data/core/cloud/database/sync_options.dart';
 import '../../../data/notes/universal/models/m_note.dart';
 import '../../../data/notes/universal/s_universal_notes.dart';
-import '../../../logic/native/image/s_image_picker.dart';
 import '../../../logic/native/share/s_app_share.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../logic/utils/platform_checker.dart';
 import '../../components/note/editor_toolbar/w_note_editor_toolbar.dart';
-import '../../components/note/editor_toolbar/w_select_image_source.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../utils/extensions/build_context_extensions.dart';
+
+class MockImpl extends ImageSaverInterface {
+  const MockImpl();
+  @override
+  Future<bool> hasAccess({required bool toAlbum}) {
+    // TODO: implement hasAccess
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> requestAccess({required bool toAlbum}) {
+    // TODO: implement requestAccess
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveImageFromNetwork(Uri imageUrl) {
+    // TODO: implement saveImageFromNetwork
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveLocalImage(String imageUrl) {
+    // TODO: implement saveLocalImage
+    throw UnimplementedError();
+  }
+}
 
 class SaveNoteScreenArgs {
   const SaveNoteScreenArgs({
@@ -206,12 +234,13 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
               child: SingleChildScrollView(
                 child: QuillProvider(
                   configurations: QuillConfigurations(
+                    sharedConfigurations: const QuillSharedConfigurations(
+                      extraConfigurations: {
+                        QuillSharedExtensionsConfigurations.key:
+                            QuillSharedExtensionsConfigurations(),
+                      },
+                    ),
                     controller: _controller,
-                    // toolbarConfigurations: const QuillToolbarConfigurations(
-                    //   // buttonOptions: QuillToolbarButtonOptions(
-                    //   //     // fontFamily: QuillToolbarFontFamilyButtonOptions(),
-                    //   //     ),
-                    // ),
                   ),
                   child: Column(
                     children: [
@@ -223,44 +252,18 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
                               ...FlutterQuillEmbeds.toolbarButtons(
                                 imageButtonOptions:
                                     QuillToolbarImageButtonOptions(
-                                  mediaPickSettingSelector: (context) async {
-                                    final mediaPickSetting =
-                                        await showModalBottomSheet<
-                                            MediaPickSetting>(
-                                      showDragHandle: true,
-                                      context: context,
-                                      constraints:
-                                          const BoxConstraints(maxWidth: 640),
-                                      builder: (context) =>
-                                          const SelectImageSourceDialog(),
-                                    );
-                                    return mediaPickSetting;
-                                  },
-                                  onImagePickCallback: (file) async {
-                                    AppLogger.log(
-                                      'The path of the picked image is: ${file.path}',
-                                    );
-                                    return file.path;
-                                  },
+                                  imageButtonConfigurations:
+                                      QuillToolbarImageConfigurations(
+                                    onImageInsertedCallback: (image) async {
+                                      AppLogger.log(
+                                        'The path of the picked image is: $image',
+                                      );
+                                    },
+                                  ),
                                   linkRegExp: RegExp(
                                     r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
                                     caseSensitive: false,
                                   ),
-                                  filePickImpl: (context) async {
-                                    final imagePath =
-                                        await ImagePickerService.getInstance()
-                                            .pickImage(
-                                                source: ImageSource.gallery);
-                                    return imagePath?.path;
-                                  },
-                                  webImagePickImpl:
-                                      (onImagePickCallback) async {
-                                    final imagePath =
-                                        await ImagePickerService.getInstance()
-                                            .pickImage(
-                                                source: ImageSource.gallery);
-                                    return imagePath?.path;
-                                  },
                                 ),
                               )
                             ],
@@ -305,7 +308,14 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     return [
       ...FlutterQuillEmbeds.editorBuilders(
         imageEmbedConfigurations: QuillEditorImageEmbedConfigurations(
-          onImageRemovedCallback: (imageFile) async {
+          imageProviderBuilder: (imageUrl) {
+            if (isHttpBasedUrl(imageUrl)) {
+              return CachedNetworkImageProvider(imageUrl);
+            }
+            return FileImage(File(imageUrl));
+          },
+          onImageRemovedCallback: (imageUrl) async {
+            final imageFile = File(imageUrl);
             if (await imageFile.exists()) {
               await imageFile.delete();
               AppLogger.log(

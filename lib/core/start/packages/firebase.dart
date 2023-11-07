@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import '../../../firebase_options.dart';
 import '../../services/exceptions.dart';
 import '../../services/s_app.dart';
 
@@ -11,7 +12,9 @@ class FirebaseService extends AppService {
 
   @override
   Future<void> initialize() async {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     // if (kDebugMode) {
     //   await FirebaseAppCheck.instance.activate(
     //     androidProvider: AndroidProvider.debug,

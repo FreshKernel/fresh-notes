@@ -2,10 +2,10 @@ import 'dart:math' show Random;
 
 // import 'package:test/test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_notes/logic/auth/auth_custom_provider.dart';
-import 'package:my_notes/logic/auth/auth_exceptions.dart';
-import 'package:my_notes/logic/auth/auth_repository.dart';
-import 'package:my_notes/logic/auth/auth_user.dart';
+import 'package:fresh_notes/logic/auth/auth_custom_provider.dart';
+import 'package:fresh_notes/logic/auth/auth_exceptions.dart';
+import 'package:fresh_notes/logic/auth/auth_repository.dart';
+import 'package:fresh_notes/logic/auth/auth_user.dart';
 
 void main() {
   group('Mock Authentication', () {
