@@ -13,7 +13,7 @@ A cross-platform, open-source notes app written in Flutter, Kotlin, Swift, Types
 ## Story
 We are all interested in building mobile apps for iOS and Android, so we had to use macOS to write and build native iOS applications using Xcode, when using any operating system I usually take a lot of notes and I needed an notes app and I prefer it to not be a third party so I used Notes app on macOS but after updating to macOS 14.1 the notes app never working and it doesn't matter what I do I always getting crashes
 
-![macOS Notes crash](readme_images/image.png)
+![macOS Notes crash](assets/image.png)
 
 it's known to be limited on AppleOS and it's closed so there is not much I can do, so I create this little app and usually I prefer my repositories to public so I decided to also publish it even though that wasn't my plan
 

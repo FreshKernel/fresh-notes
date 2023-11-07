@@ -19,6 +19,9 @@ jobs:
 
       - name: Check flutter version
         run: flutter --version
+      
+      - name: Create empty .env file
+        run: touch .env
 
       - name: Install dependencies
         run: flutter pub get
