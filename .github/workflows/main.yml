@@ -1,0 +1,33 @@
+name: Main
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Check flutter version
+        run: flutter --version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run flutter analysis
+        run: flutter analyze
+
+      - name: Check dart code formatting
+        run: dart format --set-exit-if-changed .
+
+      - name: Run flutter tests
+        run: flutter test

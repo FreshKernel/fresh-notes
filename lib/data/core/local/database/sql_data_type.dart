@@ -1,7 +1,6 @@
 import 'dart:typed_data' show Uint8List;
 
 class SqlValue {
-
   SqlValue.num(num value) : _value = value;
   SqlValue.string(String? value) : _value = value;
   SqlValue.uint8List(Uint8List value) : _value = value;

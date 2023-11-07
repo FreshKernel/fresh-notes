@@ -69,14 +69,14 @@ dependencies:
   bot_toast: ^4.1.3
 
 # Replace the path with your local packages if you working on them, otherwise please comment the dependency_overrides section
-# dependency_overrides:
+dependency_overrides:
 
-#   flutter_quill:
-#     path: ../flutter-quill
-#   flutter_quill_extensions:
-#     path: ../flutter-quill/flutter_quill_extensions
-#   flutter_quill_test:
-#     path: ../flutter-quill/flutter_quill_test
+  flutter_quill:
+    path: ../flutter-quill
+  flutter_quill_extensions:
+    path: ../flutter-quill/flutter_quill_extensions
+  flutter_quill_test:
+    path: ../flutter-quill/flutter_quill_test
 
 dev_dependencies:
   test: ^1.24.3
