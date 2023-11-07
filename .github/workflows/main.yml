@@ -23,6 +23,9 @@ jobs:
       - name: Create empty .env file
         run: touch .env
 
+      - name: Create generated firebase_options.dart
+        run: g_firebase_options.dart
+
       - name: Install dependencies
         run: flutter pub get
 
