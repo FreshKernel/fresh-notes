@@ -13,6 +13,7 @@ class NoteEditorToolbarTextOptionsButton extends StatelessWidget {
     super.key,
   }) : _controller = controller;
 
+  // ignore: unused_field
   final QuillController _controller;
   final NoteEditorToolbarPopupCallback onShowPopup;
   final VoidCallback? onClose;
@@ -22,13 +23,13 @@ class NoteEditorToolbarTextOptionsButton extends StatelessWidget {
     return IconButton(
       onPressed: () {
         //popup a attachments toast
-        final cancel = BotToast.showAttachedWidget(
-          attachedBuilder: (_) => _TextOptionsWidget(
-            controller: _controller,
-          ),
-          duration: const Duration(seconds: 2),
-          target: const Offset(520, 520),
-        );
+        // final cancel = BotToast.showAttachedWidget(
+        //   attachedBuilder: (_) => _TextOptionsWidget(
+        //     controller: _controller,
+        //   ),
+        //   duration: const Duration(seconds: 2),
+        //   target: const Offset(520, 520),
+        // );
         // cancel(); //close
       },
       tooltip: 'Text options',
