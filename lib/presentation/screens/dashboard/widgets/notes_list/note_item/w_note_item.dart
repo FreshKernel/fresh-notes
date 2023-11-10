@@ -1,12 +1,9 @@
 import 'dart:convert' show jsonDecode;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 
-import '../../../../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../../../../logic/utils/extensions/string.dart';
-import '../../../../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../../../save_note/s_save_note.dart';
 import 'note_item_options.dart';
 
