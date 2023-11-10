@@ -10,6 +10,7 @@ _$LocalNoteImpl _$$LocalNoteImplFromJson(Map<String, dynamic> json) =>
     _$LocalNoteImpl(
       id: json['id'] as String,
       userId: json['userId'] as String,
+      title: json['title'] as String,
       text: json['text'] as String,
       cloudId: json['cloudId'] as String?,
       isSyncWithCloud: json['isSyncWithCloud'] as bool,
@@ -22,6 +23,7 @@ Map<String, dynamic> _$$LocalNoteImplToJson(_$LocalNoteImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
+      'title': instance.title,
       'text': instance.text,
       'cloudId': instance.cloudId,
       'isSyncWithCloud': instance.isSyncWithCloud,

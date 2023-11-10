@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'w_note_editor_toolbar.dart';
+import 'w_note_toolbar.dart';
 
 class SelectImageSourceDialog extends StatelessWidget {
   const SelectImageSourceDialog({super.key});

@@ -43,10 +43,18 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# For local development
+pubspec_overrides.yaml
+pubspec.lock
+
 *.env
 
 # Google && Firebase
+
+# Android
 **/google-services.json
+
+# iOS && macOS
 **/GoogleService-Info.plist
 **/firebase_app_id_file.json
 

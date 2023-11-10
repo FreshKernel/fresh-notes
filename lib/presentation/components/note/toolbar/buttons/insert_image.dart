@@ -4,11 +4,11 @@ import 'package:flutter_quill/flutter_quill.dart' as quill;
 import '../../../../../logic/native/image/s_image_picker.dart';
 import '../../../../utils/extensions/build_context_extensions.dart';
 import '../../../dialogs/w_pick_url.dart';
-import '../w_note_editor_toolbar.dart';
+import '../w_note_toolbar.dart';
 import '../w_select_image_source.dart';
 
-class NoteEditorToolbarImageButton extends StatelessWidget {
-  const NoteEditorToolbarImageButton({
+class NoteToolbarImageButton extends StatelessWidget {
+  const NoteToolbarImageButton({
     required quill.QuillController controller,
     super.key,
   }) : _controller = controller;

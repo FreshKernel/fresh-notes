@@ -92,8 +92,9 @@ class UniversalNotesService extends AppService {
     _notesStreamController.add(_notes);
   }
 
-  Future<void> insertOrReplaceOne(
-    QuillDocument document, {
+  Future<void> insertOrReplaceOne({
+    required String title,
+    required QuillDocument document,
     required SyncOptions syncOptions,
     required bool isPrivate,
     String? currentId,
@@ -150,6 +151,7 @@ class UniversalNotesService extends AppService {
     if (isEditing) {
       await updateOne(
         UpdateNoteInput(
+          title: title,
           text: documentInJson,
           syncOptions: syncOptions,
           isPrivate: isPrivate,
@@ -160,6 +162,7 @@ class UniversalNotesService extends AppService {
     }
     await createOne(
       CreateNoteInput(
+        title: title,
         text: documentInJson,
         userId: user.id,
         syncOptions: syncOptions,
@@ -229,7 +232,7 @@ class UniversalNotesService extends AppService {
     _notesStreamController.add(_notes);
   }
 
-  Future<void> updateOne(UpdateNoteInput updateInput, String currentId) async {
+  Future<void> updateOne(UpdateNoteInput input, String currentId) async {
     final localNote = await _localNotesService.getOneById(currentId);
     if (localNote == null) {
       throw const DatabaseOperationCannotFindResourcesException(
@@ -239,10 +242,10 @@ class UniversalNotesService extends AppService {
     final isCurrentLocalNoteExistsInTheCloud = localNote.cloudId != null;
 
     var shouldUpdateInTheCloud = false;
-    var newUpdateInput = updateInput;
+    var newUpdateInput = input;
 
-    final isSyncWithCloudNewInput = updateInput.syncOptions.isSyncWithCloud;
-    final isExistInCloudUpdateInput = updateInput.syncOptions.isExistsInCloud;
+    final isSyncWithCloudNewInput = input.syncOptions.isSyncWithCloud;
+    final isExistInCloudUpdateInput = input.syncOptions.isExistsInCloud;
 
     AppLogger.log('Is sync with cloud = $isSyncWithCloudNewInput');
     AppLogger.log(
@@ -261,12 +264,7 @@ class UniversalNotesService extends AppService {
           )
           .id;
       final cloudNote = await _cloudNotesService.createOne(
-        CreateNoteInput(
-          text: updateInput.text,
-          syncOptions: updateInput.syncOptions,
-          isPrivate: updateInput.isPrivate,
-          userId: userId,
-        ),
+        CreateNoteInput.fromUpdateInput(input, userId: userId),
       );
       shouldUpdateInTheCloud = true;
       newUpdateInput = newUpdateInput.copyWith(
@@ -311,7 +309,7 @@ class UniversalNotesService extends AppService {
       final cloudNoteId = note.syncOptions.getCloudNoteId();
       if (cloudNoteId != null) {
         await _cloudNotesService.updateOne(
-          updateInput,
+          input,
           cloudNoteId,
         );
       }

@@ -15,6 +15,7 @@ class LocalNote with _$LocalNote {
   const factory LocalNote({
     required String id,
     required String userId,
+    required String title,
     required String text,
     required String? cloudId,
     required bool isSyncWithCloud,
@@ -27,6 +28,7 @@ class LocalNote with _$LocalNote {
   factory LocalNote._fromInputSharedLogic({
     required String id,
     required String userId,
+    required String title,
     required String text,
     required SyncOptions syncOptions,
     required bool isPrivate,
@@ -36,6 +38,7 @@ class LocalNote with _$LocalNote {
       LocalNote(
         id: id,
         userId: userId,
+        title: title,
         text: text,
         isPrivate: isPrivate,
         cloudId: syncOptions.getCloudNoteId(),
@@ -54,6 +57,7 @@ class LocalNote with _$LocalNote {
       LocalNote._fromInputSharedLogic(
         id: id,
         userId: input.userId,
+        title: input.title,
         text: input.text,
         syncOptions: input.syncOptions,
         isPrivate: input.isPrivate,
@@ -72,6 +76,7 @@ class LocalNote with _$LocalNote {
       LocalNote._fromInputSharedLogic(
         id: id,
         userId: userId,
+        title: input.title,
         text: input.text,
         syncOptions: input.syncOptions,
         isPrivate: input.isPrivate,
@@ -82,22 +87,12 @@ class LocalNote with _$LocalNote {
   factory LocalNote.fromJson(Map<String, Object?> json) =>
       _$LocalNoteFromJson(json);
 
-  // factory LocalNote.fromCloudNote(CloudNote note) => LocalNote(
-  //       id: note.id,
-  //       userId: note.userId,
-  //       text: note.text,
-  //       cloudId: note.id,
-  //       isSyncWithCloud: true,
-  //       isPrivate: note.isPrivate,
-  //       createdAt: note.createdAt,
-  //       updatedAt: note.updatedAt,
-  //     );
-
   // This time I decided to make life simple and easier by
   // use the same exact name of the variable in sqlite and dart.
   factory LocalNote.fromSqlite(Map<String, Object?> map) => LocalNote(
         id: (map[LocalNoteProperties.id] as int).toString(),
         userId: map[LocalNoteProperties.userId] as String,
+        title: map[LocalNoteProperties.title] as String,
         text: map[LocalNoteProperties.text] as String,
         cloudId: map[LocalNoteProperties.cloudId] as String?,
         isSyncWithCloud:
@@ -107,12 +102,16 @@ class LocalNote with _$LocalNote {
         updatedAt: DateTime.parse(map[LocalNoteProperties.updatedAt] as String),
       );
 
+  /// This will be used in [toSqliteMapFromCreateInput] and
+  /// [toSqliteMapFromUpdateInput]
   static SqlMapData _toSqliteMapSharedLogic({
+    required String title,
     required String text,
     required SyncOptions syncOptions,
     required bool isPrivate,
   }) {
     return {
+      LocalNoteProperties.title: SqlValue.string(title),
       LocalNoteProperties.text: SqlValue.string(text),
       LocalNoteProperties.cloudId:
           SqlValue.string(syncOptions.getCloudNoteId()),
@@ -122,9 +121,11 @@ class LocalNote with _$LocalNote {
     };
   }
 
-  static SqlMapData toSqliteMapFromCreateInput(
-      {required CreateNoteInput input}) {
+  static SqlMapData toSqliteMapFromCreateInput({
+    required CreateNoteInput input,
+  }) {
     final sharedInputData = _toSqliteMapSharedLogic(
+      title: input.title,
       text: input.text,
       syncOptions: input.syncOptions,
       isPrivate: input.isPrivate,
@@ -140,6 +141,7 @@ class LocalNote with _$LocalNote {
     required UpdateNoteInput input,
   }) {
     final sharedInputData = _toSqliteMapSharedLogic(
+      title: input.title,
       text: input.text,
       syncOptions: input.syncOptions,
       isPrivate: input.isPrivate,
@@ -157,6 +159,7 @@ class LocalNote with _$LocalNote {
     CREATE TABLE IF NOT EXISTS "$sqlTableName" (
       "${LocalNoteProperties.id}"	INTEGER NOT NULL UNIQUE,
       "${LocalNoteProperties.userId}"	TEXT NOT NULL,
+      "${LocalNoteProperties.title}"	TEXT NOT NULL,
       "${LocalNoteProperties.text}"	TEXT NOT NULL,
       "${LocalNoteProperties.cloudId}" TEXT,
       "${LocalNoteProperties.isSyncWithCloud}" INTEGER NOT NULL,

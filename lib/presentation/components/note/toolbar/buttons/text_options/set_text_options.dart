@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
 import '../../../../others/app_scroll_bar.dart';
-import '../../w_note_editor_toolbar.dart';
+import '../../w_note_toolbar.dart';
 
-class NoteEditorToolbarTextOptionsButton extends StatelessWidget {
-  const NoteEditorToolbarTextOptionsButton({
+class NoteToolbarTextOptionsButton extends StatelessWidget {
+  const NoteToolbarTextOptionsButton({
     required QuillController controller,
     required this.onShowPopup,
     required this.onClose,
@@ -14,7 +14,7 @@ class NoteEditorToolbarTextOptionsButton extends StatelessWidget {
 
   // ignore: unused_field
   final QuillController _controller;
-  final NoteEditorToolbarPopupCallback onShowPopup;
+  final NoteToolbarPopupCallback onShowPopup;
   final VoidCallback? onClose;
 
   @override

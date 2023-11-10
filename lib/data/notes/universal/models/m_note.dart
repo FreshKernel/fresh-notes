@@ -11,18 +11,21 @@ class UniversalNote with _$UniversalNote {
   const factory UniversalNote({
     required String id,
     required String userId,
+    required String title,
     required String text,
     required SyncOptions syncOptions,
     required bool isPrivate,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _UniversalNote;
+
   factory UniversalNote.fromLocalNote(
     LocalNote note,
   ) =>
       UniversalNote(
         id: note.id,
         userId: note.userId,
+        title: note.title,
         text: note.text,
         syncOptions: SyncOptions.getSyncOptions(
           isSyncWithCloud: note.isSyncWithCloud,
@@ -39,6 +42,7 @@ class UniversalNote with _$UniversalNote {
       UniversalNote(
         id: note.id,
         userId: note.userId,
+        title: note.title,
         text: note.text,
         syncOptions: SyncOptions.getSyncOptions(
           isSyncWithCloud: true,
@@ -57,6 +61,7 @@ class UniversalNoteProperties {
 
   static const id = 'id';
   static const userId = 'userId';
+  static const title = 'title';
   static const text = 'text';
   static const cloudId = 'cloudId';
   static const isSyncWithCloud = 'isSyncWithCloud';
@@ -68,6 +73,7 @@ class UniversalNoteProperties {
 // enum NotePropertiesEnum {
 //   id,
 //   userId,
+//   title,
 //   text,
 //   cloudId,
 //   isPrivate,

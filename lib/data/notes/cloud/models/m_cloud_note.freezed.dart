@@ -22,6 +22,7 @@ CloudNote _$CloudNoteFromJson(Map<String, dynamic> json) {
 mixin _$CloudNote {
   String get id => throw _privateConstructorUsedError; // the document id
   String get userId => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $CloudNoteCopyWith<$Res> {
   $Res call(
       {String id,
       String userId,
+      String title,
       String text,
       bool isPrivate,
       DateTime createdAt,
@@ -62,6 +64,7 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
   $Res call({
     Object? id = null,
     Object? userId = null,
+    Object? title = null,
     Object? text = null,
     Object? isPrivate = null,
     Object? createdAt = null,
@@ -75,6 +78,10 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
       text: null == text
           ? _value.text
@@ -107,6 +114,7 @@ abstract class _$$CloudNoteImplCopyWith<$Res>
   $Res call(
       {String id,
       String userId,
+      String title,
       String text,
       bool isPrivate,
       DateTime createdAt,
@@ -126,6 +134,7 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? userId = null,
+    Object? title = null,
     Object? text = null,
     Object? isPrivate = null,
     Object? createdAt = null,
@@ -139,6 +148,10 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
       text: null == text
           ? _value.text
@@ -166,6 +179,7 @@ class _$CloudNoteImpl implements _CloudNote {
   const _$CloudNoteImpl(
       {required this.id,
       required this.userId,
+      required this.title,
       required this.text,
       required this.isPrivate,
       required this.createdAt,
@@ -180,6 +194,8 @@ class _$CloudNoteImpl implements _CloudNote {
   @override
   final String userId;
   @override
+  final String title;
+  @override
   final String text;
   @override
   final bool isPrivate;
@@ -190,7 +206,7 @@ class _$CloudNoteImpl implements _CloudNote {
 
   @override
   String toString() {
-    return 'CloudNote(id: $id, userId: $userId, text: $text, isPrivate: $isPrivate, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CloudNote(id: $id, userId: $userId, title: $title, text: $text, isPrivate: $isPrivate, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -200,6 +216,7 @@ class _$CloudNoteImpl implements _CloudNote {
             other is _$CloudNoteImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
@@ -212,7 +229,7 @@ class _$CloudNoteImpl implements _CloudNote {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, userId, text, isPrivate, createdAt, updatedAt);
+      runtimeType, id, userId, title, text, isPrivate, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -232,6 +249,7 @@ abstract class _CloudNote implements CloudNote {
   const factory _CloudNote(
       {required final String id,
       required final String userId,
+      required final String title,
       required final String text,
       required final bool isPrivate,
       required final DateTime createdAt,
@@ -244,6 +262,8 @@ abstract class _CloudNote implements CloudNote {
   String get id;
   @override // the document id
   String get userId;
+  @override
+  String get title;
   @override
   String get text;
   @override

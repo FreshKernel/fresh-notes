@@ -11,10 +11,10 @@ enum InsertImageSource {
   link,
 }
 
-typedef NoteEditorToolbarPopupCallback = Function(Widget widget);
+typedef NoteToolbarPopupCallback = Function(Widget widget);
 
-class NoteEditorToolbar extends StatefulWidget {
-  const NoteEditorToolbar({
+class NoteToolbar extends StatefulWidget {
+  const NoteToolbar({
     required QuillController controller,
     super.key,
   }) : _controller = controller;
@@ -22,10 +22,10 @@ class NoteEditorToolbar extends StatefulWidget {
   final QuillController _controller;
 
   @override
-  State<NoteEditorToolbar> createState() => _NoteEditorToolbarState();
+  State<NoteToolbar> createState() => _NoteToolbarState();
 }
 
-class _NoteEditorToolbarState extends State<NoteEditorToolbar> {
+class _NoteToolbarState extends State<NoteToolbar> {
   Widget? _currentPopup;
 
   void _onTapOutside() {
@@ -77,13 +77,13 @@ class _NoteEditorToolbarState extends State<NoteEditorToolbar> {
                   const SizedBox(
                     width: 10,
                   ),
-                  NoteEditorToolbarImageButton(
+                  NoteToolbarImageButton(
                     controller: widget._controller,
                   ),
-                  NoteEditorToolbarChecklistButton(
+                  NoteToolbarChecklistButton(
                     controller: widget._controller,
                   ),
-                  NoteEditorToolbarTextOptionsButton(
+                  NoteToolbarTextOptionsButton(
                     controller: widget._controller,
                     onClose: _onTapOutside,
                     onShowPopup: _onShowPopup,

@@ -20,7 +20,7 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /notes/{noteId} {
-    // To allow sharing notes
+    // To allow sharing public notes
    	 allow get: if isAuthenticated() && resource.data != null && 
      resource.data.isPrivate == false;
 
@@ -37,7 +37,9 @@ service cloud.firestore {
      	let resourceData = request.resource.data;
      	return isAccountVerified() &&
       resourceData.keys().toSet().hasOnly([
-      'userId','text', 
+      'userId',
+      'title',
+      'text',
       'isPrivate',
       'createdAt',
       'updatedAt'
@@ -46,6 +48,7 @@ service cloud.firestore {
       resourceData.userId == getUserId() &&
       resourceData.createdAt == request.time &&
       resourceData.updatedAt == request.time &&
+      resourceData.title is string &&
       resourceData.text is string &&
       resourceData.isPrivate is bool;
      }
@@ -55,9 +58,13 @@ service cloud.firestore {
      	return isAccountVerified() &&
       resource.data.userId != getUserId() &&
       resourceData.keys().toSet().hasOnly([
-        'text', 'isPrivate', 'updatedAt'
+        'title',
+        'text',
+        'isPrivate',
+        'updatedAt'
         ]) &&
       resourceData.updatedAt == request.time &&
+      resourceData.title is string &&
       resourceData.text is string &&
       resourceData.isPrivate is bool;
      }
@@ -67,12 +74,6 @@ service cloud.firestore {
         return resourceData != null &&
           resourceData.userId == getUserId();
       }
-
-    function canReadResource() {
-      let resourceData = resource.data;
-      return resourceData != null &&
-          (resourceData.isPrivate == false || resourceData.userId == getUserId());
-    	}
 		}
     
   }

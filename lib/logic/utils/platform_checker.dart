@@ -21,4 +21,14 @@ class PlatformChecker {
     if (isWeb()) return false;
     return Platform.isAndroid;
   }
+
+  static bool isFuchsia() {
+    if (isWeb()) return false;
+    return Platform.isAndroid;
+  }
+
+  static bool isMobile() {
+    if (isWeb()) return false;
+    return isIOS() || isAndroid() | isFuchsia();
+  }
 }

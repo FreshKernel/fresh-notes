@@ -4,16 +4,22 @@
 - [Fresh Notes App](#fresh-notes-app)
   - [Table of contents](#table-of-contents)
   - [About](#about)
-  - [Story](#story)
+    - [Story](#story)
   - [Setup](#setup)
 
 ## About
 A cross-platform, open-source notes app written in Flutter, Kotlin, Swift, Typescript and Firebase
 
-## Story
+### Story
 We are all interested in building mobile apps for iOS and Android, so we had to use macOS to write and build native iOS applications using Xcode, when using any operating system I usually take a lot of notes and I needed an notes app and I prefer it to not be a third party so I used Notes app on macOS but after updating to macOS 14.1 the notes app never working and it doesn't matter what I do I always getting crashes
 
-![macOS Notes crash](assets/image.png)
+<details>
+<summary>Tap to show/hide screenshot</summary>
+<br>
+
+![macOS Notes crash](./assets/images/macos_notes_crash.png)
+
+</details>
 
 it's known to be limited on AppleOS and it's closed so there is not much I can do, so I create this little app and usually I prefer my repositories to public so I decided to also publish it even though that wasn't my plan
 
@@ -23,15 +29,16 @@ it's known to be limited on AppleOS and it's closed so there is not much I can d
 3. Configure Firebase with your Flutter app using the offical [documentation](https://firebase.google.com/docs/flutter/setup), you are welcome to setup it manually, I prefer to do it manually but to make it faster to setup the app for new anyone I will use the automated CLI
 4. Create Firebase Firestore index
 
-Composite indexes: <br>
-userId: Ascending  <br>
-updatedAt: Descending <br>
-__name__ Descending <br>
+    Composite indexes: <br>
+    userId: Ascending  <br>
+    updatedAt: Descending <br>
+    __name__ Descending <br>
 
-Instead of defining a composite index manually, try to run all the queries in the app by testing everything to get a links for generating the required index. and you will get a url to open Like:
-[https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?....](https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?create_composite=Cktwcm9qZWN0cy9teW5vdGVzLWViNzE3L2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9ub3Rlcy9pbmRleGVzL18QARoKCgZ1c2VySWQQARoNCgl1cGRhdGVkQXQQAhoMCghfX25hbWVfXxAC) <br>
-5. Configure App check in firebase for Android and iOS (optional)
-6. Setup App Links for Android and Universal Links for iOS (optional)
+    Instead of defining a composite index manually, try to run all the queries in the app by testing everything to get a links for generating the required index. and you will get a url to open Like:
+    [https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?....](https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?create_composite=Cktwcm9qZWN0cy9teW5vdGVzLWViNzE3L2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9ub3Rlcy9pbmRleGVzL18QARoKCgZ1c2VySWQQARoNCgl1cGRhdGVkQXQQAhoMCghfX25hbWVfXxAC)
+
+1. Configure App check in firebase for Android and iOS (optional)
+2. Setup App Links for Android and Universal Links for iOS (optional)
 
 <!-- 1. Firebase: First setup firebase for both android/ios, register the apps and download the configurations and put
 them in the desire place, "google-services.json" for android, ios "GoogleService-Info.plist"

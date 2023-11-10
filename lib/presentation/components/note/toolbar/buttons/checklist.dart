@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
-class NoteEditorToolbarChecklistButton extends StatelessWidget {
-  const NoteEditorToolbarChecklistButton({
+class NoteToolbarChecklistButton extends StatelessWidget {
+  const NoteToolbarChecklistButton({
     required QuillController controller,
     super.key,
   }) : _controller = controller;

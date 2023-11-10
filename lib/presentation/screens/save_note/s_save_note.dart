@@ -1,12 +1,8 @@
 import 'dart:convert';
-import 'dart:io' show File;
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:flutter_quill_extensions/logic/services/image_saver/image_saver.dart';
 
 import '../../../core/log/logger.dart';
 import '../../../data/core/cloud/database/sync_options.dart';
@@ -15,36 +11,9 @@ import '../../../data/notes/universal/s_universal_notes.dart';
 import '../../../logic/native/share/s_app_share.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../logic/utils/platform_checker.dart';
-import '../../components/note/editor_toolbar/w_note_editor_toolbar.dart';
-import '../../utils/dialog/w_yes_cancel_dialog.dart';
+import '../../components/note/editor/w_editor.dart';
+import '../../components/note/toolbar/w_note_toolbar.dart';
 import '../../utils/extensions/build_context_extensions.dart';
-
-class MockImpl extends ImageSaverInterface {
-  const MockImpl();
-  @override
-  Future<bool> hasAccess({required bool toAlbum}) {
-    // TODO: implement hasAccess
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<bool> requestAccess({required bool toAlbum}) {
-    // TODO: implement requestAccess
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> saveImageFromNetwork(Uri imageUrl) {
-    // TODO: implement saveImageFromNetwork
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> saveLocalImage(String imageUrl) {
-    // TODO: implement saveLocalImage
-    throw UnimplementedError();
-  }
-}
 
 class SaveNoteScreenArgs {
   const SaveNoteScreenArgs({
@@ -72,8 +41,6 @@ class SaveNoteScreen extends StatefulWidget {
 
 class _SaveNoteScreenState extends State<SaveNoteScreen> {
   late final QuillController _controller;
-  final _editorFocusNode = FocusNode();
-  final _editorScrollController = ScrollController();
 
   var _isReadOnly = false;
   var _isPrivate = true;
@@ -82,8 +49,8 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   UniversalNote? get _note => widget.args.note;
 
   bool get _isEditing => _note != null;
-
   var _isLoading = false;
+  late final TextEditingController _titleController;
 
   SyncOptions get _getSyncOptions {
     return SyncOptions.getSyncOptions(
@@ -99,8 +66,12 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   }
 
   void _setupController() {
-    if (_isEditing) {
-      final json = jsonDecode(_note!.text);
+    final noteToEdit = _note;
+    if (noteToEdit != null) {
+      final json = jsonDecode(noteToEdit.text);
+      _titleController = TextEditingController(
+        text: noteToEdit.title,
+      );
       _controller = QuillController(
         document: Document.fromJson(json),
         selection: const TextSelection.collapsed(offset: 0),
@@ -111,6 +82,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
       _isSyncWithCloud = _note?.syncOptions.isSyncWithCloud ?? false;
       return;
     }
+    _titleController = TextEditingController();
     _controller = QuillController.basic();
     _isSyncWithCloud =
         context.read<SettingsCubit>().state.syncWithCloudDefaultValue;
@@ -119,8 +91,6 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   @override
   void dispose() {
     _controller.dispose();
-    _editorFocusNode.dispose();
-    _editorScrollController.dispose();
     super.dispose();
   }
 
@@ -168,7 +138,8 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     try {
       setState(() => _isLoading = true);
       await notesDataService.insertOrReplaceOne(
-        document,
+        title: _titleController.text,
+        document: document,
         currentId: _note?.id,
         syncOptions: _getSyncOptions,
         isPrivate: _isPrivate,
@@ -182,8 +153,13 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          _isEditing ? 'Edit note' : 'Add note',
+        title: TextField(
+          decoration: const InputDecoration(
+            labelText: 'Title',
+            hintText: 'Enter the title for this note',
+            border: InputBorder.none,
+          ),
+          controller: _titleController,
         ),
         actions: [
           IconButton(
@@ -201,7 +177,12 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
             tooltip: 'Share',
             onPressed: () async {
               final messenger = context.messenger;
-              final plainText = _controller.document.toPlainText(_embedBuilder);
+              final plainText = _controller.document.toPlainText(
+                PlatformChecker.isWeb()
+                    ? FlutterQuillEmbeds.editorsWebBuilders()
+                    : FlutterQuillEmbeds.editorBuilders(),
+                QuillEditorUnknownEmbedBuilder(),
+              );
               if (plainText.trim().isEmpty) {
                 messenger.showMessage(
                   'Please enter a text before sharing it',
@@ -269,76 +250,19 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
                             ],
                           ),
                         ),
-                      Scrollbar(
-                        child: SingleChildScrollView(
-                          child: QuillEditor(
-                            configurations: QuillEditorConfigurations(
-                              readOnly: _isReadOnly,
-                              placeholder: 'Start your notes',
-                              padding: const EdgeInsets.all(16),
-                              minHeight: 1000,
-                              embedBuilders: _embedBuilder,
-                              autoFocus: false,
-                              expands: false,
-                              scrollable: true,
-                              unknownEmbedBuilder:
-                                  QuillEditorUnknownEmbedBuilder(),
-                            ),
-                            focusNode: _editorFocusNode,
-                            scrollController: _editorScrollController,
-                          ),
-                        ),
+                      NoteEditor(
+                        isReadOnly: _isReadOnly,
+                        onRequestingSaveNote: _saveNote,
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-            NoteEditorToolbar(controller: _controller),
+            NoteToolbar(controller: _controller),
           ],
         ),
       ),
     );
-  }
-
-  Iterable<EmbedBuilder> get _embedBuilder {
-    if (PlatformChecker.isWeb()) {
-      return FlutterQuillEmbeds.editorsWebBuilders();
-    }
-    return [
-      ...FlutterQuillEmbeds.editorBuilders(
-        imageEmbedConfigurations: QuillEditorImageEmbedConfigurations(
-          imageProviderBuilder: (imageUrl) {
-            if (isHttpBasedUrl(imageUrl)) {
-              return CachedNetworkImageProvider(imageUrl);
-            }
-            return FileImage(File(imageUrl));
-          },
-          onImageRemovedCallback: (imageUrl) async {
-            final imageFile = File(imageUrl);
-            if (await imageFile.exists()) {
-              await imageFile.delete();
-              AppLogger.log(
-                'Image exists and we have removed it from the local storage and not just from the editor.',
-              );
-              _saveNote();
-              return;
-            }
-            AppLogger.log('Image does not exists');
-          },
-          shouldRemoveImageCallback: (imageFile) async {
-            final remove = await showYesCancelDialog(
-              context: context,
-              options: const YesOrCancelDialogOptions(
-                title: 'Deleting an image',
-                message:
-                    'Are you sure you want to delete this image from the editor?',
-              ),
-            );
-            return remove;
-          },
-        ),
-      ),
-    ];
   }
 }

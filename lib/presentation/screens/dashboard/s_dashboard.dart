@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/notes/universal/s_universal_notes.dart';
+import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../save_note/s_save_note.dart';
 import 'models/m_navigation_item.dart';
 import 'w_logout.dart';
-import 'widgets/notes/cloud_sync/w_sync_notes.dart';
-import 'widgets/notes/w_notes.dart';
+import 'widgets/notes_list/cloud_sync/w_sync_notes.dart';
+import 'widgets/notes_list/w_notes_list.dart';
 import 'widgets/w_about.dart';
 import 'widgets/w_drawer.dart';
 import 'widgets/w_settings.dart';
@@ -26,9 +28,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
       title: 'Manage notes',
       label: 'Notes',
       icon: const Icon(Icons.notes),
-      body: const NotesPage(),
+      body: const NotesListPage(),
       actionsBuilder: (context) {
         return [
+          IconButton(
+            tooltip: 'Toggle using grid item',
+            onPressed: () {
+              final settingsBloc = context.read<SettingsCubit>();
+              settingsBloc.updateSettings(
+                settingsBloc.state.copyWith(
+                  useNoteGridItem: !settingsBloc.state.useNoteGridItem,
+                ),
+              );
+            },
+            icon: const Icon(Icons.list),
+          ),
           const SyncNotesIconButton(),
           const LogoutIconButton(),
           IconButton(
@@ -49,7 +63,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               UniversalNotesService.getInstance().deleteAll();
             },
             icon: const Icon(Icons.delete_forever),
-          )
+          ),
         ];
       },
       actionButtonBuilder: (context) {
@@ -81,6 +95,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   var _selectedNavItemIndex = 0;
   final _pageController = PageController();
 
+  bool _isNavRailBar(Size size) {
+    return size.width >= 400;
+  }
+
+  void _onDestinationSelected(int newPageIndex) {
+    _pageController.jumpToPage(newPageIndex);
+    setState(() => _selectedNavItemIndex = newPageIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     final actions =
@@ -96,29 +119,64 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: actions,
       ),
       drawer: const DashboardDrawer(),
-      body: PageView(
-        controller: _pageController,
-        children: _navigationItems.map((e) => Center(child: e.body)).toList(),
-        onPageChanged: (newPageIndex) {
-          setState(() => _selectedNavItemIndex = newPageIndex);
+      body: Builder(
+        builder: (context) {
+          final size = MediaQuery.sizeOf(context);
+          final widget = PageView(
+            controller: _pageController,
+            children:
+                _navigationItems.map((e) => Center(child: e.body)).toList(),
+            onPageChanged: (newPageIndex) {
+              setState(() => _selectedNavItemIndex = newPageIndex);
+            },
+          );
+          if (!_isNavRailBar(size)) {
+            return widget;
+          }
+          return Row(
+            children: [
+              NavigationRail(
+                onDestinationSelected: _onDestinationSelected,
+                labelType: NavigationRailLabelType.all,
+                destinations: _navigationItems.map((e) {
+                  return NavigationRailDestination(
+                    icon: e.icon,
+                    label: Text(e.label),
+                    selectedIcon: e.selectedIcon,
+                    // tooltip: e.tooltip,
+                    // key: ValueKey(e.label),
+                  );
+                }).toList(),
+                selectedIndex: _selectedNavItemIndex,
+              ),
+              Expanded(
+                child: widget,
+              )
+            ],
+          );
         },
       ),
       floatingActionButton: actionButton,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedNavItemIndex,
-        onDestinationSelected: (newPageIndex) {
-          _pageController.jumpToPage(newPageIndex);
-          setState(() => _selectedNavItemIndex = newPageIndex);
-        },
-        destinations: _navigationItems.map((e) {
-          return NavigationDestination(
-            icon: e.icon,
-            label: e.label,
-            selectedIcon: e.selectedIcon,
-            tooltip: e.tooltip,
-            key: ValueKey(e.label),
+      bottomNavigationBar: Builder(
+        builder: (context) {
+          final size = MediaQuery.sizeOf(context);
+          if (_isNavRailBar(size)) {
+            return const SizedBox.shrink();
+          }
+          return NavigationBar(
+            selectedIndex: _selectedNavItemIndex,
+            onDestinationSelected: _onDestinationSelected,
+            destinations: _navigationItems.map((e) {
+              return NavigationDestination(
+                icon: e.icon,
+                label: e.label,
+                selectedIcon: e.selectedIcon,
+                tooltip: e.tooltip,
+                key: ValueKey(e.label),
+              );
+            }).toList(),
           );
-        }).toList(),
+        },
       ),
     );
   }

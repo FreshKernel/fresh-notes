@@ -10,6 +10,7 @@ _$CloudNoteImpl _$$CloudNoteImplFromJson(Map<String, dynamic> json) =>
     _$CloudNoteImpl(
       id: json['id'] as String,
       userId: json['userId'] as String,
+      title: json['title'] as String,
       text: json['text'] as String,
       isPrivate: json['isPrivate'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
@@ -20,6 +21,7 @@ Map<String, dynamic> _$$CloudNoteImplToJson(_$CloudNoteImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
+      'title': instance.title,
       'text': instance.text,
       'isPrivate': instance.isPrivate,
       'createdAt': instance.createdAt.toIso8601String(),
