@@ -21,4 +21,15 @@ class SettingsCubit extends Cubit<SettingsState> with HydratedMixin {
   Map<String, dynamic>? toJson(SettingsState state) {
     return state.toJson();
   }
+
+  static bool buildWhen(SettingsState previous, SettingsState current) {
+    // Rebuild the whole app only if the themeMode
+    // darkDuringDayInAutoMode, appLanguague changes
+    // or theme sytem
+
+    return previous.themeMode != current.themeMode ||
+        previous.darkDuringDayInAutoMode != current.darkDuringDayInAutoMode ||
+        previous.appLanguague != current.appLanguague ||
+        previous.themeSystem != current.themeSystem;
+  }
 }

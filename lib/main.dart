@@ -51,17 +51,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: (previous, current) {
-          // Rebuild the whole app only if the themeMode
-          // darkDuringDayInAutoMode, appLanguague changes
-          // or theme sytem
-
-          return previous.themeMode != current.themeMode ||
-              previous.darkDuringDayInAutoMode !=
-                  current.darkDuringDayInAutoMode ||
-              previous.appLanguague != current.appLanguague ||
-              previous.themeSystem != current.themeSystem;
-        },
+        buildWhen: SettingsCubit.buildWhen,
         builder: (context, state) {
           AppLogger.log('Building the MyApp() widget...');
           return MaterialApp(
