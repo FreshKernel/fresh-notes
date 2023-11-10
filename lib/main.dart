@@ -24,11 +24,6 @@ import 'presentation/utils/extensions/build_context_extensions.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-        ? HydratedStorage.webStorageDirectory
-        : await getApplicationDocumentsDirectory(),
-  );
   await AppStartup.getInstance().initialize();
   runApp(const MyApp());
 }
