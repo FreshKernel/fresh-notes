@@ -46,7 +46,7 @@ class AppDialogAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (PlatformChecker.isAppleSystem()) {
+    if (PlatformChecker.defaultLogic().isAppleSystem()) {
       return CupertinoDialogAction(
         onPressed: onPressed,
         isDefaultAction:

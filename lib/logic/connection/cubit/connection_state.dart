@@ -3,8 +3,9 @@ part of 'connection_cubit.dart';
 @immutable
 sealed class ConnState extends Equatable {
   const ConnState(this.connectionType);
-  factory ConnState.initial() =>
-      const ConnStateInternetDisconnected(UnknownConnectionType(false));
+  factory ConnState.initial() => !PlatformChecker.isWeb()
+      ? const ConnStateInternetDisconnected(UnknownConnectionType(false))
+      : const ConnStateInternetConnected(UnknownConnectionType(true));
   final ConnectionType connectionType;
 
   @override

@@ -1,34 +1,83 @@
-import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart'
+    show
+        TargetPlatform,
+        immutable,
+        kIsWeb,
+        visibleForTesting,
+        defaultTargetPlatform;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
-
+@immutable
 class PlatformChecker {
-  const PlatformChecker._();
+  factory PlatformChecker.nativePlatform() => _nativePlatform;
+  factory PlatformChecker.defaultLogic() => _defaultLogic;
+  const PlatformChecker._({
+    required this.shouldItWeb,
+  });
+  static const PlatformChecker _nativePlatform =
+      PlatformChecker._(shouldItWeb: false);
+  static const PlatformChecker _defaultLogic =
+      PlatformChecker._(shouldItWeb: true);
+  final bool shouldItWeb;
 
-  static bool isWeb() => kIsWeb;
+  static bool isWeb({
+    @visibleForTesting bool? overrideValue,
+  }) =>
+      overrideValue ?? kIsWeb;
 
-  static bool isAppleSystem() {
-    if (isWeb()) return false;
-    return Platform.isIOS || Platform.isMacOS;
+  static const applePlatforms = [
+    TargetPlatform.iOS,
+    TargetPlatform.macOS,
+  ];
+
+  bool get _sharedShouldReturnFalse => isWeb() && !shouldItWeb;
+
+  TargetPlatform get _defaultTargetPlatform => defaultTargetPlatform;
+
+  bool isAppleSystem({TargetPlatform? targetPlatform}) {
+    if (_sharedShouldReturnFalse) return false;
+    targetPlatform ??= _defaultTargetPlatform;
+    return applePlatforms.contains(targetPlatform);
   }
 
-  static bool isIOS() {
-    if (isWeb()) return false;
-    return Platform.isIOS;
+  bool isIOS({TargetPlatform? targetPlatform}) {
+    if (_sharedShouldReturnFalse) return false;
+    targetPlatform ??= _defaultTargetPlatform;
+    return targetPlatform == TargetPlatform.iOS;
   }
 
-  static bool isAndroid() {
-    if (isWeb()) return false;
-    return Platform.isAndroid;
+  bool isAndroid({TargetPlatform? targetPlatform}) {
+    if (_sharedShouldReturnFalse) return false;
+    targetPlatform ??= _defaultTargetPlatform;
+    return targetPlatform == TargetPlatform.android;
   }
 
-  static bool isFuchsia() {
-    if (isWeb()) return false;
-    return Platform.isAndroid;
+  bool isFuchsia({TargetPlatform? targetPlatform}) {
+    if (_sharedShouldReturnFalse) return false;
+    targetPlatform ??= _defaultTargetPlatform;
+    return targetPlatform == TargetPlatform.fuchsia;
   }
 
-  static bool isMobile() {
-    if (isWeb()) return false;
-    return isIOS() || isAndroid() | isFuchsia();
+  static const mobilePlatforms = [
+    TargetPlatform.android,
+    TargetPlatform.iOS,
+    TargetPlatform.fuchsia,
+  ];
+
+  bool isMobile({TargetPlatform? targetPlatform}) {
+    if (_sharedShouldReturnFalse) return false;
+    targetPlatform ??= _defaultTargetPlatform;
+    return mobilePlatforms.contains(targetPlatform);
+  }
+
+  static const desktopPlatforms = [
+    TargetPlatform.linux,
+    TargetPlatform.macOS,
+    TargetPlatform.windows,
+  ];
+
+  bool isDesktop({TargetPlatform? targetPlatform}) {
+    if (_sharedShouldReturnFalse) return false;
+    targetPlatform ??= _defaultTargetPlatform;
+    return desktopPlatforms.contains(targetPlatform);
   }
 }

@@ -115,8 +115,8 @@ class AuthCubit extends Cubit<AuthState> {
             AppLogger.error('Sign in with apple is not avaliable.');
             return;
           }
-          if (!PlatformChecker.isAppleSystem()) {
-            // Let firebase handle the web sign in for us
+          if (!PlatformChecker.nativePlatform().isAppleSystem()) {
+            // Let firebase handle the process for other platform using web page
             authCustomProvider = const AppleAuthCustomProvider(
               identityToken: null,
               authorizationCode: null,

@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 
 import '../../../core/app_module.dart';
 import '../../native/connection/connection_type.dart';
+import '../../utils/platform_checker.dart';
 
 part 'connection_state.dart';
 

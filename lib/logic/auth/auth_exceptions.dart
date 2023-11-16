@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show describeEnum;
 import '../../core/errors/exceptions.dart';
 
 enum AuthErrorType {
@@ -24,9 +23,7 @@ enum AuthErrorType {
   invalidVerificationId;
 
   @override
-  String toString() {
-    return describeEnum(this);
-  }
+  String toString() => name;
 }
 
 class AuthException extends AppException {

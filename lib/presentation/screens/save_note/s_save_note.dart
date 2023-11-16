@@ -10,7 +10,6 @@ import '../../../data/notes/universal/models/m_note.dart';
 import '../../../data/notes/universal/s_universal_notes.dart';
 import '../../../logic/native/share/s_app_share.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
-import '../../../logic/utils/platform_checker.dart';
 import '../../components/note/editor/w_editor.dart';
 import '../../components/note/toolbar/w_note_toolbar.dart';
 import '../../utils/extensions/build_context_extensions.dart';
@@ -178,9 +177,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
             onPressed: () async {
               final messenger = context.messenger;
               final plainText = _controller.document.toPlainText(
-                PlatformChecker.isWeb()
-                    ? FlutterQuillEmbeds.editorsWebBuilders()
-                    : FlutterQuillEmbeds.editorBuilders(),
+                FlutterQuillEmbeds.defaultEditorBuilders(),
                 QuillEditorUnknownEmbedBuilder(),
               );
               if (plainText.trim().isEmpty) {

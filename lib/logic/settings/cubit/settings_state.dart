@@ -13,6 +13,37 @@ enum AppLanguague {
   system,
 }
 
+enum AppThemeSystem {
+  material3,
+  material2,
+  cupertino,
+  fluentUi,
+}
+
+enum AppLayoutMode {
+  auto,
+  small,
+  large,
+}
+
+@freezed
+class SettingsState with _$SettingsState {
+  const factory SettingsState({
+    @Default(true) bool confirmDeleteNote,
+    @Default(true) bool useNoteGridItem,
+    @Default(false) bool syncWithCloudDefaultValue,
+    @Default(true) bool onlySaveDataWhenClick,
+    @Default(false) darkDuringDayInAutoMode,
+    @Default(AppThemeMode.system) AppThemeMode themeMode,
+    @Default(AppLanguague.system) AppLanguague appLanguague,
+    @Default(AppThemeSystem.material3) AppThemeSystem themeSystem,
+    @Default(AppLayoutMode.auto) AppLayoutMode layoutMode,
+  }) = _SettingsState;
+  factory SettingsState.fromJson(Map<String, Object?> json) =>
+      _$SettingsStateFromJson(json);
+}
+
+
 // final class AppThemeSystemJsonConveter
 //     extends JsonConverter<AppThemeSystem, Map<String, Object?>> {
 //   const AppThemeSystemJsonConveter();
@@ -62,33 +93,3 @@ enum AppLanguague {
 
 //   final bool useMaterial3;
 // }
-
-enum AppThemeSystem {
-  material3,
-  material2,
-  cupertino,
-  fluentUi,
-}
-
-enum AppLayoutMode {
-  auto,
-  small,
-  large,
-}
-
-@freezed
-class SettingsState with _$SettingsState {
-  const factory SettingsState({
-    @Default(true) bool confirmDeleteNote,
-    @Default(true) bool useNoteGridItem,
-    @Default(false) bool syncWithCloudDefaultValue,
-    @Default(true) bool onlySaveDataWhenClick,
-    @Default(false) darkDuringDayInAutoMode,
-    @Default(AppThemeMode.system) AppThemeMode themeMode,
-    @Default(AppLanguague.system) AppLanguague appLanguague,
-    @Default(AppThemeSystem.material3) AppThemeSystem themeSystem,
-    @Default(AppLayoutMode.auto) AppLayoutMode layoutMode,
-  }) = _SettingsState;
-  factory SettingsState.fromJson(Map<String, Object?> json) =>
-      _$SettingsStateFromJson(json);
-}

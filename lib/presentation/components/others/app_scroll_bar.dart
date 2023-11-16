@@ -10,7 +10,7 @@ class AppScrollBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (PlatformChecker.isAppleSystem()) {
+    if (PlatformChecker.defaultLogic().isAppleSystem()) {
       return CupertinoScrollbar(child: child);
     }
     return Scrollbar(child: child);

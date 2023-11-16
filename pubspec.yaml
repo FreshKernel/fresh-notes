@@ -25,11 +25,11 @@ dependencies:
   # Firebase packages && plugins
   firebase_core: ^2.22.0
   firebase_app_check: ^0.2.1+4
-  firebase_auth: ^4.13.0
-  cloud_firestore: ^4.13.0
-  firebase_storage: ^11.5.0
+  firebase_auth: ^4.14.0
+  cloud_firestore: ^4.13.1
+  firebase_storage: ^11.5.1
   firebase_crashlytics: ^3.4.4
-  firebase_analytics: ^10.6.4
+  firebase_analytics: ^10.7.0
 
   # Core plugins
   path_provider: ^2.1.1
@@ -57,8 +57,8 @@ dependencies:
   # go_router: ^11.1.2
   # flutter_platform_widgets: ^4.0.0-beta.3
 
-  flutter_quill: ^8.3.0
-  flutter_quill_extensions: ^0.6.4
+  flutter_quill: ^8.5.6
+  flutter_quill_extensions: ^0.6.7
 
   # Other packages
   lottie: ^2.7.0

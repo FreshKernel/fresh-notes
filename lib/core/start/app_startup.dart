@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart'
 
 import '../../logic/auth/auth_service.dart';
 import '../../logic/native/image/s_image_picker.dart';
+import '../../logic/utils/platform_checker.dart';
 import '../log/logger.dart';
 import '../services/s_app.dart';
 import 'packages/firebase.dart';
@@ -27,7 +28,7 @@ class AppStartup extends AppService {
     for (final service in _services) {
       await service.initialize();
     }
-    if (kDebugMode) {
+    if (kDebugMode && !PlatformChecker.isWeb()) {
       final dir = await getApplicationDocumentsDirectory();
       dir.list().listen((event) {
         AppLogger.log(event.toString());

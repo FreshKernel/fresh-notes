@@ -38,12 +38,11 @@ class _NoteEditorState extends State<NoteEditor> {
 
   Iterable<EmbedBuilder> get _embedBuilder {
     if (PlatformChecker.isWeb()) {
-      return FlutterQuillEmbeds.editorsWebBuilders();
+      return FlutterQuillEmbeds.editorWebBuilders();
     }
     return [
       ...FlutterQuillEmbeds.editorBuilders(
         imageEmbedConfigurations: QuillEditorImageEmbedConfigurations(
-          forceUseMobileOptionMenuForImageClick: false,
           imageProviderBuilder: (imageUrl) {
             if (isHttpBasedUrl(imageUrl)) {
               return CachedNetworkImageProvider(imageUrl);
@@ -51,9 +50,11 @@ class _NoteEditorState extends State<NoteEditor> {
             return FileImage(File(imageUrl));
           },
           onImageRemovedCallback: (imageUrl) async {
-            if (PlatformChecker.isMobile()) {
+            if (PlatformChecker.isWeb() ||
+                PlatformChecker.nativePlatform().isDesktop()) {
               return;
             }
+            // Run this logic only for mobile
             final imageFile = File(imageUrl);
             if (await imageFile.exists()) {
               await imageFile.delete();
