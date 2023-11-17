@@ -43,7 +43,6 @@ class SettingsState with _$SettingsState {
       _$SettingsStateFromJson(json);
 }
 
-
 // final class AppThemeSystemJsonConveter
 //     extends JsonConverter<AppThemeSystem, Map<String, Object?>> {
 //   const AppThemeSystemJsonConveter();

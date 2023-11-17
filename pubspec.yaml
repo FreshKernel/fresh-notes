@@ -57,6 +57,11 @@ dependencies:
   # go_router: ^11.1.2
   # flutter_platform_widgets: ^4.0.0-beta.3
 
+  fresh_base_package:
+    git: 
+        url: git@github.com:freshtechtips/flutter-fresh-base-package.git
+        ref: main
+
   flutter_quill: ^8.5.6
   flutter_quill_extensions: ^0.6.7
 

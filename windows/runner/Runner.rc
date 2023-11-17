@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.ahmedhnewa" "\0"
-            VALUE "FileDescription", "my_notes" "\0"
+            VALUE "FileDescription", "fresh_notes" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "my_notes" "\0"
+            VALUE "InternalName", "fresh_notes" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.ahmedhnewa. All rights reserved." "\0"
-            VALUE "OriginalFilename", "my_notes.exe" "\0"
-            VALUE "ProductName", "my_notes" "\0"
+            VALUE "OriginalFilename", "fresh_notes.exe" "\0"
+            VALUE "ProductName", "fresh_notes" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

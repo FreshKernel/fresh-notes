@@ -53,6 +53,7 @@ pubspec.lock
 
 # Android
 **/google-services.json
+**/com_google_firebase_crashlytics_mappingfileid.xml
 
 # iOS && macOS
 **/GoogleService-Info.plist
@@ -64,5 +65,5 @@ firebase/public/.well-known/assetlinks.json
 # Apple Universal Links
 firebase/public/.well-known/apple-app-site-association
 
-# FlutterFire for Firebase
+# FlutterFire CLI for Firebase
 lib/firebase_options.dart

@@ -1,4 +1,4 @@
-package com.ahmedhnewa.my_notes
+package net.freshplatform.fresh_notes
 
 import io.flutter.embedding.android.FlutterActivity
 

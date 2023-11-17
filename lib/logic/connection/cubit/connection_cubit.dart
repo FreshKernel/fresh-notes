@@ -2,11 +2,12 @@ import 'dart:async' show StreamSubscription;
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fresh_base_package/fresh_base_package.dart'
+    show PlatformChecker;
 import 'package:meta/meta.dart';
 
 import '../../../core/app_module.dart';
 import '../../native/connection/connection_type.dart';
-import '../../utils/platform_checker.dart';
 
 part 'connection_state.dart';
 

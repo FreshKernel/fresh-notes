@@ -697,14 +697,14 @@ packages:
       path: "../flutter-quill"
       relative: true
     source: path
-    version: "8.5.6"
+    version: "8.6.0"
   flutter_quill_extensions:
     dependency: "direct main"
     description:
       path: "../flutter-quill/flutter_quill_extensions"
       relative: true
     source: path
-    version: "0.6.10"
+    version: "0.7.0"
   flutter_quill_test:
     dependency: "direct dev"
     description:
@@ -738,6 +738,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
+  fresh_base_package:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "1965044875eee624dc054aa5366fc9475a761b4a"
+      url: "git@github.com:freshtechtips/flutter-fresh-base-package.git"
+    source: git
+    version: "0.0.1"
   frontend_server_client:
     dependency: transitive
     description:

@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:fresh_base_package/fresh_base_package.dart'
+    show PlatformChecker;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../core/log/logger.dart';
 import '../../../data/notes/universal/s_universal_notes.dart';
-import '../../utils/platform_checker.dart';
 import '../auth_custom_provider.dart';
 import '../auth_exceptions.dart';
 import '../auth_service.dart';

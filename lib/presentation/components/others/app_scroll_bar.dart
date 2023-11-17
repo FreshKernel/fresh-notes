@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../../logic/utils/platform_checker.dart';
+import 'package:fresh_base_package/fresh_base_package.dart'
+    show PlatformChecker;
 
 class AppScrollBar extends StatelessWidget {
   const AppScrollBar({required this.child, super.key});

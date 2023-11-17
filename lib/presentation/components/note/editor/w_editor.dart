@@ -5,9 +5,10 @@ import 'package:cached_network_image/cached_network_image.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:fresh_base_package/fresh_base_package.dart'
+    show PlatformChecker;
 
 import '../../../../core/log/logger.dart';
-import '../../../../logic/utils/platform_checker.dart';
 import '../../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../others/app_scroll_bar.dart';
 
@@ -37,7 +38,7 @@ class _NoteEditorState extends State<NoteEditor> {
   }
 
   Iterable<EmbedBuilder> get _embedBuilder {
-    if (PlatformChecker.isWeb()) {
+    if (PlatformChecker.defaultLogic().isWeb()) {
       return FlutterQuillEmbeds.editorWebBuilders();
     }
     return [
@@ -50,7 +51,7 @@ class _NoteEditorState extends State<NoteEditor> {
             return FileImage(File(imageUrl));
           },
           onImageRemovedCallback: (imageUrl) async {
-            if (PlatformChecker.isWeb() ||
+            if (PlatformChecker.defaultLogic().isWeb() ||
                 PlatformChecker.nativePlatform().isDesktop()) {
               return;
             }

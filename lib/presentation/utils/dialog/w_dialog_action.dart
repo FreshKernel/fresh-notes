@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import '../../../logic/utils/platform_checker.dart';
+import 'package:flutter/cupertino.dart' show CupertinoDialogAction;
+import 'package:flutter/material.dart' show TextButton, ButtonStyle;
+import 'package:flutter/widgets.dart';
+import 'package:fresh_base_package/fresh_base_package.dart'
+    show PlatformChecker;
 
 @immutable
 final class CupertinoDialogActionOptions {

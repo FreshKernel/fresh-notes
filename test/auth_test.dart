@@ -3,46 +3,47 @@ import 'dart:math' show Random;
 import 'package:fresh_notes/logic/auth/auth_custom_provider.dart';
 import 'package:fresh_notes/logic/auth/auth_exceptions.dart';
 import 'package:fresh_notes/logic/auth/auth_repository.dart';
+import 'package:fresh_notes/logic/auth/auth_service.dart';
 import 'package:fresh_notes/logic/auth/auth_user.dart';
 
 import 'package:test/test.dart';
 
 void main() {
   group('Mock Authentication', () {
-    final provider = MockAuthProvider();
+    final service = AuthService(MockAuthProvider());
     test('Should not be initialized to begin with', () {
-      expect(provider._isInitialized, false);
+      expect(service.isInitialized, false);
     });
 
     test('Cannot logout if not initialized', () {
       expect(
-        provider.logout(),
+        service.logout(),
         throwsA(const TypeMatcher<NotInitializedException>()),
       );
     });
 
     test('Should be able to be initialized', () async {
-      await provider.initialize();
-      expect(provider._isInitialized, true);
+      await service.initialize();
+      expect(service.isInitialized, true);
     });
 
     test("We can't be able to initialize the provider again", () async {
       expect(
-        provider.initialize(),
+        service.initialize(),
         throwsA(const TypeMatcher<AlreadyInitalizedException>()),
       );
     });
 
     test('User should be null after initialization', () {
-      expect(provider.currentUser, null);
+      expect(service.currentUser, null);
     });
 
     test(
       'Should be able to initialize in less than 3 seconds',
       () async {
         try {
-          await provider.initialize();
-          expect(provider._isInitialized, true);
+          await service.initialize();
+          expect(service.isInitialized, true);
         } catch (e) {
           // Already initialized
         }
@@ -54,7 +55,7 @@ void main() {
       'signUpWithEmailAndPassword() should be delegate to signInWithEmailAndPassword()',
       () async {
         // Should not be await
-        final badEmailUser = provider.signInWithEmailAndPassword(
+        final badEmailUser = service.signInWithEmailAndPassword(
           email: 'foo@bar.com',
           password: 'anypassword',
         );
@@ -71,7 +72,7 @@ void main() {
         );
 
         // Should not be await
-        final badPasswordUser = provider.signUpWithEmailAndPassword(
+        final badPasswordUser = service.signUpWithEmailAndPassword(
             email: 'any@bar.com', password: 'foobar');
 
         expect(
@@ -86,18 +87,18 @@ void main() {
         );
 
         // Should be await
-        final user = await provider.signUpWithEmailAndPassword(
+        final user = await service.signUpWithEmailAndPassword(
           email: 'foo@emai.com',
           password: 'bar',
         );
-        expect(provider.currentUser, user);
+        expect(service.currentUser, user);
         expect(user.isEmailVerified, false);
       },
     );
 
     test('Logged in user should be able to get verified', () async {
-      await provider.sendEmailVerification();
-      final user = provider.currentUser;
+      await service.sendEmailVerification();
+      final user = service.currentUser;
 
       expect(user, isNotNull);
 
@@ -105,11 +106,11 @@ void main() {
     });
 
     test('Should be able to log out and log in again', () async {
-      await provider.logout();
-      await provider.signInWithEmailAndPassword(
+      await service.logout();
+      await service.signInWithEmailAndPassword(
           email: 'user', password: 'password');
 
-      expect(provider.currentUser, isNotNull);
+      expect(service.currentUser, isNotNull);
     });
   });
 }

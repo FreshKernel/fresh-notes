@@ -5,9 +5,9 @@ import 'auth_user.dart';
 import 'packages/firebase_provider.dart';
 
 class AuthService extends AuthRepository {
-  const AuthService._(this._authProvider);
+  const AuthService(this._authProvider);
   factory AuthService.firebase() =>
-      const AuthService._(FirebaseAuthProviderImpl());
+      const AuthService(FirebaseAuthProviderImpl());
   factory AuthService.getInstance() => AppModule.authService;
 
   final AuthRepository _authProvider;
