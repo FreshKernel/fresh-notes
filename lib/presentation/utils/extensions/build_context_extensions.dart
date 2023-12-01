@@ -9,10 +9,10 @@ import 'package:flutter/material.dart'
         Theme,
         ThemeData;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/errors/exceptions.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../dialog/w_app_dialog.dart';
 import '../message_presenter.dart';
 

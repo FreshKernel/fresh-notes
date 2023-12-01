@@ -75,7 +75,6 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
         document: Document.fromJson(json),
         selection: const TextSelection.collapsed(offset: 0),
       );
-      // _isReadOnly = true; // TODO: Later change this to better way
 
       // Default option is false
       _isSyncWithCloud = _note?.syncOptions.isSyncWithCloud ?? false;

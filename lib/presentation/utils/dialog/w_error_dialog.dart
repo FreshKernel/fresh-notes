@@ -49,7 +49,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
-      title: Text(widget.options.title ?? context.loc.app_name),
+      title: Text(widget.options.title ?? context.loc.appName),
       content: Text(widget.options.message),
       actions: [
         if (_isDevError)

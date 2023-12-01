@@ -1,5 +1,6 @@
 {
-    "app_name": "Fresh Notes",
+    "@@locale": "en",
+    "appName": "Fresh Notes",
     "ok": "Ok",
     "cancel": "Cancel",
     "report": "Report"

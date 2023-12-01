@@ -2,7 +2,11 @@ import 'dart:io' show ProcessException;
 
 import 'package:logging/logging.dart' show Logger;
 
-import '../utils/command.dart';
+import 'utils/command.dart';
+
+Future main() async {
+  await buildProject();
+}
 
 Future<void> buildProject() async {
   final log = Logger('build.dart/buildProject()');

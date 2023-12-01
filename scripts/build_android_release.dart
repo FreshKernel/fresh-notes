@@ -2,8 +2,12 @@ import 'dart:io' show ProcessException;
 
 import 'package:logging/logging.dart' show Logger;
 
-import '../utils/command.dart';
 import 'shared_release.dart';
+import 'utils/command.dart';
+
+Future<void> main(List<String> args) async {
+  await buildAndroidRelease(args);
+}
 
 Future<void> buildAndroidRelease(List<String> args) async {
   final log = Logger('build_android_release.dart/buildAndroidRelease()');

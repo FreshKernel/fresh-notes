@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:math' as math show Random;
+
+import 'package:flutter/material.dart' show ThemeMode;
 
 import '../../../logic/settings/cubit/settings_cubit.dart';
 
@@ -37,6 +39,14 @@ extension AppThemeModeExtensions on AppThemeMode {
           return ThemeMode.dark;
         }
         return ThemeMode.dark;
+      case AppThemeMode.random:
+        final random = math.Random().nextInt(2);
+        final theme = switch (random) {
+          0 => ThemeMode.dark,
+          1 => ThemeMode.light,
+          int() => throw ArgumentError('We expect either 0 or 1'),
+        };
+        return theme;
     }
   }
 }

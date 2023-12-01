@@ -2,8 +2,8 @@ import 'dart:io' show ProcessException;
 
 import 'package:logging/logging.dart' show Logger;
 
-import '../utils/command.dart';
 import 'build.dart';
+import 'utils/command.dart';
 
 Future<void> sharedRelease(List<String> args) async {
   final log = Logger('shared_release.dart/sharedRelease()');

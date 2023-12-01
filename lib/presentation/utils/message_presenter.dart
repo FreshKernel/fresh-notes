@@ -18,7 +18,7 @@ class MessagePresenter {
       await showOkDialog(
         context: context,
         options: OkDialogOptions(
-          title: context.loc.app_name,
+          title: context.loc.appName,
           message: message,
         ),
       );

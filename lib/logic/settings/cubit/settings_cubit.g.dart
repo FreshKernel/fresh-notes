@@ -46,6 +46,7 @@ const _$AppThemeModeEnumMap = {
   AppThemeMode.light: 'light',
   AppThemeMode.system: 'system',
   AppThemeMode.auto: 'auto',
+  AppThemeMode.random: 'random',
 };
 
 const _$AppLanguagueEnumMap = {

@@ -32,8 +32,13 @@ class _SelectThemeModeDialogState extends State<SelectThemeModeDialog> {
         ),
       AppThemeMode.auto => (
           'Auto',
-          'If you want us to decide this for you based on the time.',
+          'If you want us to decide this for you based on your local time.',
           Icons.autorenew,
+        ),
+      AppThemeMode.random => (
+          'Random',
+          'If you want a random theme mode each time the app starts',
+          Icons.shuffle,
         ),
     };
     return ListTile(

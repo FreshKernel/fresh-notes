@@ -1,14 +1,14 @@
-import 'package:bot_toast/bot_toast.dart'
-    show BotToastInit, BotToastNavigatorObserver;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'
+    show Brightness, MaterialApp, ThemeData, VisualDensity;
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'core/log/logger.dart';
 import 'core/start/app_startup.dart';
 import 'logic/auth/cubit/auth_cubit.dart';
 import 'logic/connection/cubit/connection_cubit.dart';
 import 'logic/settings/cubit/settings_cubit.dart';
+import 'presentation/l10n/generated/app_localizations.dart';
 import 'presentation/screens/app_router.dart';
 import 'presentation/screens/auth/authentication/s_authentication.dart';
 import 'presentation/screens/auth/profile/s_save_profile.dart';
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             locale: state.appLanguague == AppLanguague.system
                 ? null
                 : Locale(state.appLanguague.name),
-            title: 'Fresh notes',
+            // title: 'Fresh notes',
             theme: ThemeData(
               brightness: Brightness.light,
               useMaterial3: state.themeSystem == AppThemeSystem.material3,
@@ -72,12 +72,8 @@ class MyApp extends StatelessWidget {
             onUnknownRoute: AppRouter.onUnknownRoute,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            builder: BotToastInit(),
-            navigatorObservers: [
-              BotToastNavigatorObserver(),
-            ],
             onGenerateTitle: (context) {
-              return context.loc.app_name;
+              return context.loc.appName;
             },
           );
         },

@@ -43,7 +43,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             },
             icon: const Icon(Icons.list),
           ),
-          const SyncNotesIconButton(),
           const LogoutIconButton(),
           IconButton(
             tooltip: 'Delete All',
@@ -96,7 +95,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final _pageController = PageController();
 
   bool _isNavRailBar(Size size) {
-    return size.width >= 400;
+    return size.width >= 480;
   }
 
   void _onDestinationSelected(int newPageIndex) {
@@ -119,42 +118,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: actions,
       ),
       drawer: const DashboardDrawer(),
-      body: Builder(
-        builder: (context) {
-          final size = MediaQuery.sizeOf(context);
-          final widget = PageView(
-            controller: _pageController,
-            children:
-                _navigationItems.map((e) => Center(child: e.body)).toList(),
-            onPageChanged: (newPageIndex) {
-              setState(() => _selectedNavItemIndex = newPageIndex);
-            },
-          );
-          if (!_isNavRailBar(size)) {
-            return widget;
-          }
-          return Row(
-            children: [
-              NavigationRail(
-                onDestinationSelected: _onDestinationSelected,
-                labelType: NavigationRailLabelType.all,
-                destinations: _navigationItems.map((e) {
-                  return NavigationRailDestination(
-                    icon: e.icon,
-                    label: Text(e.label),
-                    selectedIcon: e.selectedIcon,
-                    // tooltip: e.tooltip,
-                    // key: ValueKey(e.label),
-                  );
-                }).toList(),
-                selectedIndex: _selectedNavItemIndex,
-              ),
-              Expanded(
-                child: widget,
-              )
-            ],
-          );
-        },
+      body: SafeArea(
+        child: Builder(
+          builder: (context) {
+            final size = MediaQuery.sizeOf(context);
+            final widget = PageView(
+              controller: _pageController,
+              children:
+                  _navigationItems.map((e) => Center(child: e.body)).toList(),
+              onPageChanged: (newPageIndex) {
+                setState(() => _selectedNavItemIndex = newPageIndex);
+              },
+            );
+            if (!_isNavRailBar(size)) {
+              return widget;
+            }
+            return Row(
+              children: [
+                NavigationRail(
+                  onDestinationSelected: _onDestinationSelected,
+                  labelType: NavigationRailLabelType.all,
+                  destinations: _navigationItems.map((e) {
+                    return NavigationRailDestination(
+                      icon: e.icon,
+                      label: Text(e.label),
+                      selectedIcon: e.selectedIcon,
+                      // tooltip: e.tooltip,
+                      // key: ValueKey(e.label),
+                    );
+                  }).toList(),
+                  selectedIndex: _selectedNavItemIndex,
+                ),
+                Expanded(
+                  child: widget,
+                )
+              ],
+            );
+          },
+        ),
       ),
       floatingActionButton: actionButton,
       bottomNavigationBar: Builder(

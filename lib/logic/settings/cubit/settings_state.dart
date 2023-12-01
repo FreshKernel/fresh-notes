@@ -5,6 +5,7 @@ enum AppThemeMode {
   light,
   system,
   auto,
+  random,
 }
 
 enum AppLanguague {

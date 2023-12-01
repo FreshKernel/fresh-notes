@@ -1,10 +1,10 @@
 import 'package:logging/logging.dart' show Logger;
 
-import 'scripts/build_android_release.dart';
+import 'build_android_release.dart';
 // import 'dart:developer' as dev show log;
 
 void main(List<String> args) async {
-  final log = Logger('script.dart/main');
+  final log = Logger('run.dart/main');
   Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
     print('${record.level.name} in ${record.loggerName}: ${record.message}');
