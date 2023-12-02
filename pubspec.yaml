@@ -2,7 +2,7 @@ name: fresh_notes
 description: A cross-platform, open-source notes app.
 publish_to: 'none'
 version: 1.0.0+1
-repository: https://github.com/freshtechtips/fresh-notes-app
+repository: https://github.com/freshplatform/fresh-notes-app
 platforms:
   android:
   ios:
@@ -12,7 +12,7 @@ platforms:
   windows:
 
 environment:
-  sdk: '>=3.1.2 <4.0.0'
+  sdk: '>=3.2.0 <4.0.0'
 
 dependencies:
   # Flutter packages
@@ -59,8 +59,8 @@ dependencies:
   # flutter_platform_widgets: ^4.0.0-beta.3
 
   fresh_base_package:
-    git: 
-        url: https://github.com/freshtechtips/flutter-fresh-base-package.git
+    git:
+        url: https://github.com/freshplatform/flutter-fresh-base-package.git
         ref: main
 
   flutter_quill: ^8.6.3

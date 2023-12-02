@@ -7,7 +7,6 @@ import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../save_note/s_save_note.dart';
 import 'models/m_navigation_item.dart';
 import 'w_logout.dart';
-import 'widgets/notes_list/cloud_sync/w_sync_notes.dart';
 import 'widgets/notes_list/w_notes_list.dart';
 import 'widgets/w_about.dart';
 import 'widgets/w_drawer.dart';

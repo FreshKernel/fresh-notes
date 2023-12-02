@@ -735,8 +735,8 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "1965044875eee624dc054aa5366fc9475a761b4a"
-      url: "https://github.com/freshtechtips/flutter-fresh-base-package.git"
+      resolved-ref: b654d433c68e0c0c89ddaa5545cef84bc82f959b
+      url: "https://github.com/freshplatform/flutter-fresh-base-package.git"
     source: git
     version: "0.0.1"
   frontend_server_client:
