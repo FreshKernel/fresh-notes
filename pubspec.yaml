@@ -2,7 +2,7 @@ name: fresh_notes
 description: A cross-platform, open-source notes app.
 publish_to: 'none'
 version: 1.0.0+1
-repository: https://github.com/freshplatform/fresh-notes-app
+repository: https://github.com/freshplatform/fresh-notes
 platforms:
   android:
   ios:
