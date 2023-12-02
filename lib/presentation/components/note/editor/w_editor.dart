@@ -98,6 +98,7 @@ class _NoteEditorState extends State<NoteEditor> {
             expands: false,
             scrollable: true,
             unknownEmbedBuilder: QuillEditorUnknownEmbedBuilder(),
+            keyboardAppearance: Theme.of(context).brightness, // for iOS
           ),
           focusNode: _editorFocusNode,
           scrollController: _editorScrollController,

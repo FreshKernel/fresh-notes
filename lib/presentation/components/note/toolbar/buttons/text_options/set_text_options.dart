@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart' show showCupertinoModalPopup;
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
@@ -21,6 +22,17 @@ class NoteToolbarTextOptionsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
+        showCupertinoModalPopup(
+          context: context,
+          builder: (_) {
+            return QuillToolbarProvider.value(
+              value: QuillToolbarProvider.ofNotNull(context),
+              child: _TextOptionsWidget(
+                controller: _controller,
+              ),
+            );
+          },
+        );
         //popup a attachments toast
         // final cancel = BotToast.showAttachedWidget(
         //   attachedBuilder: (_) => _TextOptionsWidget(

@@ -171,24 +171,25 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
             onPressed: () => setState(() => _isPrivate = !_isPrivate),
             icon: Icon(_isPrivate ? Icons.lock : Icons.public),
           ),
-          IconButton(
-            tooltip: 'Share',
-            onPressed: () async {
-              final messenger = context.messenger;
-              final plainText = _controller.document.toPlainText(
-                FlutterQuillEmbeds.defaultEditorBuilders(),
-                QuillEditorUnknownEmbedBuilder(),
-              );
-              if (plainText.trim().isEmpty) {
-                messenger.showMessage(
-                  'Please enter a text before sharing it',
+          if (_isEditing)
+            IconButton(
+              tooltip: 'Share',
+              onPressed: () async {
+                final messenger = context.messenger;
+                final plainText = _controller.document.toPlainText(
+                  FlutterQuillEmbeds.defaultEditorBuilders(),
+                  QuillEditorUnknownEmbedBuilder(),
                 );
-                return;
-              }
-              await AppShareService.getInstance().shareText(plainText);
-            },
-            icon: const Icon(Icons.share),
-          ),
+                if (plainText.trim().isEmpty) {
+                  messenger.showMessage(
+                    'Please enter a text before sharing it',
+                  );
+                  return;
+                }
+                await AppShareService.getInstance().shareText(plainText);
+              },
+              icon: const Icon(Icons.share),
+            ),
           IconButton(
             tooltip: 'Save note',
             onPressed: _isLoading ? null : _onSaveNoteClick,

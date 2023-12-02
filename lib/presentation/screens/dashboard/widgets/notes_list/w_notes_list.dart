@@ -49,7 +49,9 @@ class _NotesListPageState extends State<NotesListPage>
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text(snapshot.error.toString()));
+          return Center(
+            child: Text(snapshot.error.toString()),
+          );
         }
 
         final notes = snapshot.requireData;
