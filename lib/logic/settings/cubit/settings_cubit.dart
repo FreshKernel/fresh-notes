@@ -14,6 +14,10 @@ class SettingsCubit extends Cubit<SettingsState> with HydratedMixin {
     emit(newSettingsState);
   }
 
+  void updateAppLanguague(AppLanguague newAppLanguague) {
+    emit(state.copyWith(appLanguague: newAppLanguague));
+  }
+
   void showOnBoardingScreen(bool value) {
     emit(state.copyWith(openOnBoardingScreen: value));
   }

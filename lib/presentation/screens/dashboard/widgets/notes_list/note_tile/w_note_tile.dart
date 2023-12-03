@@ -22,54 +22,63 @@ class NoteTile extends StatelessWidget {
     );
     final materialTheme = Theme.of(context);
 
-    return ListTile(
-      contentPadding: const EdgeInsets.all(12),
-      onTap: () => Navigator.of(context).pushNamed(
-        SaveNoteScreen.routeName,
-        arguments: SaveNoteScreenArgs(
-          note: options.note,
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: ListTile(
+        onTap: () => Navigator.of(context).pushNamed(
+          SaveNoteScreen.routeName,
+          arguments: SaveNoteScreenArgs(
+            note: options.note,
+          ),
         ),
-      ),
-      title: Text(
-        options.note.title,
-        softWrap: true,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        // style: materialTheme.textTheme.titleMedium,
-      ),
-      subtitle: Text(
-        document.toPlainText().removeWhiteSpaces(),
-        softWrap: true,
-        maxLines: 5,
-        overflow: TextOverflow.ellipsis,
-        // style: materialTheme.textTheme.bodyMedium,
-      ),
-      leading: CircleAvatar(
-        child: Text(
-          options.note.id.limitToCharacters(2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
+        isThreeLine: true,
+        contentPadding: const EdgeInsets.all(12),
+        title: Text(
+          options.note.title,
+          softWrap: true,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
+          // style: materialTheme.textTheme.titleMedium,
         ),
-      ),
-      trailing: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth > 450) {
-            return TextButton.icon(
+        subtitle: Text(
+          document.toPlainText().removeWhiteSpaces(),
+          softWrap: true,
+          maxLines: 5,
+          overflow: TextOverflow.ellipsis,
+          // style: materialTheme.textTheme.bodyMedium,
+        ),
+        leading: CircleAvatar(
+          child: Text(
+            options.note.id.limitToCharacters(2),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        trailing: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > 450) {
+              return TextButton.icon(
+                onPressed: () => options.sharedOnPressed(context: context),
+                icon: const Icon(Icons.delete),
+                label: const Text('Delete'),
+                style: TextButton.styleFrom(
+                  foregroundColor: materialTheme.colorScheme.error,
+                ),
+              );
+            }
+            return IconButton(
+              tooltip: 'Delete',
               onPressed: () => options.sharedOnPressed(context: context),
               icon: const Icon(Icons.delete),
-              label: const Text('Delete'),
-              style: TextButton.styleFrom(
-                foregroundColor: materialTheme.colorScheme.error,
-              ),
+              color: materialTheme.colorScheme.error,
             );
-          }
-          return IconButton(
-            tooltip: 'Delete',
-            onPressed: () => options.sharedOnPressed(context: context),
-            icon: const Icon(Icons.delete),
-            color: materialTheme.colorScheme.error,
-          );
-        },
+          },
+        ),
       ),
     );
   }

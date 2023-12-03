@@ -27,6 +27,7 @@ class NoteGridTile extends StatelessWidget {
         minHeight: 150,
       ),
       child: Card(
+        elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),

@@ -9,9 +9,13 @@ enum AppThemeMode {
 }
 
 enum AppLanguague {
-  en,
-  ar,
-  system,
+  system(valueName: 'System'),
+  en(valueName: 'English'),
+  ar(valueName: 'العربية');
+
+  const AppLanguague({required this.valueName});
+
+  final String valueName;
 }
 
 enum AppThemeSystem {
