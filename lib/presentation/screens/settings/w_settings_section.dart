@@ -20,14 +20,14 @@ class SettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scaleFactor = MediaQuery.textScaleFactorOf(context);
+    final textScaler = MediaQuery.textScalerOf(context);
 
     if (context.isCupertino) {
       return CupertinoListSection.insetGrouped(
         header: Padding(
           padding: EdgeInsetsDirectional.only(
             start: 15,
-            bottom: 5 * scaleFactor,
+            bottom: textScaler.scale(5),
           ),
           child: DefaultTextStyle(
             style: const TextStyle(
@@ -54,8 +54,8 @@ class SettingsSection extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsetsDirectional.only(
-            top: 24 * scaleFactor,
-            bottom: 10 * scaleFactor,
+            top: textScaler.scale(24),
+            bottom: textScaler.scale(10),
             start: 24,
             end: 24,
           ),

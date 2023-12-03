@@ -90,11 +90,6 @@ dev_dependencies:
   auto_screenshot: ^0.0.2
   icons_launcher: ^2.1.5
 
-dependency_overrides:
-  flutter_inappwebview: ^6.0.0-beta.30
-  flutter_keyboard_visibility:
-    git: https://github.com/MisterJimson/flutter_keyboard_visibility.git
-
 flutter:
 
   # generate: true

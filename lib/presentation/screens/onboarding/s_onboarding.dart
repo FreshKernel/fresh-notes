@@ -7,12 +7,11 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
-import '../dashboard/s_dashboard.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
 
-  static const routeName = '/onBoarding';
+  static const routeName = '/on-boarding';
 
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();

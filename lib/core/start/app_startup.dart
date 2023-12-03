@@ -1,6 +1,4 @@
 import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
-import 'package:fresh_base_package/fresh_base_package.dart'
-    show PlatformChecker;
 import 'package:path_provider/path_provider.dart'
     show getApplicationDocumentsDirectory;
 
@@ -29,7 +27,7 @@ class AppStartup extends AppService {
     for (final service in _services) {
       await service.initialize();
     }
-    if (kDebugMode && kIsWeb) {
+    if (kDebugMode && !kIsWeb) {
       final dir = await getApplicationDocumentsDirectory();
       dir.list().listen((event) {
         AppLogger.log(event.toString());
