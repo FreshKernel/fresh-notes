@@ -29,7 +29,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       // throw const ServiceAlreadyInitlizedException(
       //   'The database is already initlized',
       // );
-      await deInitialize(); // TODO: I might need to change this
+      await deInitialize();
     }
     try {
       final documentsDirectory = await getApplicationDocumentsDirectory();

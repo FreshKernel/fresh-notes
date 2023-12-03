@@ -1,5 +1,5 @@
 import 'dart:async' show Zone;
-import 'dart:developer' as dev show log;
+// import 'dart:developer' as dev show log;
 
 import 'package:flutter/foundation.dart' show kDebugMode;
 export 'package:logging/src/level.dart';
@@ -23,15 +23,18 @@ class AppLogger {
     if (!shouldLog()) {
       return;
     }
-    dev.log(
-      message.toString(),
-      time: time,
-      sequenceNumber: sequenceNumber,
-      level: level,
-      name: name,
-      zone: zone,
-      stackTrace: stackTrace,
-    );
+    if (kDebugMode) {
+      print(message.toString());
+    }
+    // dev.log(
+    //   message.toString(),
+    //   time: time,
+    //   sequenceNumber: sequenceNumber,
+    //   level: level,
+    //   name: name,
+    //   zone: zone,
+    //   stackTrace: stackTrace,
+    // );
   }
 
   static void error<T>(
@@ -48,15 +51,19 @@ class AppLogger {
       return;
     }
 
-    dev.log(
-      message.toString(),
-      time: time,
-      sequenceNumber: sequenceNumber,
-      level: level,
-      name: name,
-      zone: zone,
-      error: error,
-      stackTrace: stackTrace,
-    );
+    if (kDebugMode) {
+      print(message.toString());
+    }
+
+    // dev.log(
+    //   message.toString(),
+    //   time: time,
+    //   sequenceNumber: sequenceNumber,
+    //   level: level,
+    //   name: name,
+    //   zone: zone,
+    //   error: error,
+    //   stackTrace: stackTrace,
+    // );
   }
 }

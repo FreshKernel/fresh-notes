@@ -4,6 +4,7 @@ import '../../core/log/logger.dart';
 import '../../data/notes/cloud/s_cloud_notes.dart';
 import '../../data/notes/universal/models/m_note.dart';
 import '../../main.dart';
+import 'onboarding/s_onboarding.dart';
 import 'save_note/s_save_note.dart';
 import 'settings/s_settings.dart';
 
@@ -23,6 +24,15 @@ class AppRouter {
         settings: const RouteSettings(name: MyHomeWidget.routeName),
         builder: (context) {
           return const MyHomeWidget();
+        },
+      );
+    }
+
+    if (name == OnBoardingScreen.routeName) {
+      return MaterialPageRoute(
+        settings: const RouteSettings(name: OnBoardingScreen.routeName),
+        builder: (context) {
+          return const OnBoardingScreen();
         },
       );
     }

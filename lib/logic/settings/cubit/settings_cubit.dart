@@ -9,8 +9,13 @@ part 'settings_state.dart';
 class SettingsCubit extends Cubit<SettingsState> with HydratedMixin {
   SettingsCubit() : super(const SettingsState());
 
+  // TODO: Make this private and add more methods instead
   void updateSettings(SettingsState newSettingsState) {
     emit(newSettingsState);
+  }
+
+  void showOnBoardingScreen(bool value) {
+    emit(state.copyWith(openOnBoardingScreen: value));
   }
 
   @override
@@ -24,13 +29,12 @@ class SettingsCubit extends Cubit<SettingsState> with HydratedMixin {
   }
 
   static bool buildWhen(SettingsState previous, SettingsState current) {
-    // Rebuild the whole app only if the themeMode
-    // darkDuringDayInAutoMode, appLanguague changes
-    // or theme sytem
+    // Rebuild the whole app only if some values changes
 
     return previous.themeMode != current.themeMode ||
         previous.darkDuringDayInAutoMode != current.darkDuringDayInAutoMode ||
         previous.appLanguague != current.appLanguague ||
-        previous.themeSystem != current.themeSystem;
+        previous.themeSystem != current.themeSystem ||
+        previous.openOnBoardingScreen != current.openOnBoardingScreen;
   }
 }

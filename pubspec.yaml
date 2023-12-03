@@ -1,7 +1,7 @@
 name: fresh_notes
 description: A cross-platform, open-source notes app.
 publish_to: 'none'
-version: 1.0.0+1
+version: 0.0.1+1
 repository: https://github.com/freshplatform/fresh-notes
 platforms:
   android:
@@ -71,6 +71,8 @@ dependencies:
   cached_network_image: ^3.3.0
 
   # Other ui packages
+  smooth_page_indicator: ^1.1.0
+  flutter_staggered_grid_view: ^0.7.0
   
 
 dev_dependencies:
@@ -86,16 +88,23 @@ dev_dependencies:
   flutter_quill_test: ^0.0.5
 
   auto_screenshot: ^0.0.2
+  icons_launcher: ^2.1.5
+
+dependency_overrides:
+  flutter_inappwebview: ^6.0.0-beta.30
+  flutter_keyboard_visibility:
+    git: https://github.com/MisterJimson/flutter_keyboard_visibility.git
 
 flutter:
 
-  generate: true
+  # generate: true
   uses-material-design: true
 
   assets:
     - .env
     - ./assets/images/
     - ./assets/json/
+    - ./assets/lottie/onboarding/
 
 flutter_gen:
 
@@ -104,3 +113,39 @@ flutter_gen:
     flare_flutter: true
     rive: true
     lottie: true
+
+
+icons_launcher:
+  image_path: "assets/images/app_logo.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+    macos:
+      enable: true
+    windows:
+      enable: true
+    linux:
+      enable: true
+    web:
+      enable: true
+
+auto_screenshot:
+  bundle_id: 
+    android: net.freshplatform.fresh_notes
+    ios: net.freshplatform.freshNotes
+  devices:
+    - iPhone 8 Plus
+    - iPhone 13 Pro Max
+    - iPad Pro (12.9-inch) (2nd generation)
+    - iPad Pro (12.9-inch) (5th generation)
+    - Pixel_3a_API_33_arm64-v8a
+    - Pixel_5_API_33
+  base_url:
+    android: https://notes.freshplatform.net/
+    ios: https://notes.freshplatform.net/
+  screenshot:
+    - /
+    - /about
+    - /settings

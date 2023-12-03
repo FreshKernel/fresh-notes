@@ -9,7 +9,7 @@ part of 'settings_cubit.dart';
 _$SettingsStateImpl _$$SettingsStateImplFromJson(Map<String, dynamic> json) =>
     _$SettingsStateImpl(
       confirmDeleteNote: json['confirmDeleteNote'] as bool? ?? true,
-      useNoteGridItem: json['useNoteGridItem'] as bool? ?? true,
+      useNoteGridTile: json['useNoteGridTile'] as bool? ?? true,
       syncWithCloudDefaultValue:
           json['syncWithCloudDefaultValue'] as bool? ?? false,
       onlySaveDataWhenClick: json['onlySaveDataWhenClick'] as bool? ?? true,
@@ -26,12 +26,13 @@ _$SettingsStateImpl _$$SettingsStateImplFromJson(Map<String, dynamic> json) =>
       layoutMode:
           $enumDecodeNullable(_$AppLayoutModeEnumMap, json['layoutMode']) ??
               AppLayoutMode.auto,
+      openOnBoardingScreen: json['openOnBoardingScreen'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$SettingsStateImplToJson(_$SettingsStateImpl instance) =>
     <String, dynamic>{
       'confirmDeleteNote': instance.confirmDeleteNote,
-      'useNoteGridItem': instance.useNoteGridItem,
+      'useNoteGridTile': instance.useNoteGridTile,
       'syncWithCloudDefaultValue': instance.syncWithCloudDefaultValue,
       'onlySaveDataWhenClick': instance.onlySaveDataWhenClick,
       'darkDuringDayInAutoMode': instance.darkDuringDayInAutoMode,
@@ -39,6 +40,7 @@ Map<String, dynamic> _$$SettingsStateImplToJson(_$SettingsStateImpl instance) =>
       'appLanguague': _$AppLanguagueEnumMap[instance.appLanguague]!,
       'themeSystem': _$AppThemeSystemEnumMap[instance.themeSystem]!,
       'layoutMode': _$AppLayoutModeEnumMap[instance.layoutMode]!,
+      'openOnBoardingScreen': instance.openOnBoardingScreen,
     };
 
 const _$AppThemeModeEnumMap = {

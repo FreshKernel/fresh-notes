@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../../../data/notes/universal/models/m_note.dart';
 import '../../../../../data/notes/universal/s_universal_notes.dart';
 import '../../../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../../utils/form_factor.dart';
-import 'note_item/note_item_options.dart';
-import 'note_item/w_note_grid_item.dart';
-import 'note_item/w_note_item.dart';
+import 'note_tile/note_tile_options.dart';
+import 'note_tile/w_note_grid_tile.dart';
+import 'note_tile/w_note_tile.dart';
 
 class NotesListPage extends StatefulWidget {
   const NotesListPage({super.key});
@@ -65,21 +66,22 @@ class _NotesListPageState extends State<NotesListPage>
         return Builder(
           builder: (context) {
             final settingsBloc = context.watch<SettingsCubit>();
-            if (settingsBloc.state.useNoteGridItem) {
-              return GridView.builder(
+            if (settingsBloc.state.useNoteGridTile) {
+              return MasonryGridView.builder(
                 itemCount: notes.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                  // TODO: Update this
                   crossAxisCount: context.withFormFactor(
-                    mobile: 1,
+                    mobile: 2,
                     tablet: 2,
                     desktop: 4,
                   ),
                 ),
                 itemBuilder: (context, index) {
                   final note = notes[index];
-                  return NoteGridItem(
+                  return NoteGridTile(
                     key: ValueKey(note.id),
-                    options: NoteItemOptions(
+                    options: NoteTileOptions(
                       notesDataService: _notesDataService,
                       note: note,
                       index: index,
@@ -92,9 +94,9 @@ class _NotesListPageState extends State<NotesListPage>
               itemCount: notes.length,
               itemBuilder: (context, index) {
                 final note = notes[index];
-                return NoteItem(
+                return NoteTile(
                   key: ValueKey(note.id),
-                  options: NoteItemOptions(
+                  options: NoteTileOptions(
                     notesDataService: _notesDataService,
                     note: note,
                     index: index,

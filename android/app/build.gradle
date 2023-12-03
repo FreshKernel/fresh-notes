@@ -2,8 +2,6 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
-    id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
 }
 
 def localProperties = new Properties()
@@ -32,8 +30,10 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "net.freshplatform.fresh_notes"
-    compileSdk flutter.compileSdkVersion
+    compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+    // One or more plugins require a higher Android NDK version.
+    ndkVersion "25.1.8937393"
 
     def javaVersion = JavaVersion.VERSION_17
 
@@ -58,9 +58,8 @@ android {
         applicationId "net.freshplatform.fresh_notes"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 24
-//        targetSdkVersion flutter.targetSdkVersion
-        targetSdkVersion 34
+        minSdkVersion 21
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -75,8 +74,7 @@ android {
     }
     buildTypes {
         release {
-//            signingConfig signingConfigs.release
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
 
             minifyEnabled true
             shrinkResources true
@@ -88,8 +86,6 @@ android {
         }
         debug {
             signingConfig signingConfigs.debug
-            minifyEnabled true
-            shrinkResources true
             debuggable true
         }
     }
@@ -100,7 +96,4 @@ flutter {
     source '../..'
 }
 
-dependencies {
-    implementation 'androidx.core:core-splashscreen:1.1.0-alpha02'
-
-}
+dependencies {}

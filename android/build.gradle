@@ -8,11 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-        classpath "com.google.gms:google-services:4.4.0"
-        classpath "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
     }
 }
 
@@ -27,6 +23,7 @@ rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 
+    // For mode details visit https://gist.github.com/freshtechtips/93fefb39e48c40592bda3931e05fd35c
     afterEvaluate {
         // check if android block is available
 
@@ -43,7 +40,6 @@ subprojects {
             println("Changes will be applied for the following packages:")
             android {
                 def androidApiVersion = 34
-                compileSdkVersion androidApiVersion
                 compileSdk androidApiVersion
                 defaultConfig {
                     targetSdkVersion androidApiVersion

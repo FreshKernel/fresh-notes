@@ -36,7 +36,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               final settingsBloc = context.read<SettingsCubit>();
               settingsBloc.updateSettings(
                 settingsBloc.state.copyWith(
-                  useNoteGridItem: !settingsBloc.state.useNoteGridItem,
+                  useNoteGridTile: !settingsBloc.state.useNoteGridTile,
                 ),
               );
             },
@@ -94,6 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final _pageController = PageController();
 
   bool _isNavRailBar(Size size) {
+    // TODO: Needs to be updated
     return size.width >= 480;
   }
 

@@ -14,6 +14,7 @@ import 'presentation/screens/auth/authentication/s_authentication.dart';
 import 'presentation/screens/auth/profile/s_save_profile.dart';
 import 'presentation/screens/auth/verify_account/s_verify_account.dart';
 import 'presentation/screens/dashboard/s_dashboard.dart';
+import 'presentation/screens/onboarding/s_onboarding.dart';
 import 'presentation/theme/color_schemes.g.dart';
 import 'presentation/utils/extensions/app_theme_mode.dart';
 import 'presentation/utils/extensions/build_context_extensions.dart';
@@ -51,7 +52,6 @@ class MyApp extends StatelessWidget {
             locale: state.appLanguague == AppLanguague.system
                 ? null
                 : Locale(state.appLanguague.name),
-            // title: 'Fresh notes',
             theme: ThemeData(
               brightness: Brightness.light,
               useMaterial3: state.themeSystem == AppThemeSystem.material3,
@@ -67,7 +67,9 @@ class MyApp extends StatelessWidget {
             themeMode: state.themeMode.toMaterialThemeMode(
               darkDuringDayInAutoMode: state.darkDuringDayInAutoMode,
             ),
-            initialRoute: MyHomeWidget.routeName,
+            home: state.openOnBoardingScreen
+                ? const OnBoardingScreen()
+                : const MyHomeWidget(),
             onGenerateRoute: AppRouter.onGenerateRoute,
             onUnknownRoute: AppRouter.onUnknownRoute,
             localizationsDelegates: AppLocalizations.localizationsDelegates,

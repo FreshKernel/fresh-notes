@@ -1,6 +1,6 @@
 {
-    "name": "my_notes",
-    "short_name": "my_notes",
+    "name": "fresh_notes",
+    "short_name": "fresh_notes",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
