@@ -22,7 +22,7 @@ jobs:
         run: flutter --version
 
       - name: Fallbacks
-        run: ./scirpts/fallback.sh
+        run: ./scripts/fallbacks.sh
 
       - name: Install dependencies
         run: flutter pub get
