@@ -8,7 +8,7 @@ on:
 
 jobs:
   build_linux:
-    name: Build Linux and Web
+    name: Build Linux and Web Apps
     runs-on: ubuntu-latest
 
     steps:
@@ -37,7 +37,7 @@ jobs:
         run: flutter build linux --release --verbose --dart-define=CI=true
 
   build_windows:
-    name: Build Linux and Web
+    name: Build Windows App
     runs-on: windows-latest
 
     steps:
@@ -60,7 +60,7 @@ jobs:
           run: flutter build windows --release --verbose --dart-define=CI=true
 
   build_macOS:
-    name: Build Linux and Web
+    name: Build macOS App
     runs-on: macos-latest
 
     steps:
