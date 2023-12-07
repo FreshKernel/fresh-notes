@@ -63,8 +63,8 @@ dependencies:
         url: https://github.com/freshplatform/flutter-fresh-base-package.git
         ref: main
 
-  flutter_quill: ^9.0.0-dev-5
-  flutter_quill_extensions: ^9.0.0-dev-5
+  flutter_quill: ^9.0.0-dev-7
+  flutter_quill_extensions: ^9.0.0-dev-7
 
   # Other packages
   lottie: ^2.7.0
@@ -86,7 +86,7 @@ dev_dependencies:
   freezed: ^2.4.5
   json_serializable: ^6.7.1
   flutter_gen_runner: ^5.3.2
-  flutter_quill_test: ^0.0.5
+  flutter_quill_test: ^9.0.0-dev-7
 
   auto_screenshot: ^0.0.2
   icons_launcher: ^2.1.6
