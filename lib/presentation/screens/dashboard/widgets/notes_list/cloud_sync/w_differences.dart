@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../data/notes/universal/models/m_note.dart';
 import '../../../../../../logic/utils/others/differnce_result.dart';
@@ -28,7 +29,7 @@ class SyncCloudToLocalNotesDifferences extends StatelessWidget {
       title: const Text('Note differneces'),
       actions: [
         AppDialogAction(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.pop(),
           child: const Text('Cancel'),
         ),
         AppDialogAction(

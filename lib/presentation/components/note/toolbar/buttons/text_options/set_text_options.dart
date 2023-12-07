@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart' show showCupertinoModalPopup;
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
@@ -8,40 +7,25 @@ import '../../w_note_toolbar.dart';
 class NoteToolbarTextOptionsButton extends StatelessWidget {
   const NoteToolbarTextOptionsButton({
     required QuillController controller,
-    required this.onShowPopup,
+    required this.onNavigate,
     required this.onClose,
     super.key,
   }) : _controller = controller;
 
   // ignore: unused_field
   final QuillController _controller;
-  final NoteToolbarPopupCallback onShowPopup;
+  final NoteToolbarOnNavigateCallback onNavigate;
   final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {
-        showCupertinoModalPopup(
-          context: context,
-          builder: (_) {
-            return QuillToolbarProvider.value(
-              value: QuillToolbarProvider.ofNotNull(context),
-              child: _TextOptionsWidget(
-                controller: _controller,
-              ),
-            );
-          },
+      onPressed: () async {
+        onNavigate(
+          _TextOptionsWidget(
+            controller: _controller,
+          ),
         );
-        //popup a attachments toast
-        // final cancel = BotToast.showAttachedWidget(
-        //   attachedBuilder: (_) => _TextOptionsWidget(
-        //     controller: _controller,
-        //   ),
-        //   duration: const Duration(seconds: 2),
-        //   target: const Offset(520, 520),
-        // );
-        // cancel(); //close
       },
       tooltip: 'Text options',
       icon: const Icon(Icons.text_fields),
@@ -82,56 +66,42 @@ class _TextOptionsWidget extends StatelessWidget {
                         toggledIconData: Icons.format_list_bulleted_outlined,
                         controller: _controller,
                         attribute: Attribute.ul,
-                        onButtonPressed: onButtonPressed,
-                        tooltip: 'Bullet list',
+                        afterButtonPressed: onButtonPressed,
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_list_numbered,
                         toggledIconData: Icons.format_list_numbered_outlined,
                         controller: _controller,
                         attribute: Attribute.ol,
-                        onButtonPressed: onButtonPressed,
-                        tooltip: 'Numbered list',
+                        afterButtonPressed: onButtonPressed,
                       ),
                     ],
                   ),
                   _TextOptionSection(
                     buttons: [
-                      IconButton(
-                        tooltip: 'Align left',
-                        onPressed: () {
-                          _controller.formatSelection(
-                            Attribute.leftAlignment,
-                          );
-                        },
-                        icon: const Icon(Icons.format_align_left),
+                      _ToggleStyleButton(
+                        controller: _controller,
+                        attribute: Attribute.leftAlignment,
+                        iconData: Icons.format_align_left,
+                        toggledIconData: Icons.format_align_left_outlined,
                       ),
-                      IconButton(
-                        tooltip: 'Align center',
-                        onPressed: () {
-                          _controller.formatSelection(
-                            Attribute.centerAlignment,
-                          );
-                        },
-                        icon: const Icon(Icons.format_align_center),
+                      _ToggleStyleButton(
+                        controller: _controller,
+                        attribute: Attribute.centerAlignment,
+                        iconData: Icons.format_align_center,
+                        toggledIconData: Icons.format_align_center_outlined,
                       ),
-                      IconButton(
-                        tooltip: 'Align right',
-                        onPressed: () {
-                          _controller.formatSelection(
-                            Attribute.rightAlignment,
-                          );
-                        },
-                        icon: const Icon(Icons.format_align_right),
+                      _ToggleStyleButton(
+                        controller: _controller,
+                        attribute: Attribute.rightAlignment,
+                        iconData: Icons.format_align_right,
+                        toggledIconData: Icons.format_align_right_outlined,
                       ),
-                      IconButton(
-                        tooltip: 'Align justify',
-                        onPressed: () {
-                          _controller.formatSelection(
-                            Attribute.justifyAlignment,
-                          );
-                        },
-                        icon: const Icon(Icons.format_align_justify),
+                      _ToggleStyleButton(
+                        controller: _controller,
+                        attribute: Attribute.justifyAlignment,
+                        iconData: Icons.format_align_justify,
+                        toggledIconData: Icons.format_align_justify_outlined,
                       ),
                     ],
                   ),
@@ -151,48 +121,56 @@ class _TextOptionsWidget extends StatelessWidget {
                         iconData: Icons.format_bold,
                         toggledIconData: Icons.format_bold_outlined,
                         controller: _controller,
-                        onButtonPressed: onButtonPressed,
-                        tooltip: 'Bold',
+                        afterButtonPressed: onButtonPressed,
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_italic,
                         toggledIconData: Icons.format_italic_outlined,
                         controller: _controller,
                         attribute: Attribute.italic,
-                        onButtonPressed: onButtonPressed,
-                        tooltip: 'Italic',
+                        afterButtonPressed: onButtonPressed,
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_underline,
                         toggledIconData: Icons.format_underline_outlined,
                         controller: _controller,
                         attribute: Attribute.underline,
-                        onButtonPressed: onButtonPressed,
-                        tooltip: 'Underline',
+                        afterButtonPressed: onButtonPressed,
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_strikethrough,
                         toggledIconData: Icons.format_strikethrough_outlined,
                         controller: _controller,
                         attribute: Attribute.strikeThrough,
-                        onButtonPressed: onButtonPressed,
-                        tooltip: 'Strike through',
+                        afterButtonPressed: onButtonPressed,
                       ),
                     ],
                   ),
                   _TextOptionSection(
                     buttons: [
-                      _IndentTextButton(
+                      QuillToolbarIndentButton(
                         controller: _controller,
                         isIncrease: true,
-                        onButtonPressed: onButtonPressed,
-                        tooltip: 'Increase indent',
+                        options: QuillToolbarIndentButtonOptions(
+                          childBuilder: (options, extraOptions) {
+                            return IconButton(
+                              onPressed: extraOptions.onPressed,
+                              icon: const Icon(Icons.format_indent_increase),
+                            );
+                          },
+                        ),
                       ),
-                      _IndentTextButton(
+                      QuillToolbarIndentButton(
                         controller: _controller,
                         isIncrease: false,
-                        onButtonPressed: onButtonPressed,
-                        tooltip: 'Decrease indent',
+                        options: QuillToolbarIndentButtonOptions(
+                          childBuilder: (options, extraOptions) {
+                            return IconButton(
+                              onPressed: extraOptions.onPressed,
+                              icon: const Icon(Icons.format_indent_decrease),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -250,8 +228,7 @@ class _ToggleStyleButton extends StatelessWidget {
     required this.toggledIconData,
     required QuillController controller,
     required this.attribute,
-    required this.tooltip,
-    required this.onButtonPressed,
+    this.afterButtonPressed,
     // ignore: unused_element
     super.key,
   }) : _controller = controller;
@@ -260,8 +237,7 @@ class _ToggleStyleButton extends StatelessWidget {
   final Attribute attribute;
   final IconData iconData;
   final IconData toggledIconData;
-  final VoidCallback? onButtonPressed;
-  final String? tooltip;
+  final VoidCallback? afterButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -274,12 +250,12 @@ class _ToggleStyleButton extends StatelessWidget {
         childBuilder: (options, extraOptions) {
           void sharedOnPressed() {
             extraOptions.onPressed?.call();
-            onButtonPressed?.call(); // of this widget;
+            afterButtonPressed?.call(); // of this widget;
           }
 
           if (extraOptions.isToggled) {
             return IconButton.filled(
-              tooltip: tooltip,
+              tooltip: options.tooltip,
               onPressed: sharedOnPressed,
               icon: Icon(
                 iconData,
@@ -288,7 +264,7 @@ class _ToggleStyleButton extends StatelessWidget {
           }
 
           return IconButton(
-            tooltip: tooltip,
+            tooltip: options.tooltip,
             onPressed: sharedOnPressed,
             icon: Icon(
               iconData,
@@ -300,34 +276,33 @@ class _ToggleStyleButton extends StatelessWidget {
   }
 }
 
-class _IndentTextButton extends StatelessWidget {
-  const _IndentTextButton({
-    required QuillController controller,
-    required this.isIncrease,
-    required this.onButtonPressed,
-    required this.tooltip,
-    // ignore: unused_element
-    super.key,
-  }) : _controller = controller;
+// class _IndentTextButton extends StatelessWidget {
+//   const _IndentTextButton({
+//     required QuillController controller,
+//     required this.isIncrease,
+//     required this.onButtonPressed,
+//     required this.tooltip,
+//     // ignore: unused_element
+//     super.key,
+//   }) : _controller = controller;
 
-  final QuillController _controller;
-  final bool isIncrease;
-  final VoidCallback? onButtonPressed;
-  final String? tooltip;
+//   final QuillController _controller;
+//   final bool isIncrease;
+//   final VoidCallback? onButtonPressed;
 
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      tooltip: tooltip,
-      onPressed: () {
-        _controller.indentSelection(isIncrease);
-        onButtonPressed?.call();
-      },
-      icon: Icon(
-        isIncrease
-            ? Icons.format_indent_increase
-            : Icons.format_indent_decrease,
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return IconButton(
+//       tooltip: tooltip,
+//       onPressed: () {
+//         _controller.indentSelection(isIncrease);
+//         onButtonPressed?.call();
+//       },
+//       icon: Icon(
+//         isIncrease
+//             ? Icons.format_indent_increase
+//             : Icons.format_indent_decrease,
+//       ),
+//     );
+//   }
+// }

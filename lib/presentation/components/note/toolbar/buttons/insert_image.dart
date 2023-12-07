@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 
 import '../../../../../logic/native/image/s_image_picker.dart';
-import '../../../../utils/extensions/build_context_extensions.dart';
+import '../../../../utils/extensions/build_context_ext.dart';
 import '../../../dialogs/w_pick_url.dart';
 import '../w_note_toolbar.dart';
 import '../w_select_image_source.dart';

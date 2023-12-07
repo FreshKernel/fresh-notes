@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'w_note_toolbar.dart';
 
@@ -19,7 +20,7 @@ class SelectImageSourceDialog extends StatelessWidget {
                 'Pick a photo from your gallery',
               ),
               leading: const Icon(Icons.photo_sharp),
-              onTap: () => Navigator.of(context).pop(InsertImageSource.gallery),
+              onTap: () => context.pop(InsertImageSource.gallery),
             ),
             ListTile(
               title: const Text('Camera'),
@@ -27,7 +28,7 @@ class SelectImageSourceDialog extends StatelessWidget {
                 'Take a photo using your phone camera',
               ),
               leading: const Icon(Icons.camera),
-              onTap: () => Navigator.of(context).pop(InsertImageSource.camera),
+              onTap: () => context.pop(InsertImageSource.camera),
             ),
             ListTile(
               title: const Text('Link'),
@@ -35,7 +36,7 @@ class SelectImageSourceDialog extends StatelessWidget {
                 'Paste a photo using https link',
               ),
               leading: const Icon(Icons.link),
-              onTap: () => Navigator.of(context).pop(InsertImageSource.link),
+              onTap: () => context.pop(InsertImageSource.link),
             ),
           ],
         ),

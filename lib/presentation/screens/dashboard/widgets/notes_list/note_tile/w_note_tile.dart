@@ -2,6 +2,7 @@ import 'dart:convert' show jsonDecode;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../logic/utils/extensions/string.dart';
 import '../../../../save_note/s_save_note.dart';
@@ -27,9 +28,9 @@ class NoteTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
       ),
       child: ListTile(
-        onTap: () => Navigator.of(context).pushNamed(
+        onTap: () => context.push(
           SaveNoteScreen.routeName,
-          arguments: SaveNoteScreenArgs(
+          extra: SaveNoteScreenArgs(
             note: options.note,
           ),
         ),

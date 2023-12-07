@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
@@ -20,8 +21,7 @@ class DashboardDrawer extends StatelessWidget {
       title: Text(title),
       subtitle: Text(subtitle),
       onTap: () {
-        final navigator = Navigator.of(context);
-        navigator.pop();
+        context.pop();
         onTap();
       },
       leading: icon,
@@ -67,7 +67,9 @@ class DashboardDrawer extends StatelessWidget {
               subtitle: 'Edit your settings',
               icon: const Icon(Icons.settings),
               onTap: () {
-                Navigator.of(context).pushNamed(SettingsScreen.routeName);
+                context.push(
+                  SettingsScreen.routeName,
+                );
               },
             ),
             const ListBody(),

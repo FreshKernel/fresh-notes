@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../components/auth/w_email_field.dart';
 
@@ -47,7 +48,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(null),
+          onPressed: () => context.pop(null),
           child: const Text('Cancel'),
         ),
         TextButton(
@@ -57,7 +58,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
               return;
             }
             _formKey.currentState?.save();
-            Navigator.of(context).pop(_emailController.text);
+            context.pop(_emailController.text);
           },
           child: const Text('Send'),
         ),

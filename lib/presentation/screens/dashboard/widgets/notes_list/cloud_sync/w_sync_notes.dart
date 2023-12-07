@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../data/notes/universal/s_universal_notes.dart';
 import '../../../../../utils/dialog/w_app_dialog.dart';
-import '../../../../../utils/extensions/build_context_extensions.dart';
+import '../../../../../utils/extensions/build_context_ext.dart';
 import 'w_differences.dart';
 
 class SyncNotesIconButton extends StatefulWidget {

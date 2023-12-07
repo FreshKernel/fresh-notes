@@ -5,7 +5,7 @@ import '../../../../logic/auth/auth_exceptions.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
 import '../../../../logic/core/api/api_exceptions.dart';
 import '../../../utils/dialog/w_error_dialog.dart';
-import '../../../utils/extensions/build_context_extensions.dart';
+import '../../../utils/extensions/build_context_ext.dart';
 
 class VerifyAccountScreen extends StatefulWidget {
   const VerifyAccountScreen({super.key});

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'w_app_dialog.dart';
 import 'w_dialog_action.dart';
 
@@ -29,11 +30,11 @@ class YesOrCancelDialog extends StatelessWidget {
     return AlertDialog.adaptive(
       actions: [
         AppDialogAction(
-          onPressed: () => Navigator.of(context).pop(false),
+          onPressed: () => context.pop(false),
           child: Text(options.cancelLabel ?? 'Cancel'),
         ),
         AppDialogAction(
-          onPressed: () => Navigator.of(context).pop(true),
+          onPressed: () => context.pop(true),
           options: DialogActionOptions(
             materialDialogActionOptions: MaterialDialogActionOptions(
               textStyle: TextButton.styleFrom(

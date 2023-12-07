@@ -10,7 +10,7 @@ import '../../../components/auth/w_email_field.dart';
 import '../../../components/auth/w_password_field.dart';
 import '../../../utils/dialog/w_app_dialog.dart';
 import '../../../utils/dialog/w_error_dialog.dart';
-import '../../../utils/extensions/build_context_extensions.dart';
+import '../../../utils/extensions/build_context_ext.dart';
 import 'w_forgot_password.dart';
 
 class AuthenticationScreen extends StatefulWidget {

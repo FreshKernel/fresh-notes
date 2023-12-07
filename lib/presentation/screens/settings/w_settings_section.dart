@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart'
     show CupertinoColors, CupertinoListSection;
 import 'package:flutter/widgets.dart';
 
-import '../../utils/extensions/build_context_extensions.dart';
+import '../../utils/extensions/build_context_ext.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({required this.title, required this.tiles, super.key});

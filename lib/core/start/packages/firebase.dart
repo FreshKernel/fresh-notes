@@ -1,4 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart' show Firebase;
 import '../../../firebase_options.dart';
 import '../../services/exceptions.dart';
 import '../../services/s_app.dart';

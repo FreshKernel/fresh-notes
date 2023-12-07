@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../data/notes/universal/s_universal_notes.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
@@ -67,9 +68,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       actionButtonBuilder: (context) {
         return FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(
+            context.push(
               SaveNoteScreen.routeName,
-              arguments: const SaveNoteScreenArgs(),
+              extra: const SaveNoteScreenArgs(),
             );
           },
           child: const Icon(Icons.add),
@@ -93,9 +94,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   var _selectedNavItemIndex = 0;
   final _pageController = PageController();
 
-  bool _isNavRailBar(Size size) {
-    // TODO: Needs to be updated
-    return size.width >= 480;
+  bool _isNavRailBar(Size size, AppLayoutMode layoutMode) {
+    switch (layoutMode) {
+      case AppLayoutMode.auto:
+        return size.width >= 480;
+      case AppLayoutMode.small:
+        return false;
+      case AppLayoutMode.large:
+        return true;
+    }
   }
 
   void _onDestinationSelected(int newPageIndex) {
@@ -110,75 +117,80 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final actionButton = _navigationItems[_selectedNavItemIndex]
         .actionButtonBuilder
         ?.call(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _navigationItems[_selectedNavItemIndex].title,
-        ),
-        actions: actions,
-      ),
-      drawer: const DashboardDrawer(),
-      body: SafeArea(
-        child: Builder(
-          builder: (context) {
-            final size = MediaQuery.sizeOf(context);
-            final widget = PageView(
-              controller: _pageController,
-              children:
-                  _navigationItems.map((e) => Center(child: e.body)).toList(),
-              onPageChanged: (newPageIndex) {
-                setState(() => _selectedNavItemIndex = newPageIndex);
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (previous, current) =>
+          previous.layoutMode != current.layoutMode,
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              _navigationItems[_selectedNavItemIndex].title,
+            ),
+            actions: actions,
+          ),
+          drawer: const DashboardDrawer(),
+          body: SafeArea(
+            child: Builder(
+              builder: (context) {
+                final size = MediaQuery.sizeOf(context);
+                final widget = PageView(
+                  controller: _pageController,
+                  children: _navigationItems.map((e) => e.body).toList(),
+                  onPageChanged: (newPageIndex) {
+                    setState(() => _selectedNavItemIndex = newPageIndex);
+                  },
+                );
+                if (!_isNavRailBar(size, state.layoutMode)) {
+                  return widget;
+                }
+                return Row(
+                  children: [
+                    NavigationRail(
+                      onDestinationSelected: _onDestinationSelected,
+                      labelType: NavigationRailLabelType.all,
+                      destinations: _navigationItems.map((e) {
+                        return NavigationRailDestination(
+                          icon: e.icon,
+                          label: Text(e.label),
+                          selectedIcon: e.selectedIcon,
+                          // tooltip: e.tooltip,
+                          // key: ValueKey(e.label),
+                        );
+                      }).toList(),
+                      selectedIndex: _selectedNavItemIndex,
+                    ),
+                    Expanded(
+                      child: widget,
+                    )
+                  ],
+                );
               },
-            );
-            if (!_isNavRailBar(size)) {
-              return widget;
-            }
-            return Row(
-              children: [
-                NavigationRail(
-                  onDestinationSelected: _onDestinationSelected,
-                  labelType: NavigationRailLabelType.all,
-                  destinations: _navigationItems.map((e) {
-                    return NavigationRailDestination(
-                      icon: e.icon,
-                      label: Text(e.label),
-                      selectedIcon: e.selectedIcon,
-                      // tooltip: e.tooltip,
-                      // key: ValueKey(e.label),
-                    );
-                  }).toList(),
-                  selectedIndex: _selectedNavItemIndex,
-                ),
-                Expanded(
-                  child: widget,
-                )
-              ],
-            );
-          },
-        ),
-      ),
-      floatingActionButton: actionButton,
-      bottomNavigationBar: Builder(
-        builder: (context) {
-          final size = MediaQuery.sizeOf(context);
-          if (_isNavRailBar(size)) {
-            return const SizedBox.shrink();
-          }
-          return NavigationBar(
-            selectedIndex: _selectedNavItemIndex,
-            onDestinationSelected: _onDestinationSelected,
-            destinations: _navigationItems.map((e) {
-              return NavigationDestination(
-                icon: e.icon,
-                label: e.label,
-                selectedIcon: e.selectedIcon,
-                tooltip: e.tooltip,
-                key: ValueKey(e.label),
+            ),
+          ),
+          floatingActionButton: actionButton,
+          bottomNavigationBar: Builder(
+            builder: (context) {
+              final size = MediaQuery.sizeOf(context);
+              if (_isNavRailBar(size, state.layoutMode)) {
+                return const SizedBox.shrink();
+              }
+              return NavigationBar(
+                selectedIndex: _selectedNavItemIndex,
+                onDestinationSelected: _onDestinationSelected,
+                destinations: _navigationItems.map((e) {
+                  return NavigationDestination(
+                    icon: e.icon,
+                    label: e.label,
+                    selectedIcon: e.selectedIcon,
+                    tooltip: e.tooltip,
+                    key: ValueKey(e.label),
+                  );
+                }).toList(),
               );
-            }).toList(),
-          );
-        },
-      ),
+            },
+          ),
+        );
+      },
     );
   }
 

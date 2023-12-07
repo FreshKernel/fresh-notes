@@ -9,7 +9,6 @@ part 'settings_state.dart';
 class SettingsCubit extends Cubit<SettingsState> with HydratedMixin {
   SettingsCubit() : super(const SettingsState());
 
-  // TODO: Make this private and add more methods instead
   void updateSettings(SettingsState newSettingsState) {
     emit(newSettingsState);
   }

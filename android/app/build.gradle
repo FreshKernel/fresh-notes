@@ -35,15 +35,13 @@ android {
     // One or more plugins require a higher Android NDK version.
     ndkVersion "25.1.8937393"
 
-    def javaVersion = JavaVersion.VERSION_17
-
     compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = javaVersion.toString()
+        jvmTarget = "1.8"
     }
 
     sourceSets {
@@ -51,14 +49,14 @@ android {
     }
 
     androidResources {
-        generateLocaleConfig = true
+//        generateLocaleConfig = true
     }
 
     defaultConfig {
         applicationId "net.freshplatform.fresh_notes"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

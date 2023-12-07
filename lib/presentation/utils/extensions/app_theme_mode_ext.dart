@@ -4,7 +4,7 @@ import 'package:flutter/material.dart' show ThemeMode;
 
 import '../../../logic/settings/cubit/settings_cubit.dart';
 
-extension AppThemeModeExtensions on AppThemeMode {
+extension AppThemeModeExt on AppThemeMode {
   ThemeMode toMaterialThemeMode({required bool darkDuringDayInAutoMode}) {
     switch (this) {
       case AppThemeMode.dark:

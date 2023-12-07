@@ -11,7 +11,7 @@ enum InsertImageSource {
   link,
 }
 
-typedef NoteToolbarPopupCallback = Function(Widget widget);
+typedef NoteToolbarOnNavigateCallback = Function(Widget widget);
 
 class NoteToolbar extends StatefulWidget {
   const NoteToolbar({
@@ -26,44 +26,43 @@ class NoteToolbar extends StatefulWidget {
 }
 
 class _NoteToolbarState extends State<NoteToolbar> {
-  Widget? _currentPopup;
+  Widget? _currentWidget;
 
   void _onTapOutside() {
-    if (_currentPopup == null) {
+    if (_currentWidget == null) {
       return;
     }
     setState(() {
-      _currentPopup = null;
+      _currentWidget = null;
     });
   }
 
-  void _onShowPopup(Widget widget) {
-    if (_currentPopup != null) {
+  void _onNavigate(Widget widget) {
+    if (_currentWidget != null) {
       setState(() {
-        _currentPopup = null;
+        _currentWidget = null;
       });
       return;
     }
     setState(() {
-      _currentPopup = widget;
+      _currentWidget = widget;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return QuillToolbarProvider(
-      toolbarConfigurations: const QuillToolbarConfigurations(),
+    return QuillToolbar(
       child: SingleChildScrollView(
         child: Column(
           children: [
             Visibility(
-              visible: _currentPopup != null,
+              visible: _currentWidget != null,
               maintainState: true,
               maintainAnimation: true,
               child: AnimatedOpacity(
-                opacity: _currentPopup != null ? 1 : 0,
+                opacity: _currentWidget != null ? 1 : 0,
                 duration: const Duration(milliseconds: 150),
-                child: _currentPopup,
+                child: _currentWidget,
               ),
             ),
             Container(
@@ -86,7 +85,7 @@ class _NoteToolbarState extends State<NoteToolbar> {
                   NoteToolbarTextOptionsButton(
                     controller: widget._controller,
                     onClose: _onTapOutside,
-                    onShowPopup: _onShowPopup,
+                    onNavigate: _onNavigate,
                   )
                 ],
               ),

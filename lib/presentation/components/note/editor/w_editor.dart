@@ -16,11 +16,13 @@ class NoteEditor extends StatefulWidget {
   const NoteEditor({
     required this.isReadOnly,
     required this.onRequestingSaveNote,
+    required this.configurations,
     super.key,
   });
 
   final bool isReadOnly;
   final VoidCallback onRequestingSaveNote;
+  final QuillEditorConfigurations configurations;
 
   @override
   State<NoteEditor> createState() => _NoteEditorState();
@@ -44,7 +46,7 @@ class _NoteEditorState extends State<NoteEditor> {
     return [
       ...FlutterQuillEmbeds.editorBuilders(
         imageEmbedConfigurations: QuillEditorImageEmbedConfigurations(
-          imageProviderBuilder: (imageUrl) {
+          imageProviderBuilder: (context, imageUrl) {
             if (isHttpBasedUrl(imageUrl)) {
               return CachedNetworkImageProvider(imageUrl);
             }
@@ -88,7 +90,7 @@ class _NoteEditorState extends State<NoteEditor> {
     return AppScrollBar(
       child: SingleChildScrollView(
         child: QuillEditor(
-          configurations: QuillEditorConfigurations(
+          configurations: widget.configurations.copyWith(
             readOnly: widget.isReadOnly,
             placeholder: 'Start your notes',
             padding: const EdgeInsets.all(16),

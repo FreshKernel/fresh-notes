@@ -3,6 +3,7 @@ import 'dart:convert' show jsonDecode;
 import 'package:flutter/material.dart';
 
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../logic/utils/extensions/string.dart';
 import '../../../../save_note/s_save_note.dart';
@@ -32,9 +33,9 @@ class NoteGridTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: InkWell(
-          onTap: () => Navigator.of(context).pushNamed(
+          onTap: () => context.push(
             SaveNoteScreen.routeName,
-            arguments: SaveNoteScreenArgs(
+            extra: SaveNoteScreenArgs(
               note: options.note,
             ),
           ),
@@ -47,12 +48,17 @@ class NoteGridTile extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      options.note.title,
-                      softWrap: true,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: materialTheme.textTheme.titleLarge,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Text(
+                          options.note.title.limitToCharacters(10),
+                          softWrap: true,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: materialTheme.textTheme.titleLarge,
+                        ),
+                      ),
                     ),
                     IconButton(
                       onPressed: () =>

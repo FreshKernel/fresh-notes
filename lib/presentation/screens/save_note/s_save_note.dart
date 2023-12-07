@@ -12,16 +12,16 @@ import '../../../logic/native/share/s_app_share.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../components/note/editor/w_editor.dart';
 import '../../components/note/toolbar/w_note_toolbar.dart';
-import '../../utils/extensions/build_context_extensions.dart';
+import '../../utils/extensions/build_context_ext.dart';
 
 class SaveNoteScreenArgs {
   const SaveNoteScreenArgs({
-    this.isForceReadOnly = false,
+    this.isDeepLink = false,
     this.note,
   });
 
   final UniversalNote? note;
-  final bool isForceReadOnly;
+  final bool isDeepLink;
 }
 
 class SaveNoteScreen extends StatefulWidget {
@@ -65,6 +65,9 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   }
 
   void _setupController() {
+    if (widget.args.isDeepLink) {
+      _isReadOnly = true;
+    }
     final noteToEdit = _note;
     if (noteToEdit != null) {
       final json = jsonDecode(noteToEdit.text);
@@ -152,6 +155,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          readOnly: _isReadOnly,
           decoration: const InputDecoration(
             labelText: 'Title',
             hintText: 'Enter the title for this note',
@@ -160,17 +164,19 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
           controller: _titleController,
         ),
         actions: [
-          IconButton(
-            tooltip: 'Sync with cloud',
-            onPressed: () =>
-                setState(() => _isSyncWithCloud = !_isSyncWithCloud),
-            icon: Icon(_isSyncWithCloud ? Icons.cloud : Icons.folder),
-          ),
-          IconButton(
-            tooltip: 'Private',
-            onPressed: () => setState(() => _isPrivate = !_isPrivate),
-            icon: Icon(_isPrivate ? Icons.lock : Icons.public),
-          ),
+          if (!widget.args.isDeepLink)
+            IconButton(
+              tooltip: 'Sync with cloud',
+              onPressed: () =>
+                  setState(() => _isSyncWithCloud = !_isSyncWithCloud),
+              icon: Icon(_isSyncWithCloud ? Icons.cloud : Icons.folder),
+            ),
+          if (!widget.args.isDeepLink)
+            IconButton(
+              tooltip: 'Private',
+              onPressed: () => setState(() => _isPrivate = !_isPrivate),
+              icon: Icon(_isPrivate ? Icons.lock : Icons.public),
+            ),
           if (_isEditing)
             IconButton(
               tooltip: 'Share',
@@ -190,14 +196,15 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
               },
               icon: const Icon(Icons.share),
             ),
-          IconButton(
-            tooltip: 'Save note',
-            onPressed: _isLoading ? null : _onSaveNoteClick,
-            icon: const Icon(Icons.save),
-          ),
+          if (!widget.args.isDeepLink)
+            IconButton(
+              tooltip: 'Save note',
+              onPressed: _isLoading ? null : _onSaveNoteClick,
+              icon: const Icon(Icons.save),
+            ),
         ],
       ),
-      floatingActionButton: widget.args.isForceReadOnly
+      floatingActionButton: widget.args.isDeepLink
           ? const SizedBox.shrink()
           : FloatingActionButton(
               onPressed: () => setState(() => _isReadOnly = !_isReadOnly),
@@ -210,49 +217,53 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                child: QuillProvider(
-                  configurations: QuillConfigurations(
-                    sharedConfigurations: const QuillSharedConfigurations(
-                      extraConfigurations: {
-                        QuillSharedExtensionsConfigurations.key:
-                            QuillSharedExtensionsConfigurations(),
-                      },
-                    ),
-                    controller: _controller,
-                  ),
-                  child: Column(
-                    children: [
-                      if (!_isReadOnly)
-                        QuillToolbar(
-                          configurations: QuillToolbarConfigurations(
-                            showAlignmentButtons: true,
-                            embedButtons: [
-                              ...FlutterQuillEmbeds.toolbarButtons(
-                                imageButtonOptions:
-                                    QuillToolbarImageButtonOptions(
-                                  imageButtonConfigurations:
-                                      QuillToolbarImageConfigurations(
-                                    onImageInsertedCallback: (image) async {
-                                      AppLogger.log(
-                                        'The path of the picked image is: $image',
-                                      );
-                                    },
-                                  ),
-                                  linkRegExp: RegExp(
-                                    r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
-                                    caseSensitive: false,
-                                  ),
+                child: Column(
+                  children: [
+                    if (!_isReadOnly)
+                      QuillToolbar.simple(
+                        configurations: QuillSimpleToolbarConfigurations(
+                          controller: _controller,
+                          fontFamilyValues: const {
+                            'Ubuntu': 'Ubuntu',
+                          },
+                          showAlignmentButtons: true,
+                          embedButtons: [
+                            ...FlutterQuillEmbeds.toolbarButtons(
+                              imageButtonOptions:
+                                  QuillToolbarImageButtonOptions(
+                                imageButtonConfigurations:
+                                    QuillToolbarImageConfigurations(
+                                  onImageInsertedCallback: (image) async {
+                                    AppLogger.log(
+                                      'The path of the picked image is: $image',
+                                    );
+                                  },
                                 ),
-                              )
-                            ],
-                          ),
+                                linkRegExp: RegExp(
+                                  r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
+                                  caseSensitive: false,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      NoteEditor(
-                        isReadOnly: _isReadOnly,
-                        onRequestingSaveNote: _saveNote,
                       ),
-                    ],
-                  ),
+                    NoteEditor(
+                      isReadOnly: _isReadOnly,
+                      onRequestingSaveNote: _saveNote,
+                      configurations: QuillEditorConfigurations(
+                        controller: _controller,
+                        sharedConfigurations: const QuillSharedConfigurations(
+                          extraConfigurations: {
+                            QuillSharedExtensionsConfigurations.key:
+                                QuillSharedExtensionsConfigurations(
+                              assetsPrefix: 'wqasd', // Defaults to assets
+                            ),
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

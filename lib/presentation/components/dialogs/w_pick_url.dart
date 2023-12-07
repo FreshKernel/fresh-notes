@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../logic/utils/validators/global.dart';
+import '../../l10n/extensions/localizations.dart';
 import '../../utils/dialog/w_dialog_action.dart';
-import '../../utils/extensions/build_context_extensions.dart';
 
 enum PickUrlType {
   image,
@@ -32,7 +33,7 @@ class _PickUrlDialogState extends State<PickUrlDialog> {
   }
 
   Future<void> _onSubmit() async {
-    Navigator.of(context).pop(_textController.text);
+    context.pop(_textController.text);
   }
 
   (String title, String hintText, String labelText) get _data {
@@ -73,7 +74,7 @@ class _PickUrlDialogState extends State<PickUrlDialog> {
       ),
       actions: [
         AppDialogAction(
-          onPressed: () => Navigator.of(context).pop(null),
+          onPressed: () => context.pop(null),
           child: Text(context.loc.cancel),
         ),
         AppDialogAction(

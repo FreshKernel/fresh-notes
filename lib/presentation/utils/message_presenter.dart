@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../l10n/extensions/localizations.dart';
 import 'dialog/w_ok_dialog.dart';
-import 'extensions/build_context_extensions.dart';
 
 @immutable
 class MessagePresenter {
