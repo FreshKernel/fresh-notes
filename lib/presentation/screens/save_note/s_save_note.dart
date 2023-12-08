@@ -1,7 +1,8 @@
-import 'dart:convert';
+import 'dart:convert' show jsonEncode, jsonDecode;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
 import '../../../core/log/logger.dart';
@@ -104,7 +105,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     final notesDataService = UniversalNotesService.getInstance();
 
     if (isDocumentContentEmpty) {
-      // Delete the note if the contnet is empty in edit mode
+      // Delete the note if the content is empty in edit mode
       if (_isEditing) {
         await notesDataService.deleteOneById(_note!.id);
         messenger.showMessage(
@@ -164,6 +165,14 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
           controller: _titleController,
         ),
         actions: [
+          if (kDebugMode)
+          IconButton(
+            onPressed: () {
+              AppLogger.log(
+                  jsonEncode(_controller.document.toDelta().toJson()));
+            },
+            icon: const Icon(Icons.print),
+          ),
           if (!widget.args.isDeepLink)
             IconButton(
               tooltip: 'Sync with cloud',

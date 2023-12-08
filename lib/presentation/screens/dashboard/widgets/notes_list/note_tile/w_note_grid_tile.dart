@@ -62,7 +62,7 @@ class NoteGridTile extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () =>
-                          options.sharedOnPressed(context: context),
+                          options.sharedOnDeletePressed(context: context),
                       icon: Icon(
                         Icons.delete,
                         color: materialTheme.colorScheme.error,

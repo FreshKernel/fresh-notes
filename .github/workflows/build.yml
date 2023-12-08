@@ -1,10 +1,9 @@
 name: Build the app
 
 on:
-  # push:
-  #   branches: [main]
-  pull_request:
-    branches: [main]
+  push:
+    paths:
+      - 'pubspec.yaml'
 
 jobs:
   build_linux:
@@ -36,28 +35,28 @@ jobs:
       - name: Flutter build Linux
         run: flutter build linux --release --verbose --dart-define=CI=true
 
-  build_windows:
-    name: Build Windows App
-    runs-on: windows-latest
+  # build_windows:
+  #   name: Build Windows App
+  #   runs-on: windows-latest
 
-    steps:
-        - uses: actions/checkout@v4
-        - uses: subosito/flutter-action@v2
-          with:
-            channel: 'stable'
-            cache: true
+  #   steps:
+  #       - uses: actions/checkout@v4
+  #       - uses: subosito/flutter-action@v2
+  #         with:
+  #           channel: 'stable'
+  #           cache: true
   
-        - name: Check flutter version
-          run: flutter --version
+  #       - name: Check flutter version
+  #         run: flutter --version
   
-        - name: Fallbacks
-          run: ./scripts/fallbacks.sh
+  #       - name: Fallbacks (sh is not supported on Windows)
+  #         run: ./scripts/fallbacks.sh
         
-        - name: Install dependencies
-          run: flutter pub get
+  #       - name: Install dependencies
+  #         run: flutter pub get
         
-        - name: Flutter build windows
-          run: flutter build windows --release --verbose --dart-define=CI=true
+  #       - name: Flutter build windows
+  #         run: flutter build windows --release --verbose --dart-define=CI=true
 
   build_macOS:
     name: Build macOS App
@@ -81,7 +80,8 @@ jobs:
         
         - name: Flutter build macOS
           run: flutter build macos --release --verbose --dart-define=CI=true
-        - name: Flutter build iOS
-          run: flutter build ios --release --verbose --dart-define=CI=true
+
+        # - name: Flutter build iOS
+        #   run: flutter build ios --release --verbose --dart-define=CI=true
     
   

@@ -1,9 +1,29 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/log/logger.dart';
 
+class SyncOptionsJsonConverter
+    extends JsonConverter<SyncOptions, Map<String, Object?>> {
+  const SyncOptionsJsonConverter();
+  @override
+  SyncOptions fromJson(Map<String, Object?> json) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, Object?> toJson(SyncOptions object) {
+    return {
+      'isSyncWithCloud': object.isSyncWithCloud,
+      'cloudId': object.cloudId,
+    };
+  }
+}
+
 @immutable
+// @JsonSerializable(converters: [SyncOptionsJsonConverter()])
 sealed class SyncOptions {
+  const SyncOptions();
   factory SyncOptions.getSyncOptions({
     required bool isSyncWithCloud,
     required String? existingCloudNoteId,

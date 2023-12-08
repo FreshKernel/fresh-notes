@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/log/logger.dart';
 import '../logic/auth/cubit/auth_cubit.dart';
 import '../logic/connection/cubit/connection_cubit.dart';
+import '../logic/note/cubit/note_cubit.dart';
 import '../logic/settings/cubit/settings_cubit.dart';
 import '../presentation/l10n/extensions/localizations.dart';
 import '../presentation/screens/app_router.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AuthCubit(),
+        ),
+        BlocProvider(
+          create: (context) => NoteCubit(),
         ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(

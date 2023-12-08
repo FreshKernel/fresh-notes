@@ -19,7 +19,7 @@ class NoteTileOptions {
   final UniversalNote note;
   final int index;
 
-  Future<void> sharedOnPressed({
+  Future<void> sharedOnDeletePressed({
     required BuildContext context,
   }) async {
     final shouldConfirmDelete =
@@ -29,7 +29,7 @@ class NoteTileOptions {
             context: context,
             options: const YesOrCancelDialogOptions(
               title: 'Delete note',
-              message: 'Are you sure you want to delete this note',
+              message: 'Are you sure you want to move this note to trash?',
             ),
           )
         : true;

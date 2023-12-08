@@ -64,7 +64,8 @@ class NoteTile extends StatelessWidget {
           builder: (context, constraints) {
             if (constraints.maxWidth > 450) {
               return TextButton.icon(
-                onPressed: () => options.sharedOnPressed(context: context),
+                onPressed: () =>
+                    options.sharedOnDeletePressed(context: context),
                 icon: const Icon(Icons.delete),
                 label: const Text('Delete'),
                 style: TextButton.styleFrom(
@@ -74,7 +75,7 @@ class NoteTile extends StatelessWidget {
             }
             return IconButton(
               tooltip: 'Delete',
-              onPressed: () => options.sharedOnPressed(context: context),
+              onPressed: () => options.sharedOnDeletePressed(context: context),
               icon: const Icon(Icons.delete),
               color: materialTheme.colorScheme.error,
             );

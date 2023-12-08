@@ -52,9 +52,9 @@ const _$AppThemeModeEnumMap = {
 };
 
 const _$AppLanguagueEnumMap = {
+  AppLanguague.system: 'system',
   AppLanguague.en: 'en',
   AppLanguague.ar: 'ar',
-  AppLanguague.system: 'system',
 };
 
 const _$AppThemeSystemEnumMap = {
