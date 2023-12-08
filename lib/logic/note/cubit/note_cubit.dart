@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../data/notes/universal/models/m_note.dart';
 import '../../../data/notes/universal/models/m_note_inputs.dart';
 import '../../../data/notes/universal/s_universal_notes.dart';
 
