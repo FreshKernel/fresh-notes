@@ -1,8 +1,9 @@
 import 'dart:convert' show jsonEncode, jsonDecode;
+
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
 import '../../../core/log/logger.dart';
@@ -166,13 +167,13 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
         ),
         actions: [
           if (kDebugMode)
-          IconButton(
-            onPressed: () {
-              AppLogger.log(
-                  jsonEncode(_controller.document.toDelta().toJson()));
-            },
-            icon: const Icon(Icons.print),
-          ),
+            IconButton(
+              onPressed: () {
+                AppLogger.log(
+                    jsonEncode(_controller.document.toDelta().toJson()));
+              },
+              icon: const Icon(Icons.print),
+            ),
           if (!widget.args.isDeepLink)
             IconButton(
               tooltip: 'Sync with cloud',
