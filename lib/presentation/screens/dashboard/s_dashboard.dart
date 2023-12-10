@@ -6,15 +6,14 @@ import '../../../logic/note/cubit/note_cubit.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../logic/settings/cubit/settings_data.dart';
 import '../../l10n/extensions/localizations.dart';
-import '../../utils/dialog/w_app_dialog.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../save_note/s_save_note.dart';
 import 'models/m_navigation_item.dart';
 import 'w_logout.dart';
-import 'widgets/w_notes_list.dart';
-import 'widgets/w_trash_list.dart';
 import 'widgets/w_drawer.dart';
+import 'widgets/w_notes_list.dart';
 import 'widgets/w_settings.dart';
+import 'widgets/w_trash_list.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
