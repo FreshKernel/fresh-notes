@@ -14,12 +14,14 @@ part 'm_local_note.g.dart';
 class LocalNote with _$LocalNote {
   const factory LocalNote({
     required String id,
+    required String noteId,
     required String userId,
     required String title,
     required String text,
     required String? cloudId,
     required bool isSyncWithCloud,
     required bool isPrivate,
+    required bool isTrash,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _LocalNote;
@@ -27,20 +29,24 @@ class LocalNote with _$LocalNote {
 
   factory LocalNote._fromInputSharedLogic({
     required String id,
+    required String noteId,
     required String userId,
     required String title,
     required String text,
     required SyncOptions syncOptions,
     required bool isPrivate,
+    required bool isTrash,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) =>
       LocalNote(
         id: id,
+        noteId: noteId,
         userId: userId,
         title: title,
         text: text,
         isPrivate: isPrivate,
+        isTrash: isTrash,
         cloudId: syncOptions.getCloudNoteId(),
         isSyncWithCloud: syncOptions.isSyncWithCloud,
         createdAt: createdAt,
@@ -56,11 +62,13 @@ class LocalNote with _$LocalNote {
   }) =>
       LocalNote._fromInputSharedLogic(
         id: id,
+        noteId: input.noteId,
         userId: input.userId,
         title: input.title,
         text: input.text,
         syncOptions: input.syncOptions,
         isPrivate: input.isPrivate,
+        isTrash: false,
         createdAt: createdAt,
         updatedAt: updatedAt,
       );
@@ -75,11 +83,13 @@ class LocalNote with _$LocalNote {
   }) =>
       LocalNote._fromInputSharedLogic(
         id: id,
+        noteId: input.noteId,
         userId: userId,
         title: input.title,
         text: input.text,
         syncOptions: input.syncOptions,
         isPrivate: input.isPrivate,
+        isTrash: input.isTrash,
         createdAt: createdAt,
         updatedAt: updatedAt,
       );
@@ -90,7 +100,8 @@ class LocalNote with _$LocalNote {
   // This time I decided to make life simple and easier by
   // use the same exact name of the variable in sqlite and dart.
   factory LocalNote.fromSqlite(Map<String, Object?> map) => LocalNote(
-        id: (map[LocalNoteProperties.id] as int).toString(),
+        id: (map[LocalNoteProperties.entryId] as int).toString(),
+        noteId: (map[LocalNoteProperties.noteId] as String).toString(),
         userId: map[LocalNoteProperties.userId] as String,
         title: map[LocalNoteProperties.title] as String,
         text: map[LocalNoteProperties.text] as String,
@@ -98,6 +109,7 @@ class LocalNote with _$LocalNote {
         isSyncWithCloud:
             (map[LocalNoteProperties.isSyncWithCloud] as int).toBoolean(),
         isPrivate: (map[LocalNoteProperties.isPrivate] as int).toBoolean(),
+        isTrash: (map[LocalNoteProperties.isTrash] as int).toBoolean(),
         createdAt: DateTime.parse(map[LocalNoteProperties.createdAt] as String),
         updatedAt: DateTime.parse(map[LocalNoteProperties.updatedAt] as String),
       );
@@ -109,6 +121,7 @@ class LocalNote with _$LocalNote {
     required String text,
     required SyncOptions syncOptions,
     required bool isPrivate,
+    required bool isTrash,
   }) {
     return {
       LocalNoteProperties.title: SqlValue.string(title),
@@ -118,6 +131,7 @@ class LocalNote with _$LocalNote {
       LocalNoteProperties.isSyncWithCloud:
           SqlValue.num(syncOptions.isSyncWithCloud.toInt()),
       LocalNoteProperties.isPrivate: SqlValue.num(isPrivate.toInt()),
+      LocalNoteProperties.isTrash: SqlValue.num(isTrash.toInt()),
     };
   }
 
@@ -129,9 +143,11 @@ class LocalNote with _$LocalNote {
       text: input.text,
       syncOptions: input.syncOptions,
       isPrivate: input.isPrivate,
+      isTrash: false,
     );
     final SqlMapData data = {
       ...sharedInputData,
+      LocalNoteProperties.noteId: SqlValue.string(input.noteId),
       LocalNoteProperties.userId: SqlValue.string(input.userId),
     };
     return data;
@@ -145,6 +161,7 @@ class LocalNote with _$LocalNote {
       text: input.text,
       syncOptions: input.syncOptions,
       isPrivate: input.isPrivate,
+      isTrash: input.isTrash,
     );
     return {
       ...sharedInputData,
@@ -157,16 +174,18 @@ class LocalNote with _$LocalNote {
 
   static const createSqlTable = '''
     CREATE TABLE IF NOT EXISTS "$sqlTableName" (
-      "${LocalNoteProperties.id}"	INTEGER NOT NULL UNIQUE,
+      "${LocalNoteProperties.entryId}"	INTEGER NOT NULL UNIQUE,
+      "${LocalNoteProperties.noteId}"	TEXT NOT NULL UNIQUE,
       "${LocalNoteProperties.userId}"	TEXT NOT NULL,
       "${LocalNoteProperties.title}"	TEXT NOT NULL,
       "${LocalNoteProperties.text}"	TEXT NOT NULL,
       "${LocalNoteProperties.cloudId}" TEXT,
       "${LocalNoteProperties.isSyncWithCloud}" INTEGER NOT NULL,
       "${LocalNoteProperties.isPrivate}"	INTEGER NOT NULL,
+      "${LocalNoteProperties.isTrash}"	INTEGER NOT NULL,
       "${LocalNoteProperties.createdAt}"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       "${LocalNoteProperties.updatedAt}"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY("${LocalNoteProperties.id}" AUTOINCREMENT)
+      PRIMARY KEY("${LocalNoteProperties.entryId}" AUTOINCREMENT)
     );
     ''';
 }

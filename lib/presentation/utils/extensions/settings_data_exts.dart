@@ -1,8 +1,10 @@
 import 'dart:math' as math show Random;
 
 import 'package:flutter/material.dart' show ThemeMode;
+import 'package:flutter/widgets.dart';
 
-import '../../../logic/settings/cubit/settings_cubit.dart';
+import '../../../logic/settings/cubit/settings_data.dart';
+import '../../l10n/extensions/localizations.dart';
 
 extension AppThemeModeExt on AppThemeMode {
   ThemeMode toMaterialThemeMode({required bool darkDuringDayInAutoMode}) {
@@ -48,5 +50,15 @@ extension AppThemeModeExt on AppThemeMode {
         };
         return theme;
     }
+  }
+}
+
+extension AppLayoutModeExt on AppLayoutMode {
+  String getLabel(BuildContext context) {
+    return switch (this) {
+      AppLayoutMode.auto => context.loc.auto,
+      AppLayoutMode.small => context.loc.small,
+      AppLayoutMode.large => context.loc.large,
+    };
   }
 }

@@ -18,6 +18,7 @@ class LocalNotesService extends LocalNotesRepository {
   Future<void> initialize() async {
     if (isInitialized) {
       AppLogger.log('Local database is already initialized.');
+      return;
     }
     AppLogger.log('Initializing the notes database...');
     await _provider.initialize();
@@ -63,9 +64,8 @@ class LocalNotesService extends LocalNotesRepository {
     requireToBeInitialized();
     final result = await _provider.getAll(limit: limit, page: page);
     final List<LocalNote> notes = result.cast();
-    //TODO: Include only the local notes that is not synced.
-    // return notes.where((localNote) => !localNote.isSyncWithCloud).toList();
-    return notes;
+    return notes.where((localNote) => !localNote.isSyncWithCloud).toList();
+    // return notes;
   }
 
   @override
@@ -85,10 +85,9 @@ class LocalNotesService extends LocalNotesRepository {
   @override
   Future<LocalNote> updateOne(
     UpdateNoteInput updateInput,
-    String currentId,
   ) async {
     requireToBeInitialized();
-    final note = await _provider.updateOne(updateInput, currentId);
+    final note = await _provider.updateOne(updateInput);
     return note;
   }
 

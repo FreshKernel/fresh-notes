@@ -36,8 +36,8 @@ class LocalStorageImpl extends LocalStorageRepository {
       }
       return newFiles;
     } catch (e) {
-      throw const LocalStorageCopyException(
-        'Error while copy on the files',
+      throw LocalStorageCopyException(
+        'Error while copy on the files: ${e.toString()}',
       );
     }
   }

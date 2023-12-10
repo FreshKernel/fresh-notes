@@ -1,7 +1,7 @@
 import 'dart:async' show Zone;
-// import 'dart:developer' as dev show log;
 
 import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:logging/logging.dart';
 export 'package:logging/src/level.dart';
 
 class AppLogger {
@@ -23,18 +23,8 @@ class AppLogger {
     if (!shouldLog()) {
       return;
     }
-    if (kDebugMode) {
-      print(message.toString());
-    }
-    // dev.log(
-    //   message.toString(),
-    //   time: time,
-    //   sequenceNumber: sequenceNumber,
-    //   level: level,
-    //   name: name,
-    //   zone: zone,
-    //   stackTrace: stackTrace,
-    // );
+    final logger = Logger(name);
+    logger.log(Level.ALL, _warrning(message.toString()));
   }
 
   static void error<T>(
@@ -51,19 +41,15 @@ class AppLogger {
       return;
     }
 
-    if (kDebugMode) {
-      print(message.toString());
-    }
+    final logger = Logger(name);
+    logger.log(Level.SHOUT, _error(message.toString()));
+  }
 
-    // dev.log(
-    //   message.toString(),
-    //   time: time,
-    //   sequenceNumber: sequenceNumber,
-    //   level: level,
-    //   name: name,
-    //   zone: zone,
-    //   error: error,
-    //   stackTrace: stackTrace,
-    // );
+  static String _warrning(String text) {
+    return '\x1B[33m$text\x1B[0m';
+  }
+
+  static String _error(String text) {
+    return '\x1B[31m$text\x1B[0m';
   }
 }

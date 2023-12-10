@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../logic/utils/extensions/string.dart';
-import '../../../../save_note/s_save_note.dart';
+import '../../../../logic/utils/extensions/string.dart';
+import '../../save_note/s_save_note.dart';
 import 'note_tile_options.dart';
 
 class NoteTile extends StatelessWidget {
@@ -55,7 +55,7 @@ class NoteTile extends StatelessWidget {
         ),
         leading: CircleAvatar(
           child: Text(
-            options.note.id.limitToCharacters(2),
+            (options.index + 1).toString(),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -65,7 +65,7 @@ class NoteTile extends StatelessWidget {
             if (constraints.maxWidth > 450) {
               return TextButton.icon(
                 onPressed: () =>
-                    options.sharedOnDeletePressed(context: context),
+                    options.sharedOnMoveToTrashPressed(context: context),
                 icon: const Icon(Icons.delete),
                 label: const Text('Delete'),
                 style: TextButton.styleFrom(
@@ -75,7 +75,8 @@ class NoteTile extends StatelessWidget {
             }
             return IconButton(
               tooltip: 'Delete',
-              onPressed: () => options.sharedOnDeletePressed(context: context),
+              onPressed: () =>
+                  options.sharedOnMoveToTrashPressed(context: context),
               icon: const Icon(Icons.delete),
               color: materialTheme.colorScheme.error,
             );

@@ -16,12 +16,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UniversalNote {
-  String get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError; // Note id only
   String get userId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   SyncOptions get syncOptions => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
+  bool get isTrash => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
@@ -43,6 +44,7 @@ abstract class $UniversalNoteCopyWith<$Res> {
       String text,
       SyncOptions syncOptions,
       bool isPrivate,
+      bool isTrash,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -66,6 +68,7 @@ class _$UniversalNoteCopyWithImpl<$Res, $Val extends UniversalNote>
     Object? text = null,
     Object? syncOptions = null,
     Object? isPrivate = null,
+    Object? isTrash = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -94,6 +97,10 @@ class _$UniversalNoteCopyWithImpl<$Res, $Val extends UniversalNote>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isTrash: null == isTrash
+          ? _value.isTrash
+          : isTrash // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -121,6 +128,7 @@ abstract class _$$UniversalNoteImplCopyWith<$Res>
       String text,
       SyncOptions syncOptions,
       bool isPrivate,
+      bool isTrash,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -142,6 +150,7 @@ class __$$UniversalNoteImplCopyWithImpl<$Res>
     Object? text = null,
     Object? syncOptions = null,
     Object? isPrivate = null,
+    Object? isTrash = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -170,6 +179,10 @@ class __$$UniversalNoteImplCopyWithImpl<$Res>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isTrash: null == isTrash
+          ? _value.isTrash
+          : isTrash // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -192,11 +205,13 @@ class _$UniversalNoteImpl implements _UniversalNote {
       required this.text,
       required this.syncOptions,
       required this.isPrivate,
+      required this.isTrash,
       required this.createdAt,
       required this.updatedAt});
 
   @override
   final String id;
+// Note id only
   @override
   final String userId;
   @override
@@ -208,13 +223,15 @@ class _$UniversalNoteImpl implements _UniversalNote {
   @override
   final bool isPrivate;
   @override
+  final bool isTrash;
+  @override
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
 
   @override
   String toString() {
-    return 'UniversalNote(id: $id, userId: $userId, title: $title, text: $text, syncOptions: $syncOptions, isPrivate: $isPrivate, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'UniversalNote(id: $id, userId: $userId, title: $title, text: $text, syncOptions: $syncOptions, isPrivate: $isPrivate, isTrash: $isTrash, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -230,6 +247,7 @@ class _$UniversalNoteImpl implements _UniversalNote {
                 other.syncOptions == syncOptions) &&
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
+            (identical(other.isTrash, isTrash) || other.isTrash == isTrash) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -238,7 +256,7 @@ class _$UniversalNoteImpl implements _UniversalNote {
 
   @override
   int get hashCode => Object.hash(runtimeType, id, userId, title, text,
-      syncOptions, isPrivate, createdAt, updatedAt);
+      syncOptions, isPrivate, isTrash, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -255,12 +273,13 @@ abstract class _UniversalNote implements UniversalNote {
       required final String text,
       required final SyncOptions syncOptions,
       required final bool isPrivate,
+      required final bool isTrash,
       required final DateTime createdAt,
       required final DateTime updatedAt}) = _$UniversalNoteImpl;
 
   @override
   String get id;
-  @override
+  @override // Note id only
   String get userId;
   @override
   String get title;
@@ -270,6 +289,8 @@ abstract class _UniversalNote implements UniversalNote {
   SyncOptions get syncOptions;
   @override
   bool get isPrivate;
+  @override
+  bool get isTrash;
   @override
   DateTime get createdAt;
   @override

@@ -21,10 +21,12 @@ CloudNote _$CloudNoteFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CloudNote {
   String get id => throw _privateConstructorUsedError; // the document id
+  String get noteId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
+  bool get isTrash => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
@@ -41,10 +43,12 @@ abstract class $CloudNoteCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String noteId,
       String userId,
       String title,
       String text,
       bool isPrivate,
+      bool isTrash,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -63,10 +67,12 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
   @override
   $Res call({
     Object? id = null,
+    Object? noteId = null,
     Object? userId = null,
     Object? title = null,
     Object? text = null,
     Object? isPrivate = null,
+    Object? isTrash = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -74,6 +80,10 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      noteId: null == noteId
+          ? _value.noteId
+          : noteId // ignore: cast_nullable_to_non_nullable
               as String,
       userId: null == userId
           ? _value.userId
@@ -90,6 +100,10 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
       isPrivate: null == isPrivate
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTrash: null == isTrash
+          ? _value.isTrash
+          : isTrash // ignore: cast_nullable_to_non_nullable
               as bool,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -113,10 +127,12 @@ abstract class _$$CloudNoteImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String noteId,
       String userId,
       String title,
       String text,
       bool isPrivate,
+      bool isTrash,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -133,10 +149,12 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? noteId = null,
     Object? userId = null,
     Object? title = null,
     Object? text = null,
     Object? isPrivate = null,
+    Object? isTrash = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -144,6 +162,10 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      noteId: null == noteId
+          ? _value.noteId
+          : noteId // ignore: cast_nullable_to_non_nullable
               as String,
       userId: null == userId
           ? _value.userId
@@ -160,6 +182,10 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
       isPrivate: null == isPrivate
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTrash: null == isTrash
+          ? _value.isTrash
+          : isTrash // ignore: cast_nullable_to_non_nullable
               as bool,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -178,10 +204,12 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
 class _$CloudNoteImpl implements _CloudNote {
   const _$CloudNoteImpl(
       {required this.id,
+      required this.noteId,
       required this.userId,
       required this.title,
       required this.text,
       required this.isPrivate,
+      required this.isTrash,
       required this.createdAt,
       required this.updatedAt});
 
@@ -192,6 +220,8 @@ class _$CloudNoteImpl implements _CloudNote {
   final String id;
 // the document id
   @override
+  final String noteId;
+  @override
   final String userId;
   @override
   final String title;
@@ -200,13 +230,15 @@ class _$CloudNoteImpl implements _CloudNote {
   @override
   final bool isPrivate;
   @override
+  final bool isTrash;
+  @override
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
 
   @override
   String toString() {
-    return 'CloudNote(id: $id, userId: $userId, title: $title, text: $text, isPrivate: $isPrivate, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CloudNote(id: $id, noteId: $noteId, userId: $userId, title: $title, text: $text, isPrivate: $isPrivate, isTrash: $isTrash, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -215,11 +247,13 @@ class _$CloudNoteImpl implements _CloudNote {
         (other.runtimeType == runtimeType &&
             other is _$CloudNoteImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.noteId, noteId) || other.noteId == noteId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
+            (identical(other.isTrash, isTrash) || other.isTrash == isTrash) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -228,8 +262,8 @@ class _$CloudNoteImpl implements _CloudNote {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, userId, title, text, isPrivate, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, id, noteId, userId, title, text,
+      isPrivate, isTrash, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -248,10 +282,12 @@ class _$CloudNoteImpl implements _CloudNote {
 abstract class _CloudNote implements CloudNote {
   const factory _CloudNote(
       {required final String id,
+      required final String noteId,
       required final String userId,
       required final String title,
       required final String text,
       required final bool isPrivate,
+      required final bool isTrash,
       required final DateTime createdAt,
       required final DateTime updatedAt}) = _$CloudNoteImpl;
 
@@ -261,6 +297,8 @@ abstract class _CloudNote implements CloudNote {
   @override
   String get id;
   @override // the document id
+  String get noteId;
+  @override
   String get userId;
   @override
   String get title;
@@ -268,6 +306,8 @@ abstract class _CloudNote implements CloudNote {
   String get text;
   @override
   bool get isPrivate;
+  @override
+  bool get isTrash;
   @override
   DateTime get createdAt;
   @override

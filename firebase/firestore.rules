@@ -38,19 +38,23 @@ service cloud.firestore {
      	return isAccountVerified() &&
       resourceData.keys().toSet().hasOnly([
       'userId',
+      'noteId',
       'title',
       'text',
       'isPrivate',
+      'isTrash',
       'createdAt',
       'updatedAt'
       ]) &&
       resourceData.userId is string &&
+      resourceData.noteId is string &&
       resourceData.userId == getUserId() &&
       resourceData.createdAt == request.time &&
       resourceData.updatedAt == request.time &&
       resourceData.title is string &&
       resourceData.text is string &&
-      resourceData.isPrivate is bool;
+      resourceData.isPrivate is bool &&
+      resourceData.isTrash is bool;
      }
      
      function isValidUpdateNoteInput() {
@@ -61,12 +65,14 @@ service cloud.firestore {
         'title',
         'text',
         'isPrivate',
+        'isTrash',
         'updatedAt'
         ]) &&
       resourceData.updatedAt == request.time &&
       resourceData.title is string &&
       resourceData.text is string &&
-      resourceData.isPrivate is bool;
+      resourceData.isPrivate is bool &&
+      resourceData.isTrash is bool;
      }
 
      function canDeleteResource() {

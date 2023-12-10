@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../logic/settings/cubit/settings_cubit.dart';
+import '../../../logic/settings/cubit/settings_data.dart';
+import '../../l10n/extensions/localizations.dart';
 import '../../utils/extensions/build_context_ext.dart';
+import '../../utils/extensions/settings_data_exts.dart';
 import 'w_select_theme_mode.dart';
 import 'w_settings_section.dart';
 
@@ -19,7 +22,7 @@ class SettingsContent extends StatelessWidget {
             children: [
               _GeneralSection(state: state),
               SettingsSection(
-                title: 'Notes',
+                title: context.loc.notes,
                 tiles: [
                   CheckboxListTile.adaptive(
                     value: state.confirmDeleteNote,
@@ -28,8 +31,8 @@ class SettingsContent extends StatelessWidget {
                             state.copyWith(confirmDeleteNote: newValue!),
                           );
                     },
-                    title: const Text('Confirm delete note'),
-                    subtitle: const Text('Do you wish to delete the note?'),
+                    title: Text(context.loc.confirmDeleteNote),
+                    subtitle: Text(context.loc.confirmDeleteNoteDesc),
                     secondary: const Icon(Icons.delete),
                   ),
                   CheckboxListTile.adaptive(
@@ -40,10 +43,9 @@ class SettingsContent extends StatelessWidget {
                                 syncWithCloudDefaultValue: newValue!),
                           );
                     },
-                    title: const Text('Sync with cloud by default'),
-                    subtitle: const Text(
-                      'When you create a new note for example '
-                      'should we sync sync it with cloud by default??',
+                    title: Text(context.loc.syncWithCloudByDefault),
+                    subtitle: Text(
+                      context.loc.syncWithCloudByDefaultDesc,
                     ),
                     secondary: const Icon(Icons.cloud),
                   ),
@@ -54,7 +56,7 @@ class SettingsContent extends StatelessWidget {
                   final settingsBloc = context.read<SettingsCubit>();
                   settingsBloc.clear();
                 },
-                child: const Text('Clear'),
+                child: Text(context.loc.clear),
               ),
             ],
           );
@@ -76,11 +78,11 @@ class _GeneralSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsSection(
-      title: 'General',
+      title: context.loc.general,
       tiles: [
         ListTile(
-          title: const Text('App languague'),
-          subtitle: const Text('Which languague you want to use in the app?'),
+          title: Text(context.loc.appLanguage),
+          subtitle: Text(context.loc.appLanguageDesc),
           leading: const Icon(Icons.language),
           trailing: DropdownButton<AppLanguague>(
             value: state.appLanguague,
@@ -101,10 +103,9 @@ class _GeneralSection extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: const Text('Theme mode'),
-          subtitle: const Text(
-            'Choose whatever if you want dark mode '
-            'or light mode or system',
+          title: Text(context.loc.themeMode),
+          subtitle: Text(
+            context.loc.themeModeDesc,
           ),
           leading: Icon(context.isDark ? Icons.nightlight : Icons.sunny),
           onTap: () => showModalBottomSheet(
@@ -144,10 +145,9 @@ class _GeneralSection extends StatelessWidget {
                       ),
                     );
               },
-              title: const Text('Dark mode during day'),
-              subtitle: const Text(
-                'Since you choose theme mode auto then you can set '
-                'if you want dark theme during day or the opposite.',
+              title: Text(context.loc.darkModeDuringDay),
+              subtitle: Text(
+                context.loc.darkModeDuringDayDesc,
               ),
               secondary: const Icon(Icons.dark_mode),
             ),
@@ -155,9 +155,9 @@ class _GeneralSection extends StatelessWidget {
         ),
         if (context.isMaterial)
           CheckboxListTile.adaptive(
-            title: const Text('Use classic material'),
-            subtitle: const Text(
-              'Do you want to use the good old material 2 theme design?',
+            title: Text(context.loc.useClassicMaterial),
+            subtitle: Text(
+              context.loc.useClassicMaterialDesc,
             ),
             secondary: const Icon(Icons.android),
             value: state.themeSystem == AppThemeSystem.material2,
@@ -173,9 +173,8 @@ class _GeneralSection extends StatelessWidget {
             },
           ),
         ListTile(
-          title: const Text('Layout Mode'),
-          subtitle: const Text(
-              'Which layout you prefer? by default we will choose default value based on your device'),
+          title: Text(context.loc.layoutMode),
+          subtitle: Text(context.loc.layoutModeDesc),
           leading: const Icon(Icons.view_module),
           trailing: DropdownButton<AppLayoutMode>(
             value: state.layoutMode,
@@ -183,7 +182,7 @@ class _GeneralSection extends StatelessWidget {
                 .map(
                   (e) => DropdownMenuItem<AppLayoutMode>(
                     value: e,
-                    child: Text(e.name),
+                    child: Text(e.getLabel(context)),
                   ),
                 )
                 .toList(),

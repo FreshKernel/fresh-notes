@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../data/notes/universal/s_universal_notes.dart';
+import '../../../logic/note/cubit/note_cubit.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
+import '../../../logic/settings/cubit/settings_data.dart';
+import '../../l10n/extensions/localizations.dart';
+import '../../utils/dialog/w_app_dialog.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../save_note/s_save_note.dart';
 import 'models/m_navigation_item.dart';
 import 'w_logout.dart';
-import 'widgets/notes_list/w_notes_list.dart';
-import 'widgets/w_about.dart';
+import 'widgets/w_notes_list.dart';
+import 'widgets/w_trash_list.dart';
 import 'widgets/w_drawer.dart';
 import 'widgets/w_settings.dart';
 
@@ -23,79 +26,78 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final _navigationItems = [
-    NavigationItem(
-      title: 'Manage notes',
-      label: 'Notes',
-      icon: const Icon(Icons.notes),
-      body: const NotesListPage(),
-      actionsBuilder: (context) {
-        return [
-          IconButton(
-            tooltip: 'Toggle using grid item',
-            onPressed: () {
-              final settingsBloc = context.read<SettingsCubit>();
-              settingsBloc.updateSettings(
-                settingsBloc.state.copyWith(
-                  useNoteGridTile: !settingsBloc.state.useNoteGridTile,
-                ),
-              );
-            },
-            icon: const Icon(Icons.list),
-          ),
-          const LogoutIconButton(),
-          IconButton(
-            tooltip: 'Delete All',
-            onPressed: () async {
-              final deletedAllConfirmed = await showYesCancelDialog(
-                context: context,
-                options: const YesOrCancelDialogOptions(
-                  title: 'Delete all notes',
-                  message:
-                      'Are you sure you want to delete all of your notes??',
-                  yesLabel: 'Delete all',
-                ),
-              );
-              if (!deletedAllConfirmed) {
-                return;
-              }
-              UniversalNotesService.getInstance().deleteAll();
-            },
-            icon: const Icon(Icons.delete_forever),
-          ),
-        ];
-      },
-      actionButtonBuilder: (context) {
-        return FloatingActionButton(
-          onPressed: () {
-            context.push(
-              SaveNoteScreen.routeName,
-              extra: const SaveNoteScreenArgs(),
+  List<NavigationItem> get _navigationItems => [
+        NavigationItem(
+          title: context.loc.yourNotes,
+          label: context.loc.notes,
+          icon: const Icon(Icons.notes),
+          body: const NotesListPage(),
+          actionsBuilder: (context) {
+            return [
+              IconButton(
+                tooltip: context.loc.toggleGridItem,
+                onPressed: () {
+                  final settingsBloc = context.read<SettingsCubit>();
+                  settingsBloc.updateSettings(
+                    settingsBloc.state.copyWith(
+                      useNoteGridTile: !settingsBloc.state.useNoteGridTile,
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.list),
+              ),
+              const LogoutIconButton(),
+              IconButton(
+                tooltip: context.loc.deleteAll,
+                onPressed: () async {
+                  final noteBloc = context.read<NoteCubit>();
+                  final deletedAllConfirmed = await showYesCancelDialog(
+                    context: context,
+                    options: YesOrCancelDialogOptions(
+                      title: context.loc.moveAllNotesToTrash,
+                      message: context.loc.moveAllNotesToTrashDesc,
+                      yesLabel: context.loc.deleteAll,
+                    ),
+                  );
+                  if (!deletedAllConfirmed) {
+                    return;
+                  }
+                  noteBloc.deleteAll();
+                },
+                icon: const Icon(Icons.delete_forever),
+              ),
+            ];
+          },
+          actionButtonBuilder: (context) {
+            return FloatingActionButton(
+              onPressed: () => context.push(
+                SaveNoteScreen.routeName,
+                extra: const SaveNoteScreenArgs(),
+              ),
+              child: const Icon(Icons.add),
             );
           },
-          child: const Icon(Icons.add),
-        );
-      },
-    ),
-    const NavigationItem(
-      title: 'Change the settings',
-      label: 'Settings',
-      icon: Icon(Icons.settings),
-      body: SettingsPage(),
-    ),
-    const NavigationItem(
-      title: 'About the App',
-      label: 'About',
-      icon: Icon(Icons.info),
-      body: AboutPage(),
-    ),
-  ];
+        ),
+        NavigationItem(
+          title: context.loc.trash,
+          label: context.loc.trash,
+          icon: const Icon(Icons.delete),
+          body: const TrashPage(),
+        ),
+        NavigationItem(
+          title: context.loc.changeSettings,
+          label: context.loc.settings,
+          icon: const Icon(Icons.settings),
+          body: const SettingsPage(),
+        ),
+      ];
 
   var _selectedNavItemIndex = 0;
   final _pageController = PageController();
 
   bool _isNavRailBar(Size size, AppLayoutMode layoutMode) {
     switch (layoutMode) {
+      // TODO: Update this
       case AppLayoutMode.auto:
         return size.width >= 480;
       case AppLayoutMode.small:
@@ -106,8 +108,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _onDestinationSelected(int newPageIndex) {
-    _pageController.jumpToPage(newPageIndex);
+    if (_pageController.hasClients) {
+      _pageController.jumpToPage(newPageIndex);
+    }
     setState(() => _selectedNavItemIndex = newPageIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -133,13 +143,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Builder(
               builder: (context) {
                 final size = MediaQuery.sizeOf(context);
-                final widget = PageView(
-                  controller: _pageController,
-                  children: _navigationItems.map((e) => e.body).toList(),
-                  onPageChanged: (newPageIndex) {
-                    setState(() => _selectedNavItemIndex = newPageIndex);
-                  },
-                );
+                // final widget = PageView(
+                //   controller: _pageController,
+                //   children: _navigationItems.map((e) => e.body).toList(),
+                //   onPageChanged: (newPageIndex) {
+                //     setState(() => _selectedNavItemIndex = newPageIndex);
+                //   },
+                // );
+                final widget = _navigationItems[_selectedNavItemIndex].body;
                 if (!_isNavRailBar(size, state.layoutMode)) {
                   return widget;
                 }
@@ -153,8 +164,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           icon: e.icon,
                           label: Text(e.label),
                           selectedIcon: e.selectedIcon,
-                          // tooltip: e.tooltip,
-                          // key: ValueKey(e.label),
                         );
                       }).toList(),
                       selectedIndex: _selectedNavItemIndex,
@@ -192,11 +201,5 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
   }
 }

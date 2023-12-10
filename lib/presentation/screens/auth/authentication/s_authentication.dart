@@ -8,6 +8,7 @@ import '../../../../logic/connection/cubit/connection_cubit.dart';
 import '../../../../logic/core/api/api_exceptions.dart';
 import '../../../components/auth/w_email_field.dart';
 import '../../../components/auth/w_password_field.dart';
+import '../../../l10n/extensions/localizations.dart';
 import '../../../utils/dialog/w_app_dialog.dart';
 import '../../../utils/dialog/w_error_dialog.dart';
 import '../../../utils/extensions/build_context_ext.dart';
@@ -119,7 +120,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Login Screen'),
+          title: Text(context.loc.loginScreen),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),
@@ -163,18 +164,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () => _onSubmit(isSignUp: false),
-                                  child: const Text('Login'),
+                                  child: Text(context.loc.login),
                                 ),
                                 const SizedBox(width: 8),
                                 OutlinedButton(
                                   onPressed: _onSubmit,
-                                  child: const Text('Register'),
+                                  child: Text(context.loc.register),
                                 ),
                               ],
                             ),
                             TextButton(
                               onPressed: _forgotPassword,
-                              child: const Text('Forgot password?'),
+                              child: Text(context.loc.forgotPassword),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -190,7 +191,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     setState(() => _isLoading = false);
                                   },
                                   icon: const Icon(Icons.facebook),
-                                  label: const Text('Google'),
+                                  label: Text(context.loc.google),
                                 ),
                                 const SizedBox(width: 8),
                                 OutlinedButton.icon(
@@ -204,7 +205,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     setState(() => _isLoading = false);
                                   },
                                   icon: const Icon(Icons.apple),
-                                  label: const Text('Apple'),
+                                  label: Text(context.loc.apple),
                                 ),
                               ],
                             )

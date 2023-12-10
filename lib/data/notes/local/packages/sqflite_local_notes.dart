@@ -33,7 +33,8 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
     }
     try {
       final documentsDirectory = await getApplicationDocumentsDirectory();
-      final databasePath = path.join(documentsDirectory.path, databaseName);
+      final databasePath =
+          path.join(documentsDirectory.path, 'databases', databaseName);
       final database = await openDatabase(
         databasePath,
         onCreate: (db, version) async {
@@ -116,7 +117,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
     try {
       final deletedCount = await _database!.delete(
         LocalNote.sqlTableName,
-        where: '${LocalNoteProperties.id} = ?',
+        where: '${LocalNoteProperties.noteId} = ?',
         whereArgs: [id],
       );
       if (deletedCount != 1) {
@@ -187,7 +188,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
     try {
       final results = await _database!.query(
         LocalNote.sqlTableName,
-        where: '${LocalNoteProperties.id} = ?',
+        where: '${LocalNoteProperties.noteId} = ?',
         whereArgs: [id],
         limit: 1,
       );
@@ -211,7 +212,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       final idList = ids.join(', ');
       final results = await _database!.query(
         LocalNote.sqlTableName,
-        where: '${LocalNoteProperties.id} IN ($idList)',
+        where: '${LocalNoteProperties.noteId} IN ($idList)',
         orderBy: '${LocalNoteProperties.updatedAt} DESC',
       );
       if (results.isEmpty) {
@@ -225,20 +226,19 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<LocalNote> updateOne(
-      UpdateNoteInput updateInput, String currentId) async {
+  Future<LocalNote> updateOne(UpdateNoteInput updateInput) async {
     try {
-      final currentNote = await getOneById(currentId);
+      final currentNote = await getOneById(updateInput.noteId);
       if (currentNote == null) {
         throw DatabaseOperationCannotFindResourcesException(
-          'There is no note with this id $currentId to update',
+          'There is no note with this id ${updateInput.noteId} to update',
         );
       }
       final updatedItemsCount = await _database!.update(
         LocalNote.sqlTableName,
         LocalNote.toSqliteMapFromUpdateInput(input: updateInput).toMap(),
-        where: '${LocalNoteProperties.id} = ?',
-        whereArgs: [currentId],
+        where: '${LocalNoteProperties.noteId} = ?',
+        whereArgs: [updateInput.noteId],
       );
       if (updatedItemsCount == -1) {
         throw DatabaseOperationException(
@@ -252,7 +252,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
           'To update a note, the user must be authenticated');
       return LocalNote.fromUpdateNoteInput(
         input: updateInput,
-        id: currentId,
+        id: updateInput.noteId,
         createdAt: currentNote.createdAt,
         updatedAt: DateTime.now(),
         userId: currnetUser.id,
@@ -273,7 +273,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       final idList = ids.join(', ');
       final deletedCount = await _database!.delete(
         LocalNote.sqlTableName,
-        where: '${LocalNoteProperties.id} IN ($idList)',
+        where: '${LocalNoteProperties.noteId} IN ($idList)',
       );
       if (deletedCount == 0) {
         throw DatabaseOperationException(

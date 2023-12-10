@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../logic/utils/extensions/string.dart';
-import '../../../../save_note/s_save_note.dart';
+import '../../../../logic/utils/extensions/string.dart';
+import '../../save_note/s_save_note.dart';
 import 'note_tile_options.dart';
 
 class NoteGridTile extends StatelessWidget {
@@ -61,8 +61,9 @@ class NoteGridTile extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () =>
-                          options.sharedOnDeletePressed(context: context),
+                      onPressed: () => options.sharedOnMoveToTrashPressed(
+                        context: context,
+                      ),
                       icon: Icon(
                         Icons.delete,
                         color: materialTheme.colorScheme.error,

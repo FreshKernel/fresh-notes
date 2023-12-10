@@ -9,12 +9,13 @@ part 'm_note.freezed.dart';
 @freezed
 class UniversalNote with _$UniversalNote {
   const factory UniversalNote({
-    required String id,
+    required String id, // Note id only
     required String userId,
     required String title,
     required String text,
     required SyncOptions syncOptions,
     required bool isPrivate,
+    required bool isTrash,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _UniversalNote;
@@ -23,7 +24,7 @@ class UniversalNote with _$UniversalNote {
     LocalNote note,
   ) =>
       UniversalNote(
-        id: note.id,
+        id: note.noteId,
         userId: note.userId,
         title: note.title,
         text: note.text,
@@ -32,6 +33,7 @@ class UniversalNote with _$UniversalNote {
           existingCloudNoteId: note.cloudId,
         ),
         isPrivate: note.isPrivate,
+        isTrash: note.isTrash,
         createdAt: note.createdAt,
         updatedAt: note.updatedAt,
       );
@@ -40,7 +42,7 @@ class UniversalNote with _$UniversalNote {
     CloudNote note,
   ) =>
       UniversalNote(
-        id: note.id,
+        id: note.noteId,
         userId: note.userId,
         title: note.title,
         text: note.text,
@@ -49,6 +51,7 @@ class UniversalNote with _$UniversalNote {
           existingCloudNoteId: note.id,
         ),
         isPrivate: note.isPrivate,
+        isTrash: note.isTrash,
         createdAt: note.createdAt,
         updatedAt: note.updatedAt,
       );
@@ -59,27 +62,16 @@ class UniversalNoteProperties {
 
   static const notes = 'notes';
 
-  static const id = 'id';
+  /// Id for the item in database, example in Firebase and Sqlite
+  static const entryId = 'id';
+  static const noteId = 'noteId';
   static const userId = 'userId';
   static const title = 'title';
   static const text = 'text';
   static const cloudId = 'cloudId';
   static const isSyncWithCloud = 'isSyncWithCloud';
   static const isPrivate = 'isPrivate';
+  static const isTrash = 'isTrash';
   static const createdAt = 'createdAt';
   static const updatedAt = 'updatedAt';
 }
-
-// enum NotePropertiesEnum {
-//   id,
-//   userId,
-//   title,
-//   text,
-//   cloudId,
-//   isPrivate,
-//   createdAt,
-//   updatedAt;
-
-//   @override
-//   String toString() => name;
-// }

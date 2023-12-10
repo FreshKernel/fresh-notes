@@ -11,6 +11,7 @@ import 'package:flutter/material.dart'
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../logic/settings/cubit/settings_cubit.dart';
+import '../../../logic/settings/cubit/settings_data.dart';
 import '../dialog/w_app_dialog.dart';
 import '../message_presenter.dart';
 

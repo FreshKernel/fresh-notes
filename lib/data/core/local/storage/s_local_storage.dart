@@ -17,7 +17,8 @@ class LocalStorageService extends LocalStorageRepository {
   Future<List<File>> copyMultipleFile(
       {required List<File> files,
       required List<String> names,
-      required Directory directory}) {
+      required Directory directory}) async {
+    await directory.create(recursive: true);
     return _provider.copyMultipleFile(
       files: files,
       names: names,

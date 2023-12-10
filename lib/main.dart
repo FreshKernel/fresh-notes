@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
 import 'package:flutter/widgets.dart' show WidgetsFlutterBinding, runApp;
+import 'package:logging/logging.dart';
 
 import 'core/flavor_config.dart';
 import 'core/my_app.dart';
@@ -6,6 +8,15 @@ import 'core/start/app_startup.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (!kReleaseMode) {
+    Logger.root.level = Level.ALL; // defaults to Level.INFO
+    Logger.root.onRecord.listen((record) {
+      if (kDebugMode) {
+        print('${record.time}: ${record.message}');
+      }
+    });
+  }
 
   FlavorConfig.setup(
     name: const String.fromEnvironment('FLAVOR', defaultValue: ''),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../logic/settings/cubit/settings_cubit.dart';
+import '../../../logic/settings/cubit/settings_data.dart';
+import '../../l10n/extensions/localizations.dart';
 
 class SelectThemeModeDialog extends StatefulWidget {
   const SelectThemeModeDialog({required this.themeMode, super.key});
@@ -16,28 +18,28 @@ class _SelectThemeModeDialogState extends State<SelectThemeModeDialog> {
   Widget getItemByThemeMode(AppThemeMode themeMode) {
     final (label, desc, iconData) = switch (themeMode) {
       AppThemeMode.dark => (
-          'Dark',
-          'If you want to always use dark mode.',
+          context.loc.dark,
+          context.loc.themeModeDarkDesc,
           Icons.nightlight_round,
         ),
       AppThemeMode.light => (
-          'Light',
-          'If you want to always use light mode.',
+          context.loc.light,
+          context.loc.themeModeLightDesc,
           Icons.wb_sunny,
         ),
       AppThemeMode.system => (
-          'System',
-          'If you want to let the system decide that for you.',
+          context.loc.system,
+          context.loc.themeModeSystemDesc,
           Icons.settings,
         ),
       AppThemeMode.auto => (
-          'Auto',
-          'If you want us to decide this for you based on your local time.',
+          context.loc.auto,
+          context.loc.themeModeAutoDesc,
           Icons.autorenew,
         ),
       AppThemeMode.random => (
-          'Random',
-          'If you want a random theme mode each time the app starts',
+          context.loc.random,
+          context.loc.themeModeRandomDesc,
           Icons.shuffle,
         ),
     };

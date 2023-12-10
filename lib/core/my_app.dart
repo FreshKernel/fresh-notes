@@ -8,6 +8,7 @@ import '../logic/auth/cubit/auth_cubit.dart';
 import '../logic/connection/cubit/connection_cubit.dart';
 import '../logic/note/cubit/note_cubit.dart';
 import '../logic/settings/cubit/settings_cubit.dart';
+import '../logic/settings/cubit/settings_data.dart';
 import '../presentation/l10n/extensions/localizations.dart';
 import '../presentation/screens/app_router.dart';
 import '../presentation/screens/auth/authentication/s_authentication.dart';
@@ -16,7 +17,7 @@ import '../presentation/screens/auth/verify_account/s_verify_account.dart';
 import '../presentation/screens/dashboard/s_dashboard.dart';
 import '../presentation/screens/onboarding/s_onboarding.dart';
 import '../presentation/theme/color_schemes.g.dart';
-import '../presentation/utils/extensions/app_theme_mode_ext.dart';
+import '../presentation/utils/extensions/settings_data_exts.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<SettingsCubit, SettingsState>(
         buildWhen: SettingsCubit.buildWhen,
         builder: (context, state) {
-          AppLogger.log('Building the MyApp() widget...');
+          AppLogger.log('Building the App widget...');
           return MaterialApp.router(
             routerConfig: AppRouter.router,
             debugShowCheckedModeBanner: false,
@@ -63,11 +64,6 @@ class MyApp extends StatelessWidget {
             themeMode: state.themeMode.toMaterialThemeMode(
               darkDuringDayInAutoMode: state.darkDuringDayInAutoMode,
             ),
-            // home: state.openOnBoardingScreen
-            //     ? const OnBoardingScreen()
-            //     : const MyHomeWidget(),
-            // onGenerateRoute: AppRouter.onGenerateRoute,
-            // onUnknownRoute: AppRouter.onUnknownRoute,
             builder: (context, child) {
               if (state.openOnBoardingScreen) {
                 return const OnBoardingScreen();
@@ -76,9 +72,7 @@ class MyApp extends StatelessWidget {
             },
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            onGenerateTitle: (context) {
-              return context.loc.appName;
-            },
+            onGenerateTitle: (context) => context.loc.appName,
           );
         },
       ),

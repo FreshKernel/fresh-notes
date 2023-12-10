@@ -1,20 +1,5 @@
-import 'dart:async';
-import 'dart:convert' show jsonEncode;
-import 'dart:io' show File;
-
-import 'package:path_provider/path_provider.dart';
-
-import '../../../core/log/logger.dart';
 import '../../../core/services/s_app.dart';
 import '../../../data/notes/cloud/s_cloud_notes.dart';
-import '../../../logic/auth/auth_service.dart';
-import '../../../logic/utils/io/file_utilities.dart';
-import '../../../logic/utils/list.dart';
-import '../../../logic/utils/others/differnce_result.dart';
-import '../../../logic/utils/others/packages/quill.dart';
-import '../../core/cloud/database/sync_options.dart';
-import '../../core/cloud/storage/s_cloud_storage.dart';
-import '../../core/local/storage/s_local_storage.dart';
 import '../../core/shared/database_operations_exceptions.dart';
 import '../local/s_local_notes.dart';
 import 'models/m_note.dart';
@@ -26,396 +11,110 @@ class UniversalNotesService extends AppService {
 
   static final _instance = UniversalNotesService._();
 
-  final List<UniversalNote> _notes = [];
-  final StreamController<List<UniversalNote>> _notesStreamController =
-      StreamController<List<UniversalNote>>.broadcast(
-    onListen: () {
-      AppLogger.log(
-        'onListen: A new user is now listenting for the notes stream controller.',
-      );
-    },
-    onCancel: () {
-      AppLogger.log(
-        'onCancel: The user has cancel the listenting for the notes stream controller.',
-      );
-    },
-  );
+  final localNotesService = LocalNotesService.getInstance();
+  final cloudNotesService = CloudNotesService.getInstance();
 
-  StreamController<List<UniversalNote>> get notesStreamController =>
-      _notesStreamController;
-  final _localNotesService = LocalNotesService.getInstance();
-  final _cloudNotesService = CloudNotesService.getInstance();
-  final _cloudStorageService = CloudStorageService.getInstance();
-  final _localStorageService = LocalStorageService.getInstance();
-
-  Future<void> startAndFetchAllNotes() async {
+  /// Start and fetch the notes
+  ///
+  /// could throw [Exception]
+  Future<void> startService() async {
     try {
-      _notes.clear();
       await initialize();
-      await getAll();
-    } catch (e, stacktrace) {
-      _notesStreamController.addError(e, stacktrace);
+    } catch (e) {
+      rethrow;
     }
   }
 
   @override
   Future<void> initialize() async {
-    await _localNotesService.initialize();
+    await localNotesService.initialize();
   }
 
   @override
-  bool get isInitialized => _localNotesService.isInitialized;
+  bool get isInitialized => localNotesService.isInitialized;
 
   @override
   Future<void> deInitialize() async {
-    await _localNotesService.deInitialize();
+    await localNotesService.deInitialize();
   }
 
-  Future<void> createOne(CreateNoteInput createInput) async {
-    final syncOptions = createInput.syncOptions;
-    String? cloudId;
-    if (syncOptions.isSyncWithCloud) {
-      final cloudNote = await _cloudNotesService.createOne(createInput);
-      cloudId = cloudNote.id;
+  Future<UniversalNote> createOne(CreateNoteInput createInput) async {
+    final localNote = await localNotesService.createOne(createInput);
+    if (createInput.syncOptions.isSyncWithCloud) {
+      await cloudNotesService.createOne(createInput);
     }
-    final note = UniversalNote.fromLocalNote(
-      await _localNotesService.createOne(
-        createInput.copyWith(
-          syncOptions: SyncOptions.getSyncOptions(
-            isSyncWithCloud: syncOptions.isSyncWithCloud,
-            existingCloudNoteId: cloudId,
-          ),
-        ),
-      ),
-    );
-    _notes.insert(0, note);
-    _notesStreamController.add(_notes);
-  }
-
-  Future<void> insertOrReplaceOne({
-    required String title,
-    required QuillDocument document,
-    required SyncOptions syncOptions,
-    required bool isPrivate,
-    String? currentId,
-  }) async {
-    AppLogger.log('Sync option = ${syncOptions.toString()}');
-
-    final isEditing = currentId != null;
-
-    final user = AuthService.getInstance().requireCurrentUser(
-      'In order to create or update note, the user must be authenticated.',
-    );
-
-    final cachedImagesFiles =
-        (await QuillImageUtilities.getCachedImagePathsFromDocument(
-      document,
-    ))
-            .map(File.new)
-            .toList();
-
-    final newFileNames = FileUtilities.generateNewFileNames(
-      cachedImagesFiles,
-      newFileStartsWith: 'note-image-',
-    ).toList();
-
-    if (syncOptions.isSyncWithCloud) {
-      await _cloudStorageService.uploadMultipleFiles(
-        newFileNames.asMap().entries.map((e) {
-          final file = cachedImagesFiles[e.key];
-          return ('/notes/${e.value}', file);
-        }),
-      );
-    }
-
-    final newLocalFilePaths = await _localStorageService.copyMultipleFile(
-      files: cachedImagesFiles.toList(),
-      names: newFileNames.toList(),
-      directory: await getApplicationDocumentsDirectory(),
-    );
-    var documentInJson = jsonEncode(document.toDelta().toJson());
-    AppLogger.log(
-      'The document data before replace the cached images with saved one: $documentInJson',
-    );
-    // Then we want to replace all the cached images with the saved ones
-    cachedImagesFiles.toList().asMap().forEach((index, cachedImageFile) {
-      final savedImage = newLocalFilePaths[index];
-      documentInJson = documentInJson.replaceAll(
-        cachedImageFile.path,
-        savedImage.path,
-      );
-    });
-    AppLogger.log(
-      'The document data after replacing the cached images with saved one: $documentInJson',
-    );
-    if (isEditing) {
-      await updateOne(
-        UpdateNoteInput(
-          title: title,
-          text: documentInJson,
-          syncOptions: syncOptions,
-          isPrivate: isPrivate,
-        ),
-        currentId,
-      );
-      return;
-    }
-    await createOne(
-      CreateNoteInput(
-        title: title,
-        text: documentInJson,
-        userId: user.id,
-        syncOptions: syncOptions,
-        isPrivate: isPrivate,
-      ),
-    );
+    return UniversalNote.fromLocalNote(localNote);
   }
 
   Future<void> deleteAll() async {
-    await _localNotesService.deleteAll();
-    for (final note in _notes) {
-      await QuillImageUtilities.deleteAllLocalImagesOfDocument(
-        toQuillDocumentFromJson(note.text),
-      );
-    }
-    _notes.clear();
-    _notesStreamController.add(_notes);
-    await _cloudNotesService.deleteAll();
+    await localNotesService.deleteAll();
+    await cloudNotesService.deleteAll();
   }
 
   Future<void> deleteByIds(List<String> ids) async {
-    await _localNotesService.deleteByIds(ids);
-    _notes.removeWhere((note) => ids.contains(note.id));
-    _notesStreamController.add(_notes);
-    await _cloudNotesService.deleteByIds(ids);
+    final notes = await localNotesService.getAllByIds(ids);
+    final cloudNotesIds =
+        notes.where((e) => e.isSyncWithCloud).map((e) => e.noteId).toList();
+    await localNotesService.deleteByIds(ids);
+    await cloudNotesService.deleteByIds(cloudNotesIds);
   }
 
   Future<void> deleteOneById(String id) async {
-    await _localNotesService.deleteOneById(id);
-
-    final noteIndex = _notes.indexWhere((note) => note.id == id);
-    if (noteIndex != -1) {
-      final note = _notes[noteIndex];
-      await QuillImageUtilities.deleteAllLocalImagesOfDocument(
-        toQuillDocumentFromJson(note.text),
-      );
-      _notes.removeAt(noteIndex);
-      _notesStreamController.add(_notes);
-
-      final cloudNoteId = note.syncOptions.getCloudNoteId();
-      if (cloudNoteId != null) {
-        await _cloudNotesService.deleteOneById(cloudNoteId);
-      }
+    final localNote = await localNotesService.getOneById(id);
+    if (localNote == null) {
       return;
     }
-    throw DatabaseOperationException(
-      "We couldn't find the index for the currentId of the deleting note in NoteDataService, the id is $id",
-    );
+    await localNotesService.deleteOneById(id);
+    if (localNote.isSyncWithCloud) {
+      await cloudNotesService.deleteOneById(id);
+    }
   }
 
-  Future<void> getAll({int limit = -1, int page = 1}) async {
-    final allNotes = <UniversalNote>[];
-
-    final localNotes = await _localNotesService.getAll(
-      limit: limit,
-      page: page,
-    );
-    allNotes.addAll(localNotes.map(UniversalNote.fromLocalNote));
-
-    // final cloudNotes = await _cloudNotesService.getAll(
-    //   limit: limit,
-    //   page: page,
-    // );
-    // allNotes.addAll(cloudNotes.map(UniversalNote.fromCloudNote));
-
-    _notes.addAll(allNotes);
-    _notesStreamController.add(_notes);
+  Future<List<UniversalNote>> getAll({int limit = -1, int page = 1}) async {
+    final localNotes =
+        (await localNotesService.getAll(limit: limit, page: page))
+            .map(UniversalNote.fromLocalNote);
+    final cloudNotes =
+        (await cloudNotesService.getAll(limit: limit, page: page))
+            .map(UniversalNote.fromCloudNote);
+    final notes = <UniversalNote>{...localNotes, ...cloudNotes};
+    return notes.toList();
   }
 
-  Future<void> updateOne(UpdateNoteInput input, String currentId) async {
-    final localNote = await _localNotesService.getOneById(currentId);
+  Future<UniversalNote> updateOne(
+    UpdateNoteInput input,
+  ) async {
+    final localNote = await localNotesService.getOneById(input.noteId);
     if (localNote == null) {
       throw const DatabaseOperationCannotFindResourcesException(
-        'The note must exists in order to update it.',
+        'The note must exist in order to update it.',
       );
     }
-    final isCurrentLocalNoteExistsInTheCloud = localNote.cloudId != null;
 
-    var shouldUpdateInTheCloud = false;
-    var newUpdateInput = input;
-
-    final isSyncWithCloudNewInput = input.syncOptions.isSyncWithCloud;
-    final isExistInCloudUpdateInput = input.syncOptions.isExistsInCloud;
-
-    AppLogger.log('Is sync with cloud = $isSyncWithCloudNewInput');
-    AppLogger.log(
-      'Is existing in cloud = $isCurrentLocalNoteExistsInTheCloud',
-    );
-
-    // Create the note if it does not exists and user want to sync
-    if (isSyncWithCloudNewInput && !isExistInCloudUpdateInput) {
-      AppLogger.log(
-        'We will sync this note to the cloud by creating it and update the local note',
-      );
-      final userId = AuthService.getInstance()
-          .requireCurrentUser(
-            'In order to sync the note to the cloud by creating it and update it locally\n'
-            'user must be authenticated.',
-          )
-          .id;
-      final cloudNote = await _cloudNotesService.createOne(
-        CreateNoteInput.fromUpdateInput(input, userId: userId),
-      );
-      shouldUpdateInTheCloud = true;
-      newUpdateInput = newUpdateInput.copyWith(
-        syncOptions: SyncOptions.syncWithExistingCloudId(cloudNote.id),
-      );
-    } else if (!isSyncWithCloudNewInput && isCurrentLocalNoteExistsInTheCloud) {
-      // If the current note is exists and the user want to unsync the note.
-      AppLogger.log(
-        'Delete the existing note in the cloud since the user no longer want to sync it',
-      );
-      AuthService.getInstance().requireCurrentUser(
-        'In order to sync the note to the cloud by deleting it and update it locally\n'
-        'user must be authenticated.',
-      );
-      final cloudNoteId = localNote.cloudId;
-      if (cloudNoteId == null) {
-        throw ArgumentError(
-          'The isCurrentLocalNoteExistsInTheCloud is true while the cloudNoteId is null which does not make any sense\n'
-          'Please check isCurrentLocalNoteExistsInTheCloud in the update function',
-        );
-      }
-      await _cloudNotesService.deleteOneById(cloudNoteId);
-      shouldUpdateInTheCloud = true;
+    final newLocalNote = await localNotesService.updateOne(input);
+    if (localNote.isSyncWithCloud) {
+      await cloudNotesService.updateOne(input);
     }
-
-    final newNote = UniversalNote.fromLocalNote(
-      await _localNotesService.updateOne(newUpdateInput, currentId),
-    );
-
-    final index =
-        _notes.indexWhere((currentNote) => currentNote.id == currentId);
-    if (index != -1) {
-      final note = _notes[index];
-      _notes.removeAt(index);
-      _notes.insert(0, newNote);
-      _notesStreamController.add(_notes);
-
-      if (shouldUpdateInTheCloud) {
-        return;
-      }
-
-      final cloudNoteId = note.syncOptions.getCloudNoteId();
-      if (cloudNoteId != null) {
-        await _cloudNotesService.updateOne(
-          input,
-          cloudNoteId,
-        );
-      }
-      return;
-    }
-    AppLogger.error(
-      "We couldn't find the index for the currentId of the updating note in NoteDataService, the id is = $currentId",
-    );
+    return UniversalNote.fromLocalNote(newLocalNote);
   }
 
   Future<void> syncLocalNotesFromCloud() async {
-    if (!isInitialized) {
-      await initialize();
-    }
-    // Get the cloud notes with no pagination
-    final cloudNotes = await _cloudNotesService.getAll(limit: -1, page: 1);
-    if (cloudNotes.isEmpty) {
-      return;
-    }
-
-    // Map them to inputs
-    final createInputs = cloudNotes.map((cloudNote) {
-      return CreateNoteInput.fromCloudNote(cloudNote);
-    }).toList();
-
-    // Delete all the local notes that have synced to insert the new ones
-    final localNotes = await _localNotesService.getAll(limit: -1, page: 1);
-    final localNotesIdsWithSync = localNotes
-        .where((note) => note.isSyncWithCloud)
-        .map((note) => note.id)
-        .whereType<String>()
-        .where((noteId) => noteId.trim().isNotEmpty)
-        .toList();
-
-    if (localNotesIdsWithSync.isNotEmpty) {
-      await _localNotesService.deleteByIds(localNotesIdsWithSync);
-    }
-
-    await _localNotesService.createMultiples(createInputs);
+    // TODO: Implemenets
   }
 
-  Future<ListDifferenceResult<UniversalNote>>
-      getCloudToLocalNotesDifferences() async {
-    final cloudNotes = (await _cloudNotesService.getAll(limit: -1, page: 1))
-        .map(UniversalNote.fromCloudNote)
-        .toList();
-    final localNotes = (await _localNotesService.getAll(limit: -1, page: 1))
-        .map(UniversalNote.fromLocalNote)
-        .toList();
-
-    AppLogger.log('The cloud notes length is = ${cloudNotes.length}');
-    AppLogger.log('The local notes length is = ${localNotes.length}');
-
-    final cloudNotesTextx = cloudNotes.map((e) => e.text);
-    final localNotesTextx = localNotes.map((e) => e.text);
-
-    final commonsNotesByText = findCommons(
-      cloudNotesTextx,
-      localNotesTextx,
-    ).toList();
-    final commons = commonsNotesByText.asMap().entries.map(
-          (e) => cloudNotes[e.key].copyWith(text: e.value),
-        );
-    AppLogger.log('Commons Length = ${commons.length} is $commons');
-
-    final notesDifferencesByText = findDifferences(
-      cloudNotesTextx,
-      cloudNotesTextx,
-      commonItems: commonsNotesByText,
-    ).toList();
-    final differences = notesDifferencesByText.asMap().entries.map((e) {
-      return cloudNotes[e.key].copyWith(text: e.value);
-    });
-    AppLogger.log('Differences Length = ${differences.length} is $differences');
-
-    final missingNotesByText = findMissings(
-      cloudNotesTextx,
-      localNotesTextx,
-      // differences: notesDifferencesByText,
-    ).toList();
-    final missings = missingNotesByText.asMap().entries.map(
-          (e) => cloudNotes[e.key].copyWith(text: e.value),
-        );
-    AppLogger.log('Missings Length = ${missings.length} is $missings');
-
-    return ListDifferenceResult(
-      differences: differences.toList(),
-      commons: commons.toList(),
-      missingsItems: missings.toList(),
-    );
+  Future<List<UniversalNote>> getAllByIds(List<String> ids) async {
+    throw UnimplementedError();
   }
 
-  // @override
-  // Future<List<Note>> getAllByIds(List<String> ids) async {
-  //   final localNotes = (await _localNotesService.getAllByIds(ids))
-  //       .map((e) => Note.fromLocalNote(e))
-  //       .toList();
-  //   _notes.addAll(localNotes);
-  //   _notesStreamController.add(_notes);
-  //   return localNotes;
-  // }
-
-  // @override
-  // Future<Note?> getOneById(String id) async {
-  //   final note = await _localNotesService.getOneById(id);
-  //   if (note == null) return null;
-  //   return Note.fromLocalNote(note);
-  // }
+  Future<UniversalNote?> getOneById(String id) async {
+    final localNote = await localNotesService.getOneById(id);
+    if (localNote != null) {
+      return UniversalNote.fromLocalNote(localNote);
+    }
+    final cloudNote = await cloudNotesService.getOneById(id);
+    if (cloudNote != null) {
+      return UniversalNote.fromCloudNote(cloudNote);
+    }
+    return null;
+  }
 }

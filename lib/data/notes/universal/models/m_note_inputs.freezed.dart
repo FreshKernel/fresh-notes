@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CreateNoteInput {
+  String get noteId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   SyncOptions get syncOptions => throw _privateConstructorUsedError;
@@ -34,7 +35,8 @@ abstract class $CreateNoteInputCopyWith<$Res> {
       _$CreateNoteInputCopyWithImpl<$Res, CreateNoteInput>;
   @useResult
   $Res call(
-      {String title,
+      {String noteId,
+      String title,
       String text,
       SyncOptions syncOptions,
       bool isPrivate,
@@ -54,6 +56,7 @@ class _$CreateNoteInputCopyWithImpl<$Res, $Val extends CreateNoteInput>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? noteId = null,
     Object? title = null,
     Object? text = null,
     Object? syncOptions = null,
@@ -61,6 +64,10 @@ class _$CreateNoteInputCopyWithImpl<$Res, $Val extends CreateNoteInput>
     Object? userId = null,
   }) {
     return _then(_value.copyWith(
+      noteId: null == noteId
+          ? _value.noteId
+          : noteId // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -94,7 +101,8 @@ abstract class _$$CreateNoteInputImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String title,
+      {String noteId,
+      String title,
       String text,
       SyncOptions syncOptions,
       bool isPrivate,
@@ -112,6 +120,7 @@ class __$$CreateNoteInputImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? noteId = null,
     Object? title = null,
     Object? text = null,
     Object? syncOptions = null,
@@ -119,6 +128,10 @@ class __$$CreateNoteInputImplCopyWithImpl<$Res>
     Object? userId = null,
   }) {
     return _then(_$CreateNoteInputImpl(
+      noteId: null == noteId
+          ? _value.noteId
+          : noteId // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -147,12 +160,15 @@ class __$$CreateNoteInputImplCopyWithImpl<$Res>
 
 class _$CreateNoteInputImpl implements _CreateNoteInput {
   const _$CreateNoteInputImpl(
-      {required this.title,
+      {required this.noteId,
+      required this.title,
       required this.text,
       required this.syncOptions,
       required this.isPrivate,
       required this.userId});
 
+  @override
+  final String noteId;
   @override
   final String title;
   @override
@@ -166,7 +182,7 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
 
   @override
   String toString() {
-    return 'CreateNoteInput(title: $title, text: $text, syncOptions: $syncOptions, isPrivate: $isPrivate, userId: $userId)';
+    return 'CreateNoteInput(noteId: $noteId, title: $title, text: $text, syncOptions: $syncOptions, isPrivate: $isPrivate, userId: $userId)';
   }
 
   @override
@@ -174,6 +190,7 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CreateNoteInputImpl &&
+            (identical(other.noteId, noteId) || other.noteId == noteId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.syncOptions, syncOptions) ||
@@ -184,8 +201,8 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, title, text, syncOptions, isPrivate, userId);
+  int get hashCode => Object.hash(
+      runtimeType, noteId, title, text, syncOptions, isPrivate, userId);
 
   @JsonKey(ignore: true)
   @override
@@ -197,12 +214,15 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
 
 abstract class _CreateNoteInput implements CreateNoteInput {
   const factory _CreateNoteInput(
-      {required final String title,
+      {required final String noteId,
+      required final String title,
       required final String text,
       required final SyncOptions syncOptions,
       required final bool isPrivate,
       required final String userId}) = _$CreateNoteInputImpl;
 
+  @override
+  String get noteId;
   @override
   String get title;
   @override
@@ -221,10 +241,12 @@ abstract class _CreateNoteInput implements CreateNoteInput {
 
 /// @nodoc
 mixin _$UpdateNoteInput {
+  String get noteId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   SyncOptions get syncOptions => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
+  bool get isTrash => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UpdateNoteInputCopyWith<UpdateNoteInput> get copyWith =>
@@ -238,7 +260,12 @@ abstract class $UpdateNoteInputCopyWith<$Res> {
       _$UpdateNoteInputCopyWithImpl<$Res, UpdateNoteInput>;
   @useResult
   $Res call(
-      {String text, String title, SyncOptions syncOptions, bool isPrivate});
+      {String noteId,
+      String text,
+      String title,
+      SyncOptions syncOptions,
+      bool isPrivate,
+      bool isTrash});
 }
 
 /// @nodoc
@@ -254,12 +281,18 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? noteId = null,
     Object? text = null,
     Object? title = null,
     Object? syncOptions = null,
     Object? isPrivate = null,
+    Object? isTrash = null,
   }) {
     return _then(_value.copyWith(
+      noteId: null == noteId
+          ? _value.noteId
+          : noteId // ignore: cast_nullable_to_non_nullable
+              as String,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -275,6 +308,10 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
       isPrivate: null == isPrivate
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTrash: null == isTrash
+          ? _value.isTrash
+          : isTrash // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -289,7 +326,12 @@ abstract class _$$UpdateNoteInputImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String text, String title, SyncOptions syncOptions, bool isPrivate});
+      {String noteId,
+      String text,
+      String title,
+      SyncOptions syncOptions,
+      bool isPrivate,
+      bool isTrash});
 }
 
 /// @nodoc
@@ -303,12 +345,18 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? noteId = null,
     Object? text = null,
     Object? title = null,
     Object? syncOptions = null,
     Object? isPrivate = null,
+    Object? isTrash = null,
   }) {
     return _then(_$UpdateNoteInputImpl(
+      noteId: null == noteId
+          ? _value.noteId
+          : noteId // ignore: cast_nullable_to_non_nullable
+              as String,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -325,6 +373,10 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isTrash: null == isTrash
+          ? _value.isTrash
+          : isTrash // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -333,11 +385,15 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
 
 class _$UpdateNoteInputImpl implements _UpdateNoteInput {
   const _$UpdateNoteInputImpl(
-      {required this.text,
+      {required this.noteId,
+      required this.text,
       required this.title,
       required this.syncOptions,
-      required this.isPrivate});
+      required this.isPrivate,
+      required this.isTrash});
 
+  @override
+  final String noteId;
   @override
   final String text;
   @override
@@ -346,10 +402,12 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
   final SyncOptions syncOptions;
   @override
   final bool isPrivate;
+  @override
+  final bool isTrash;
 
   @override
   String toString() {
-    return 'UpdateNoteInput(text: $text, title: $title, syncOptions: $syncOptions, isPrivate: $isPrivate)';
+    return 'UpdateNoteInput(noteId: $noteId, text: $text, title: $title, syncOptions: $syncOptions, isPrivate: $isPrivate, isTrash: $isTrash)';
   }
 
   @override
@@ -357,17 +415,19 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UpdateNoteInputImpl &&
+            (identical(other.noteId, noteId) || other.noteId == noteId) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.syncOptions, syncOptions) ||
                 other.syncOptions == syncOptions) &&
             (identical(other.isPrivate, isPrivate) ||
-                other.isPrivate == isPrivate));
+                other.isPrivate == isPrivate) &&
+            (identical(other.isTrash, isTrash) || other.isTrash == isTrash));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, text, title, syncOptions, isPrivate);
+  int get hashCode => Object.hash(
+      runtimeType, noteId, text, title, syncOptions, isPrivate, isTrash);
 
   @JsonKey(ignore: true)
   @override
@@ -379,11 +439,15 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
 
 abstract class _UpdateNoteInput implements UpdateNoteInput {
   const factory _UpdateNoteInput(
-      {required final String text,
+      {required final String noteId,
+      required final String text,
       required final String title,
       required final SyncOptions syncOptions,
-      required final bool isPrivate}) = _$UpdateNoteInputImpl;
+      required final bool isPrivate,
+      required final bool isTrash}) = _$UpdateNoteInputImpl;
 
+  @override
+  String get noteId;
   @override
   String get text;
   @override
@@ -392,6 +456,8 @@ abstract class _UpdateNoteInput implements UpdateNoteInput {
   SyncOptions get syncOptions;
   @override
   bool get isPrivate;
+  @override
+  bool get isTrash;
   @override
   @JsonKey(ignore: true)
   _$$UpdateNoteInputImplCopyWith<_$UpdateNoteInputImpl> get copyWith =>

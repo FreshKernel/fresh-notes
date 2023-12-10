@@ -50,8 +50,11 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   @override
   Future<void> deleteByIds(List<String> ids) async {
     final batch = FirebaseFirestore.instance.batch();
-    for (final documentId in ids) {
-      batch.delete(_notesCollection.doc(documentId));
+    final notes = await _notesCollection
+        .where(CloudNoteProperties.noteId, isEqualTo: ids)
+        .get();
+    for (final query in notes.docs) {
+      batch.delete(query.reference);
     }
     await batch.commit();
   }
@@ -81,7 +84,16 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
 
   @override
   Future<void> deleteOneById(String id) async {
-    await _notesCollection.doc(id).delete();
+    final userId = AuthService.getInstance().requireCurrentUser().id;
+    final result = await _notesCollection
+        .where(CloudNoteProperties.userId, isEqualTo: userId)
+        .where(CloudNoteProperties.noteId, isEqualTo: id)
+        .limit(1)
+        .get();
+    final first = result.docs.firstOrNull;
+    if (first != null) {
+      await first.reference.delete();
+    }
   }
 
   @override
@@ -127,7 +139,7 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
           isEqualTo: userId,
         )
         .where(
-          FieldPath.documentId,
+          CloudNoteProperties.noteId,
           whereIn: ids,
         )
         .get();
@@ -143,10 +155,19 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
 
   @override
   Future<CloudNote?> getOneById(String id) async {
-    final result = await _notesCollection.doc(id).get();
+    final userId = AuthService.getInstance().requireCurrentUser().id;
+    final result = (await _notesCollection
+            .where(CloudNoteProperties.userId, isEqualTo: userId)
+            .where(CloudNoteProperties.noteId, isEqualTo: id)
+            .limit(1)
+            .get())
+        .docs
+        .firstOrNull;
+    if (result == null) {
+      return null;
+    }
     if (!result.exists) return null;
     final data = result.data();
-    if (data == null) return null;
     return CloudNote.fromFirebase(
       data,
       id: result.id,
@@ -156,19 +177,28 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   @override
   Future<CloudNote> updateOne(
     UpdateNoteInput updateInput,
-    String currentId,
   ) async {
-    final currentNote = await getOneById(currentId);
+    final currentNote = await getOneById(updateInput.noteId);
     if (currentNote == null) {
       throw const DatabaseOperationCannotFindResourcesException(
         'We could not find this note to update it.',
       );
     }
-    await _notesCollection.doc(currentId).update(
-          CloudNote.toFirebaseMapFromUpdateInput(
-            input: updateInput,
-          ),
-        );
+    final userId = AuthService.getInstance().requireCurrentUser().id;
+    final note = (await _notesCollection
+            .where(CloudNoteProperties.userId, isEqualTo: userId)
+            .where(CloudNoteProperties.noteId, isEqualTo: updateInput.noteId)
+            .limit(1)
+            .get())
+        .docs
+        .firstOrNull;
+    if (note != null) {
+      await note.reference.update(
+        CloudNote.toFirebaseMapFromUpdateInput(
+          input: updateInput,
+        ),
+      );
+    }
     return CloudNote.fromUpdateNoteInput(
       input: updateInput,
       cloudId: currentNote.id,

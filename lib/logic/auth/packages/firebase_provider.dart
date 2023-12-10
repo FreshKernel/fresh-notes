@@ -20,7 +20,7 @@ class FirebaseAuthProviderImpl extends AuthRepository {
   bool get isAuthenticated => FirebaseAuth.instance.currentUser != null;
 
   @override
-  AuthUser requireCurrentUser(String? errorMessage) {
+  AuthUser requireCurrentUser([String? errorMessage]) {
     if (!isAuthenticated) {
       throw AuthException(
         errorMessage ??

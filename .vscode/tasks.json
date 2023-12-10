@@ -9,6 +9,15 @@
           "kind": "build",
           "isDefault": true
         }
+      },
+      {
+        "label": "Deploy Firestore rules",
+        "type": "shell",
+        "command": "(cd firebase && firebase deploy --only firestore:rules)",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
       }
     ]
   }

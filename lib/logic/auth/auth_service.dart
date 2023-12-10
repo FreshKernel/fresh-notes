@@ -66,7 +66,7 @@ class AuthService extends AuthRepository {
   bool get isAuthenticated => _authProvider.isAuthenticated;
 
   @override
-  AuthUser requireCurrentUser(String? errorMessage) =>
+  AuthUser requireCurrentUser([String? errorMessage]) =>
       _authProvider.requireCurrentUser(errorMessage);
 
   @override

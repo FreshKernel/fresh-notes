@@ -58,30 +58,16 @@ sealed class SyncOptions {
 
   bool get isExistsInCloud {
     final option = this;
-    if (option is SyncWithExistingCloudIdOption) {
-      return true;
-    }
-    if (option is SyncWithCloudOption) {
-      AppLogger.log(
-        'Note does not exists yet but we want to create it so it will by synced.',
-      );
-      return false;
-    }
-
-    /// It does not exists and probabtly the it has no sync
-    return false;
+    return switch (option) {
+      /// It does not exists and probably the it has no sync
+      NoSyncOption() => false,
+      SyncWithCloudOption() => false,
+      SyncWithExistingCloudIdOption() => true,
+    };
   }
 
   String? getCloudNoteId() {
     return cloudId;
-    // final syncOptions = this;
-    // if (syncOptions is SyncWithExistingCloudIdOption) {
-    //   return syncOptions.cloudId;
-    // }
-    // if (syncOptions.isSyncWithCloud) {
-    //   return '';
-    // }
-    // return null;
   }
 }
 

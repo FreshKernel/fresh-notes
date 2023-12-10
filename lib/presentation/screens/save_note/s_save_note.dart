@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
 
 import '../../../core/log/logger.dart';
 import '../../../data/core/cloud/database/sync_options.dart';
+import '../../../data/core/shared/data_utils.dart';
 import '../../../data/notes/universal/models/m_note.dart';
+import '../../../data/notes/universal/models/m_note_inputs.dart';
 import '../../../data/notes/universal/s_universal_notes.dart';
+import '../../../logic/auth/auth_service.dart';
 import '../../../logic/native/share/s_app_share.dart';
+import '../../../logic/note/cubit/note_cubit.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../components/note/editor/w_editor.dart';
 import '../../components/note/toolbar/w_note_toolbar.dart';
@@ -137,16 +142,35 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     if (isDocumentContentEmpty) {
       return;
     }
-    final notesDataService = UniversalNotesService.getInstance();
     try {
       setState(() => _isLoading = true);
-      await notesDataService.insertOrReplaceOne(
-        title: _titleController.text,
-        document: document,
-        currentId: _note?.id,
-        syncOptions: _getSyncOptions,
-        isPrivate: _isPrivate,
-      );
+      final noteBloc = context.read<NoteCubit>();
+      final userId = AuthService.getInstance().requireCurrentUser(null).id;
+      if (_isEditing) {
+        await noteBloc.updateNote(
+          UpdateNoteInput(
+            noteId: _note?.id ??
+                (throw ArgumentError(
+                    'The id is required for updating the note')),
+            text: jsonEncode(document.toDelta().toJson()),
+            title: _titleController.text,
+            syncOptions: _getSyncOptions,
+            isPrivate: _isPrivate,
+            isTrash: false,
+          ),
+        );
+      } else {
+        await noteBloc.createNote(
+          CreateNoteInput(
+            noteId: generateRandomItemId(),
+            title: _titleController.text,
+            text: jsonEncode(document.toDelta().toJson()),
+            syncOptions: _getSyncOptions,
+            isPrivate: _isPrivate,
+            userId: userId,
+          ),
+        );
+      }
     } finally {
       setState(() => _isLoading = false);
     }
@@ -170,7 +194,14 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
             IconButton(
               onPressed: () {
                 AppLogger.log(
-                    jsonEncode(_controller.document.toDelta().toJson()));
+                  jsonEncode(
+                    _controller.document.toDelta().toJson(),
+                  ),
+                );
+                AppLogger.error(
+                  QuillImageUtilities(document: _controller.document)
+                      .getImagesPathsFromDocument(onlyLocalImages: false),
+                );
               },
               icon: const Icon(Icons.print),
             ),
@@ -233,9 +264,9 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
                       QuillToolbar.simple(
                         configurations: QuillSimpleToolbarConfigurations(
                           controller: _controller,
-                          fontFamilyValues: const {
-                            'Ubuntu': 'Ubuntu',
-                          },
+                          // fontFamilyValues: const {
+                          //   'Ubuntu': 'Ubuntu',
+                          // },
                           showAlignmentButtons: true,
                           embedButtons: [
                             ...FlutterQuillEmbeds.toolbarButtons(
@@ -267,7 +298,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
                           extraConfigurations: {
                             QuillSharedExtensionsConfigurations.key:
                                 QuillSharedExtensionsConfigurations(
-                              assetsPrefix: 'wqasd', // Defaults to assets
+                              assetsPrefix: 'assets', // Defaults to assets
                             ),
                           },
                         ),
