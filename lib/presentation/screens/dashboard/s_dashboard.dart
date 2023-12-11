@@ -61,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   if (!deletedAllConfirmed) {
                     return;
                   }
-                  noteBloc.deleteAll();
+                  noteBloc.moveAllNotesToTrash();
                 },
                 icon: const Icon(Icons.delete_forever),
               ),

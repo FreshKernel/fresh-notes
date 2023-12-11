@@ -99,7 +99,25 @@ class UniversalNotesService extends AppService {
   }
 
   Future<void> syncLocalNotesFromCloud() async {
-    // TODO: Implemenets
+    final cloudNotes = await cloudNotesService.getAll(limit: -1, page: 1);
+    if (cloudNotes.isEmpty) {
+      return;
+    }
+
+    final localNotes = await localNotesService.getAll(limit: -1, page: 1);
+    final localNotesIdsWithSync = localNotes
+        .where((element) => element.isSyncWithCloud)
+        .map((e) => e.noteId)
+        .where((element) => element.trim().isNotEmpty)
+        .toList();
+
+    if (localNotesIdsWithSync.isNotEmpty) {
+      await localNotesService.deleteByIds(localNotesIdsWithSync);
+    }
+
+    final createInputs = cloudNotes.map(CreateNoteInput.fromCloudNote).toList();
+
+    await localNotesService.createMultiples(createInputs);
   }
 
   Future<List<UniversalNote>> getAllByIds(List<String> ids) async {

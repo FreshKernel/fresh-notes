@@ -4,6 +4,7 @@ part of 'settings_cubit.dart';
 class SettingsState with _$SettingsState {
   const factory SettingsState({
     @Default(true) bool confirmDeleteNote,
+    @Default(false) bool confirmMoveNoteToTrash,
     @Default(true) bool useNoteGridTile,
     @Default(false) bool syncWithCloudDefaultValue,
     @Default(true) bool onlySaveDataWhenClick,

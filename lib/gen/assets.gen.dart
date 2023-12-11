@@ -38,8 +38,59 @@ class $AssetsJsonGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
+  $AssetsLottieErrorGen get error => const $AssetsLottieErrorGen();
+  $AssetsLottieNoDataGen get noData => const $AssetsLottieNoDataGen();
+  $AssetsLottieNoInternetGen get noInternet =>
+      const $AssetsLottieNoInternetGen();
   $AssetsLottieOnboardingGen get onboarding =>
       const $AssetsLottieOnboardingGen();
+  $AssetsLottiePageNotFoundGen get pageNotFound =>
+      const $AssetsLottiePageNotFoundGen();
+}
+
+class $AssetsLottieErrorGen {
+  const $AssetsLottieErrorGen();
+
+  /// File path: assets/lottie/error/error_1.json
+  LottieGenImage get error1 =>
+      const LottieGenImage('assets/lottie/error/error_1.json');
+
+  /// List of all assets
+  List<LottieGenImage> get values => [error1];
+}
+
+class $AssetsLottieNoDataGen {
+  const $AssetsLottieNoDataGen();
+
+  /// File path: assets/lottie/no_data/no_data_1.json
+  LottieGenImage get noData1 =>
+      const LottieGenImage('assets/lottie/no_data/no_data_1.json');
+
+  /// File path: assets/lottie/no_data/no_data_2.json
+  LottieGenImage get noData2 =>
+      const LottieGenImage('assets/lottie/no_data/no_data_2.json');
+
+  /// List of all assets
+  List<LottieGenImage> get values => [noData1, noData2];
+}
+
+class $AssetsLottieNoInternetGen {
+  const $AssetsLottieNoInternetGen();
+
+  /// File path: assets/lottie/no_internet/no_internet_1.json
+  LottieGenImage get noInternet1 =>
+      const LottieGenImage('assets/lottie/no_internet/no_internet_1.json');
+
+  /// File path: assets/lottie/no_internet/no_internet_2.json
+  LottieGenImage get noInternet2 =>
+      const LottieGenImage('assets/lottie/no_internet/no_internet_2.json');
+
+  /// File path: assets/lottie/no_internet/no_internet_3.json
+  LottieGenImage get noInternet3 =>
+      const LottieGenImage('assets/lottie/no_internet/no_internet_3.json');
+
+  /// List of all assets
+  List<LottieGenImage> get values => [noInternet1, noInternet2, noInternet3];
 }
 
 class $AssetsLottieOnboardingGen {
@@ -88,6 +139,21 @@ class $AssetsLottieOnboardingGen {
         typeNotes,
         underDevelopment
       ];
+}
+
+class $AssetsLottiePageNotFoundGen {
+  const $AssetsLottiePageNotFoundGen();
+
+  /// File path: assets/lottie/page_not_found/page_not_found_1.json
+  LottieGenImage get pageNotFound1 => const LottieGenImage(
+      'assets/lottie/page_not_found/page_not_found_1.json');
+
+  /// File path: assets/lottie/page_not_found/page_not_found_2.json
+  LottieGenImage get pageNotFound2 => const LottieGenImage(
+      'assets/lottie/page_not_found/page_not_found_2.json');
+
+  /// List of all assets
+  List<LottieGenImage> get values => [pageNotFound1, pageNotFound2];
 }
 
 class Assets {

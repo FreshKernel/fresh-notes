@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../note_list/w_note_list.dart';
+import '../../note_list/w_notes_list.dart';
 
 class NotesListPage extends StatefulWidget {
   const NotesListPage({super.key});

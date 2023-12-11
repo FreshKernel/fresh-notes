@@ -1,1 +1,7 @@
-{}
+{
+  "ar": [
+    "richTextEditingOboardingDesc",
+    "freeAndOpenSourceOboardingDesc",
+    "saveLocallyAndToTheCloudOnBoardingDesc"
+  ]
+}

@@ -9,6 +9,7 @@ part of 'settings_cubit.dart';
 _$SettingsStateImpl _$$SettingsStateImplFromJson(Map<String, dynamic> json) =>
     _$SettingsStateImpl(
       confirmDeleteNote: json['confirmDeleteNote'] as bool? ?? true,
+      confirmMoveNoteToTrash: json['confirmMoveNoteToTrash'] as bool? ?? false,
       useNoteGridTile: json['useNoteGridTile'] as bool? ?? true,
       syncWithCloudDefaultValue:
           json['syncWithCloudDefaultValue'] as bool? ?? false,
@@ -32,6 +33,7 @@ _$SettingsStateImpl _$$SettingsStateImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$SettingsStateImplToJson(_$SettingsStateImpl instance) =>
     <String, dynamic>{
       'confirmDeleteNote': instance.confirmDeleteNote,
+      'confirmMoveNoteToTrash': instance.confirmMoveNoteToTrash,
       'useNoteGridTile': instance.useNoteGridTile,
       'syncWithCloudDefaultValue': instance.syncWithCloudDefaultValue,
       'onlySaveDataWhenClick': instance.onlySaveDataWhenClick,

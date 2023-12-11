@@ -10,7 +10,7 @@ import 'package:fresh_base_package/fresh_base_package.dart'
 
 import '../../../../core/log/logger.dart';
 import '../../../utils/dialog/w_yes_cancel_dialog.dart';
-import '../../others/app_scroll_bar.dart';
+import '../../base/w_app_scroll_bar.dart';
 
 class NoteEditor extends StatefulWidget {
   const NoteEditor({
@@ -93,7 +93,7 @@ class _NoteEditorState extends State<NoteEditor> {
           configurations: widget.configurations.copyWith(
             readOnly: widget.isReadOnly,
             placeholder: 'Start your notes',
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             minHeight: 1000,
             embedBuilders: _embedBuilder,
             autoFocus: false,

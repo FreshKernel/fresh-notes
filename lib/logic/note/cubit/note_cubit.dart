@@ -206,7 +206,12 @@ class NoteCubit extends Cubit<NoteState> {
     emit(NoteState(notes: notes));
   }
 
-  Future<void> moveAllNotesToTrash() async {}
+  Future<void> moveAllNotesToTrash() async {
+    final allNotes = await universalNotesService.getAll();
+    for (final note in allNotes) {
+      await moveNoteToTrash(note.id);
+    }
+  }
 
   @override
   Future<void> close() async {

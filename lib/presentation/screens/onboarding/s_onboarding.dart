@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
+import '../../l10n/extensions/localizations.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -51,26 +52,31 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   Lottie.asset(
                     imagePath,
                     fit: BoxFit.cover,
-                    width: 400,
+                    width: 325,
                   ),
-                  const SizedBox(height: 64),
+                  const SizedBox(height: 16),
                   Text(
                     title,
                     textAlign: TextAlign.center,
                     textScaler: TextScaler.noScaling,
-                    style: TextStyle(
-                      color: Colors.teal.shade700,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Colors.teal.shade700,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(height: 24),
                   Container(
-                    padding: const EdgeInsets.symmetric(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                    ),
                     child: Text(
                       subtitle,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.black),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(color: Colors.black),
                     ),
                   )
                 ],
@@ -86,44 +92,38 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       _buildPage(
         color: Colors.blue.shade100,
         imagePath: Assets.lottie.onboarding.typeNotes.path,
-        title: 'Rich Text Editing',
-        subtitle:
-            'Format your notes with ease using a variety of text styling options for a personalized touch.',
+        title: context.loc.richTextEditing,
+        subtitle: context.loc.richTextEditingOboardingDesc,
       ),
       _buildPage(
         color: Colors.green.shade100,
         imagePath: Assets.lottie.onboarding.openSource.path,
-        title: 'Free and Open Source',
-        subtitle:
-            'Enjoy the app without any cost and benefit from transparency in development.',
+        title: context.loc.freeAndOpenSource,
+        subtitle: context.loc.freeAndOpenSourceOboardingDesc,
       ),
       _buildPage(
         color: Colors.orange.shade100,
         imagePath: Assets.lottie.onboarding.crossPlatform.path,
-        title: 'Cross-Platform',
-        subtitle:
-            'Access your notes seamlessly on various devices and platforms.',
+        title: context.loc.crossPlatform,
+        subtitle: context.loc.crossPlatformOnBoardingDesc,
       ),
       _buildPage(
         color: Colors.greenAccent.shade100,
         imagePath: Assets.lottie.onboarding.cloud.path,
-        title: 'Save to Local and Cloud',
-        subtitle:
-            'Securely store your notes locally on your device or sync them to the cloud for easy access.',
+        title: context.loc.saveLocallyAndToTheCloud,
+        subtitle: context.loc.saveLocallyAndToTheCloudOnBoardingDesc,
       ),
       _buildPage(
         color: Colors.teal.shade100,
         imagePath: Assets.lottie.onboarding.privacyProtection.path,
-        title: 'Privacy Protection',
-        subtitle:
-            'Your notes are kept private and secure with advanced encryption and privacy features.',
+        title: context.loc.privacyProtection,
+        subtitle: context.loc.privacyProtectionOnBoardingDesc,
       ),
       _buildPage(
         color: Colors.red.shade100,
         imagePath: Assets.lottie.onboarding.customizableSettings.path,
-        title: 'Customizable Settings',
-        subtitle:
-            'Tailor the app to your preferences with a range of customizable settings and options.',
+        title: context.loc.customizableSettings,
+        subtitle: context.loc.customizableSettingsOnBoardingDesc,
       ),
       // _buildPage(
       //   color: Colors.yellow.shade100,
@@ -134,9 +134,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       _buildPage(
         color: Colors.green.shade100,
         imagePath: Assets.lottie.onboarding.underDevelopment.path,
-        title: 'Under active development',
-        subtitle:
-            'Thank you for using the app! Please note that we are still working to improve your experience.',
+        title: context.loc.underActiveDevelopment,
+        subtitle: context.loc.underActiveDevelopmentOnBoardingDesc,
       ),
     ];
 

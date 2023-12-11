@@ -11,8 +11,6 @@ enum InsertImageSource {
   link,
 }
 
-typedef NoteToolbarOnNavigateCallback = Function(Widget widget);
-
 class NoteToolbar extends StatefulWidget {
   const NoteToolbar({
     required QuillController controller,
@@ -26,45 +24,12 @@ class NoteToolbar extends StatefulWidget {
 }
 
 class _NoteToolbarState extends State<NoteToolbar> {
-  Widget? _currentWidget;
-
-  void _onTapOutside() {
-    if (_currentWidget == null) {
-      return;
-    }
-    setState(() {
-      _currentWidget = null;
-    });
-  }
-
-  void _onNavigate(Widget widget) {
-    if (_currentWidget != null) {
-      setState(() {
-        _currentWidget = null;
-      });
-      return;
-    }
-    setState(() {
-      _currentWidget = widget;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return QuillToolbar(
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Visibility(
-              visible: _currentWidget != null,
-              maintainState: true,
-              maintainAnimation: true,
-              child: AnimatedOpacity(
-                opacity: _currentWidget != null ? 1 : 0,
-                duration: const Duration(milliseconds: 150),
-                child: _currentWidget,
-              ),
-            ),
             Container(
               width: double.infinity,
               constraints: const BoxConstraints(
@@ -84,8 +49,6 @@ class _NoteToolbarState extends State<NoteToolbar> {
                   ),
                   NoteToolbarTextOptionsButton(
                     controller: widget._controller,
-                    onClose: _onTapOutside,
-                    onNavigate: _onNavigate,
                   )
                 ],
               ),

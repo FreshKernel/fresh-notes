@@ -21,6 +21,7 @@ SettingsState _$SettingsStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SettingsState {
   bool get confirmDeleteNote => throw _privateConstructorUsedError;
+  bool get confirmMoveNoteToTrash => throw _privateConstructorUsedError;
   bool get useNoteGridTile => throw _privateConstructorUsedError;
   bool get syncWithCloudDefaultValue => throw _privateConstructorUsedError;
   bool get onlySaveDataWhenClick => throw _privateConstructorUsedError;
@@ -45,6 +46,7 @@ abstract class $SettingsStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool confirmDeleteNote,
+      bool confirmMoveNoteToTrash,
       bool useNoteGridTile,
       bool syncWithCloudDefaultValue,
       bool onlySaveDataWhenClick,
@@ -70,6 +72,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
   @override
   $Res call({
     Object? confirmDeleteNote = null,
+    Object? confirmMoveNoteToTrash = null,
     Object? useNoteGridTile = null,
     Object? syncWithCloudDefaultValue = null,
     Object? onlySaveDataWhenClick = null,
@@ -84,6 +87,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
       confirmDeleteNote: null == confirmDeleteNote
           ? _value.confirmDeleteNote
           : confirmDeleteNote // ignore: cast_nullable_to_non_nullable
+              as bool,
+      confirmMoveNoteToTrash: null == confirmMoveNoteToTrash
+          ? _value.confirmMoveNoteToTrash
+          : confirmMoveNoteToTrash // ignore: cast_nullable_to_non_nullable
               as bool,
       useNoteGridTile: null == useNoteGridTile
           ? _value.useNoteGridTile
@@ -135,6 +142,7 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {bool confirmDeleteNote,
+      bool confirmMoveNoteToTrash,
       bool useNoteGridTile,
       bool syncWithCloudDefaultValue,
       bool onlySaveDataWhenClick,
@@ -158,6 +166,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? confirmDeleteNote = null,
+    Object? confirmMoveNoteToTrash = null,
     Object? useNoteGridTile = null,
     Object? syncWithCloudDefaultValue = null,
     Object? onlySaveDataWhenClick = null,
@@ -172,6 +181,10 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
       confirmDeleteNote: null == confirmDeleteNote
           ? _value.confirmDeleteNote
           : confirmDeleteNote // ignore: cast_nullable_to_non_nullable
+              as bool,
+      confirmMoveNoteToTrash: null == confirmMoveNoteToTrash
+          ? _value.confirmMoveNoteToTrash
+          : confirmMoveNoteToTrash // ignore: cast_nullable_to_non_nullable
               as bool,
       useNoteGridTile: null == useNoteGridTile
           ? _value.useNoteGridTile
@@ -217,6 +230,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
 class _$SettingsStateImpl implements _SettingsState {
   const _$SettingsStateImpl(
       {this.confirmDeleteNote = true,
+      this.confirmMoveNoteToTrash = false,
       this.useNoteGridTile = true,
       this.syncWithCloudDefaultValue = false,
       this.onlySaveDataWhenClick = true,
@@ -233,6 +247,9 @@ class _$SettingsStateImpl implements _SettingsState {
   @override
   @JsonKey()
   final bool confirmDeleteNote;
+  @override
+  @JsonKey()
+  final bool confirmMoveNoteToTrash;
   @override
   @JsonKey()
   final bool useNoteGridTile;
@@ -263,7 +280,7 @@ class _$SettingsStateImpl implements _SettingsState {
 
   @override
   String toString() {
-    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, useNoteGridTile: $useNoteGridTile, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, themeMode: $themeMode, appLanguague: $appLanguague, themeSystem: $themeSystem, layoutMode: $layoutMode, openOnBoardingScreen: $openOnBoardingScreen)';
+    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, confirmMoveNoteToTrash: $confirmMoveNoteToTrash, useNoteGridTile: $useNoteGridTile, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, themeMode: $themeMode, appLanguague: $appLanguague, themeSystem: $themeSystem, layoutMode: $layoutMode, openOnBoardingScreen: $openOnBoardingScreen)';
   }
 
   @override
@@ -273,6 +290,8 @@ class _$SettingsStateImpl implements _SettingsState {
             other is _$SettingsStateImpl &&
             (identical(other.confirmDeleteNote, confirmDeleteNote) ||
                 other.confirmDeleteNote == confirmDeleteNote) &&
+            (identical(other.confirmMoveNoteToTrash, confirmMoveNoteToTrash) ||
+                other.confirmMoveNoteToTrash == confirmMoveNoteToTrash) &&
             (identical(other.useNoteGridTile, useNoteGridTile) ||
                 other.useNoteGridTile == useNoteGridTile) &&
             (identical(other.syncWithCloudDefaultValue,
@@ -299,6 +318,7 @@ class _$SettingsStateImpl implements _SettingsState {
   int get hashCode => Object.hash(
       runtimeType,
       confirmDeleteNote,
+      confirmMoveNoteToTrash,
       useNoteGridTile,
       syncWithCloudDefaultValue,
       onlySaveDataWhenClick,
@@ -326,6 +346,7 @@ class _$SettingsStateImpl implements _SettingsState {
 abstract class _SettingsState implements SettingsState {
   const factory _SettingsState(
       {final bool confirmDeleteNote,
+      final bool confirmMoveNoteToTrash,
       final bool useNoteGridTile,
       final bool syncWithCloudDefaultValue,
       final bool onlySaveDataWhenClick,
@@ -341,6 +362,8 @@ abstract class _SettingsState implements SettingsState {
 
   @override
   bool get confirmDeleteNote;
+  @override
+  bool get confirmMoveNoteToTrash;
   @override
   bool get useNoteGridTile;
   @override

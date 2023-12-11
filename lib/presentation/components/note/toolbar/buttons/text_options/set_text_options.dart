@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
-import '../../../../others/app_scroll_bar.dart';
-import '../../w_note_toolbar.dart';
+import '../../../../base/w_app_scroll_bar.dart';
 
 class NoteToolbarTextOptionsButton extends StatelessWidget {
   const NoteToolbarTextOptionsButton({
     required QuillController controller,
-    required this.onNavigate,
-    required this.onClose,
     super.key,
   }) : _controller = controller;
 
-  // ignore: unused_field
   final QuillController _controller;
-  final NoteToolbarOnNavigateCallback onNavigate;
-  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
-        onNavigate(
-          _TextOptionsWidget(
-            controller: _controller,
-          ),
+        _TextOptionsWidget(
+          controller: _controller,
         );
       },
       tooltip: 'Text options',
@@ -33,18 +25,12 @@ class NoteToolbarTextOptionsButton extends StatelessWidget {
   }
 }
 
-// ignore: unused_element
 class _TextOptionsWidget extends StatelessWidget {
   const _TextOptionsWidget({
     required QuillController controller,
-    // ignore: unused_element
-    super.key,
-    // ignore: unused_element
-    this.onButtonPressed,
   }) : _controller = controller;
 
   final QuillController _controller;
-  final VoidCallback? onButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +52,12 @@ class _TextOptionsWidget extends StatelessWidget {
                         toggledIconData: Icons.format_list_bulleted_outlined,
                         controller: _controller,
                         attribute: Attribute.ul,
-                        afterButtonPressed: onButtonPressed,
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_list_numbered,
                         toggledIconData: Icons.format_list_numbered_outlined,
                         controller: _controller,
                         attribute: Attribute.ol,
-                        afterButtonPressed: onButtonPressed,
                       ),
                     ],
                   ),
@@ -121,28 +105,24 @@ class _TextOptionsWidget extends StatelessWidget {
                         iconData: Icons.format_bold,
                         toggledIconData: Icons.format_bold_outlined,
                         controller: _controller,
-                        afterButtonPressed: onButtonPressed,
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_italic,
                         toggledIconData: Icons.format_italic_outlined,
                         controller: _controller,
                         attribute: Attribute.italic,
-                        afterButtonPressed: onButtonPressed,
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_underline,
                         toggledIconData: Icons.format_underline_outlined,
                         controller: _controller,
                         attribute: Attribute.underline,
-                        afterButtonPressed: onButtonPressed,
                       ),
                       _ToggleStyleButton(
                         iconData: Icons.format_strikethrough,
                         toggledIconData: Icons.format_strikethrough_outlined,
                         controller: _controller,
                         attribute: Attribute.strikeThrough,
-                        afterButtonPressed: onButtonPressed,
                       ),
                     ],
                   ),
@@ -228,16 +208,12 @@ class _ToggleStyleButton extends StatelessWidget {
     required this.toggledIconData,
     required QuillController controller,
     required this.attribute,
-    this.afterButtonPressed,
-    // ignore: unused_element
-    super.key,
   }) : _controller = controller;
 
   final QuillController _controller;
   final Attribute attribute;
   final IconData iconData;
   final IconData toggledIconData;
-  final VoidCallback? afterButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -250,7 +226,6 @@ class _ToggleStyleButton extends StatelessWidget {
         childBuilder: (options, extraOptions) {
           void sharedOnPressed() {
             extraOptions.onPressed?.call();
-            afterButtonPressed?.call(); // of this widget;
           }
 
           if (extraOptions.isToggled) {

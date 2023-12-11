@@ -180,15 +180,6 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          readOnly: _isReadOnly,
-          decoration: const InputDecoration(
-            labelText: 'Title',
-            hintText: 'Enter the title for this note',
-            border: InputBorder.none,
-          ),
-          controller: _titleController,
-        ),
         actions: [
           if (kDebugMode)
             IconButton(
@@ -289,6 +280,18 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
                           ],
                         ),
                       ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        readOnly: _isReadOnly,
+                        decoration: const InputDecoration(
+                          labelText: 'Title',
+                          hintText: 'Enter the title for this note',
+                          border: InputBorder.none,
+                        ),
+                        controller: _titleController,
+                      ),
+                    ),
                     NoteEditor(
                       isReadOnly: _isReadOnly,
                       onRequestingSaveNote: _saveNote,
