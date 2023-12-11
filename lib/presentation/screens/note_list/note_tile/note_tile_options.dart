@@ -31,10 +31,10 @@ class NoteTileOptions {
             ? await showYesCancelDialog(
                 context: context,
                 options: YesOrCancelDialogOptions(
-                  title: note.isTrash
+                  title: !note.isTrash
                       ? context.loc.confirmMoveNoteToTrash
                       : context.loc.confirmDeleteNote,
-                  message: note.isTrash
+                  message: !note.isTrash
                       ? context.loc.confirmMoveNoteToTrashDesc
                       : context.loc.confirmDeleteNoteDesc,
                 ),

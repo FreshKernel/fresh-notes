@@ -18,11 +18,11 @@ class HydratedBlocService extends AppService {
 
   @override
   Future<void> initialize() async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, 'hydrated');
     HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory:
-          kIsWeb ? HydratedStorage.webStorageDirectory : Directory(path),
+      storageDirectory: kIsWeb
+          ? HydratedStorage.webStorageDirectory
+          : Directory(join(
+              (await getApplicationDocumentsDirectory()).path, 'hydrated')),
     );
     _isInitialized = true;
   }

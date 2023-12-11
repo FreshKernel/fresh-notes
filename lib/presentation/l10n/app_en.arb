@@ -71,5 +71,8 @@
     "customizableSettings": "Customizable Settings",
     "customizableSettingsOnBoardingDesc": "Tailor the app to your preferences with a range of customizable settings and options.",
     "underActiveDevelopment": "Under active development",
-    "underActiveDevelopmentOnBoardingDesc": "Thank you for using the app! Please note that we are still working to improve your experience."
+    "underActiveDevelopmentOnBoardingDesc": "Thank you for using the app! Please note that we are still working to improve your experience.",
+    "getStarted": "Get started",
+    "delete": "Delete",
+    "clearTrash": "Clear trash"
   }  

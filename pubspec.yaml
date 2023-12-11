@@ -41,6 +41,7 @@ dependencies:
   google_sign_in: ^6.2.0
   sign_in_with_apple: ^5.0.0
   share_plus: ^7.2.1
+  url_launcher: ^6.2.2
   connectivity_plus: ^5.0.2
   gal: ^2.2.0
   uuid: ^4.2.1
@@ -158,5 +159,6 @@ auto_screenshot:
     ios: https://notes.freshplatform.net/
   screenshot:
     - /
-    - /about
+    - /trash
     - /settings
+    - /ob-boarding

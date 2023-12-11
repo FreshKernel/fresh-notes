@@ -6,6 +6,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../logic/utils/extensions/string.dart';
+import '../../../l10n/extensions/localizations.dart';
 import '../../save_note/s_save_note.dart';
 import 'note_tile_options.dart';
 
@@ -61,6 +62,7 @@ class NoteGridTile extends StatelessWidget {
                       ),
                     ),
                     IconButton(
+                      tooltip: context.loc.delete,
                       onPressed: () => options.sharedOnMoveToTrashPressed(
                         context: context,
                       ),

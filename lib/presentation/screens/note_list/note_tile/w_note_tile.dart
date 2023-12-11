@@ -5,6 +5,7 @@ import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:go_router/go_router.dart';
 
 import '../../../../logic/utils/extensions/string.dart';
+import '../../../l10n/extensions/localizations.dart';
 import '../../save_note/s_save_note.dart';
 import 'note_tile_options.dart';
 
@@ -67,14 +68,14 @@ class NoteTile extends StatelessWidget {
                 onPressed: () =>
                     options.sharedOnMoveToTrashPressed(context: context),
                 icon: const Icon(Icons.delete),
-                label: const Text('Delete'),
+                label: Text(context.loc.delete),
                 style: TextButton.styleFrom(
                   foregroundColor: materialTheme.colorScheme.error,
                 ),
               );
             }
             return IconButton(
-              tooltip: 'Delete',
+              tooltip: context.loc.delete,
               onPressed: () =>
                   options.sharedOnMoveToTrashPressed(context: context),
               icon: const Icon(Icons.delete),

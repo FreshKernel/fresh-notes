@@ -19,7 +19,6 @@ Future<void> main() async {
   }
 
   FlavorConfig.setup(
-    name: const String.fromEnvironment('FLAVOR', defaultValue: ''),
     appStore: const String.fromEnvironment('APP_STORE', defaultValue: ''),
     isShouldCheckForUpdates:
         const bool.fromEnvironment('UPDATE_CHECK', defaultValue: false),

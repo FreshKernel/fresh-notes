@@ -161,7 +161,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               height: 80,
               child: _isLastPageReached
                   ? Semantics(
-                      label: 'Get Started',
+                      label: context.loc.getStarted,
                       child: TextButton(
                         onPressed: () async {
                           final settingsBloc = context.read<SettingsCubit>();
@@ -171,50 +171,52 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           shape: const RoundedRectangleBorder(),
                           minimumSize: const Size(double.infinity, 80),
                         ),
-                        child: const Text('Get Started'),
+                        child: Text(context.loc.getStarted),
                       ),
                     )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Semantics(
-                          label: 'Skip',
+                          label: context.loc.skip,
                           child: TextButton(
-                            child: const Text('Skip'),
+                            child: Text(context.loc.skip),
                             onPressed: () =>
                                 _controller.jumpToPage(pages.length - 1),
                           ),
                         ),
                         Expanded(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: SmoothPageIndicator(
-                              controller: _controller,
-                              count: pages.length,
-                              onDotClicked: (index) =>
-                                  _controller.animateToPage(index,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeIn),
-                              effect: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? const WormEffect(
-                                      dotHeight: 20,
-                                      dotWidth: 20,
-                                    )
-                                  : WormEffect(
-                                      dotColor: Colors.black26,
-                                      dotHeight: 20,
-                                      dotWidth: 20,
-                                      activeDotColor: Colors.teal.shade700,
-                                    ),
+                          child: Center(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: SmoothPageIndicator(
+                                controller: _controller,
+                                count: pages.length,
+                                onDotClicked: (index) =>
+                                    _controller.animateToPage(index,
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        curve: Curves.easeIn),
+                                effect: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? const WormEffect(
+                                        dotHeight: 20,
+                                        dotWidth: 20,
+                                      )
+                                    : WormEffect(
+                                        dotColor: Colors.black26,
+                                        dotHeight: 20,
+                                        dotWidth: 20,
+                                        activeDotColor: Colors.teal.shade700,
+                                      ),
+                              ),
                             ),
                           ),
                         ),
                         Semantics(
-                          label: 'Next',
+                          label: context.loc.next,
                           child: TextButton(
-                            child: const Text('Next'),
+                            child: Text(context.loc.next),
                             onPressed: () => _controller.nextPage(
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
