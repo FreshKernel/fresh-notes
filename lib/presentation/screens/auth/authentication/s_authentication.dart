@@ -8,6 +8,7 @@ import '../../../../logic/connection/cubit/connection_cubit.dart';
 import '../../../../logic/core/api/api_exceptions.dart';
 import '../../../components/auth/w_email_field.dart';
 import '../../../components/auth/w_password_field.dart';
+import '../../../components/others/w_app_logo.dart';
 import '../../../l10n/extensions/localizations.dart';
 import '../../../utils/dialog/w_app_dialog.dart';
 import '../../../utils/dialog/w_error_dialog.dart';
@@ -137,19 +138,37 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const FlutterLogo(size: 200),
+                    const AppLogo(
+                      size: 250,
+                    ),
                     const SizedBox(height: 20),
                     EmailTextField(
                       emailController: _emailController,
                       inputDecoration: const InputDecoration(
                         border: OutlineInputBorder(),
+                        icon: Icon(Icons.email),
                       ),
                     ),
                     const SizedBox(height: 14),
                     PasswordTextField(
                       passwordController: _passwordController,
+                      inputDecoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        icon: Icon(Icons.lock),
+                      ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: _forgotPassword,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(context.loc.forgotPassword),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
                     BlocBuilder<ConnectionCubit, ConnState>(
                       builder: (context, state) {
                         if (state is ConnStateInternetDisconnected) {
@@ -159,24 +178,30 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         }
                         return Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () => _onSubmit(isSignUp: false),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () => _onSubmit(isSignUp: false),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
                                   child: Text(context.loc.login),
                                 ),
-                                const SizedBox(width: 8),
-                                OutlinedButton(
-                                  onPressed: _onSubmit,
-                                  child: Text(context.loc.register),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              width: double.infinity,
+                              child: OutlinedButton(
+                                onPressed: _onSubmit,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(
+                                    context.loc.register,
+                                  ),
                                 ),
-                              ],
+                              ),
                             ),
-                            TextButton(
-                              onPressed: _forgotPassword,
-                              child: Text(context.loc.forgotPassword),
-                            ),
+                            const SizedBox(height: 12),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

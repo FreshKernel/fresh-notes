@@ -1,1 +1,13 @@
-{}
+{
+  "ar": [
+    "account",
+    "yourAccount",
+    "privacyPolicy",
+    "privacyPolicyDesc",
+    "accountData",
+    "accountDataDesc",
+    "socialMedia",
+    "socialMediaDesc",
+    "send"
+  ]
+}

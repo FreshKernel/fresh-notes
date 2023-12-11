@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../components/auth/w_email_field.dart';
+import '../../../l10n/extensions/localizations.dart';
+import '../../../utils/dialog/w_dialog_action.dart';
 
 class ForgotPasswordDialog extends StatefulWidget {
   const ForgotPasswordDialog({required this.initEmail, super.key});
@@ -34,24 +36,26 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
       title: const Text('Forgot password'),
-      content: Form(
-        key: _formKey,
-        autovalidateMode: AutovalidateMode.always,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            EmailTextField(
-              emailController: _emailController,
-            )
-          ],
+      content: Material(
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.always,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              EmailTextField(
+                emailController: _emailController,
+              )
+            ],
+          ),
         ),
       ),
       actions: [
-        TextButton(
+        AppDialogAction(
           onPressed: () => context.pop(null),
           child: const Text('Cancel'),
         ),
-        TextButton(
+        AppDialogAction(
           onPressed: () {
             final isValid = _formKey.currentState?.validate() ?? false;
             if (!isValid) {
@@ -60,7 +64,12 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
             _formKey.currentState?.save();
             context.pop(_emailController.text);
           },
-          child: const Text('Send'),
+          options: const DialogActionOptions(
+            cupertinoDialogActionOptions: CupertinoDialogActionOptions(
+              isDefaultAction: true,
+            ),
+          ),
+          child: Text(context.loc.send),
         ),
       ],
     );

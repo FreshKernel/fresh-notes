@@ -89,6 +89,7 @@ dev_dependencies:
   flutter_gen_runner: ^5.3.2
   flutter_quill_test: ^9.0.1
 
+  yaml: ^3.1.2
   auto_screenshot: ^0.0.2
   icons_launcher: ^2.1.6
 
@@ -128,7 +129,7 @@ flutter_gen:
 
 
 icons_launcher:
-  image_path: "assets/images/app_logo.png"
+  image_path: "doc/assets/app_logo.png"
   platforms:
     android:
       enable: true

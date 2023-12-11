@@ -74,5 +74,14 @@
     "underActiveDevelopmentOnBoardingDesc": "Thank you for using the app! Please note that we are still working to improve your experience.",
     "getStarted": "Get started",
     "delete": "Delete",
-    "clearTrash": "Clear trash"
+    "clearTrash": "Clear trash",
+    "account": "Account",
+    "yourAccount": "Your Account",
+    "privacyPolicy": "Privacy Policy",
+    "privacyPolicyDesc": "Explore our commitment to your privacy",
+    "accountData": "Account Data",
+    "accountDataDesc": "Manage your account info effortlessly.",
+    "socialMedia": "Social Media",
+    "socialMediaDesc": "Stay connected with our social channels.",
+    "send": "Send"
   }  

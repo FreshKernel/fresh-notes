@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
+import '../../../components/auth/w_user_image.dart';
 import '../../settings/s_settings.dart';
 
 class DashboardDrawer extends StatelessWidget {
@@ -37,26 +38,16 @@ class DashboardDrawer extends StatelessWidget {
             BlocBuilder<AuthCubit, AuthState>(
               builder: (context, state) {
                 if (state is! AuthStateAuthenticated) {
-                  throw const AppException('Authentication is required');
+                  return const Text('Authentication is required');
                 }
                 final user = state.user;
                 return UserAccountsDrawerHeader(
                   accountName: Text(user.data.displayName.toString()),
                   accountEmail: Text(user.emailAddress.toString()),
                   onDetailsPressed: () {},
-                  currentAccountPicture: CircleAvatar(
-                    backgroundImage: (user.data.photoUrl != null)
-                        ? CachedNetworkImageProvider(
-                            user.data.photoUrl.toString(),
-                          )
-                        : null,
-                    child: (user.data.photoUrl == null)
-                        ? const Icon(
-                            Icons.person,
-                            size: 30,
-                            semanticLabel: 'Person icon',
-                          )
-                        : null,
+                  currentAccountPicture: UserProfileImage(
+                    user: user,
+                    iconSize: 30,
                   ),
                 );
               },

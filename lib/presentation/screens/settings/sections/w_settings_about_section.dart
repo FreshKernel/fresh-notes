@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../data/constants/urls.dart';
+import '../../../../gen/pubspec.dart' as pubspec;
 import '../../../../logic/settings/cubit/settings_cubit.dart';
+import '../../../components/others/w_app_logo.dart';
 import '../../../l10n/extensions/localizations.dart';
 import '../w_settings_section.dart';
 
@@ -33,19 +35,18 @@ class SettingsAboutSection extends StatelessWidget {
           aboutBoxChildren: [
             const SizedBox(height: 16),
             TextButton(
-              onPressed: () {
-                launchUrl(
-                  Uri.parse(UrlConstants.privacyPolicy),
-                );
-              },
-              child: const Text(
-                'Privacy Policy',
+              onPressed: () => launchUrl(
+                Uri.parse(UrlConstants.privacyPolicy),
+              ),
+              child: Text(
+                context.loc.privacyPolicy,
               ),
             ),
           ],
-          applicationIcon: const FlutterLogo(),
-          applicationLegalese: 'dasdsa',
-          applicationVersion: '3',
+          applicationIcon: const AppCircleLogo(),
+          applicationLegalese: 'MIT',
+          applicationVersion:
+              'v${pubspec.appVersion} (${pubspec.appBuildNumber})',
         ),
       ],
     );

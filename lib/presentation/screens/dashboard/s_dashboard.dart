@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../logic/note/cubit/note_cubit.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../logic/settings/cubit/settings_data.dart';
 import '../../l10n/extensions/localizations.dart';
-import '../../utils/dialog/w_yes_cancel_dialog.dart';
-import '../save_note/s_save_note.dart';
 import 'models/m_navigation_item.dart';
-import 'w_logout.dart';
+import 'widgets/w_account.dart';
 import 'widgets/w_drawer.dart';
 import 'widgets/w_notes_list.dart';
 import 'widgets/w_settings.dart';
@@ -30,69 +26,55 @@ class _DashboardScreenState extends State<DashboardScreen> {
           title: context.loc.yourNotes,
           label: context.loc.notes,
           icon: const Icon(Icons.notes),
-          body: const NotesListPage(),
-          actionsBuilder: (context) {
-            return [
-              IconButton(
-                tooltip: context.loc.toggleGridItem,
-                onPressed: () {
-                  final settingsBloc = context.read<SettingsCubit>();
-                  settingsBloc.updateSettings(
-                    settingsBloc.state.copyWith(
-                      useNoteGridTile: !settingsBloc.state.useNoteGridTile,
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.list),
-              ),
-              const LogoutIconButton(),
-              IconButton(
-                tooltip: context.loc.deleteAll,
-                onPressed: () async {
-                  final noteBloc = context.read<NoteCubit>();
-                  final deletedAllConfirmed = await showYesCancelDialog(
-                    context: context,
-                    options: YesOrCancelDialogOptions(
-                      title: context.loc.moveAllNotesToTrash,
-                      message: context.loc.moveAllNotesToTrashDesc,
-                      yesLabel: context.loc.deleteAll,
-                    ),
-                  );
-                  if (!deletedAllConfirmed) {
-                    return;
-                  }
-                  noteBloc.moveAllNotesToTrash();
-                },
-                icon: const Icon(Icons.delete_forever),
-              ),
-            ];
-          },
-          actionButtonBuilder: (context) {
-            return FloatingActionButton(
-              onPressed: () => context.push(
-                SaveNoteScreen.routeName,
-                extra: const SaveNoteScreenArgs(),
-              ),
-              child: const Icon(Icons.add),
-            );
-          },
+          body: const NotesListPage(
+            key: PageStorageKey('NotesListPage'),
+          ),
+          actionsBuilder: NotesListPage.actionsBuilder,
+          actionButtonBuilder: NotesListPage.actionButtonBuilder,
         ),
         NavigationItem(
           title: context.loc.trash,
           label: context.loc.trash,
           icon: const Icon(Icons.delete),
-          body: const TrashPage(),
+          body: const TrashPage(
+            key: PageStorageKey('TrashPage'),
+          ),
         ),
         NavigationItem(
           title: context.loc.changeSettings,
           label: context.loc.settings,
           icon: const Icon(Icons.settings),
-          body: const SettingsPage(),
+          body: const SettingsPage(
+            key: PageStorageKey('SettingsPage'),
+          ),
+        ),
+        NavigationItem(
+          title: context.loc.yourAccount,
+          label: context.loc.account,
+          icon: const Icon(Icons.account_circle),
+          actionsBuilder: AccountPage.actionsBuilder,
+          body: const AccountPage(
+            key: PageStorageKey('AccountPage'),
+          ),
         ),
       ];
 
   var _selectedNavItemIndex = 0;
-  final _pageController = PageController();
+  PageController? _pageController;
+  late final PageStorageBucket _pageStorageBucket;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _pageStorageBucket = PageStorageBucket();
+  }
+
+  @override
+  void dispose() {
+    _pageController?.dispose();
+    super.dispose();
+  }
 
   bool _isNavRailBar(Size size, AppLayoutMode layoutMode) {
     switch (layoutMode) {
@@ -107,16 +89,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _onDestinationSelected(int newPageIndex) {
-    if (_pageController.hasClients) {
-      _pageController.jumpToPage(newPageIndex);
+    if (_pageController?.hasClients ?? false) {
+      _pageController?.jumpToPage(newPageIndex);
     }
     setState(() => _selectedNavItemIndex = newPageIndex);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
   }
 
   @override
@@ -149,7 +125,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 //     setState(() => _selectedNavItemIndex = newPageIndex);
                 //   },
                 // );
-                final widget = _navigationItems[_selectedNavItemIndex].body;
+                final widget = PageStorage(
+                  bucket: _pageStorageBucket,
+                  child: _navigationItems[_selectedNavItemIndex].body,
+                );
                 if (!_isNavRailBar(size, state.layoutMode)) {
                   return widget;
                 }

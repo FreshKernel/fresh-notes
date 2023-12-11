@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart' show GoRoute, GoRouter;
 
-import '../../core/log/logger.dart';
 import '../../core/my_app.dart';
 import '../../data/notes/cloud/s_cloud_notes.dart';
 import '../../data/notes/universal/models/m_note.dart';
@@ -77,55 +76,4 @@ class AppRouter {
       ),
     ],
   );
-
-  static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-    final name = settings.name ?? '/';
-    final uri = Uri.parse(name);
-    final pathSegments = uri.pathSegments;
-
-    AppLogger.log('onGenerateRoute with name $name');
-    AppLogger.log(
-      'pathSegments ${pathSegments.toString()}, length ${pathSegments.length}',
-    );
-
-    if (pathSegments.isEmpty) {
-      return null;
-    }
-
-    if (name.startsWith(SaveNoteScreen.routeName)) {
-      if (pathSegments.length == 2) {
-        return MaterialPageRoute(
-          builder: (context) {
-            return const Text('das');
-          },
-        );
-      }
-
-      return MaterialPageRoute(
-        settings: const RouteSettings(name: SaveNoteScreen.routeName),
-        builder: (context) {
-          final args = settings.arguments as SaveNoteScreenArgs;
-          return SaveNoteScreen(
-            args: args,
-          );
-        },
-      );
-    }
-
-    return null;
-  }
-
-  static Route<dynamic>? onUnknownRoute(RouteSettings settings) {
-    return MaterialPageRoute(
-      settings: const RouteSettings(name: '/404'),
-      builder: (context) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Not found'),
-          ),
-          body: const Center(child: Text('404')),
-        );
-      },
-    );
-  }
 }
