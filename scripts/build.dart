@@ -11,34 +11,22 @@ Future main() async {
 Future<void> buildProject() async {
   final log = Logger('build.dart/buildProject()');
   try {
-    await commandLine(executalbe: 'flutter', args: ['--version']);
+    await executeCommand('flutter --version');
 
     log.info('Cleaning flutter project...\n');
 
-    await commandLine(
-      executalbe: 'flutter',
-      args: ['clean'],
-    );
+    await executeCommand('flutter clean');
 
     log.info('Get all the dependencies...\n');
 
-    await commandLine(
-      executalbe: 'flutter',
-      args: [
-        'pub',
-        'get',
-        '--no-example',
-      ],
-    );
+    await executeCommand('flutter pub get --no-example');
 
     log.info(
       'Upgrade all the dependencies even with breaking changes ones...\n',
     );
 
-    final upgradeResult = await commandLine(
-      executalbe: 'flutter',
-      args: ['pub', 'upgrade', '--major-versions'],
-    );
+    final upgradeResult =
+        await executeCommand('flutter pub upgrade --major-versions');
     final nothingsChanged =
         upgradeResult.trim().contains('No dependencies changed.');
     if (!nothingsChanged) {
@@ -49,14 +37,8 @@ Future<void> buildProject() async {
     }
 
     log.info('Run all the builds to generate the generated code...\n');
-    await commandLine(
-      executalbe: 'dart',
-      args: [
-        'run',
-        'build_runner',
-        'build',
-        '--delete-conflicting-outputs',
-      ],
+    await executeCommand(
+      'dart run build_runner build --delete-conflicting-outputs',
     );
   } on ProcessException catch (e) {
     log.shout('Error code ${e.errorCode}: ${e.message}');

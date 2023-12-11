@@ -1,22 +1,34 @@
-import 'dart:io' show Process, ProcessException;
+// ignore_for_file: avoid_print
 
-import 'package:logging/logging.dart';
+import 'dart:io' show ProcessException, Process;
 
-Future<String> commandLine({
-  required String executalbe,
-  List<String> args = const [],
+Future<String> executeCommand(
+  String value, {
   bool printResult = true,
+  String? workingDirectory,
 }) async {
-  final log = Logger('utills/command.dart/commandLine()');
-  final command = await Process.run(executalbe, args);
+  final executalbe = value.split(' ')[0];
+  final args = value.split(' ')
+    ..removeAt(0)
+    ..toList();
+  print('$executalbe ${args.join(' ')}');
+  final command = await Process.run(
+    executalbe,
+    args,
+    workingDirectory: workingDirectory,
+  );
   if (command.exitCode != 0) {
-    log.shout(
-      'The exit code is not equal to zero: ${command.stdout}',
+    if (printResult) {
+      print(
+        'Process exception, ${command.stderr}',
+      );
+    }
+    throw ProcessException(
+      executalbe,
+      args,
+      command.stderr,
+      command.exitCode,
     );
-    throw ProcessException(executalbe, args);
-  }
-  if (printResult) {
-    log.info(command.stdout.toString());
   }
 
   return command.stdout;

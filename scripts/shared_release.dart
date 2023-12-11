@@ -11,9 +11,8 @@ Future<void> sharedRelease(List<String> args) async {
     await buildProject();
 
     log.info('Analyze the code using flutter analyze...\n');
-    final flutterAnalyzeResult = await commandLine(
-      executalbe: 'flutter',
-      args: ['analyze'],
+    final flutterAnalyzeResult = await executeCommand(
+      'flutter analyze',
     );
     final issuesFound = flutterAnalyzeResult.trim().contains('issues found.');
 
@@ -29,9 +28,8 @@ Future<void> sharedRelease(List<String> args) async {
 
     log.info('Run the tests...\n');
 
-    final flutterTestResult = await commandLine(
-      executalbe: 'flutter',
-      args: ['test'],
+    final flutterTestResult = await executeCommand(
+      'flutter test',
     );
 
     final testPassed = flutterTestResult.trim().contains('All tests passed!');
