@@ -2,6 +2,7 @@ import 'package:flutter/material.dart'
     show Brightness, MaterialApp, ThemeData, VisualDensity;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:upgrader/upgrader.dart';
 
 import '../core/log/logger.dart';
 import '../logic/auth/cubit/auth_cubit.dart';
@@ -68,7 +69,11 @@ class MyApp extends StatelessWidget {
               if (state.openOnBoardingScreen) {
                 return const OnBoardingScreen();
               }
-              return child ?? (throw ArgumentError('Child should not be null'));
+              return UpgradeAlert(
+                navigatorKey: AppRouter.router.routerDelegate.navigatorKey,
+                child:
+                    child ?? (throw ArgumentError('Child should not be null')),
+              );
             },
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

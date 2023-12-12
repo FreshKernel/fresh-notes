@@ -188,6 +188,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// Shared logic between social authentication and email/password providers
   Future<void> _sharedAuthenticateLogic(AuthUser user) async {
     await _notesService.syncLocalNotesFromCloud();
   }

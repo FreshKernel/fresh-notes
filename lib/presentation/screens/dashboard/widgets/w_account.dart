@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../data/constants/urls.dart';
@@ -7,6 +8,7 @@ import '../../../../logic/auth/cubit/auth_cubit.dart';
 import '../../../components/auth/w_logout.dart';
 import '../../../components/auth/w_user_image.dart';
 import '../../../l10n/extensions/localizations.dart';
+import '../../auth/profile/s_save_profile.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -64,8 +66,8 @@ class AccountPage extends StatelessWidget {
         _buildItem(
           title: context.loc.accountData,
           desc: context.loc.accountDataDesc,
-          iconData: Icons.add,
-          onPressed: () {},
+          iconData: Icons.account_circle,
+          onPressed: () => context.push(SaveProfileScreen.routeName),
         ),
         _buildItem(
           title: context.loc.privacyPolicy,

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart' show GoRoute, GoRouter;
 import '../../core/my_app.dart';
 import '../../data/notes/cloud/s_cloud_notes.dart';
 import '../../data/notes/universal/models/m_note.dart';
+import 'auth/profile/s_save_profile.dart';
 import 'onboarding/s_onboarding.dart';
 import 'save_note/s_save_note.dart';
 import 'settings/s_settings.dart';
@@ -33,6 +34,10 @@ class AppRouter {
             args: args,
           );
         },
+      ),
+      GoRoute(
+        path: SaveProfileScreen.routeName,
+        builder: (context, state) => const SaveProfileScreen(),
       ),
       GoRoute(
         path: '${SaveNoteScreen.routeName}/:noteId',

@@ -7,6 +7,7 @@ import '../../l10n/extensions/localizations.dart';
 import 'models/m_navigation_item.dart';
 import 'widgets/w_account.dart';
 import 'widgets/w_drawer.dart';
+import 'widgets/w_note_folders.dart';
 import 'widgets/w_notes_list.dart';
 import 'widgets/w_settings.dart';
 import 'widgets/w_trash_list.dart';
@@ -33,12 +34,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
           actionButtonBuilder: NotesListPage.actionButtonBuilder,
         ),
         NavigationItem(
+          title: context.loc.browse,
+          label: context.loc.folders,
+          icon: const Icon(Icons.folder),
+          body: const NoteFoldersPage(
+            key: PageStorageKey('NoteFoldersPage'),
+          ),
+        ),
+        NavigationItem(
           title: context.loc.trash,
           label: context.loc.trash,
           icon: const Icon(Icons.delete),
           body: const TrashPage(
             key: PageStorageKey('TrashPage'),
           ),
+          actionsBuilder: TrashPage.actionsBuilder,
         ),
         NavigationItem(
           title: context.loc.changeSettings,

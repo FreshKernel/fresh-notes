@@ -240,20 +240,17 @@ class MockAuthProvider extends AuthRepository {
 
   @override
   Future<void> sendResetPasswordLinkToEmail({required String email}) {
-    // TODO: implement sendResetPasswordLinkToEmail
     throw UnimplementedError();
   }
 
   @override
   Future<AuthUser> authenticateWithCustomProvider(
       AuthCustomProvider authCustomProvider) {
-    // TODO: implement authenticateWithCustomProvider
     throw UnimplementedError();
   }
 
   @override
   Future<AuthUser> updateUserData(UserData userData) {
-    // TODO: implement updateUserData
     throw UnimplementedError();
   }
 }

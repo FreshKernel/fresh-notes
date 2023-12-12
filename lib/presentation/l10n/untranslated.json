@@ -1,5 +1,7 @@
 {
   "ar": [
+    "clearTheTrash",
+    "clearTheTrashDesc",
     "account",
     "yourAccount",
     "privacyPolicy",
@@ -8,6 +10,28 @@
     "accountDataDesc",
     "socialMedia",
     "socialMediaDesc",
-    "send"
+    "send",
+    "welcomeAgain",
+    "welcomeAgainDesc",
+    "orLoginWithSocialMediaAccount",
+    "internetConnectionIsRequired",
+    "ifYourEmailIsExistsCheckYourEmailInbox",
+    "unknownError",
+    "authErrorUserNotFound",
+    "authErrorInvalidCredentials",
+    "authErrorWeakPassword",
+    "authErrorEmailAlreadyInUse",
+    "authErrorUserAccountIsDisabled",
+    "authErrorTooManyRequests",
+    "authErrorUnknown",
+    "pleaseCheckYourInternetConnection",
+    "pleaseEnterYourData",
+    "error",
+    "folders",
+    "browse",
+    "newFolder",
+    "folderName",
+    "create",
+    "back"
   ]
 }

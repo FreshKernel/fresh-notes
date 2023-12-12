@@ -7,6 +7,8 @@ import '../../../../logic/auth/cubit/auth_cubit.dart';
 class SaveProfileScreen extends StatelessWidget {
   const SaveProfileScreen({super.key});
 
+  static const routeName = '/profile';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

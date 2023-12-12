@@ -1,4 +1,6 @@
 import 'package:firebase_core/firebase_core.dart' show Firebase;
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import '../../../firebase_options.dart';
 import '../../services/exceptions.dart';
 import '../../services/s_app.dart';
@@ -23,11 +25,11 @@ class FirebaseService extends AppService {
     // } else {
     //   await FirebaseAppCheck.instance.activate();
     // }
-    // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-    // PlatformDispatcher.instance.onError = (error, stack) {
-    //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    //   return true;
-    // };
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
     // if (kDebugMode) {
     //   const host = 'localhost';
     //   // if (PlatformChecker.isAndroid()) {

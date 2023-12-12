@@ -2,6 +2,7 @@ import 'dart:io' show ProcessException;
 
 import 'package:logging/logging.dart' show Logger;
 
+import 'constants.dart';
 import 'utils/command.dart';
 
 Future<void> main(List<String> args) async {
@@ -16,6 +17,9 @@ Future<void> buildAndroidRelease(List<String> args) async {
 
     await executeCommand(
       'flutter build appbundle --obfuscate --split-debug-info=./build/app/outputs/bundle/release',
+    );
+    await executeCommand(
+      'firebase crashlytics:symbols:upload --app=$androidAppId ./build/app/outputs/bundle/release',
     );
   } on ProcessException catch (e) {
     log.shout('Error code ${e.errorCode}: ${e.message}');

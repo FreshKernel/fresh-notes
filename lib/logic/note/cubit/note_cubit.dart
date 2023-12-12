@@ -60,6 +60,7 @@ class NoteCubit extends Cubit<NoteState> {
 
     final savedImages = <String>[];
     if (input.syncOptions.isSyncWithCloud) {
+      // TODO: Upload with metadata in firebase storage
       final cloudPaths = await cloudStorageService.uploadMultipleFiles(
         newFileNames.asMap().entries.map((e) {
           final file = File(e.value);
@@ -96,10 +97,10 @@ class NoteCubit extends Cubit<NoteState> {
     if (note == null) {
       return;
     }
-    await universalNotesService.deleteOneById(note.id);
+    await universalNotesService.deleteOneById(note.noteId);
     await _deleteNoteFiles(note);
     emit(NoteState(
-      notes: state.notes.where((element) => element.id != noteId).toList(),
+      notes: state.notes.where((element) => element.noteId != noteId).toList(),
     ));
   }
 
@@ -173,7 +174,8 @@ class NoteCubit extends Cubit<NoteState> {
       localNote,
     );
 
-    final noteIndex = state.notes.indexWhere((note) => note.id == input.noteId);
+    final noteIndex =
+        state.notes.indexWhere((note) => note.noteId == input.noteId);
     if (noteIndex == -1) {
       return;
     }
@@ -196,7 +198,8 @@ class NoteCubit extends Cubit<NoteState> {
     );
 
     final notes = [...state.notes];
-    final noteIndex = notes.indexWhere((element) => element.id == note.id);
+    final noteIndex =
+        notes.indexWhere((element) => element.noteId == note.noteId);
     if (noteIndex == -1) {
       return;
     }
@@ -208,9 +211,21 @@ class NoteCubit extends Cubit<NoteState> {
 
   Future<void> moveAllNotesToTrash() async {
     final allNotes = await universalNotesService.getAll();
-    for (final note in allNotes) {
-      await moveNoteToTrash(note.id);
-    }
+    universalNotesService.deleteByIds(allNotes.map((e) => e.noteId).toList());
+  }
+
+  Future<void> clearTheTrash() async {
+    final allNotes =
+        (await universalNotesService.getAll()).where((note) => note.isTrash);
+    await universalNotesService
+        .deleteByIds(allNotes.map((e) => e.noteId).toList());
+  }
+
+  // TODO: Buggy, needs to be tested more
+  Future<void> syncLocalNotesFromCloud() async {
+    await universalNotesService.syncLocalNotesFromCloud();
+    final notes = await universalNotesService.getAll();
+    emit(NoteState(notes: notes));
   }
 
   @override

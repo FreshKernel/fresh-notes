@@ -68,5 +68,8 @@ firebase/public/.well-known/apple-app-site-association
 # FlutterFire CLI for Firebase
 lib/firebase_options.dart
 
-# Automated localizations
+# Firebase
+.crashlytics
+
+# localizations
 localazy.json

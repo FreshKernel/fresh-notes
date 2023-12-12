@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
@@ -22,7 +23,7 @@ class SyncOptionsJsonConverter
 
 @immutable
 // @JsonSerializable(converters: [SyncOptionsJsonConverter()])
-sealed class SyncOptions {
+sealed class SyncOptions extends Equatable {
   const SyncOptions();
   factory SyncOptions.getSyncOptions({
     required bool isSyncWithCloud,
@@ -43,6 +44,9 @@ sealed class SyncOptions {
 
   bool get isSyncWithCloud;
   String? get cloudId;
+
+  @override
+  List<Object?> get props => [isSyncWithCloud, cloudId];
 
   static NoSyncOption noSync() {
     return const NoSyncOption._();

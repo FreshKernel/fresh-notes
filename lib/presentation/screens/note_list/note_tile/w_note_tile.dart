@@ -24,64 +24,79 @@ class NoteTile extends StatelessWidget {
     );
     final materialTheme = Theme.of(context);
 
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
+    return Dismissible(
+      confirmDismiss: (direction) async {
+        final result =
+            await options.sharedOnMoveToTrashPressed(context: context);
+        return result;
+      },
+      key: ValueKey(options.index),
+      direction: DismissDirection.startToEnd,
+      background: Container(
+        color: Theme.of(context).colorScheme.error,
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 20),
+        child: const Icon(Icons.delete),
       ),
-      child: ListTile(
-        onTap: () => context.push(
-          SaveNoteScreen.routeName,
-          extra: SaveNoteScreenArgs(
-            note: options.note,
-          ),
-        ),
+      child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
         ),
-        isThreeLine: true,
-        contentPadding: const EdgeInsets.all(12),
-        title: Text(
-          options.note.title,
-          softWrap: true,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          // style: materialTheme.textTheme.titleMedium,
-        ),
-        subtitle: Text(
-          document.toPlainText().removeWhiteSpaces(),
-          softWrap: true,
-          maxLines: 5,
-          overflow: TextOverflow.ellipsis,
-          // style: materialTheme.textTheme.bodyMedium,
-        ),
-        leading: CircleAvatar(
-          child: Text(
-            (options.index + 1).toString(),
+        child: ListTile(
+          onTap: () => context.push(
+            SaveNoteScreen.routeName,
+            extra: SaveNoteScreenArgs(
+              note: options.note,
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          isThreeLine: true,
+          contentPadding: const EdgeInsets.all(12),
+          title: Text(
+            options.note.title,
+            softWrap: true,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+            // style: materialTheme.textTheme.titleMedium,
           ),
-        ),
-        trailing: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth > 450) {
-              return TextButton.icon(
+          subtitle: Text(
+            document.toPlainText().removeWhiteSpaces(),
+            softWrap: true,
+            maxLines: 5,
+            overflow: TextOverflow.ellipsis,
+            // style: materialTheme.textTheme.bodyMedium,
+          ),
+          leading: CircleAvatar(
+            child: Text(
+              (options.index + 1).toString(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          trailing: LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > 450) {
+                return TextButton.icon(
+                  onPressed: () =>
+                      options.sharedOnMoveToTrashPressed(context: context),
+                  icon: const Icon(Icons.delete),
+                  label: Text(context.loc.delete),
+                  style: TextButton.styleFrom(
+                    foregroundColor: materialTheme.colorScheme.error,
+                  ),
+                );
+              }
+              return IconButton(
+                tooltip: context.loc.delete,
                 onPressed: () =>
                     options.sharedOnMoveToTrashPressed(context: context),
                 icon: const Icon(Icons.delete),
-                label: Text(context.loc.delete),
-                style: TextButton.styleFrom(
-                  foregroundColor: materialTheme.colorScheme.error,
-                ),
+                color: materialTheme.colorScheme.error,
               );
-            }
-            return IconButton(
-              tooltip: context.loc.delete,
-              onPressed: () =>
-                  options.sharedOnMoveToTrashPressed(context: context),
-              icon: const Icon(Icons.delete),
-              color: materialTheme.colorScheme.error,
-            );
-          },
+            },
+          ),
         ),
       ),
     );

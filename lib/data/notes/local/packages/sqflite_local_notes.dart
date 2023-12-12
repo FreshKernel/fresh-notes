@@ -108,7 +108,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       return notes;
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(
-          'Unknown error while insert a note ${e.toString()}');
+          'Unknown error while insert a note. ${e.toString()}');
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -62,11 +63,10 @@ class _ErrorDialogState extends State<ErrorDialog> {
                     final messenger = context.messenger;
                     try {
                       setState(() => _isLoading = true);
-                      // TODO: Change this
-                      // await FirebaseCrashlytics.instance.recordError(
-                      //   _devError?.exception,
-                      //   _devError?.stackTrace,
-                      // );
+                      await FirebaseCrashlytics.instance.recordError(
+                        _devError?.exception,
+                        _devError?.stackTrace,
+                      );
                       navigator.pop();
                       messenger.showMessage(
                         'The report has been sent!',

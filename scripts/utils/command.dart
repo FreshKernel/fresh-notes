@@ -29,6 +29,8 @@ Future<String> executeCommand(
       command.stderr,
       command.exitCode,
     );
+  } else {
+    print('Result: ${command.stdout}');
   }
 
   return command.stdout;

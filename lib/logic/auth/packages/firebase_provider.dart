@@ -310,6 +310,7 @@ class FirebaseAuthProviderImpl extends AuthRepository {
             type: AuthErrorType.wrongPassword,
           );
         case 'INVALID_LOGIN_CREDENTIALS':
+        case 'invalid-credential':
           throw const AuthException(
             'Firebase api told the sdk and the sdk told us the login info is not correct.',
             type: AuthErrorType.invalidCredentials,

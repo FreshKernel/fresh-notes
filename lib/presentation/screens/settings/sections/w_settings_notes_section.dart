@@ -16,20 +16,6 @@ class SettingsNotesSection extends StatelessWidget {
       title: context.loc.notes,
       tiles: [
         CheckboxListTile.adaptive(
-          value: state.confirmDeleteNote,
-          onChanged: (newValue) {
-            if (newValue == null) {
-              return;
-            }
-            context.read<SettingsCubit>().updateSettings(
-                  state.copyWith(confirmDeleteNote: newValue),
-                );
-          },
-          title: Text(context.loc.confirmDeleteNote),
-          subtitle: Text(context.loc.confirmDeleteNoteDesc),
-          secondary: const Icon(Icons.delete),
-        ),
-        CheckboxListTile.adaptive(
           value: state.syncWithCloudDefaultValue,
           onChanged: (newValue) {
             context.read<SettingsCubit>().updateSettings(
@@ -41,6 +27,34 @@ class SettingsNotesSection extends StatelessWidget {
             context.loc.syncWithCloudByDefaultDesc,
           ),
           secondary: const Icon(Icons.cloud),
+        ),
+        CheckboxListTile.adaptive(
+          value: state.confirmMoveNoteToTrash,
+          onChanged: (newValue) {
+            if (newValue == null) {
+              return;
+            }
+            context.read<SettingsCubit>().updateSettings(
+                  state.copyWith(confirmMoveNoteToTrash: newValue),
+                );
+          },
+          title: Text(context.loc.confirmMoveNoteToTrash),
+          subtitle: Text(context.loc.confirmDeleteNoteDesc),
+          secondary: const Icon(Icons.delete),
+        ),
+        CheckboxListTile.adaptive(
+          value: state.confirmDeleteNote,
+          onChanged: (newValue) {
+            if (newValue == null) {
+              return;
+            }
+            context.read<SettingsCubit>().updateSettings(
+                  state.copyWith(confirmDeleteNote: newValue),
+                );
+          },
+          title: Text(context.loc.confirmDeleteNote),
+          subtitle: Text(context.loc.confirmDeleteNoteDesc),
+          secondary: const Icon(Icons.delete_forever),
         ),
       ],
     );

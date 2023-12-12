@@ -30,6 +30,7 @@ dependencies:
   cloud_firestore: ^4.13.5
   firebase_storage: ^11.5.5
   firebase_analytics: ^10.7.4
+  firebase_crashlytics: ^3.4.8
 
   # Core plugins
   path_provider: ^2.1.1
@@ -71,6 +72,7 @@ dependencies:
   # Other packages
   lottie: ^2.7.0
   cached_network_image: ^3.3.0
+  upgrader: ^8.4.0
 
   # Other ui packages
   smooth_page_indicator: ^1.1.0
@@ -123,8 +125,8 @@ flutter_gen:
 
   integrations:
     flutter_svg: true
-    flare_flutter: true
-    rive: true
+    # flare_flutter: true
+    # rive: true
     lottie: true
 
 

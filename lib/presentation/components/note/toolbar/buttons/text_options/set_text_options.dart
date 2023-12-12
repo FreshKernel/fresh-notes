@@ -222,7 +222,6 @@ class _ToggleStyleButton extends StatelessWidget {
       attribute: attribute,
       options: QuillToolbarToggleStyleButtonOptions(
         iconData: iconData,
-        controller: _controller,
         childBuilder: (options, extraOptions) {
           void sharedOnPressed() {
             extraOptions.onPressed?.call();

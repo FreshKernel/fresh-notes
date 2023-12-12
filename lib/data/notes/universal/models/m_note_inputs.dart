@@ -65,7 +65,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
       UpdateNoteInput(
         isTrash: note.isTrash,
         isPrivate: note.isPrivate,
-        noteId: note.id,
+        noteId: note.noteId,
         text: note.text,
         title: note.title,
         syncOptions: note.syncOptions,

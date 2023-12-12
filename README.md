@@ -37,8 +37,9 @@ it's known to be limited on AppleOS and it's closed so there is not much I can d
     Instead of defining a composite index manually, try to run all the queries in the app by testing everything to get a links for generating the required index. and you will get a url to open Like:
     [https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?....](https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?create_composite=Cktwcm9qZWN0cy9teW5vdGVzLWViNzE3L2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9ub3Rlcy9pbmRleGVzL18QARoKCgZ1c2VySWQQARoNCgl1cGRhdGVkQXQQAhoMCghfX25hbWVfXxAC)
 
-1. Configure App check in firebase for Android and iOS (optional)
-2. Setup App Links for Android and Universal Links for iOS (optional)
+5. Configure App check in firebase for Android and iOS (optional)
+6. Setup App Links for Android and Universal Links for iOS (optional)
+7. Update the `constants.dart` in the scripts folder (optional)
 
 <!-- 1. Firebase: First setup firebase for both android/ios, register the apps and download the configurations and put
 them in the desire place, "google-services.json" for android, ios "GoogleService-Info.plist"

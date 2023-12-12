@@ -18,7 +18,7 @@ class NoteTileOptions {
   final UniversalNote note;
   final int index;
 
-  Future<void> sharedOnMoveToTrashPressed({
+  Future<bool> sharedOnMoveToTrashPressed({
     required BuildContext context,
   }) async {
     final noteBloc = context.read<NoteCubit>();
@@ -41,16 +41,17 @@ class NoteTileOptions {
               )
             : true;
     if (!confirmed) {
-      return;
+      return false;
     }
     if (note.isTrash) {
       await noteBloc.deleteNote(
-        note.id,
+        note.noteId,
       );
-      return;
+      return true;
     }
     await noteBloc.moveNoteToTrash(
-      note.id,
+      note.noteId,
     );
+    return true;
   }
 }

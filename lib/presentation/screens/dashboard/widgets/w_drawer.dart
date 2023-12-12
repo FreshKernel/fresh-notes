@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/errors/exceptions.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
 import '../../../components/auth/w_user_image.dart';
 import '../../settings/s_settings.dart';

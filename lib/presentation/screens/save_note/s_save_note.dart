@@ -12,7 +12,6 @@ import '../../../data/core/cloud/database/sync_options.dart';
 import '../../../data/core/shared/data_utils.dart';
 import '../../../data/notes/universal/models/m_note.dart';
 import '../../../data/notes/universal/models/m_note_inputs.dart';
-import '../../../data/notes/universal/s_universal_notes.dart';
 import '../../../logic/auth/auth_service.dart';
 import '../../../logic/native/share/s_app_share.dart';
 import '../../../logic/note/cubit/note_cubit.dart';
@@ -57,6 +56,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   bool get _isEditing => _note != null;
   var _isLoading = false;
   late final TextEditingController _titleController;
+  late final NoteCubit _noteBloc;
 
   SyncOptions get _getSyncOptions {
     return SyncOptions.getSyncOptions(
@@ -69,6 +69,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   void initState() {
     super.initState();
     _setupController();
+    _noteBloc = context.read<NoteCubit>();
   }
 
   void _setupController() {
@@ -98,58 +99,41 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _saveNote().then((value) => _controller.dispose());
     super.dispose();
   }
 
-  Future<void> _onSaveNoteClick() async {
-    final navigator = context.navigator;
-    final messenger = context.messenger;
-    final document = _controller.document;
-
-    final isDocumentContentEmpty = document.toPlainText().trim().isEmpty;
-    final notesDataService = UniversalNotesService.getInstance();
-
-    if (isDocumentContentEmpty) {
-      // Delete the note if the content is empty in edit mode
-      if (_isEditing) {
-        await notesDataService.deleteOneById(_note!.id);
-        messenger.showMessage(
-          'Note has been deleted.',
-        );
-        navigator.pop();
-        return;
-      }
-      // User can't save empty note
-      messenger.showMessage(
-        'The document is empty.',
-      );
-      return;
-    }
-    try {
-      await _saveNote();
-    } catch (e, stacktrace) {
-      messenger.showMessage('Error while save the note: ${e.toString()}');
-      AppLogger.error(e.toString(), stackTrace: stacktrace);
-    }
-
-    navigator.pop();
-  }
-
   Future<void> _saveNote() async {
+    if (widget.args.isDeepLink || _isLoading) {
+      return;
+    }
     final document = _controller.document;
     final isDocumentContentEmpty = document.toPlainText().trim().isEmpty;
-    if (isDocumentContentEmpty) {
+
+    // if document empty
+    if (isDocumentContentEmpty && _titleController.text.trim().isEmpty) {
+      if (_isEditing) {
+        await _noteBloc
+            .deleteNote(_note?.noteId ?? (throw ArgumentError.notNull()));
+      }
+      return;
+    }
+
+    final newNoteText = jsonEncode(document.toDelta().toJson());
+
+    // If nothings changed then ignore
+    if (_isEditing &&
+        newNoteText == _note?.text &&
+        _titleController.text == _note?.title) {
       return;
     }
     try {
-      setState(() => _isLoading = true);
-      final noteBloc = context.read<NoteCubit>();
+      _isLoading = true;
       final userId = AuthService.getInstance().requireCurrentUser(null).id;
       if (_isEditing) {
-        await noteBloc.updateNote(
+        await _noteBloc.updateNote(
           UpdateNoteInput(
-            noteId: _note?.id ??
+            noteId: _note?.noteId ??
                 (throw ArgumentError(
                     'The id is required for updating the note')),
             text: jsonEncode(document.toDelta().toJson()),
@@ -160,7 +144,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
           ),
         );
       } else {
-        await noteBloc.createNote(
+        await _noteBloc.createNote(
           CreateNoteInput(
             noteId: generateRandomItemId(),
             title: _titleController.text,
@@ -172,7 +156,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
         );
       }
     } finally {
-      setState(() => _isLoading = false);
+      _isLoading = false;
     }
   }
 
@@ -196,19 +180,6 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
               },
               icon: const Icon(Icons.print),
             ),
-          if (!widget.args.isDeepLink)
-            IconButton(
-              tooltip: 'Sync with cloud',
-              onPressed: () =>
-                  setState(() => _isSyncWithCloud = !_isSyncWithCloud),
-              icon: Icon(_isSyncWithCloud ? Icons.cloud : Icons.folder),
-            ),
-          if (!widget.args.isDeepLink)
-            IconButton(
-              tooltip: 'Private',
-              onPressed: () => setState(() => _isPrivate = !_isPrivate),
-              icon: Icon(_isPrivate ? Icons.lock : Icons.public),
-            ),
           if (_isEditing)
             IconButton(
               tooltip: 'Share',
@@ -228,12 +199,19 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
               },
               icon: const Icon(Icons.share),
             ),
-          if (!widget.args.isDeepLink)
+          if (!widget.args.isDeepLink) ...[
             IconButton(
-              tooltip: 'Save note',
-              onPressed: _isLoading ? null : _onSaveNoteClick,
-              icon: const Icon(Icons.save),
+              tooltip: 'Sync with cloud',
+              onPressed: () =>
+                  setState(() => _isSyncWithCloud = !_isSyncWithCloud),
+              icon: Icon(_isSyncWithCloud ? Icons.cloud : Icons.folder),
             ),
+            IconButton(
+              tooltip: 'Private',
+              onPressed: () => setState(() => _isPrivate = !_isPrivate),
+              icon: Icon(_isPrivate ? Icons.lock : Icons.public),
+            ),
+          ],
         ],
       ),
       floatingActionButton: widget.args.isDeepLink
