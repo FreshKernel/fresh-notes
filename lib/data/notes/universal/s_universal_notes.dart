@@ -52,11 +52,11 @@ class UniversalNotesService extends AppService {
   }
 
   Future<void> deleteByIds(List<String> ids) async {
-    // final notes = await localNotesService.getAllByIds(ids);
-    // final cloudNotesIds =
-    //     notes.where((e) => e.isSyncWithCloud).map((e) => e.noteId).toList();
+    final notes = await localNotesService.getAllByIds(ids);
+    final cloudNotesIds =
+        notes.where((e) => e.isSyncWithCloud).map((e) => e.noteId).toList();
     await localNotesService.deleteByIds(ids);
-    await cloudNotesService.deleteByIds(ids);
+    await cloudNotesService.deleteByIds(cloudNotesIds);
   }
 
   Future<void> deleteOneById(String id) async {

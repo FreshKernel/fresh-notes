@@ -212,6 +212,13 @@ class NoteCubit extends Cubit<NoteState> {
   Future<void> moveAllNotesToTrash() async {
     final allNotes = await universalNotesService.getAll();
     universalNotesService.deleteByIds(allNotes.map((e) => e.noteId).toList());
+    final newNotes = [...state.notes]
+        .where((element) => !element.isTrash)
+        .map(
+          (e) => e.copyWith(isTrash: true),
+        )
+        .toList();
+    emit(NoteState(notes: newNotes));
   }
 
   Future<void> clearTheTrash() async {
@@ -219,9 +226,11 @@ class NoteCubit extends Cubit<NoteState> {
         (await universalNotesService.getAll()).where((note) => note.isTrash);
     await universalNotesService
         .deleteByIds(allNotes.map((e) => e.noteId).toList());
+    final newNotes = [...state.notes]
+      ..removeWhere((element) => element.isTrash);
+    emit(NoteState(notes: newNotes));
   }
 
-  // TODO: Buggy, needs to be tested more
   Future<void> syncLocalNotesFromCloud() async {
     await universalNotesService.syncLocalNotesFromCloud();
     final notes = await universalNotesService.getAll();

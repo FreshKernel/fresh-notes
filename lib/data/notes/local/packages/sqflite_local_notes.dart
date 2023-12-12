@@ -209,7 +209,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
         throw const DatabaseOperationInvalidParameterException(
             'To get itmes by thier ids, the ids should not be empty');
       }
-      final idList = ids.join(', ');
+      final idList = ids.map((e) => "'$e'").join(', ');
       final results = await _database!.query(
         LocalNote.sqlTableName,
         where: '${LocalNoteProperties.noteId} IN ($idList)',
@@ -270,7 +270,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
         throw const DatabaseOperationInvalidParameterException(
             'To delete items by ids, the ids should not be empty');
       }
-      final idList = ids.join(', ');
+      final idList = ids.map((e) => "'$e'").join(', ');
       final deletedCount = await _database!.delete(
         LocalNote.sqlTableName,
         where: '${LocalNoteProperties.noteId} IN ($idList)',

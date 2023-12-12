@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -87,6 +88,30 @@ class UniversalNote extends Equatable {
         isPrivate,
         isTrash,
       ];
+
+  UniversalNote copyWith({
+    String? noteId,
+    String? userId,
+    String? title,
+    String? text,
+    SyncOptions? syncOptions,
+    bool? isPrivate,
+    bool? isTrash,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return UniversalNote(
+      noteId: noteId ?? this.noteId,
+      userId: userId ?? this.userId,
+      title: title ?? this.title,
+      text: text ?? this.text,
+      syncOptions: syncOptions ?? this.syncOptions,
+      isPrivate: isPrivate ?? this.isPrivate,
+      isTrash: isTrash ?? this.isTrash,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }
 
 class UniversalNoteProperties {
