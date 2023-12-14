@@ -74,6 +74,7 @@ dependencies:
   cached_network_image: ^3.3.0
   upgrader: ^8.4.0
   hive: ^2.2.3
+  flutter_dotenv: ^5.1.0
 
   # Other ui packages
   smooth_page_indicator: ^1.1.0

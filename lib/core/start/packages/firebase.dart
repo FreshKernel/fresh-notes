@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../../firebase_options.dart';
 import '../../log/logger.dart';
 import '../../services/exceptions.dart';
@@ -34,7 +35,13 @@ class FirebaseService extends AppService {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
     };
-    if (kDebugMode && const bool.fromEnvironment('USE_FIREBASE_EMULATOR')) {
+    if (kDebugMode) {
+      final useEmulatorString =
+          dotenv.env['USE_FIREBASE_EMULATOR'] ?? (throw ArgumentError());
+      final useEmulator = bool.parse(useEmulatorString);
+      if (!useEmulator) {
+        return;
+      }
       const host = 'localhost';
       try {
         FirebaseFirestore.instance.useFirestoreEmulator(host, 8082);

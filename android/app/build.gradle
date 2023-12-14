@@ -81,10 +81,12 @@ android {
                     'proguard-rules.pro'
 
             debuggable false
+            manifestPlaceholders = [usesCleartextTraffic:"false"]
         }
         debug {
             signingConfig signingConfigs.debug
             debuggable true
+            manifestPlaceholders = [usesCleartextTraffic:"true"]
         }
     }
 
