@@ -50,12 +50,12 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   var _isReadOnly = false;
   var _isPrivate = true;
   var _isSyncWithCloud = false;
+  var _isLoading = false;
+  late final TextEditingController _titleController;
 
   UniversalNote? get _note => widget.args.note;
 
   bool get _isEditing => _note != null;
-  var _isLoading = false;
-  late final TextEditingController _titleController;
   late final NoteCubit _noteBloc;
 
   SyncOptions get _getSyncOptions {
@@ -68,8 +68,8 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   @override
   void initState() {
     super.initState();
-    _noteBloc = context.read<NoteCubit>();
     _setupNote();
+    _noteBloc = context.read<NoteCubit>();
   }
 
   void _setupNote() {
@@ -80,12 +80,11 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
 
     // For updating note
     if (noteToEdit != null) {
-      final json = jsonDecode(noteToEdit.text);
       _titleController = TextEditingController(
         text: noteToEdit.title,
       );
       _controller = QuillController(
-        document: Document.fromJson(json),
+        document: Document.fromJson(jsonDecode(noteToEdit.text)),
         selection: const TextSelection.collapsed(offset: 0),
       );
 

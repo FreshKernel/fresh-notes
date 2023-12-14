@@ -65,7 +65,7 @@ class _NoteListContentState extends State<NoteListContent> {
             builder: (context, state) {
               if (state.exception != null) {
                 return Center(
-                  child: Text(snapshot.error.toString()),
+                  child: Text('Error: ${state.exception.toString()}'),
                 );
               }
 

@@ -32,6 +32,8 @@
     "newFolder",
     "folderName",
     "create",
-    "back"
+    "back",
+    "manualSave",
+    "manualSaveDesc"
   ]
 }

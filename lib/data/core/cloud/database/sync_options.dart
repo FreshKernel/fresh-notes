@@ -88,6 +88,9 @@ final class NoSyncOption extends SyncOptions {
   String toString() {
     return "Don'n sync with the cloud, delete if it exists for updating note";
   }
+
+  @override
+  List<Object?> get props => [isSyncWithCloud, cloudId];
 }
 
 final class SyncWithCloudOption extends SyncOptions {
@@ -105,6 +108,9 @@ final class SyncWithCloudOption extends SyncOptions {
   String toString() {
     return 'Sync with cloud by creating a new entry';
   }
+
+  @override
+  List<Object?> get props => [isSyncWithCloud, cloudId];
 }
 
 final class SyncWithExistingCloudIdOption extends SyncOptions {
@@ -127,4 +133,7 @@ final class SyncWithExistingCloudIdOption extends SyncOptions {
   String toString() {
     return 'Sync with existing cloud id = $cloudId';
   }
+
+  @override
+  List<Object?> get props => [cloudId, isSyncWithCloud];
 }

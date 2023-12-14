@@ -70,6 +70,7 @@ lib/firebase_options.dart
 
 # Firebase
 .crashlytics
+firebase.json
 
 # localizations
 localazy.json

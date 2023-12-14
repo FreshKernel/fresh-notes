@@ -77,9 +77,14 @@ class NoteCubit extends Cubit<NoteState> {
         );
         savedImages.addAll(cloudPaths);
       } else {
+        // TODO: Don't hardcode things here in this file
         final files = await localStorageService.copyMultipleFile(
-          directory: Directory(join(
-              (await getApplicationDocumentsDirectory()).path, 'notes-images')),
+          directory: Directory(
+            join(
+              (await getApplicationDocumentsDirectory()).path,
+              'notes-images',
+            ),
+          ),
           files: cachedImages.map(File.new).toList(),
           names: newFileNames,
         );
@@ -195,7 +200,14 @@ class NoteCubit extends Cubit<NoteState> {
     notes.removeAt(noteIndex);
     notes.insert(noteIndex, newNote);
 
-    emit(NoteState(notes: notes));
+    emit(
+      NoteState(
+        notes: notes,
+        message: DateTime.now()
+            .toIso8601String(), // Workaround, because of SyncOptions
+      ),
+    );
+
     try {
       Future<void> updateInTheCloud() async {
         final currentLocalNote = await universalNotesService.localNotesService

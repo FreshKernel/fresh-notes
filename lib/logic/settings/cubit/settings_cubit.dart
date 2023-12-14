@@ -14,8 +14,10 @@ class SettingsCubit extends Cubit<SettingsState> {
     Hive.openBox(boxName).then((value) {
       final json = value.get(
         'json',
-        defaultValue: SettingsState.fromJson(const SettingsState().toJson()),
       );
+      if (json == null) {
+        return;
+      }
       emit(
         SettingsState.fromJson(
           (json as Map<dynamic, dynamic>).map(

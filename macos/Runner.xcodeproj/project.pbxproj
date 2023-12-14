@@ -21,7 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0193AEBB3E0E5F7112DF3B01 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B465545974872F2B13100E62 /* GoogleService-Info.plist */; };
 		1B0032EE69CF04EA6187C769 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C2E7733FC27CFC165DA5289 /* Pods_RunnerTests.framework */; };
 		331C80D8294CF71000263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C80D7294CF71000263BE5 /* RunnerTests.swift */; };
 		335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */; };
@@ -29,6 +28,7 @@
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
+		345C2B6791B7DDF9F319A461 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 81BE72A0E70F6B9B65EE5659 /* GoogleService-Info.plist */; };
 		D0994AB148C1F39DE4143B03 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3249CCF44A180CEB776C8C09 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +86,7 @@
 		4412E66FD5373AFB4CFB1CA1 /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		47924FC0CC8237DAFD31D483 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		81BE72A0E70F6B9B65EE5659 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8E420EEE633F2239F757B489 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		B465545974872F2B13100E62 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -141,6 +142,7 @@
 				D73912EC22F37F3D000D13A0 /* Frameworks */,
 				E732AF61EB2F3B9446DA4616 /* Pods */,
 				B465545974872F2B13100E62 /* GoogleService-Info.plist */,
+				81BE72A0E70F6B9B65EE5659 /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -245,6 +247,7 @@
 				3399D490228B24CF009A79C7 /* ShellScript */,
 				F093679379F9AD51A6D68E35 /* [CP] Embed Pods Frameworks */,
 				8A6C990E60113380AC653C26 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
+				01C02147F417FF664E5788D7 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
 			);
 			buildRules = (
 			);
@@ -320,13 +323,31 @@
 			files = (
 				33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */,
 				33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */,
-				0193AEBB3E0E5F7112DF3B01 /* GoogleService-Info.plist in Resources */,
+				345C2B6791B7DDF9F319A461 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		01C02147F417FF664E5788D7 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "FlutterFire: \"flutterfire upload-crashlytics-symbols\"";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n#!/bin/bash\nPATH=${PATH}:$FLUTTER_ROOT/bin:$HOME/.pub-cache/bin\nflutterfire upload-crashlytics-symbols --upload-symbols-script-path=$PODS_ROOT/FirebaseCrashlytics/upload-symbols --debug-symbols-path=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME} --info-plist-path=${SRCROOT}/${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH} --platform=macos --apple-project-path=${SRCROOT} --default-config=default\n";
+		};
 		218571C543ABEF1D71856E4E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

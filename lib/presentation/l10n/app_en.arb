@@ -106,5 +106,7 @@
     "newFolder": "New Folder",
     "folderName": "Folder name",
     "create": "Create",
-    "back": "Back"
+    "back": "Back",
+    "manualSave": "Manual Save",
+    "manualSaveDesc": ""
   }  
