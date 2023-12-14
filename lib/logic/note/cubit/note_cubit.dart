@@ -9,7 +9,6 @@ import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../data/core/cloud/database/sync_options.dart';
 import '../../../data/core/cloud/storage/s_cloud_storage.dart';
 import '../../../data/core/local/storage/s_local_storage.dart';
 import '../../../data/core/shared/database_operations_exceptions.dart';
@@ -161,7 +160,7 @@ class NoteCubit extends Cubit<NoteState> {
     );
 
     // TODO: test this
-    if (note.syncOptions.isExistsInCloud) {
+    if (note.isExistsInTheCloud) {
       await _deleteNoteCloudFiles(note.text);
     }
     await imageUtilities.deleteAllLocalImages();
@@ -218,22 +217,18 @@ class NoteCubit extends Cubit<NoteState> {
           );
         }
 
-        final currentLocalNoteExistsInCloud = currentLocalNote.cloudId != null;
-
         // Create the note if it doesn't exist and the user wants to sync his offline
         // note so we needs to create it
-        if (input.isSyncWithCloud && !currentLocalNoteExistsInCloud) {
-          final cloudNote =
-              await universalNotesService.cloudNotesService.createOne(
+        if (input.isSyncWithCloud && !currentLocalNote.isExistsInTheCloud) {
+          await universalNotesService.cloudNotesService.createOne(
             CreateNoteInput.fromUpdateInput(
               input,
               userId: AuthService.getInstance().requireCurrentUser().id,
             ),
           );
-          input = input.copyWith(
-            syncOptions: SyncOptions.syncWithExistingCloudId(cloudNote.id),
-          );
-        } else if (!input.isSyncWithCloud && currentLocalNoteExistsInCloud) {
+          input = input.copyWith(isExistsInTheCloud: true);
+        } else if (!input.isSyncWithCloud &&
+            currentLocalNote.isExistsInTheCloud) {
           // If the current note exist and the user wants to un-sync the note.
           await universalNotesService.cloudNotesService
               .deleteOneById(currentLocalNote.noteId);
@@ -241,7 +236,7 @@ class NoteCubit extends Cubit<NoteState> {
           input = input.copyWith(
             isSyncWithCloud: false,
           );
-        } else if (input.isExistsInCloud) {
+        } else if (input.isExistsInTheCloud) {
           // Update the note
           await universalNotesService.cloudNotesService.updateOne(input);
         }

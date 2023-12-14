@@ -82,6 +82,7 @@ class UniversalNotesService extends AppService {
   Future<void> deleteOneById(String id) async {
     final localNote = await localNotesService.getOneById(id);
     if (localNote == null) {
+      await cloudNotesService.deleteOneById(id);
       return;
     }
     await localNotesService.deleteOneById(id);

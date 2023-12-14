@@ -20,6 +20,7 @@ mixin _$CreateNoteInput {
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
+  bool get isExistsInTheCloud => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
 
@@ -39,6 +40,7 @@ abstract class $CreateNoteInputCopyWith<$Res> {
       String title,
       String text,
       bool isSyncWithCloud,
+      bool isExistsInTheCloud,
       bool isPrivate,
       String userId});
 }
@@ -60,6 +62,7 @@ class _$CreateNoteInputCopyWithImpl<$Res, $Val extends CreateNoteInput>
     Object? title = null,
     Object? text = null,
     Object? isSyncWithCloud = null,
+    Object? isExistsInTheCloud = null,
     Object? isPrivate = null,
     Object? userId = null,
   }) {
@@ -79,6 +82,10 @@ class _$CreateNoteInputCopyWithImpl<$Res, $Val extends CreateNoteInput>
       isSyncWithCloud: null == isSyncWithCloud
           ? _value.isSyncWithCloud
           : isSyncWithCloud // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isExistsInTheCloud: null == isExistsInTheCloud
+          ? _value.isExistsInTheCloud
+          : isExistsInTheCloud // ignore: cast_nullable_to_non_nullable
               as bool,
       isPrivate: null == isPrivate
           ? _value.isPrivate
@@ -105,6 +112,7 @@ abstract class _$$CreateNoteInputImplCopyWith<$Res>
       String title,
       String text,
       bool isSyncWithCloud,
+      bool isExistsInTheCloud,
       bool isPrivate,
       String userId});
 }
@@ -124,6 +132,7 @@ class __$$CreateNoteInputImplCopyWithImpl<$Res>
     Object? title = null,
     Object? text = null,
     Object? isSyncWithCloud = null,
+    Object? isExistsInTheCloud = null,
     Object? isPrivate = null,
     Object? userId = null,
   }) {
@@ -143,6 +152,10 @@ class __$$CreateNoteInputImplCopyWithImpl<$Res>
       isSyncWithCloud: null == isSyncWithCloud
           ? _value.isSyncWithCloud
           : isSyncWithCloud // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isExistsInTheCloud: null == isExistsInTheCloud
+          ? _value.isExistsInTheCloud
+          : isExistsInTheCloud // ignore: cast_nullable_to_non_nullable
               as bool,
       isPrivate: null == isPrivate
           ? _value.isPrivate
@@ -164,6 +177,7 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
       required this.title,
       required this.text,
       required this.isSyncWithCloud,
+      required this.isExistsInTheCloud,
       required this.isPrivate,
       required this.userId});
 
@@ -176,13 +190,15 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
   @override
   final bool isSyncWithCloud;
   @override
+  final bool isExistsInTheCloud;
+  @override
   final bool isPrivate;
   @override
   final String userId;
 
   @override
   String toString() {
-    return 'CreateNoteInput(noteId: $noteId, title: $title, text: $text, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, userId: $userId)';
+    return 'CreateNoteInput(noteId: $noteId, title: $title, text: $text, isSyncWithCloud: $isSyncWithCloud, isExistsInTheCloud: $isExistsInTheCloud, isPrivate: $isPrivate, userId: $userId)';
   }
 
   @override
@@ -195,14 +211,16 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.isSyncWithCloud, isSyncWithCloud) ||
                 other.isSyncWithCloud == isSyncWithCloud) &&
+            (identical(other.isExistsInTheCloud, isExistsInTheCloud) ||
+                other.isExistsInTheCloud == isExistsInTheCloud) &&
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
             (identical(other.userId, userId) || other.userId == userId));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, noteId, title, text, isSyncWithCloud, isPrivate, userId);
+  int get hashCode => Object.hash(runtimeType, noteId, title, text,
+      isSyncWithCloud, isExistsInTheCloud, isPrivate, userId);
 
   @JsonKey(ignore: true)
   @override
@@ -218,6 +236,7 @@ abstract class _CreateNoteInput implements CreateNoteInput {
       required final String title,
       required final String text,
       required final bool isSyncWithCloud,
+      required final bool isExistsInTheCloud,
       required final bool isPrivate,
       required final String userId}) = _$CreateNoteInputImpl;
 
@@ -229,6 +248,8 @@ abstract class _CreateNoteInput implements CreateNoteInput {
   String get text;
   @override
   bool get isSyncWithCloud;
+  @override
+  bool get isExistsInTheCloud;
   @override
   bool get isPrivate;
   @override
@@ -245,6 +266,7 @@ mixin _$UpdateNoteInput {
   String get text => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
+  bool get isExistsInTheCloud => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
   bool get isTrash => throw _privateConstructorUsedError;
 
@@ -264,6 +286,7 @@ abstract class $UpdateNoteInputCopyWith<$Res> {
       String text,
       String title,
       bool isSyncWithCloud,
+      bool isExistsInTheCloud,
       bool isPrivate,
       bool isTrash});
 }
@@ -285,6 +308,7 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
     Object? text = null,
     Object? title = null,
     Object? isSyncWithCloud = null,
+    Object? isExistsInTheCloud = null,
     Object? isPrivate = null,
     Object? isTrash = null,
   }) {
@@ -304,6 +328,10 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
       isSyncWithCloud: null == isSyncWithCloud
           ? _value.isSyncWithCloud
           : isSyncWithCloud // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isExistsInTheCloud: null == isExistsInTheCloud
+          ? _value.isExistsInTheCloud
+          : isExistsInTheCloud // ignore: cast_nullable_to_non_nullable
               as bool,
       isPrivate: null == isPrivate
           ? _value.isPrivate
@@ -330,6 +358,7 @@ abstract class _$$UpdateNoteInputImplCopyWith<$Res>
       String text,
       String title,
       bool isSyncWithCloud,
+      bool isExistsInTheCloud,
       bool isPrivate,
       bool isTrash});
 }
@@ -349,6 +378,7 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
     Object? text = null,
     Object? title = null,
     Object? isSyncWithCloud = null,
+    Object? isExistsInTheCloud = null,
     Object? isPrivate = null,
     Object? isTrash = null,
   }) {
@@ -368,6 +398,10 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
       isSyncWithCloud: null == isSyncWithCloud
           ? _value.isSyncWithCloud
           : isSyncWithCloud // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isExistsInTheCloud: null == isExistsInTheCloud
+          ? _value.isExistsInTheCloud
+          : isExistsInTheCloud // ignore: cast_nullable_to_non_nullable
               as bool,
       isPrivate: null == isPrivate
           ? _value.isPrivate
@@ -389,6 +423,7 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
       required this.text,
       required this.title,
       required this.isSyncWithCloud,
+      required this.isExistsInTheCloud,
       required this.isPrivate,
       required this.isTrash});
 
@@ -401,13 +436,15 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
   @override
   final bool isSyncWithCloud;
   @override
+  final bool isExistsInTheCloud;
+  @override
   final bool isPrivate;
   @override
   final bool isTrash;
 
   @override
   String toString() {
-    return 'UpdateNoteInput(noteId: $noteId, text: $text, title: $title, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isTrash: $isTrash)';
+    return 'UpdateNoteInput(noteId: $noteId, text: $text, title: $title, isSyncWithCloud: $isSyncWithCloud, isExistsInTheCloud: $isExistsInTheCloud, isPrivate: $isPrivate, isTrash: $isTrash)';
   }
 
   @override
@@ -420,14 +457,16 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.isSyncWithCloud, isSyncWithCloud) ||
                 other.isSyncWithCloud == isSyncWithCloud) &&
+            (identical(other.isExistsInTheCloud, isExistsInTheCloud) ||
+                other.isExistsInTheCloud == isExistsInTheCloud) &&
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
             (identical(other.isTrash, isTrash) || other.isTrash == isTrash));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, noteId, text, title, isSyncWithCloud, isPrivate, isTrash);
+  int get hashCode => Object.hash(runtimeType, noteId, text, title,
+      isSyncWithCloud, isExistsInTheCloud, isPrivate, isTrash);
 
   @JsonKey(ignore: true)
   @override
@@ -443,6 +482,7 @@ abstract class _UpdateNoteInput implements UpdateNoteInput {
       required final String text,
       required final String title,
       required final bool isSyncWithCloud,
+      required final bool isExistsInTheCloud,
       required final bool isPrivate,
       required final bool isTrash}) = _$UpdateNoteInputImpl;
 
@@ -454,6 +494,8 @@ abstract class _UpdateNoteInput implements UpdateNoteInput {
   String get title;
   @override
   bool get isSyncWithCloud;
+  @override
+  bool get isExistsInTheCloud;
   @override
   bool get isPrivate;
   @override

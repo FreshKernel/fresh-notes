@@ -8,7 +8,6 @@ import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
 
 import '../../../core/log/logger.dart';
-import '../../../data/core/cloud/database/sync_options.dart';
 import '../../../data/core/shared/data_utils.dart';
 import '../../../data/notes/universal/models/m_note.dart';
 import '../../../data/notes/universal/models/m_note_inputs.dart';
@@ -138,6 +137,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
             title: _titleController.text,
             text: jsonEncode(document.toDelta().toJson()),
             isSyncWithCloud: _isSyncWithCloud,
+            isExistsInTheCloud: _note?.isExistsInTheCloud ?? false,
             isPrivate: _isPrivate,
             isTrash: false,
           ),
@@ -149,6 +149,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
             title: _titleController.text,
             text: jsonEncode(document.toDelta().toJson()),
             isSyncWithCloud: _isSyncWithCloud,
+            isExistsInTheCloud: false,
             isPrivate: _isPrivate,
             userId: userId,
           ),
