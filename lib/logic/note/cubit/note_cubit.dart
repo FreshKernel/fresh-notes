@@ -222,8 +222,7 @@ class NoteCubit extends Cubit<NoteState> {
 
         // Create the note if it doesn't exist and the user wants to sync his offline
         // note so we needs to create it
-        if (input.syncOptions.isSyncWithCloud &&
-            !currentLocalNoteExistsInCloud) {
+        if (input.isSyncWithCloud && !currentLocalNoteExistsInCloud) {
           final cloudNote =
               await universalNotesService.cloudNotesService.createOne(
             CreateNoteInput.fromUpdateInput(
@@ -234,16 +233,15 @@ class NoteCubit extends Cubit<NoteState> {
           input = input.copyWith(
             syncOptions: SyncOptions.syncWithExistingCloudId(cloudNote.id),
           );
-        } else if (!input.syncOptions.isSyncWithCloud &&
-            currentLocalNoteExistsInCloud) {
+        } else if (!input.isSyncWithCloud && currentLocalNoteExistsInCloud) {
           // If the current note exist and the user wants to un-sync the note.
           await universalNotesService.cloudNotesService
               .deleteOneById(currentLocalNote.noteId);
           await _deleteNoteCloudFiles(currentLocalNote.text);
           input = input.copyWith(
-            syncOptions: SyncOptions.noSync(),
+            isSyncWithCloud: false,
           );
-        } else if (input.syncOptions.isExistsInCloud) {
+        } else if (input.isExistsInCloud) {
           // Update the note
           await universalNotesService.cloudNotesService.updateOne(input);
         }
