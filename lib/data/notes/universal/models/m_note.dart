@@ -1,14 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../core/cloud/database/sync_options.dart';
 import '../../cloud/models/m_cloud_note.dart';
 import '../../local/models/m_local_note.dart';
+import 'm_note_inputs.dart';
 
 // part 'm_note.freezed.dart';
 
-@freezed
 class UniversalNote extends Equatable {
   // const factory UniversalNote({
   //   required String id, // Note id only
@@ -67,6 +65,41 @@ class UniversalNote extends Equatable {
         isTrash: note.isTrash,
         createdAt: note.createdAt,
         updatedAt: note.updatedAt,
+      );
+
+  factory UniversalNote.fromCreateInput(
+    CreateNoteInput input, {
+    required DateTime createdAt,
+    required DateTime updatedAt,
+  }) =>
+      UniversalNote(
+        noteId: input.noteId,
+        userId: input.userId,
+        title: input.title,
+        text: input.text,
+        syncOptions: input.syncOptions,
+        isPrivate: input.isPrivate,
+        isTrash: false,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+
+  factory UniversalNote.fromUpdateInput(
+    UpdateNoteInput input, {
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    required String userId,
+  }) =>
+      UniversalNote(
+        noteId: input.noteId,
+        userId: userId,
+        title: input.title,
+        text: input.text,
+        syncOptions: input.syncOptions,
+        isPrivate: input.isPrivate,
+        isTrash: false,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
       );
 
   final String noteId;

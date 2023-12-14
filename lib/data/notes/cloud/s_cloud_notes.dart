@@ -50,4 +50,8 @@ class CloudNotesService extends CloudNotesRepository {
   @override
   Future<CloudNote> updateOne(UpdateNoteInput updateInput) =>
       _provider.updateOne(updateInput);
+
+  @override
+  Future<void> updateByIds(List<UpdateNoteInput> entities) =>
+      _provider.updateByIds(entities);
 }

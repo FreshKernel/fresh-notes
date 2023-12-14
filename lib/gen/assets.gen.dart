@@ -17,9 +17,9 @@ class $AssetsImagesGen {
   AssetGenImage get appLogo =>
       const AssetGenImage('assets/images/app_logo.png');
 
-  /// File path: assets/images/macos_notes_crash.png
+  /// File path: assets/images/macos_notes_crash.webp
   AssetGenImage get macosNotesCrash =>
-      const AssetGenImage('assets/images/macos_notes_crash.png');
+      const AssetGenImage('assets/images/macos_notes_crash.webp');
 
   /// List of all assets
   List<AssetGenImage> get values => [appLogo, macosNotesCrash];

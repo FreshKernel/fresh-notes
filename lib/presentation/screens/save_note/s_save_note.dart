@@ -61,22 +61,24 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   SyncOptions get _getSyncOptions {
     return SyncOptions.getSyncOptions(
       isSyncWithCloud: _isSyncWithCloud,
-      existingCloudNoteId: _note?.syncOptions.getCloudNoteId(),
+      existingCloudNoteId: _note?.noteId,
     );
   }
 
   @override
   void initState() {
     super.initState();
-    _setupController();
     _noteBloc = context.read<NoteCubit>();
+    _setupNote();
   }
 
-  void _setupController() {
+  void _setupNote() {
     if (widget.args.isDeepLink) {
       _isReadOnly = true;
     }
     final noteToEdit = _note;
+
+    // For updating note
     if (noteToEdit != null) {
       final json = jsonDecode(noteToEdit.text);
       _titleController = TextEditingController(
@@ -88,17 +90,20 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
       );
 
       // Default option is false
-      _isSyncWithCloud = _note?.syncOptions.isSyncWithCloud ?? false;
+      _isSyncWithCloud = noteToEdit.syncOptions.isSyncWithCloud;
       return;
     }
-    _titleController = TextEditingController();
-    _controller = QuillController.basic();
+
+    // For creating a note
     _isSyncWithCloud =
         context.read<SettingsCubit>().state.syncWithCloudDefaultValue;
+    _titleController = TextEditingController();
+    _controller = QuillController.basic();
   }
 
   @override
   void dispose() {
+    // TODO: feat: Add disable auto save option in the settings.
     _saveNote().then((value) => _controller.dispose());
     super.dispose();
   }
@@ -124,7 +129,9 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
     // If nothings changed then ignore
     if (_isEditing &&
         newNoteText == _note?.text &&
-        _titleController.text == _note?.title) {
+        _titleController.text == _note?.title &&
+        _isPrivate == _note?.isPrivate &&
+        _getSyncOptions == _note?.syncOptions) {
       return;
     }
     try {
@@ -136,8 +143,8 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
             noteId: _note?.noteId ??
                 (throw ArgumentError(
                     'The id is required for updating the note')),
-            text: jsonEncode(document.toDelta().toJson()),
             title: _titleController.text,
+            text: jsonEncode(document.toDelta().toJson()),
             syncOptions: _getSyncOptions,
             isPrivate: _isPrivate,
             isTrash: false,

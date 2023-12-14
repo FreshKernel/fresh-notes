@@ -101,4 +101,10 @@ class LocalNotesService extends LocalNotesRepository {
     requireToBeInitialized();
     await _provider.deleteByIds(ids);
   }
+
+  @override
+  Future<void> updateByIds(List<UpdateNoteInput> entities) async {
+    requireToBeInitialized();
+    await _provider.updateByIds(entities);
+  }
 }

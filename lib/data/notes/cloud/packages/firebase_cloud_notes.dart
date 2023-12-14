@@ -207,4 +207,30 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
       userId: currentNote.userId,
     );
   }
+
+  @override
+  Future<void> updateByIds(List<UpdateNoteInput> entities) async {
+    final batch = FirebaseFirestore.instance.batch();
+
+    for (final noteInput in entities) {
+      final noteDoc = (await _notesCollection
+              .where(
+                CloudNoteProperties.noteId,
+                isEqualTo: noteInput.noteId,
+              )
+              .limit(1)
+              .get())
+          .docs
+          .first;
+      if (!noteDoc.exists) {
+        continue;
+      }
+      batch.update(
+        noteDoc.reference,
+        CloudNote.toFirebaseMapFromUpdateInput(input: noteInput),
+      );
+    }
+
+    await batch.commit();
+  }
 }

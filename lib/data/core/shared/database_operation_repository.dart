@@ -9,6 +9,7 @@ abstract class DatabaseOperationRepository<Output, CreateInput, UpdateInput,
   }); // Default -1, page 1
   Future<List<Output>> getAllByIds(List<EntityId> ids);
   Future<void> deleteByIds(List<EntityId> ids);
+  Future<void> updateByIds(List<UpdateInput> entities);
   Future<Output> updateOne(UpdateInput updateInput);
   Future<void> deleteOneById(EntityId id);
   Future<void> deleteAll();

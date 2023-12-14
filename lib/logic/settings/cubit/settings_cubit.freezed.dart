@@ -26,11 +26,11 @@ mixin _$SettingsState {
   bool get syncWithCloudDefaultValue => throw _privateConstructorUsedError;
   bool get onlySaveDataWhenClick => throw _privateConstructorUsedError;
   dynamic get darkDuringDayInAutoMode => throw _privateConstructorUsedError;
+  bool get openOnBoardingScreen => throw _privateConstructorUsedError;
   AppThemeMode get themeMode => throw _privateConstructorUsedError;
   AppLanguague get appLanguague => throw _privateConstructorUsedError;
   AppThemeSystem get themeSystem => throw _privateConstructorUsedError;
   AppLayoutMode get layoutMode => throw _privateConstructorUsedError;
-  bool get openOnBoardingScreen => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,11 +51,11 @@ abstract class $SettingsStateCopyWith<$Res> {
       bool syncWithCloudDefaultValue,
       bool onlySaveDataWhenClick,
       dynamic darkDuringDayInAutoMode,
+      bool openOnBoardingScreen,
       AppThemeMode themeMode,
       AppLanguague appLanguague,
       AppThemeSystem themeSystem,
-      AppLayoutMode layoutMode,
-      bool openOnBoardingScreen});
+      AppLayoutMode layoutMode});
 }
 
 /// @nodoc
@@ -77,11 +77,11 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
     Object? syncWithCloudDefaultValue = null,
     Object? onlySaveDataWhenClick = null,
     Object? darkDuringDayInAutoMode = freezed,
+    Object? openOnBoardingScreen = null,
     Object? themeMode = null,
     Object? appLanguague = null,
     Object? themeSystem = null,
     Object? layoutMode = null,
-    Object? openOnBoardingScreen = null,
   }) {
     return _then(_value.copyWith(
       confirmDeleteNote: null == confirmDeleteNote
@@ -108,6 +108,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
           ? _value.darkDuringDayInAutoMode
           : darkDuringDayInAutoMode // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      openOnBoardingScreen: null == openOnBoardingScreen
+          ? _value.openOnBoardingScreen
+          : openOnBoardingScreen // ignore: cast_nullable_to_non_nullable
+              as bool,
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
@@ -124,10 +128,6 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
           ? _value.layoutMode
           : layoutMode // ignore: cast_nullable_to_non_nullable
               as AppLayoutMode,
-      openOnBoardingScreen: null == openOnBoardingScreen
-          ? _value.openOnBoardingScreen
-          : openOnBoardingScreen // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -147,11 +147,11 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
       bool syncWithCloudDefaultValue,
       bool onlySaveDataWhenClick,
       dynamic darkDuringDayInAutoMode,
+      bool openOnBoardingScreen,
       AppThemeMode themeMode,
       AppLanguague appLanguague,
       AppThemeSystem themeSystem,
-      AppLayoutMode layoutMode,
-      bool openOnBoardingScreen});
+      AppLayoutMode layoutMode});
 }
 
 /// @nodoc
@@ -171,11 +171,11 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
     Object? syncWithCloudDefaultValue = null,
     Object? onlySaveDataWhenClick = null,
     Object? darkDuringDayInAutoMode = freezed,
+    Object? openOnBoardingScreen = null,
     Object? themeMode = null,
     Object? appLanguague = null,
     Object? themeSystem = null,
     Object? layoutMode = null,
-    Object? openOnBoardingScreen = null,
   }) {
     return _then(_$SettingsStateImpl(
       confirmDeleteNote: null == confirmDeleteNote
@@ -201,6 +201,10 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
       darkDuringDayInAutoMode: freezed == darkDuringDayInAutoMode
           ? _value.darkDuringDayInAutoMode!
           : darkDuringDayInAutoMode,
+      openOnBoardingScreen: null == openOnBoardingScreen
+          ? _value.openOnBoardingScreen
+          : openOnBoardingScreen // ignore: cast_nullable_to_non_nullable
+              as bool,
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
@@ -217,10 +221,6 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
           ? _value.layoutMode
           : layoutMode // ignore: cast_nullable_to_non_nullable
               as AppLayoutMode,
-      openOnBoardingScreen: null == openOnBoardingScreen
-          ? _value.openOnBoardingScreen
-          : openOnBoardingScreen // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -235,11 +235,11 @@ class _$SettingsStateImpl implements _SettingsState {
       this.syncWithCloudDefaultValue = false,
       this.onlySaveDataWhenClick = true,
       this.darkDuringDayInAutoMode = false,
+      this.openOnBoardingScreen = true,
       this.themeMode = AppThemeMode.system,
       this.appLanguague = AppLanguague.system,
       this.themeSystem = AppThemeSystem.material3,
-      this.layoutMode = AppLayoutMode.auto,
-      this.openOnBoardingScreen = true});
+      this.layoutMode = AppLayoutMode.auto});
 
   factory _$SettingsStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$SettingsStateImplFromJson(json);
@@ -264,6 +264,9 @@ class _$SettingsStateImpl implements _SettingsState {
   final dynamic darkDuringDayInAutoMode;
   @override
   @JsonKey()
+  final bool openOnBoardingScreen;
+  @override
+  @JsonKey()
   final AppThemeMode themeMode;
   @override
   @JsonKey()
@@ -274,13 +277,10 @@ class _$SettingsStateImpl implements _SettingsState {
   @override
   @JsonKey()
   final AppLayoutMode layoutMode;
-  @override
-  @JsonKey()
-  final bool openOnBoardingScreen;
 
   @override
   String toString() {
-    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, confirmMoveNoteToTrash: $confirmMoveNoteToTrash, useNoteGridTile: $useNoteGridTile, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, themeMode: $themeMode, appLanguague: $appLanguague, themeSystem: $themeSystem, layoutMode: $layoutMode, openOnBoardingScreen: $openOnBoardingScreen)';
+    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, confirmMoveNoteToTrash: $confirmMoveNoteToTrash, useNoteGridTile: $useNoteGridTile, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, openOnBoardingScreen: $openOnBoardingScreen, themeMode: $themeMode, appLanguague: $appLanguague, themeSystem: $themeSystem, layoutMode: $layoutMode)';
   }
 
   @override
@@ -301,6 +301,8 @@ class _$SettingsStateImpl implements _SettingsState {
                 other.onlySaveDataWhenClick == onlySaveDataWhenClick) &&
             const DeepCollectionEquality().equals(
                 other.darkDuringDayInAutoMode, darkDuringDayInAutoMode) &&
+            (identical(other.openOnBoardingScreen, openOnBoardingScreen) ||
+                other.openOnBoardingScreen == openOnBoardingScreen) &&
             (identical(other.themeMode, themeMode) ||
                 other.themeMode == themeMode) &&
             (identical(other.appLanguague, appLanguague) ||
@@ -308,9 +310,7 @@ class _$SettingsStateImpl implements _SettingsState {
             (identical(other.themeSystem, themeSystem) ||
                 other.themeSystem == themeSystem) &&
             (identical(other.layoutMode, layoutMode) ||
-                other.layoutMode == layoutMode) &&
-            (identical(other.openOnBoardingScreen, openOnBoardingScreen) ||
-                other.openOnBoardingScreen == openOnBoardingScreen));
+                other.layoutMode == layoutMode));
   }
 
   @JsonKey(ignore: true)
@@ -323,11 +323,11 @@ class _$SettingsStateImpl implements _SettingsState {
       syncWithCloudDefaultValue,
       onlySaveDataWhenClick,
       const DeepCollectionEquality().hash(darkDuringDayInAutoMode),
+      openOnBoardingScreen,
       themeMode,
       appLanguague,
       themeSystem,
-      layoutMode,
-      openOnBoardingScreen);
+      layoutMode);
 
   @JsonKey(ignore: true)
   @override
@@ -351,11 +351,11 @@ abstract class _SettingsState implements SettingsState {
       final bool syncWithCloudDefaultValue,
       final bool onlySaveDataWhenClick,
       final dynamic darkDuringDayInAutoMode,
+      final bool openOnBoardingScreen,
       final AppThemeMode themeMode,
       final AppLanguague appLanguague,
       final AppThemeSystem themeSystem,
-      final AppLayoutMode layoutMode,
-      final bool openOnBoardingScreen}) = _$SettingsStateImpl;
+      final AppLayoutMode layoutMode}) = _$SettingsStateImpl;
 
   factory _SettingsState.fromJson(Map<String, dynamic> json) =
       _$SettingsStateImpl.fromJson;
@@ -373,6 +373,8 @@ abstract class _SettingsState implements SettingsState {
   @override
   dynamic get darkDuringDayInAutoMode;
   @override
+  bool get openOnBoardingScreen;
+  @override
   AppThemeMode get themeMode;
   @override
   AppLanguague get appLanguague;
@@ -380,8 +382,6 @@ abstract class _SettingsState implements SettingsState {
   AppThemeSystem get themeSystem;
   @override
   AppLayoutMode get layoutMode;
-  @override
-  bool get openOnBoardingScreen;
   @override
   @JsonKey(ignore: true)
   _$$SettingsStateImplCopyWith<_$SettingsStateImpl> get copyWith =>

@@ -281,11 +281,26 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       }
       if (deletedCount != ids.length) {
         throw DatabaseOperationException(
-            'The deleted items count is $deletedCount while the length of the ids is ${ids.length}, so not all items has been deleted. Make sure all the ids are exists');
+          'The deleted items count is $deletedCount while the length of the ids is ${ids.length}, so not all items has been deleted. Make sure all the ids are exists',
+        );
       }
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(
           'Unknown error while update note by id ${e.toString()}');
     }
+  }
+
+  @override
+  Future<void> updateByIds(List<UpdateNoteInput> entities) async {
+    await _database!.transaction((txn) async {
+      for (final noteInput in entities) {
+        await txn.update(
+          LocalNote.sqlTableName,
+          LocalNote.toSqliteMapFromUpdateInput(input: noteInput).toMap(),
+          where: '${LocalNoteProperties.noteId} = ?',
+          whereArgs: [noteInput.noteId],
+        );
+      }
+    });
   }
 }

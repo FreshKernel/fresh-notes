@@ -26,7 +26,7 @@ class SettingsContent extends StatelessWidget {
               OutlinedButton(
                 onPressed: () {
                   final settingsBloc = context.read<SettingsCubit>();
-                  settingsBloc.clear();
+                  settingsBloc.clearData();
                 },
                 child: Text(context.loc.clear),
               ),

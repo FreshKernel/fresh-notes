@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import '../../../core/log/logger.dart';
 import '../../../logic/note/cubit/note_cubit.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../components/others/w_no_data.dart';
+import '../../utils/extensions/build_context_ext.dart';
 import '../../utils/form_factor.dart';
 import 'note_tile/note_tile_options.dart';
 import 'note_tile/w_note_grid_tile.dart';
@@ -52,7 +54,14 @@ class _NoteListContentState extends State<NoteListContent> {
             );
           }
 
-          return BlocBuilder<NoteCubit, NoteState>(
+          return BlocConsumer<NoteCubit, NoteState>(
+            listener: (context, state) {
+              final exception = state.exception;
+              if (exception != null) {
+                AppLogger.error(exception.toString());
+                context.messenger.showMessage(exception.toString());
+              }
+            },
             builder: (context, state) {
               if (state.exception != null) {
                 return Center(

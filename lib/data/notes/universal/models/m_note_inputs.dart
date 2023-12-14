@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../data/notes/cloud/models/m_cloud_note.dart';
 import '../../../core/cloud/database/sync_options.dart';
+import '../../local/models/m_local_note.dart';
 import 'm_note.dart';
 
 part 'm_note_inputs.freezed.dart';
@@ -69,5 +70,17 @@ class UpdateNoteInput with _$UpdateNoteInput {
         text: note.text,
         title: note.title,
         syncOptions: note.syncOptions,
+      );
+
+  factory UpdateNoteInput.fromLocalNote(LocalNote note) => UpdateNoteInput(
+        isTrash: note.isTrash,
+        isPrivate: note.isPrivate,
+        noteId: note.noteId,
+        text: note.text,
+        title: note.title,
+        syncOptions: SyncOptions.getSyncOptions(
+          isSyncWithCloud: note.isSyncWithCloud,
+          existingCloudNoteId: note.cloudId,
+        ),
       );
 }

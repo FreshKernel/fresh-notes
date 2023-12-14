@@ -26,24 +26,30 @@ class NotesListPage extends StatefulWidget {
         },
         icon: const Icon(Icons.list),
       ),
-      IconButton(
-        tooltip: context.loc.deleteAll,
-        onPressed: () async {
-          final noteBloc = context.read<NoteCubit>();
-          final deletedAllConfirmed = await showYesCancelDialog(
-            context: context,
-            options: YesOrCancelDialogOptions(
-              title: context.loc.moveAllNotesToTrash,
-              message: context.loc.moveAllNotesToTrashDesc,
-              yesLabel: context.loc.deleteAll,
-            ),
+      BlocBuilder<NoteCubit, NoteState>(
+        builder: (context, state) {
+          return IconButton(
+            tooltip: context.loc.deleteAll,
+            onPressed: state.nonTrashNotes.isEmpty
+                ? null
+                : () async {
+                    final noteBloc = context.read<NoteCubit>();
+                    final deletedAllConfirmed = await showYesCancelDialog(
+                      context: context,
+                      options: YesOrCancelDialogOptions(
+                        title: context.loc.moveAllNotesToTrash,
+                        message: context.loc.moveAllNotesToTrashDesc,
+                        yesLabel: context.loc.deleteAll,
+                      ),
+                    );
+                    if (!deletedAllConfirmed) {
+                      return;
+                    }
+                    noteBloc.moveAllNotesToTrash();
+                  },
+            icon: const Icon(Icons.delete_forever),
           );
-          if (!deletedAllConfirmed) {
-            return;
-          }
-          noteBloc.moveAllNotesToTrash();
         },
-        icon: const Icon(Icons.delete_forever),
       ),
     ];
   }
