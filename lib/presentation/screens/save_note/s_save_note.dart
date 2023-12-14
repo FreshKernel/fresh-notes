@@ -58,13 +58,6 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
   bool get _isEditing => _note != null;
   late final NoteCubit _noteBloc;
 
-  SyncOptions get _getSyncOptions {
-    return SyncOptions.getSyncOptions(
-      isSyncWithCloud: _isSyncWithCloud,
-      existingCloudNoteId: _note?.noteId,
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -89,7 +82,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
       );
 
       // Default option is false
-      _isSyncWithCloud = noteToEdit.syncOptions.isSyncWithCloud;
+      _isSyncWithCloud = noteToEdit.isSyncWithCloud;
       return;
     }
 
@@ -130,7 +123,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
         newNoteText == _note?.text &&
         _titleController.text == _note?.title &&
         _isPrivate == _note?.isPrivate &&
-        _getSyncOptions == _note?.syncOptions) {
+        _isSyncWithCloud == _note?.isSyncWithCloud) {
       return;
     }
     try {
@@ -144,7 +137,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
                     'The id is required for updating the note')),
             title: _titleController.text,
             text: jsonEncode(document.toDelta().toJson()),
-            syncOptions: _getSyncOptions,
+            isSyncWithCloud: _isSyncWithCloud,
             isPrivate: _isPrivate,
             isTrash: false,
           ),
@@ -155,7 +148,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
             noteId: generateRandomItemId(),
             title: _titleController.text,
             text: jsonEncode(document.toDelta().toJson()),
-            syncOptions: _getSyncOptions,
+            isSyncWithCloud: _isSyncWithCloud,
             isPrivate: _isPrivate,
             userId: userId,
           ),

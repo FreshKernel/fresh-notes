@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../data/notes/cloud/models/m_cloud_note.dart';
-import '../../../core/cloud/database/sync_options.dart';
 import '../../local/models/m_local_note.dart';
 import 'm_note.dart';
 
@@ -12,7 +11,7 @@ class CreateNoteInput with _$CreateNoteInput {
     required String noteId,
     required String title,
     required String text,
-    required SyncOptions syncOptions,
+    required bool isSyncWithCloud,
     required bool isPrivate,
     required String userId,
   }) = _CreateNoteInput;
@@ -20,10 +19,7 @@ class CreateNoteInput with _$CreateNoteInput {
         noteId: note.noteId,
         title: note.title,
         text: note.text,
-        syncOptions: SyncOptions.getSyncOptions(
-          isSyncWithCloud: true,
-          existingCloudNoteId: note.id,
-        ),
+        isSyncWithCloud: true,
         isPrivate: note.isPrivate,
         userId: note.userId,
       );
@@ -35,7 +31,7 @@ class CreateNoteInput with _$CreateNoteInput {
         noteId: input.noteId,
         title: input.title,
         text: input.text,
-        syncOptions: input.syncOptions,
+        isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         userId: userId,
       );
@@ -47,7 +43,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
     required String noteId,
     required String text,
     required String title,
-    required SyncOptions syncOptions,
+    required bool isSyncWithCloud,
     required bool isPrivate,
     required bool isTrash,
   }) = _UpdateNoteInput;
@@ -57,7 +53,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
         noteId: input.noteId,
         text: input.text,
         title: input.title,
-        syncOptions: input.syncOptions,
+        isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         isTrash: false,
       );
@@ -69,7 +65,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
         noteId: note.noteId,
         text: note.text,
         title: note.title,
-        syncOptions: note.syncOptions,
+        isSyncWithCloud: note.isSyncWithCloud,
       );
 
   factory UpdateNoteInput.fromLocalNote(LocalNote note) => UpdateNoteInput(
@@ -78,9 +74,6 @@ class UpdateNoteInput with _$UpdateNoteInput {
         noteId: note.noteId,
         text: note.text,
         title: note.title,
-        syncOptions: SyncOptions.getSyncOptions(
-          isSyncWithCloud: note.isSyncWithCloud,
-          existingCloudNoteId: note.cloudId,
-        ),
+        isSyncWithCloud: note.isSyncWithCloud,
       );
 }

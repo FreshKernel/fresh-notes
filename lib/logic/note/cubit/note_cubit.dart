@@ -67,7 +67,7 @@ class NoteCubit extends Cubit<NoteState> {
       ).toList();
 
       final savedImages = <String>[];
-      if (input.syncOptions.isSyncWithCloud) {
+      if (input.isSyncWithCloud) {
         // TODO: Upload with metadata in firebase storage
         final cloudPaths = await cloudStorageService.uploadMultipleFiles(
           newFileNames.asMap().entries.map((e) {

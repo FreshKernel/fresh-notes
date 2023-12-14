@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../core/cloud/database/sync_options.dart';
 import '../../cloud/models/m_cloud_note.dart';
 import '../../local/models/m_local_note.dart';
 import 'm_note_inputs.dart';
@@ -8,24 +7,12 @@ import 'm_note_inputs.dart';
 // part 'm_note.freezed.dart';
 
 class UniversalNote extends Equatable {
-  // const factory UniversalNote({
-  //   required String id, // Note id only
-  //   required String userId,
-  //   required String title,
-  //   required String text,
-  //   required SyncOptions syncOptions,
-  //   required bool isPrivate,
-  //   required bool isTrash,
-  //   required DateTime createdAt,
-  //   required DateTime updatedAt,
-  // }) = _UniversalNote;
-
   const UniversalNote({
     required this.noteId,
     required this.userId,
     required this.title,
     required this.text,
-    required this.syncOptions,
+    required this.isSyncWithCloud,
     required this.isPrivate,
     required this.isTrash,
     required this.createdAt,
@@ -39,10 +26,7 @@ class UniversalNote extends Equatable {
         userId: note.userId,
         title: note.title,
         text: note.text,
-        syncOptions: SyncOptions.getSyncOptions(
-          isSyncWithCloud: note.isSyncWithCloud,
-          existingCloudNoteId: note.cloudId,
-        ),
+        isSyncWithCloud: note.isSyncWithCloud,
         isPrivate: note.isPrivate,
         isTrash: note.isTrash,
         createdAt: note.createdAt,
@@ -57,10 +41,7 @@ class UniversalNote extends Equatable {
         userId: note.userId,
         title: note.title,
         text: note.text,
-        syncOptions: SyncOptions.getSyncOptions(
-          isSyncWithCloud: true,
-          existingCloudNoteId: note.id,
-        ),
+        isSyncWithCloud: true,
         isPrivate: note.isPrivate,
         isTrash: note.isTrash,
         createdAt: note.createdAt,
@@ -77,7 +58,7 @@ class UniversalNote extends Equatable {
         userId: input.userId,
         title: input.title,
         text: input.text,
-        syncOptions: input.syncOptions,
+        isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         isTrash: false,
         createdAt: createdAt,
@@ -95,7 +76,7 @@ class UniversalNote extends Equatable {
         userId: userId,
         title: input.title,
         text: input.text,
-        syncOptions: input.syncOptions,
+        isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         isTrash: false,
         createdAt: createdAt,
@@ -106,7 +87,7 @@ class UniversalNote extends Equatable {
   final String userId;
   final String title;
   final String text;
-  final SyncOptions syncOptions;
+  final bool isSyncWithCloud;
   final bool isPrivate;
   final bool isTrash;
   final DateTime createdAt;
@@ -127,7 +108,7 @@ class UniversalNote extends Equatable {
     String? userId,
     String? title,
     String? text,
-    SyncOptions? syncOptions,
+    bool? isSyncWithCloud,
     bool? isPrivate,
     bool? isTrash,
     DateTime? createdAt,
@@ -138,7 +119,7 @@ class UniversalNote extends Equatable {
       userId: userId ?? this.userId,
       title: title ?? this.title,
       text: text ?? this.text,
-      syncOptions: syncOptions ?? this.syncOptions,
+      isSyncWithCloud: isSyncWithCloud ?? this.isSyncWithCloud,
       isPrivate: isPrivate ?? this.isPrivate,
       isTrash: isTrash ?? this.isTrash,
       createdAt: createdAt ?? this.createdAt,
@@ -158,8 +139,9 @@ class UniversalNoteProperties {
   static const userId = 'userId';
   static const title = 'title';
   static const text = 'text';
-  static const cloudId = 'cloudId';
+  // static const cloudId = 'cloudId';
   static const isSyncWithCloud = 'isSyncWithCloud';
+  static const isExistsInTheCloud = 'isExistsInTheCloud';
   static const isPrivate = 'isPrivate';
   static const isTrash = 'isTrash';
   static const createdAt = 'createdAt';

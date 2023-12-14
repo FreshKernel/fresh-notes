@@ -18,14 +18,12 @@ class LocalNote with _$LocalNote {
     required String userId,
     required String title,
     required String text,
-    required String? cloudId,
     required bool isSyncWithCloud,
     required bool isPrivate,
     required bool isTrash,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _LocalNote;
-  // ON UPDATE CURRENT_TIMESTAMP
 
   factory LocalNote._fromInputSharedLogic({
     required String id,
@@ -33,7 +31,7 @@ class LocalNote with _$LocalNote {
     required String userId,
     required String title,
     required String text,
-    required SyncOptions syncOptions,
+    required bool isSyncWithCloud,
     required bool isPrivate,
     required bool isTrash,
     required DateTime createdAt,
@@ -47,8 +45,7 @@ class LocalNote with _$LocalNote {
         text: text,
         isPrivate: isPrivate,
         isTrash: isTrash,
-        cloudId: syncOptions.getCloudNoteId(),
-        isSyncWithCloud: syncOptions.isSyncWithCloud,
+        isSyncWithCloud: isSyncWithCloud,
         createdAt: createdAt,
         updatedAt: updatedAt,
       );
@@ -66,7 +63,7 @@ class LocalNote with _$LocalNote {
         userId: input.userId,
         title: input.title,
         text: input.text,
-        syncOptions: input.syncOptions,
+        isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         isTrash: false,
         createdAt: createdAt,
@@ -87,7 +84,7 @@ class LocalNote with _$LocalNote {
         userId: userId,
         title: input.title,
         text: input.text,
-        syncOptions: input.syncOptions,
+        isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         isTrash: input.isTrash,
         createdAt: createdAt,
@@ -105,7 +102,6 @@ class LocalNote with _$LocalNote {
         userId: map[LocalNoteProperties.userId] as String,
         title: map[LocalNoteProperties.title] as String,
         text: map[LocalNoteProperties.text] as String,
-        cloudId: map[LocalNoteProperties.cloudId] as String?,
         isSyncWithCloud:
             (map[LocalNoteProperties.isSyncWithCloud] as int).toBoolean(),
         isPrivate: (map[LocalNoteProperties.isPrivate] as int).toBoolean(),
@@ -119,17 +115,15 @@ class LocalNote with _$LocalNote {
   static SqlMapData _toSqliteMapSharedLogic({
     required String title,
     required String text,
-    required SyncOptions syncOptions,
+    required bool isSyncWithCloud,
     required bool isPrivate,
     required bool isTrash,
   }) {
     return {
       LocalNoteProperties.title: SqlValue.string(title),
       LocalNoteProperties.text: SqlValue.string(text),
-      LocalNoteProperties.cloudId:
-          SqlValue.string(syncOptions.getCloudNoteId()),
       LocalNoteProperties.isSyncWithCloud:
-          SqlValue.num(syncOptions.isSyncWithCloud.toInt()),
+          SqlValue.num(isSyncWithCloud.toInt()),
       LocalNoteProperties.isPrivate: SqlValue.num(isPrivate.toInt()),
       LocalNoteProperties.isTrash: SqlValue.num(isTrash.toInt()),
     };
@@ -141,7 +135,7 @@ class LocalNote with _$LocalNote {
     final sharedInputData = _toSqliteMapSharedLogic(
       title: input.title,
       text: input.text,
-      syncOptions: input.syncOptions,
+      isSyncWithCloud: input.isSyncWithCloud,
       isPrivate: input.isPrivate,
       isTrash: false,
     );
@@ -159,7 +153,7 @@ class LocalNote with _$LocalNote {
     final sharedInputData = _toSqliteMapSharedLogic(
       title: input.title,
       text: input.text,
-      syncOptions: input.syncOptions,
+      isSyncWithCloud: input.isSyncWithCloud,
       isPrivate: input.isPrivate,
       isTrash: input.isTrash,
     );
@@ -179,7 +173,6 @@ class LocalNote with _$LocalNote {
       "${LocalNoteProperties.userId}"	TEXT NOT NULL,
       "${LocalNoteProperties.title}"	TEXT NOT NULL,
       "${LocalNoteProperties.text}"	TEXT NOT NULL,
-      "${LocalNoteProperties.cloudId}" TEXT,
       "${LocalNoteProperties.isSyncWithCloud}" INTEGER NOT NULL,
       "${LocalNoteProperties.isPrivate}"	INTEGER NOT NULL,
       "${LocalNoteProperties.isTrash}"	INTEGER NOT NULL,

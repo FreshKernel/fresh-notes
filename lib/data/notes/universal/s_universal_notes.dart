@@ -40,7 +40,7 @@ class UniversalNotesService extends AppService {
 
   Future<UniversalNote> createOne(CreateNoteInput createInput) async {
     final localNote = await localNotesService.createOne(createInput);
-    if (createInput.syncOptions.isSyncWithCloud) {
+    if (createInput.isSyncWithCloud) {
       await cloudNotesService.createOne(createInput);
     }
     return UniversalNote.fromLocalNote(localNote);

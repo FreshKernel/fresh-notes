@@ -25,7 +25,6 @@ mixin _$LocalNote {
   String get userId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
-  String? get cloudId => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
   bool get isTrash => throw _privateConstructorUsedError;
@@ -49,7 +48,6 @@ abstract class $LocalNoteCopyWith<$Res> {
       String userId,
       String title,
       String text,
-      String? cloudId,
       bool isSyncWithCloud,
       bool isPrivate,
       bool isTrash,
@@ -75,7 +73,6 @@ class _$LocalNoteCopyWithImpl<$Res, $Val extends LocalNote>
     Object? userId = null,
     Object? title = null,
     Object? text = null,
-    Object? cloudId = freezed,
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
     Object? isTrash = null,
@@ -103,10 +100,6 @@ class _$LocalNoteCopyWithImpl<$Res, $Val extends LocalNote>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      cloudId: freezed == cloudId
-          ? _value.cloudId
-          : cloudId // ignore: cast_nullable_to_non_nullable
-              as String?,
       isSyncWithCloud: null == isSyncWithCloud
           ? _value.isSyncWithCloud
           : isSyncWithCloud // ignore: cast_nullable_to_non_nullable
@@ -145,7 +138,6 @@ abstract class _$$LocalNoteImplCopyWith<$Res>
       String userId,
       String title,
       String text,
-      String? cloudId,
       bool isSyncWithCloud,
       bool isPrivate,
       bool isTrash,
@@ -169,7 +161,6 @@ class __$$LocalNoteImplCopyWithImpl<$Res>
     Object? userId = null,
     Object? title = null,
     Object? text = null,
-    Object? cloudId = freezed,
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
     Object? isTrash = null,
@@ -197,10 +188,6 @@ class __$$LocalNoteImplCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      cloudId: freezed == cloudId
-          ? _value.cloudId
-          : cloudId // ignore: cast_nullable_to_non_nullable
-              as String?,
       isSyncWithCloud: null == isSyncWithCloud
           ? _value.isSyncWithCloud
           : isSyncWithCloud // ignore: cast_nullable_to_non_nullable
@@ -234,7 +221,6 @@ class _$LocalNoteImpl implements _LocalNote {
       required this.userId,
       required this.title,
       required this.text,
-      required this.cloudId,
       required this.isSyncWithCloud,
       required this.isPrivate,
       required this.isTrash,
@@ -255,8 +241,6 @@ class _$LocalNoteImpl implements _LocalNote {
   @override
   final String text;
   @override
-  final String? cloudId;
-  @override
   final bool isSyncWithCloud;
   @override
   final bool isPrivate;
@@ -269,7 +253,7 @@ class _$LocalNoteImpl implements _LocalNote {
 
   @override
   String toString() {
-    return 'LocalNote(id: $id, noteId: $noteId, userId: $userId, title: $title, text: $text, cloudId: $cloudId, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isTrash: $isTrash, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'LocalNote(id: $id, noteId: $noteId, userId: $userId, title: $title, text: $text, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isTrash: $isTrash, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -282,7 +266,6 @@ class _$LocalNoteImpl implements _LocalNote {
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.text, text) || other.text == text) &&
-            (identical(other.cloudId, cloudId) || other.cloudId == cloudId) &&
             (identical(other.isSyncWithCloud, isSyncWithCloud) ||
                 other.isSyncWithCloud == isSyncWithCloud) &&
             (identical(other.isPrivate, isPrivate) ||
@@ -297,7 +280,7 @@ class _$LocalNoteImpl implements _LocalNote {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, noteId, userId, title, text,
-      cloudId, isSyncWithCloud, isPrivate, isTrash, createdAt, updatedAt);
+      isSyncWithCloud, isPrivate, isTrash, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -320,7 +303,6 @@ abstract class _LocalNote implements LocalNote {
       required final String userId,
       required final String title,
       required final String text,
-      required final String? cloudId,
       required final bool isSyncWithCloud,
       required final bool isPrivate,
       required final bool isTrash,
@@ -340,8 +322,6 @@ abstract class _LocalNote implements LocalNote {
   String get title;
   @override
   String get text;
-  @override
-  String? get cloudId;
   @override
   bool get isSyncWithCloud;
   @override
