@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../core/log/logger.dart';
-import '../../../data/notes/universal/s_universal_notes.dart';
+import '../../note/cubit/note_cubit.dart';
 import '../auth_custom_provider.dart';
 import '../auth_exceptions.dart';
 import '../auth_service.dart';
@@ -15,10 +15,14 @@ import '../auth_user.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthState.initial());
+  AuthCubit({
+    required AuthService authService,
+    required this.noteCubit,
+  })  : _authService = authService,
+        super(AuthState.initial());
 
-  final _authService = AuthService.getInstance();
-  final _notesService = UniversalNotesService.getInstance();
+  final AuthService _authService;
+  final NoteCubit noteCubit;
 
   Future<void> verifyAccountVerification() async {
     final currentUser = _authService.requireCurrentUser(
@@ -190,7 +194,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// Shared logic between social authentication and email/password providers
   Future<void> _sharedAuthenticateLogic(AuthUser user) async {
-    await _notesService.syncLocalNotesFromCloud();
+    await noteCubit.syncLocalNotesFromCloud();
   }
 
   Future<void> logout() async {

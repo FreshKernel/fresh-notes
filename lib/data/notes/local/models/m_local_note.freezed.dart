@@ -26,7 +26,6 @@ mixin _$LocalNote {
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
-  bool get isExistsInTheCloud => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
   bool get isTrash => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -50,7 +49,6 @@ abstract class $LocalNoteCopyWith<$Res> {
       String title,
       String text,
       bool isSyncWithCloud,
-      bool isExistsInTheCloud,
       bool isPrivate,
       bool isTrash,
       DateTime createdAt,
@@ -76,7 +74,6 @@ class _$LocalNoteCopyWithImpl<$Res, $Val extends LocalNote>
     Object? title = null,
     Object? text = null,
     Object? isSyncWithCloud = null,
-    Object? isExistsInTheCloud = null,
     Object? isPrivate = null,
     Object? isTrash = null,
     Object? createdAt = null,
@@ -106,10 +103,6 @@ class _$LocalNoteCopyWithImpl<$Res, $Val extends LocalNote>
       isSyncWithCloud: null == isSyncWithCloud
           ? _value.isSyncWithCloud
           : isSyncWithCloud // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isExistsInTheCloud: null == isExistsInTheCloud
-          ? _value.isExistsInTheCloud
-          : isExistsInTheCloud // ignore: cast_nullable_to_non_nullable
               as bool,
       isPrivate: null == isPrivate
           ? _value.isPrivate
@@ -146,7 +139,6 @@ abstract class _$$LocalNoteImplCopyWith<$Res>
       String title,
       String text,
       bool isSyncWithCloud,
-      bool isExistsInTheCloud,
       bool isPrivate,
       bool isTrash,
       DateTime createdAt,
@@ -170,7 +162,6 @@ class __$$LocalNoteImplCopyWithImpl<$Res>
     Object? title = null,
     Object? text = null,
     Object? isSyncWithCloud = null,
-    Object? isExistsInTheCloud = null,
     Object? isPrivate = null,
     Object? isTrash = null,
     Object? createdAt = null,
@@ -200,10 +191,6 @@ class __$$LocalNoteImplCopyWithImpl<$Res>
       isSyncWithCloud: null == isSyncWithCloud
           ? _value.isSyncWithCloud
           : isSyncWithCloud // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isExistsInTheCloud: null == isExistsInTheCloud
-          ? _value.isExistsInTheCloud
-          : isExistsInTheCloud // ignore: cast_nullable_to_non_nullable
               as bool,
       isPrivate: null == isPrivate
           ? _value.isPrivate
@@ -235,7 +222,6 @@ class _$LocalNoteImpl implements _LocalNote {
       required this.title,
       required this.text,
       required this.isSyncWithCloud,
-      required this.isExistsInTheCloud,
       required this.isPrivate,
       required this.isTrash,
       required this.createdAt,
@@ -257,8 +243,6 @@ class _$LocalNoteImpl implements _LocalNote {
   @override
   final bool isSyncWithCloud;
   @override
-  final bool isExistsInTheCloud;
-  @override
   final bool isPrivate;
   @override
   final bool isTrash;
@@ -269,7 +253,7 @@ class _$LocalNoteImpl implements _LocalNote {
 
   @override
   String toString() {
-    return 'LocalNote(id: $id, noteId: $noteId, userId: $userId, title: $title, text: $text, isSyncWithCloud: $isSyncWithCloud, isExistsInTheCloud: $isExistsInTheCloud, isPrivate: $isPrivate, isTrash: $isTrash, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'LocalNote(id: $id, noteId: $noteId, userId: $userId, title: $title, text: $text, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isTrash: $isTrash, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -284,8 +268,6 @@ class _$LocalNoteImpl implements _LocalNote {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.isSyncWithCloud, isSyncWithCloud) ||
                 other.isSyncWithCloud == isSyncWithCloud) &&
-            (identical(other.isExistsInTheCloud, isExistsInTheCloud) ||
-                other.isExistsInTheCloud == isExistsInTheCloud) &&
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
             (identical(other.isTrash, isTrash) || other.isTrash == isTrash) &&
@@ -297,19 +279,8 @@ class _$LocalNoteImpl implements _LocalNote {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      noteId,
-      userId,
-      title,
-      text,
-      isSyncWithCloud,
-      isExistsInTheCloud,
-      isPrivate,
-      isTrash,
-      createdAt,
-      updatedAt);
+  int get hashCode => Object.hash(runtimeType, id, noteId, userId, title, text,
+      isSyncWithCloud, isPrivate, isTrash, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -333,7 +304,6 @@ abstract class _LocalNote implements LocalNote {
       required final String title,
       required final String text,
       required final bool isSyncWithCloud,
-      required final bool isExistsInTheCloud,
       required final bool isPrivate,
       required final bool isTrash,
       required final DateTime createdAt,
@@ -354,8 +324,6 @@ abstract class _LocalNote implements LocalNote {
   String get text;
   @override
   bool get isSyncWithCloud;
-  @override
-  bool get isExistsInTheCloud;
   @override
   bool get isPrivate;
   @override

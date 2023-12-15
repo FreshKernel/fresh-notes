@@ -24,6 +24,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const AppLogo(
                 size: 250,
@@ -37,7 +39,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 context.loc.welcomeAgainDesc,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const AuthenticationForm(),
+              const SizedBox(
+                height: 550,
+                child: AuthenticationForm(),
+              ),
             ],
           ),
         ),

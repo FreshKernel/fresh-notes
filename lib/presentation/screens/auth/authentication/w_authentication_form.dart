@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../gen/assets.gen.dart';
 import '../../../../logic/auth/auth_custom_provider.dart';
 import '../../../../logic/auth/auth_exceptions.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
@@ -267,7 +269,11 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                                   );
                                   setState(() => _isLoading = false);
                                 },
-                                icon: const Icon(Icons.facebook),
+                                icon: SvgPicture.asset(
+                                  Assets.svg.googleIcon.path,
+                                  semanticsLabel: 'Google',
+                                  height: 20,
+                                ),
                                 label: Text(context.loc.google),
                               ),
                               const SizedBox(width: 8),

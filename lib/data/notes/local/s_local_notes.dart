@@ -82,7 +82,7 @@ class LocalNotesService extends LocalNotesRepository {
   }
 
   @override
-  Future<LocalNote> updateOne(
+  Future<LocalNote?> updateOne(
     UpdateNoteInput updateInput,
   ) async {
     requireToBeInitialized();

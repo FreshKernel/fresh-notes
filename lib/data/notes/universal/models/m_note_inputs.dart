@@ -12,7 +12,6 @@ class CreateNoteInput with _$CreateNoteInput {
     required String title,
     required String text,
     required bool isSyncWithCloud,
-    required bool isExistsInTheCloud,
     required bool isPrivate,
     required String userId,
   }) = _CreateNoteInput;
@@ -21,7 +20,6 @@ class CreateNoteInput with _$CreateNoteInput {
         title: note.title,
         text: note.text,
         isSyncWithCloud: true,
-        isExistsInTheCloud: true,
         isPrivate: note.isPrivate,
         userId: note.userId,
       );
@@ -34,7 +32,6 @@ class CreateNoteInput with _$CreateNoteInput {
         title: input.title,
         text: input.text,
         isSyncWithCloud: input.isSyncWithCloud,
-        isExistsInTheCloud: input.isExistsInTheCloud,
         isPrivate: input.isPrivate,
         userId: userId,
       );
@@ -47,7 +44,6 @@ class UpdateNoteInput with _$UpdateNoteInput {
     required String text,
     required String title,
     required bool isSyncWithCloud,
-    required bool isExistsInTheCloud,
     required bool isPrivate,
     required bool isTrash,
   }) = _UpdateNoteInput;
@@ -58,7 +54,6 @@ class UpdateNoteInput with _$UpdateNoteInput {
         text: input.text,
         title: input.title,
         isSyncWithCloud: input.isSyncWithCloud,
-        isExistsInTheCloud: input.isExistsInTheCloud,
         isPrivate: input.isPrivate,
         isTrash: false,
       );
@@ -71,7 +66,6 @@ class UpdateNoteInput with _$UpdateNoteInput {
         text: note.text,
         title: note.title,
         isSyncWithCloud: note.isSyncWithCloud,
-        isExistsInTheCloud: note.isExistsInTheCloud,
       );
 
   factory UpdateNoteInput.fromLocalNote(LocalNote note) => UpdateNoteInput(
@@ -81,6 +75,14 @@ class UpdateNoteInput with _$UpdateNoteInput {
         text: note.text,
         title: note.title,
         isSyncWithCloud: note.isSyncWithCloud,
-        isExistsInTheCloud: note.isExistsInTheCloud,
+      );
+
+  factory UpdateNoteInput.fromCloudNote(CloudNote note) => UpdateNoteInput(
+        noteId: note.noteId,
+        text: note.text,
+        title: note.title,
+        isSyncWithCloud: true,
+        isPrivate: note.isPrivate,
+        isTrash: note.isTrash,
       );
 }

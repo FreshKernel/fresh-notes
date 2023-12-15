@@ -128,6 +128,9 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
 
   @override
   Future<List<CloudNote>> getAllByIds(List<String> ids) async {
+    if (ids.isEmpty) {
+      return [];
+    }
     final userId = AuthService.getInstance()
         .requireCurrentUser(
           'To get all notes from clouds, user must be authenticated',
@@ -143,6 +146,9 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
           whereIn: ids,
         )
         .get();
+    if (notesDocuments.docs.isEmpty) {
+      return [];
+    }
 
     final notes = notesDocuments.docs.asMap().entries.map(
           (document) => CloudNote.fromFirebase(

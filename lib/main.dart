@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
 import 'package:flutter/material.dart' show MaterialApp, Scaffold;
-import 'package:flutter/widgets.dart' show Text, WidgetsFlutterBinding, runApp;
+import 'package:flutter/widgets.dart'
+    show Center, Text, WidgetsFlutterBinding, runApp;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logging/logging.dart';
 
@@ -9,9 +10,8 @@ import 'core/my_app.dart';
 import 'core/start/app_startup.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   try {
-    WidgetsFlutterBinding.ensureInitialized();
-
     if (!kReleaseMode) {
       Logger.root.level = Level.ALL; // defaults to Level.INFO
       Logger.root.onRecord.listen((record) {
@@ -33,8 +33,13 @@ Future<void> main() async {
   } catch (e) {
     runApp(
       MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
-          body: Text('Error while running the app: ${e.toString()}'),
+          body: Center(
+            child: Text(
+              'Error while running the app: ${e.toString()}',
+            ),
+          ),
         ),
       ),
     );

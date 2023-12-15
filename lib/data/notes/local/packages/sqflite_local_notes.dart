@@ -226,13 +226,11 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<LocalNote> updateOne(UpdateNoteInput updateInput) async {
+  Future<LocalNote?> updateOne(UpdateNoteInput updateInput) async {
     try {
       final currentNote = await getOneById(updateInput.noteId);
       if (currentNote == null) {
-        throw DatabaseOperationCannotFindResourcesException(
-          'There is no note with this id ${updateInput.noteId} to update',
-        );
+        return null;
       }
       final updatedItemsCount = await _database!.update(
         LocalNote.sqlTableName,
@@ -241,12 +239,10 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
         whereArgs: [updateInput.noteId],
       );
       if (updatedItemsCount == -1) {
-        throw DatabaseOperationException(
-            'updatedItemsCount = $updatedItemsCount, the database instance of sqflite could be null.');
+        return null;
       }
       if (updatedItemsCount != 1) {
-        throw DatabaseOperationException(
-            'updatedItemsCount = $updatedItemsCount, you asked to delete only one item but we found even more.');
+        return null;
       }
       final currnetUser = AuthService.getInstance().requireCurrentUser(
           'To update a note, the user must be authenticated');

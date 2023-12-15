@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../core/log/logger.dart';
+import '../data/notes/cloud/s_cloud_notes.dart';
+import '../data/notes/local/s_local_notes.dart';
+import '../logic/auth/auth_service.dart';
 import '../logic/auth/cubit/auth_cubit.dart';
 import '../logic/connection/cubit/connection_cubit.dart';
 import '../logic/note/cubit/note_cubit.dart';
@@ -34,10 +37,16 @@ class MyApp extends StatelessWidget {
           create: (context) => ConnectionCubit(),
         ),
         BlocProvider(
-          create: (context) => AuthCubit(),
+          create: (context) => NoteCubit(
+            cloudNotesService: CloudNotesService.getInstance(),
+            localNotesService: LocalNotesService.getInstance(),
+          ),
         ),
         BlocProvider(
-          create: (context) => NoteCubit(),
+          create: (context) => AuthCubit(
+            authService: AuthService.getInstance(),
+            noteCubit: context.read<NoteCubit>(),
+          ),
         ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(

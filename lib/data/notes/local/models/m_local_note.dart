@@ -18,7 +18,6 @@ class LocalNote with _$LocalNote {
     required String title,
     required String text,
     required bool isSyncWithCloud,
-    required bool isExistsInTheCloud,
     required bool isPrivate,
     required bool isTrash,
     required DateTime createdAt,
@@ -32,7 +31,6 @@ class LocalNote with _$LocalNote {
     required String title,
     required String text,
     required bool isSyncWithCloud,
-    required bool isExistsInTheCloud,
     required bool isPrivate,
     required bool isTrash,
     required DateTime createdAt,
@@ -47,7 +45,6 @@ class LocalNote with _$LocalNote {
         isPrivate: isPrivate,
         isTrash: isTrash,
         isSyncWithCloud: isSyncWithCloud,
-        isExistsInTheCloud: isExistsInTheCloud,
         createdAt: createdAt,
         updatedAt: updatedAt,
       );
@@ -66,7 +63,6 @@ class LocalNote with _$LocalNote {
         title: input.title,
         text: input.text,
         isSyncWithCloud: input.isSyncWithCloud,
-        isExistsInTheCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         isTrash: false,
         createdAt: createdAt,
@@ -88,7 +84,6 @@ class LocalNote with _$LocalNote {
         title: input.title,
         text: input.text,
         isSyncWithCloud: input.isSyncWithCloud,
-        isExistsInTheCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         isTrash: input.isTrash,
         createdAt: createdAt,
@@ -108,8 +103,6 @@ class LocalNote with _$LocalNote {
         text: map[LocalNoteProperties.text] as String,
         isSyncWithCloud:
             (map[LocalNoteProperties.isSyncWithCloud] as int).toBoolean(),
-        isExistsInTheCloud:
-            (map[LocalNoteProperties.isExistsInTheCloud] as int).toBoolean(),
         isPrivate: (map[LocalNoteProperties.isPrivate] as int).toBoolean(),
         isTrash: (map[LocalNoteProperties.isTrash] as int).toBoolean(),
         createdAt: DateTime.parse(map[LocalNoteProperties.createdAt] as String),
@@ -122,7 +115,6 @@ class LocalNote with _$LocalNote {
     required String title,
     required String text,
     required bool isSyncWithCloud,
-    required bool isExistsInTheCloud,
     required bool isPrivate,
     required bool isTrash,
   }) {
@@ -131,8 +123,6 @@ class LocalNote with _$LocalNote {
       LocalNoteProperties.text: SqlValue.string(text),
       LocalNoteProperties.isSyncWithCloud:
           SqlValue.num(isSyncWithCloud.toInt()),
-      LocalNoteProperties.isExistsInTheCloud:
-          SqlValue.num(isExistsInTheCloud.toInt()),
       LocalNoteProperties.isPrivate: SqlValue.num(isPrivate.toInt()),
       LocalNoteProperties.isTrash: SqlValue.num(isTrash.toInt()),
     };
@@ -145,7 +135,6 @@ class LocalNote with _$LocalNote {
       title: input.title,
       text: input.text,
       isSyncWithCloud: input.isSyncWithCloud,
-      isExistsInTheCloud: input.isExistsInTheCloud,
       isPrivate: input.isPrivate,
       isTrash: false,
     );
@@ -164,7 +153,6 @@ class LocalNote with _$LocalNote {
       title: input.title,
       text: input.text,
       isSyncWithCloud: input.isSyncWithCloud,
-      isExistsInTheCloud: input.isExistsInTheCloud,
       isPrivate: input.isPrivate,
       isTrash: input.isTrash,
     );
@@ -185,7 +173,6 @@ class LocalNote with _$LocalNote {
       "${LocalNoteProperties.title}"	TEXT NOT NULL,
       "${LocalNoteProperties.text}"	TEXT NOT NULL,
       "${LocalNoteProperties.isSyncWithCloud}" INTEGER NOT NULL,
-      "${LocalNoteProperties.isExistsInTheCloud}" INTEGER NOT NULL,
       "${LocalNoteProperties.isPrivate}"	INTEGER NOT NULL,
       "${LocalNoteProperties.isTrash}"	INTEGER NOT NULL,
       "${LocalNoteProperties.createdAt}"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

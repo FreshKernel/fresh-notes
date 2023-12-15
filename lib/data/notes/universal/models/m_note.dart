@@ -13,7 +13,6 @@ class UniversalNote extends Equatable {
     required this.title,
     required this.text,
     required this.isSyncWithCloud,
-    required this.isExistsInTheCloud,
     required this.isPrivate,
     required this.isTrash,
     required this.createdAt,
@@ -28,7 +27,6 @@ class UniversalNote extends Equatable {
         title: note.title,
         text: note.text,
         isSyncWithCloud: note.isSyncWithCloud,
-        isExistsInTheCloud: note.isExistsInTheCloud,
         isPrivate: note.isPrivate,
         isTrash: note.isTrash,
         createdAt: note.createdAt,
@@ -44,7 +42,6 @@ class UniversalNote extends Equatable {
         title: note.title,
         text: note.text,
         isSyncWithCloud: true,
-        isExistsInTheCloud: true,
         isPrivate: note.isPrivate,
         isTrash: note.isTrash,
         createdAt: note.createdAt,
@@ -55,6 +52,7 @@ class UniversalNote extends Equatable {
     CreateNoteInput input, {
     required DateTime createdAt,
     required DateTime updatedAt,
+    required bool isExistsInTheCloud,
   }) =>
       UniversalNote(
         noteId: input.noteId,
@@ -62,7 +60,6 @@ class UniversalNote extends Equatable {
         title: input.title,
         text: input.text,
         isSyncWithCloud: input.isSyncWithCloud,
-        isExistsInTheCloud: input.isExistsInTheCloud,
         isPrivate: input.isPrivate,
         isTrash: false,
         createdAt: createdAt,
@@ -81,7 +78,6 @@ class UniversalNote extends Equatable {
         title: input.title,
         text: input.text,
         isSyncWithCloud: input.isSyncWithCloud,
-        isExistsInTheCloud: input.isExistsInTheCloud,
         isPrivate: input.isPrivate,
         isTrash: false,
         createdAt: createdAt,
@@ -93,7 +89,6 @@ class UniversalNote extends Equatable {
   final String title;
   final String text;
   final bool isSyncWithCloud;
-  final bool isExistsInTheCloud;
   final bool isPrivate;
   final bool isTrash;
   final DateTime createdAt;
@@ -115,7 +110,6 @@ class UniversalNote extends Equatable {
     String? title,
     String? text,
     bool? isSyncWithCloud,
-    bool? isExistsInTheCloud,
     bool? isPrivate,
     bool? isTrash,
     DateTime? createdAt,
@@ -127,7 +121,6 @@ class UniversalNote extends Equatable {
       title: title ?? this.title,
       text: text ?? this.text,
       isSyncWithCloud: isSyncWithCloud ?? this.isSyncWithCloud,
-      isExistsInTheCloud: isExistsInTheCloud ?? this.isExistsInTheCloud,
       isPrivate: isPrivate ?? this.isPrivate,
       isTrash: isTrash ?? this.isTrash,
       createdAt: createdAt ?? this.createdAt,
@@ -149,7 +142,6 @@ class UniversalNoteProperties {
   static const text = 'text';
   // static const cloudId = 'cloudId';
   static const isSyncWithCloud = 'isSyncWithCloud';
-  static const isExistsInTheCloud = 'isExistsInTheCloud';
   static const isPrivate = 'isPrivate';
   static const isTrash = 'isTrash';
   static const createdAt = 'createdAt';

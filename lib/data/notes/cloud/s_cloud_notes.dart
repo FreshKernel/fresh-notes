@@ -49,7 +49,7 @@ class CloudNotesService extends CloudNotesRepository {
   Future<CloudNote?> getOneById(String id) => _provider.getOneById(id);
 
   @override
-  Future<CloudNote> updateOne(UpdateNoteInput updateInput) =>
+  Future<CloudNote?> updateOne(UpdateNoteInput updateInput) =>
       _provider.updateOne(updateInput);
 
   @override

@@ -74,6 +74,7 @@ dependencies:
   cached_network_image: ^3.3.0
   upgrader: ^8.4.0
   hive: ^2.2.3
+  flutter_svg: ^2.0.9
   flutter_dotenv: ^5.1.0
 
   # Other ui packages
@@ -106,6 +107,7 @@ flutter:
     - .env
     - ./assets/images/
     - ./assets/json/
+    - ./assets/svg/
     - ./assets/lottie/onboarding/
     - ./assets/lottie/page_not_found/
     - ./assets/lottie/error/
