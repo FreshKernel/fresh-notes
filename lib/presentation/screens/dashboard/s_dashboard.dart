@@ -40,6 +40,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           body: const NoteFoldersPage(
             key: PageStorageKey('NoteFoldersPage'),
           ),
+          actionsBuilder: NoteFoldersPage.actionsBuilder,
+          actionButtonBuilder: NoteFoldersPage.actionButtonBuilder,
         ),
         NavigationItem(
           title: context.loc.trash,

@@ -93,6 +93,7 @@ dev_dependencies:
   json_serializable: ^6.7.1
   flutter_gen_runner: ^5.3.2
   flutter_quill_test: ^9.0.1
+  bloc_test: ^9.1.5
 
   yaml: ^3.1.2
   auto_screenshot: ^0.0.2

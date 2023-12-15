@@ -7,10 +7,10 @@ import 'models/m_local_note.dart';
 import 'packages/sqflite_local_notes.dart';
 
 class LocalNotesService extends LocalNotesRepository {
-  LocalNotesService._(this._provider);
+  LocalNotesService(this._provider);
 
   factory LocalNotesService.sqflite() =>
-      LocalNotesService._(SqfliteLocalNotesImpl());
+      LocalNotesService(SqfliteLocalNotesImpl());
   factory LocalNotesService.getInstance() => AppModule.localNotesService;
   final LocalDatabaseRepository _provider;
 

@@ -16,7 +16,7 @@ Future<void> main() async {
       Logger.root.level = Level.ALL; // defaults to Level.INFO
       Logger.root.onRecord.listen((record) {
         if (kDebugMode) {
-          print('${record.time}: ${record.message}');
+          print(record.message);
         }
       });
     }

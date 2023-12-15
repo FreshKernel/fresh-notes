@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../core/log/logger.dart';
+import '../data/core/cloud/storage/s_cloud_storage.dart';
+import '../data/core/local/storage/s_local_storage.dart';
 import '../data/notes/cloud/s_cloud_notes.dart';
 import '../data/notes/local/s_local_notes.dart';
 import '../logic/auth/auth_service.dart';
@@ -40,6 +42,8 @@ class MyApp extends StatelessWidget {
           create: (context) => NoteCubit(
             cloudNotesService: CloudNotesService.getInstance(),
             localNotesService: LocalNotesService.getInstance(),
+            localStorageService: LocalStorageService.getInstance(),
+            cloudStorageService: CloudStorageService.getInstance(),
           ),
         ),
         BlocProvider(

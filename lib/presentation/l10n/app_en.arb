@@ -108,5 +108,5 @@
     "create": "Create",
     "back": "Back",
     "manualSave": "Manual Save",
-    "manualSaveDesc": ""
+    "manualSaveDesc": "Toggle to save notes manually"
   }  

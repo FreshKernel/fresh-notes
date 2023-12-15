@@ -171,7 +171,7 @@ class _SaveNoteScreenState extends State<SaveNoteScreen> {
                     _controller.document.toDelta().toJson(),
                   ),
                 );
-                AppLogger.error(
+                AppLogger.log(
                   QuillImageUtilities(document: _controller.document)
                       .getImagesPathsFromDocument(onlyLocalImages: false),
                 );

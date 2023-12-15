@@ -5,9 +5,9 @@ import 'models/m_cloud_note.dart';
 import 'packages/firebase_cloud_notes.dart';
 
 class CloudNotesService extends CloudNotesRepository {
-  CloudNotesService._(this._provider);
+  CloudNotesService(this._provider);
 
-  factory CloudNotesService.firebaseFirestore() => CloudNotesService._(
+  factory CloudNotesService.firebaseFirestore() => CloudNotesService(
         FirebaseCloudNotesImpl(),
       );
   factory CloudNotesService.getInstance() => AppModule.cloudNotesService;
