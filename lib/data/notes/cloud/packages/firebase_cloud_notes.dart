@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 
 import '../../../../logic/auth/auth_service.dart';
 import '../../../core/shared/database_operations_exceptions.dart';
@@ -51,7 +51,7 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   Future<void> deleteByIds(List<String> ids) async {
     final batch = FirebaseFirestore.instance.batch();
     final notes = await _notesCollection
-        .where(CloudNoteProperties.noteId, isEqualTo: ids)
+        .where(CloudNoteProperties.noteId, whereIn: ids)
         .get();
     for (final query in notes.docs) {
       batch.delete(query.reference);
@@ -221,7 +221,11 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
               .limit(1)
               .get())
           .docs
-          .first;
+          .firstOrNull;
+
+      if (noteDoc == null) {
+        continue;
+      }
       if (!noteDoc.exists) {
         continue;
       }

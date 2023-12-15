@@ -1,6 +1,6 @@
 import '../../../core/services/s_app.dart';
 import '../../../data/notes/cloud/s_cloud_notes.dart';
-import '../../core/shared/database_operations_exceptions.dart';
+import '../../../logic/auth/auth_service.dart';
 import '../local/s_local_notes.dart';
 import 'models/m_note.dart';
 import 'models/m_note_inputs.dart';
@@ -52,41 +52,26 @@ class UniversalNotesService extends AppService {
   }
 
   Future<void> deleteByIds(List<String> ids) async {
-    final notes = await localNotesService.getAllByIds(ids);
     await localNotesService.deleteByIds(ids);
 
-    // Filter the ids for the cloud notes only
-    final cloudNotesIds =
-        notes.where((e) => e.isSyncWithCloud).map((e) => e.noteId).toList();
-    if (cloudNotesIds.isNotEmpty) {
-      await cloudNotesService.deleteByIds(cloudNotesIds);
-    }
+    await cloudNotesService.deleteByIds(ids);
   }
 
   Future<void> updateByIds(List<UpdateNoteInput> inputs) async {
-    final notes = await localNotesService.getAllByIds(
-      inputs.map((e) => e.noteId).toList(),
-    );
     await localNotesService.updateByIds(inputs);
 
-    // Filter the inputs for the cloud notes only
-    final cloudNotes = notes
-        .where((e) => e.isSyncWithCloud)
-        .map(UpdateNoteInput.fromLocalNote)
-        .toList();
+    final cloudNotes = await cloudNotesService
+        .getAllByIds(inputs.map((e) => e.noteId).toList());
     if (cloudNotes.isNotEmpty) {
-      await cloudNotesService.updateByIds(cloudNotes);
+      await cloudNotesService.updateByIds(inputs);
     }
   }
 
   Future<void> deleteOneById(String id) async {
-    final localNote = await localNotesService.getOneById(id);
-    if (localNote == null) {
-      await cloudNotesService.deleteOneById(id);
-      return;
+    if (await localNotesService.getOneById(id) != null) {
+      await localNotesService.deleteOneById(id);
     }
-    await localNotesService.deleteOneById(id);
-    if (localNote.isSyncWithCloud) {
+    if (await cloudNotesService.getOneById(id) != null) {
       await cloudNotesService.deleteOneById(id);
     }
   }
@@ -105,18 +90,32 @@ class UniversalNotesService extends AppService {
   Future<UniversalNote> updateOne(
     UpdateNoteInput input,
   ) async {
-    final localNote = await localNotesService.getOneById(input.noteId);
-    if (localNote == null) {
-      throw const DatabaseOperationCannotFindResourcesException(
-        'The note must exist in order to update it.',
-      );
-    }
-
-    final newLocalNote = await localNotesService.updateOne(input);
-    if (localNote.isSyncWithCloud) {
+    await localNotesService.updateOne(input);
+    if (await cloudNotesService.getOneById(input.noteId) != null) {
       await cloudNotesService.updateOne(input);
     }
-    return UniversalNote.fromLocalNote(newLocalNote);
+    return UniversalNote.fromUpdateInput(
+      input,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      userId: AuthService.getInstance().requireCurrentUser().id,
+    );
+  }
+
+  Future<List<UniversalNote>> getAllByIds(List<String> ids) async {
+    throw UnimplementedError();
+  }
+
+  Future<UniversalNote?> getOneById(String id) async {
+    final localNote = await localNotesService.getOneById(id);
+    if (localNote != null) {
+      return UniversalNote.fromLocalNote(localNote);
+    }
+    final cloudNote = await cloudNotesService.getOneById(id);
+    if (cloudNote != null) {
+      return UniversalNote.fromCloudNote(cloudNote);
+    }
+    return null;
   }
 
   Future<void> syncLocalNotesFromCloud() async {
@@ -141,21 +140,5 @@ class UniversalNotesService extends AppService {
     final createInputs = cloudNotes.map(CreateNoteInput.fromCloudNote).toList();
 
     await localNotesService.createMultiples(createInputs);
-  }
-
-  Future<List<UniversalNote>> getAllByIds(List<String> ids) async {
-    throw UnimplementedError();
-  }
-
-  Future<UniversalNote?> getOneById(String id) async {
-    final localNote = await localNotesService.getOneById(id);
-    if (localNote != null) {
-      return UniversalNote.fromLocalNote(localNote);
-    }
-    final cloudNote = await cloudNotesService.getOneById(id);
-    if (cloudNote != null) {
-      return UniversalNote.fromCloudNote(cloudNote);
-    }
-    return null;
   }
 }

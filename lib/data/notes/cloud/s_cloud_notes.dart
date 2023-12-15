@@ -42,7 +42,8 @@ class CloudNotesService extends CloudNotesRepository {
       );
 
   @override
-  Future<List<CloudNote>> getAllByIds(List<String> ids) => getAllByIds(ids);
+  Future<List<CloudNote>> getAllByIds(List<String> ids) =>
+      _provider.getAllByIds(ids);
 
   @override
   Future<CloudNote?> getOneById(String id) => _provider.getOneById(id);
