@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:mime/mime.dart';
 
 import '../cloud_storage_exceptions.dart';
 import '../cloud_storage_repository.dart';
@@ -9,9 +10,10 @@ class FirebaseCloudStorageImpl extends CloudStorageRepository {
   late final _storage = FirebaseStorage.instance;
 
   @override
-  Future<void> deleteFile(String path) async {
+  Future<void> deleteFileByDownloadUrl(String downloadUrl) async {
     try {
-      final ref = _storage.ref().child(path);
+      print(downloadUrl);
+      final ref = _storage.refFromURL(downloadUrl);
       await ref.delete();
     } catch (e) {
       throw CloudStorageDeleteFileException(
@@ -37,7 +39,13 @@ class FirebaseCloudStorageImpl extends CloudStorageRepository {
   Future<String> uploadFile(String path, File file) async {
     try {
       final ref = _storage.ref().child(path);
-      final result = await ref.putFile(file);
+      final result = await ref.putFile(
+        file,
+        SettableMetadata(
+          contentType: lookupMimeType(file.path),
+          // customMetadata: // TODO: Set this
+        ),
+      );
       final url = await result.ref.getDownloadURL();
       return url;
     } catch (e) {
@@ -59,9 +67,10 @@ class FirebaseCloudStorageImpl extends CloudStorageRepository {
   }
 
   @override
-  Future<void> deleteMultipleFiles(Iterable<String> paths) async {
-    for (final path in paths) {
-      await deleteFile(path);
+  Future<void> deleteMultipleFilesByDownloadUrls(
+      Iterable<String> downloadUrls) async {
+    for (final downloadUrl in downloadUrls) {
+      await deleteFileByDownloadUrl(downloadUrl);
     }
   }
 }

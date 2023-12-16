@@ -25,7 +25,4 @@ class LocalStorageService extends LocalStorageRepository {
       directory: directory,
     );
   }
-
-  @override
-  Future<void> deleteFile(String path) => _provider.deleteFile(path);
 }

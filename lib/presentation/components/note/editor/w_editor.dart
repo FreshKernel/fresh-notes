@@ -3,12 +3,15 @@ import 'dart:io' show File;
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImageProvider;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:fresh_base_package/fresh_base_package.dart'
     show PlatformChecker;
 
 import '../../../../core/log/logger.dart';
+import '../../../../logic/note/cubit/note_cubit.dart';
+import '../../../../logic/utils/extensions/string.dart';
 import '../../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../base/w_app_scroll_bar.dart';
 
@@ -53,6 +56,11 @@ class _NoteEditorState extends State<NoteEditor> {
             return FileImage(File(imageUrl));
           },
           onImageRemovedCallback: (imageUrl) async {
+            if (imageUrl.isHttpBasedUrl()) {
+              await context.read<NoteCubit>().deleteNoteCloudImage(imageUrl);
+              return;
+            } 
+
             if (PlatformChecker.defaultLogic().isWeb() ||
                 PlatformChecker.nativePlatform().isDesktop()) {
               return;

@@ -3,12 +3,14 @@ import 'dart:io' show Directory, File;
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_quill/flutter_quill.dart' show Document;
 import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../core/log/logger.dart';
 import '../../../data/core/cloud/storage/s_cloud_storage.dart';
 import '../../../data/core/local/storage/s_local_storage.dart';
 import '../../../data/core/shared/database_operations_exceptions.dart';
@@ -79,7 +81,8 @@ class NoteCubit extends Cubit<NoteState> {
       // TODO: Upload with metadata in firebase storage
       final cloudPaths = await cloudStorageService.uploadMultipleFiles(
         newFileNames.asMap().entries.map((e) {
-          final file = File(e.value);
+          final cachedImagePath = cachedImages[e.key];
+          final file = File(cachedImagePath);
           return ('/notes/${e.value}', file);
         }),
       );
@@ -178,13 +181,17 @@ class NoteCubit extends Cubit<NoteState> {
     }
   }
 
+  Future<void> deleteNoteCloudImage(String imageUrl) async {
+    await cloudStorageService.deleteFileByDownloadUrl(imageUrl);
+  }
+
   Future<void> _deleteNoteCloudFiles(QuillImageUtilities imageUtilities) async {
     final images =
-        imageUtilities.getImagesPathsFromDocument(onlyLocalImages: false).map(
+        imageUtilities.getImagesPathsFromDocument(onlyLocalImages: false).where(
               (e) => e.isHttpBasedUrl(),
             );
     for (final imageUrl in images) {
-      await cloudStorageService.deleteFile('/notes/$imageUrl');
+      await deleteNoteCloudImage(imageUrl);
     }
   }
 
@@ -423,6 +430,19 @@ class NoteCubit extends Cubit<NoteState> {
       emit(NoteState(notes: notes));
     } on Exception catch (e) {
       emit(state.copyWith(exception: e));
+    }
+  }
+
+  Future<void> reportError() async {
+    final exception = state.exception;
+    emit(state.copyWith(exception: null));
+    try {
+      await FirebaseCrashlytics.instance.recordError(
+        exception,
+        StackTrace.current,
+      );
+    } catch (e) {
+      AppLogger.error('Error while reporting the error.');
     }
   }
 

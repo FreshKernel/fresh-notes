@@ -1,13 +1,11 @@
 import 'dart:io' show File;
 
-import '../../shared/file_storage_repository.dart';
-
-// For now, we don't need this to be a service
-abstract class CloudStorageRepository extends FileStorageRepository {
+abstract class CloudStorageRepository {
   Future<String> uploadFile(String path, File file);
   Future<Iterable<String>> uploadMultipleFiles(
     Iterable<(String path, File file)> list,
   );
   Future<String?> getFileURL(String path);
-  Future<void> deleteMultipleFiles(Iterable<String> paths);
+  Future<void> deleteMultipleFilesByDownloadUrls(Iterable<String> downloadUrls);
+  Future<void> deleteFileByDownloadUrl(String downloadUrl);
 }

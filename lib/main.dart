@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
 import 'package:flutter/material.dart' show MaterialApp, Scaffold;
-import 'package:flutter/widgets.dart'
-    show Center, Text, WidgetsFlutterBinding, runApp;
+import 'package:flutter/widgets.dart' show WidgetsFlutterBinding, runApp;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logging/logging.dart';
 
 import 'core/flavor_config.dart';
 import 'core/my_app.dart';
 import 'core/start/app_startup.dart';
+import 'presentation/components/others/w_error.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,14 +32,10 @@ Future<void> main() async {
     runApp(const MyApp());
   } catch (e) {
     runApp(
-      MaterialApp(
+      const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          body: Center(
-            child: Text(
-              'Error while running the app: ${e.toString()}',
-            ),
-          ),
+          body: ErrorWithoutTryAgain(),
         ),
       ),
     );

@@ -7,18 +7,6 @@ import 'local_storage_repository.dart';
 
 class LocalStorageImpl extends LocalStorageRepository {
   @override
-  Future<void> deleteFile(String path) async {
-    try {
-      final file = File(path);
-      await file.delete();
-    } catch (e) {
-      throw LocalStorageDeleteException(
-        'Coud not delete the file using dart:io. ${e.toString()}',
-      );
-    }
-  }
-
-  @override
   Future<List<File>> copyMultipleFile({
     required List<File> files,
     required List<String> names,

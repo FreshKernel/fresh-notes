@@ -16,7 +16,8 @@ class CloudStorageService extends CloudStorageRepository {
 
   final CloudStorageRepository _provider;
   @override
-  Future<void> deleteFile(String path) => _provider.deleteFile(path);
+  Future<void> deleteFileByDownloadUrl(String downloadUrl) =>
+      _provider.deleteFileByDownloadUrl(downloadUrl);
 
   @override
   Future<String?> getFileURL(String path) => _provider.getFileURL(path);
@@ -38,6 +39,7 @@ class CloudStorageService extends CloudStorageRepository {
       _provider.uploadMultipleFiles(list);
 
   @override
-  Future<void> deleteMultipleFiles(Iterable<String> paths) =>
-      _provider.deleteMultipleFiles(paths);
+  Future<void> deleteMultipleFilesByDownloadUrls(
+          Iterable<String> downloadUrls) =>
+      _provider.deleteMultipleFilesByDownloadUrls(downloadUrls);
 }

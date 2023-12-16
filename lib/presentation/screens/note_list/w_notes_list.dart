@@ -5,6 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../../core/log/logger.dart';
 import '../../../logic/note/cubit/note_cubit.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
+import '../../components/others/w_error.dart';
 import '../../components/others/w_no_data.dart';
 import '../../utils/extensions/build_context_ext.dart';
 import 'note_tile/note_tile_options.dart';
@@ -63,8 +64,9 @@ class _NoteListContentState extends State<NoteListContent> {
             },
             builder: (context, state) {
               if (state.exception != null) {
-                return Center(
-                  child: Text('Error: ${state.exception.toString()}'),
+                return ErrorWithReport(
+                  onReport: () => context.read<NoteCubit>().reportError(),
+                  error: state.exception.toString(),
                 );
               }
 
