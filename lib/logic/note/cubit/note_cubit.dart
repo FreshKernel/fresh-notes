@@ -259,7 +259,6 @@ class NoteCubit extends Cubit<NoteState> {
               userId: AuthService.getInstance().requireCurrentUser().id,
             ),
           );
-          // input = input.copyWith(isExistsInTheCloud: true);
         } else if (!input.isSyncWithCloud && currentLocalNoteExistsInTheCloud) {
           // If the current note exist and the user wants to un-sync the note.
           await cloudNotesService.deleteOneById(currentLocalNote.noteId);
