@@ -12,7 +12,6 @@ class FirebaseCloudStorageImpl extends CloudStorageRepository {
   @override
   Future<void> deleteFileByDownloadUrl(String downloadUrl) async {
     try {
-      print(downloadUrl);
       final ref = _storage.refFromURL(downloadUrl);
       await ref.delete();
     } catch (e) {
