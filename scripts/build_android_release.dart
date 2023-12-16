@@ -17,7 +17,7 @@ Future<void> buildAndroidRelease(List<String> args) async {
 
     await executeCommand('dart ./scripts/regenerate_pubspec_dart_file.dart');
     await executeCommand(
-      'flutter build appbundle --obfuscate --split-debug-info=./build/app/outputs/bundle/release ${args.join(" ")}',
+      'flutter build appbundle --obfuscate --split-debug-info=./build/app/outputs/bundle/release',
     );
     await executeCommand(
       'firebase crashlytics:symbols:upload --app=$androidAppId ./build/app/outputs/bundle/release',
