@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill/translations.dart';
 
 import '../../../../../logic/native/image/s_image_picker.dart';
 import '../../../../utils/extensions/build_context_ext.dart';
@@ -18,14 +19,16 @@ class NoteToolbarImageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      tooltip: 'Insert a image',
+      // tooltip: , // TODO: Add tooltip
       onPressed: () async {
         final dialogMessenger = context.dialogMessenger;
         final imageSource = await showModalBottomSheet<InsertImageSource>(
           showDragHandle: true,
           context: context,
           constraints: const BoxConstraints(maxWidth: 640),
-          builder: (context) => const SelectImageSourceDialog(),
+          builder: (context) => const FlutterQuillLocalizationsWidget(
+            child: SelectImageSourceDialog(),
+          ),
         );
         if (imageSource == null) {
           return;

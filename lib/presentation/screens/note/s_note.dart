@@ -17,6 +17,7 @@ import '../../../logic/note/cubit/note_cubit.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../components/note/editor/w_editor.dart';
 import '../../components/note/toolbar/w_note_toolbar.dart';
+import '../../l10n/extensions/localizations.dart';
 import '../../utils/extensions/build_context_ext.dart';
 
 class NoteScreenArgs {
@@ -199,16 +200,17 @@ class _NoteScreenState extends State<NoteScreen> {
             ),
           if (!widget.args.isDeepLink) ...[
             IconButton(
-              tooltip: 'Sync with cloud',
+              tooltip: context.loc.syncWithCloud,
               onPressed: () =>
                   setState(() => _isSyncWithCloud = !_isSyncWithCloud),
               icon: Icon(_isSyncWithCloud ? Icons.cloud : Icons.folder),
             ),
-            IconButton(
-              tooltip: 'Private',
-              onPressed: () => setState(() => _isPrivate = !_isPrivate),
-              icon: Icon(_isPrivate ? Icons.lock : Icons.public),
-            ),
+            if (_isSyncWithCloud)
+              IconButton(
+                tooltip: context.loc.private,
+                onPressed: () => setState(() => _isPrivate = !_isPrivate),
+                icon: Icon(_isPrivate ? Icons.lock : Icons.public),
+              ),
           ],
         ],
       ),
@@ -269,9 +271,9 @@ class _NoteScreenState extends State<NoteScreen> {
                       ),
                     ),
                     NoteEditor(
-                      isReadOnly: _isReadOnly,
                       onRequestingSaveNote: _saveNote,
                       configurations: QuillEditorConfigurations(
+                        readOnly: _isReadOnly,
                         controller: _controller,
                         sharedConfigurations: const QuillSharedConfigurations(
                           extraConfigurations: {

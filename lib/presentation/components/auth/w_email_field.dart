@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../logic/utils/validators/auth.dart';
+import '../../l10n/extensions/localizations.dart';
 
 class EmailTextField extends StatelessWidget {
   const EmailTextField({
@@ -18,8 +19,8 @@ class EmailTextField extends StatelessWidget {
     return TextFormField(
       controller: emailController,
       decoration: (inputDecoration ?? const InputDecoration()).copyWith(
-        hintText: 'Enter your email address.',
-        labelText: 'Email address',
+        hintText: context.loc.pleaseEnterYourEmailAddress,
+        labelText: context.loc.emailAddress,
       ),
       validator: (email) {
         final errorMessage = AuthValidator.validateEmail(email ?? '');

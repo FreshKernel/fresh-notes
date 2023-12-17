@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../l10n/extensions/localizations.dart';
 import 'w_app_dialog.dart';
 import 'w_dialog_action.dart';
 
@@ -31,7 +32,7 @@ class YesOrCancelDialog extends StatelessWidget {
       actions: [
         AppDialogAction(
           onPressed: () => context.pop(false),
-          child: Text(options.cancelLabel ?? 'Cancel'),
+          child: Text(options.cancelLabel ?? context.loc.cancel),
         ),
         AppDialogAction(
           onPressed: () => context.pop(true),
@@ -45,7 +46,7 @@ class YesOrCancelDialog extends StatelessWidget {
               isDefaultAction: true,
             ),
           ),
-          child: Text(options.yesLabel ?? 'Yes'),
+          child: Text(options.yesLabel ?? context.loc.ok),
         ),
       ],
       title: Text(options.title),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../logic/auth/auth_user.dart';
+import '../../l10n/extensions/localizations.dart';
 
 class UserProfileImage extends StatelessWidget {
   const UserProfileImage({
@@ -29,7 +30,7 @@ class UserProfileImage extends StatelessWidget {
             ? Icon(
                 Icons.person,
                 size: iconSize,
-                semanticLabel: 'Person icon',
+                semanticLabel: context.loc.profilePicture,
               )
             : null,
       ),

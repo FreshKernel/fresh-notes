@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/translations.dart';
 import 'package:go_router/go_router.dart';
 
 import 'w_note_toolbar.dart';
@@ -15,25 +16,25 @@ class SelectImageSourceDialog extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-              title: const Text('Gallery'),
-              subtitle: const Text(
-                'Pick a photo from your gallery',
+              title: Text(context.loc.gallery),
+              subtitle: Text(
+                context.loc.pickAPhotoFromYourGallery,
               ),
               leading: const Icon(Icons.photo_sharp),
               onTap: () => context.pop(InsertImageSource.gallery),
             ),
             ListTile(
-              title: const Text('Camera'),
-              subtitle: const Text(
-                'Take a photo using your phone camera',
+              title: Text(context.loc.camera),
+              subtitle: Text(
+                context.loc.takeAPhotoUsingYourCamera,
               ),
               leading: const Icon(Icons.camera),
               onTap: () => context.pop(InsertImageSource.camera),
             ),
             ListTile(
-              title: const Text('Link'),
-              subtitle: const Text(
-                'Paste a photo using https link',
+              title: Text(context.loc.link),
+              subtitle: Text(
+                context.loc.pasteAPhotoUsingALink,
               ),
               leading: const Icon(Icons.link),
               onTap: () => context.pop(InsertImageSource.link),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../logic/auth/cubit/auth_cubit.dart';
+import '../../l10n/extensions/localizations.dart';
 import '../../utils/dialog/w_error_dialog.dart';
 import '../../utils/dialog/w_yes_cancel_dialog.dart';
 
@@ -19,10 +20,10 @@ class _LogoutIconButtonState extends State<LogoutIconButton> {
     final authBloc = context.read<AuthCubit>();
     final logoutConfirmed = await showYesCancelDialog(
       context: context,
-      options: const YesOrCancelDialogOptions(
-        title: 'Sign out',
-        message: 'Are you sure you want to sign out?',
-        yesLabel: 'Logout',
+      options: YesOrCancelDialogOptions(
+        title: context.loc.signOut,
+        message: context.loc.signOutDesc,
+        yesLabel: context.loc.logout,
       ),
     );
 
@@ -50,13 +51,13 @@ class _LogoutIconButtonState extends State<LogoutIconButton> {
         showErrorDialog(
           context: context,
           options: ErrorDialogOptions(
-            message: 'Unknown error: ${e.toString()}',
+            message: context.loc.unknownErrorWithMessage(e.toString()),
             developerError: null,
           ),
         );
       },
       child: IconButton(
-        tooltip: 'Logout',
+        tooltip: context.loc.signOut,
         onPressed: _isLoading ? null : _onLogout,
         icon: const Icon(Icons.logout),
       ),

@@ -130,12 +130,12 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
               isDevError = false;
               break;
             case AuthErrorType.tooManyAuthenticateRequests:
-              error = context.loc.authErrorTooManyRequests;
+              error = context.loc.tooManyRequestsMsg;
               isDevError = false;
               break;
             default:
-              error =
-                  '${context.loc.authErrorUnknown}. ${e.type}. ${e.message}.';
+              error = context.loc
+                  .authErrorUnknownWithMessage('${e.type}. ${e.message}.');
               break;
           }
         }

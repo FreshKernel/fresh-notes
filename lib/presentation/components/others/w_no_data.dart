@@ -47,7 +47,7 @@ class NoDataWithTryAgain extends StatelessWidget {
           const _LottieNoDataWidget(),
           ElevatedButton(
             onPressed: onRefresh,
-            child: const Text('Refresh'),
+            child: Text(context.loc.refresh),
           )
         ],
       ),

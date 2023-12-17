@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../logic/auth/auth_exceptions.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
 import '../../../../logic/core/api/api_exceptions.dart';
+import '../../../l10n/extensions/localizations.dart';
 import '../../../utils/dialog/w_error_dialog.dart';
 import '../../../utils/extensions/build_context_ext.dart';
 
@@ -43,7 +44,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
         // When user account is deleted for example.
         if (state is AuthStateUnAuthenticated) {
           messenger.showMessage(
-            'Logging out...',
+            context.loc.loggingOut,
           );
           return;
         }
@@ -61,7 +62,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
         // If it network exception
         if (exception is NetworkRequestException) {
           messenger.showMessage(
-            'Please check your internet connection.',
+            context.loc.pleaseCheckYourInternetConnection,
             useSnackBar: false,
           );
           return;
@@ -69,7 +70,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
         // If it's not AuthException
         if (exception is! AuthException) {
           messenger.showMessage(
-            'Unknown error: ${exception.toString()}',
+            context.loc.unknownErrorWithMessage(exception.toString()),
             useSnackBar: false,
           );
           return;
@@ -79,13 +80,13 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
         switch (exception.type) {
           case AuthErrorType.accountNotVerified:
             messenger.showMessage(
-              'Your account is still not verified.',
+              context.loc.yourAccountIsStillNotVerified,
               useSnackBar: false,
             );
             break;
           case AuthErrorType.tooManyAuthenticateRequests:
             messenger.showMessage(
-              'Too many requests. Please try again later.',
+              context.loc.tooManyRequestsMsg,
               useSnackBar: false,
             );
             break;
@@ -99,7 +100,8 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
             showErrorDialog(
               context: context,
               options: ErrorDialogOptions(
-                message: 'Unknown auth error: $exception',
+                message: context.loc
+                    .authErrorUnknownWithMessage(exception.toString()),
                 developerError: DeveloperErrorDialog(
                   exception: exception,
                   stackTrace: StackTrace.current,
@@ -111,7 +113,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Email not verified'),
+          title: Text(context.loc.verifyYourEmailAddress),
         ),
         body: Center(
           child: Builder(
@@ -122,9 +124,9 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    const Center(
+                    Center(
                       child: Text(
-                        'Please verifiy your emaill address in the email inbox.',
+                        context.loc.pleaseVerifyYourEmailAddressMsg,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -134,12 +136,12 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                         TextButton.icon(
                           onPressed: _isLoading ? null : _onLogout,
                           icon: const Icon(Icons.logout),
-                          label: const Text('Logout'),
+                          label: Text(context.loc.logout),
                         ),
                         TextButton.icon(
                           onPressed: _isLoading ? null : _onRefresh,
                           icon: const Icon(Icons.refresh),
-                          label: const Text('Refresh'),
+                          label: Text(context.loc.refresh),
                         ),
                       ],
                     ),

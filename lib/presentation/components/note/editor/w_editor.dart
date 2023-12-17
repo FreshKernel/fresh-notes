@@ -12,18 +12,17 @@ import 'package:fresh_base_package/fresh_base_package.dart'
 import '../../../../core/log/logger.dart';
 import '../../../../logic/note/cubit/note_cubit.dart';
 import '../../../../logic/utils/extensions/string.dart';
+import '../../../l10n/extensions/localizations.dart';
 import '../../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../base/w_app_scroll_bar.dart';
 
 class NoteEditor extends StatefulWidget {
   const NoteEditor({
-    required this.isReadOnly,
     required this.onRequestingSaveNote,
     required this.configurations,
     super.key,
   });
 
-  final bool isReadOnly;
   final VoidCallback onRequestingSaveNote;
   final QuillEditorConfigurations configurations;
 
@@ -80,10 +79,9 @@ class _NoteEditorState extends State<NoteEditor> {
           shouldRemoveImageCallback: (imageFile) async {
             final remove = await showYesCancelDialog(
               context: context,
-              options: const YesOrCancelDialogOptions(
-                title: 'Deleting an image',
-                message:
-                    'Are you sure you want to delete this image from the editor?',
+              options: YesOrCancelDialogOptions(
+                title: context.loc.deleteAnImage,
+                message: context.loc.deleteAnImageDesc,
               ),
             );
             return remove;
@@ -99,8 +97,7 @@ class _NoteEditorState extends State<NoteEditor> {
       child: SingleChildScrollView(
         child: QuillEditor(
           configurations: widget.configurations.copyWith(
-            readOnly: widget.isReadOnly,
-            placeholder: 'Start your notes',
+            placeholder: context.loc.noteEditorPlaceholder,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             minHeight: 1000,
             embedBuilders: _embedBuilder,

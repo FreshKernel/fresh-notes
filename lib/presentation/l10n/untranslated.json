@@ -1,11 +1,30 @@
 {
   "ar": [
+    "syncWithCloud",
+    "unknownErrorWithMessage",
+    "tooManyRequestsMsg",
+    "authErrorUnknownWithMessage",
+    "yourAccountIsStillNotVerified",
+    "pleaseEnterYourEmailAddress",
+    "pleaseEnterYourPassword",
+    "profilePicture",
+    "deleteAnImage",
+    "deleteAnImageDesc",
     "profile",
     "pleaseEnterYourName",
     "name",
     "deleteAccount",
     "story",
     "storyDesc",
-    "settingsDesc"
+    "settingsDesc",
+    "private",
+    "noteEditorPlaceholder",
+    "refresh",
+    "signOut",
+    "signOutDesc",
+    "loggingOut",
+    "verifyYourEmailAddress",
+    "pleaseVerifyYourEmailAddressMsg",
+    "insertAnImage"
   ]
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../logic/utils/validators/auth.dart';
+import '../../l10n/extensions/localizations.dart';
 
 class PasswordTextField extends StatefulWidget {
   const PasswordTextField({
@@ -26,8 +27,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
     return TextFormField(
       controller: widget.passwordController,
       decoration: (widget.inputDecoration ?? const InputDecoration()).copyWith(
-        hintText: 'Enter your password.',
-        labelText: 'Password',
+        hintText: context.loc.pleaseEnterYourPassword,
+        labelText: context.loc.password,
         suffixIcon: IconButton(
           onPressed: () =>
               setState(() => _isPasswordHidden = !_isPasswordHidden),

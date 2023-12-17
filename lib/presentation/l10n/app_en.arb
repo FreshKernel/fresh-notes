@@ -23,6 +23,7 @@
     "confirmDeleteNoteDesc": "Confirm note deletion?",
     "syncWithCloudByDefault": "Sync with Cloud by Default",
     "syncWithCloudByDefaultDesc": "Automatically sync new notes with the cloud?",
+    "syncWithCloud": "Sync with cloud",
     "clear": "Clear",
     "logout": "Logout",
     "emailAddress": "Email Address",
@@ -91,15 +92,40 @@
     "internetConnectionIsRequired": "Internet connection is required",
     "ifYourEmailIsExistsCheckYourEmailInbox": "If your emaill adress is exists. Please check your email inbox",
     "unknownError": "Unknown Error",
+    "unknownErrorWithMessage": "Unknown error: {errorMessage}",
+    "@unknownErrorWithMessage": {
+      "description": "A message with a single parameter",
+      "placeholders": {
+        "errorMessage": {
+          "type": "String",
+          "example": "There is no internet connection"
+        }
+      }
+    },
     "authErrorUserNotFound": "We could not find this user.",
     "authErrorInvalidCredentials": "Invalid credentials.",
     "authErrorWeakPassword": "Please enter a strong password.",
     "authErrorEmailAlreadyInUse": "Please try using a different email address.",
     "authErrorUserAccountIsDisabled": "Your account is disabled. Please contact support for more information.",
-    "authErrorTooManyRequests": "You have sent too many requests. Please try again later.",
-    "authErrorUnknown": "Unknown Auth Error",
+    "tooManyRequestsMsg": "You have sent too many requests. Please try again later.",
+    "authErrorUnknownWithMessage": "Unknown auth error {errorMessage}",
+    "@authErrorUnknownWithMessage": {
+      "description": "A message with a single parameter",
+      "placeholders": {
+        "errorMessage": {
+          "type": "String",
+          "example": "There is no internet connection"
+        }
+      }
+    },
+    "yourAccountIsStillNotVerified": "Your account is still not verified",
     "pleaseCheckYourInternetConnection": "Please check your internet connection",
     "pleaseEnterYourData": "Please enter your data",
+    "pleaseEnterYourEmailAddress": "Please enter your email address",
+    "pleaseEnterYourPassword": "Please enter your password",
+    "profilePicture": "Profile picture",
+    "deleteAnImage": "Delete an image",
+    "deleteAnImageDesc": "Are you sure you want to delete this image?",
     "error": "Error",
     "folders": "Folders",
     "browse": "Browse",
@@ -115,5 +141,14 @@
     "deleteAccount": "Delete Account",
     "story": "Story",
     "storyDesc": "Discover Our Journey",
-    "settingsDesc": "Customize Your Experience"
+    "settingsDesc": "Customize Your Experience",
+    "private": "Private",
+    "noteEditorPlaceholder": "Capture your ideas and musings...",
+    "refresh": "Refresh",
+    "signOut": "Sign out",
+    "signOutDesc": "Are you sure you want to sign out?",
+    "loggingOut": "Logging out...",
+    "verifyYourEmailAddress": "Verify Your Email Address",
+    "pleaseVerifyYourEmailAddressMsg": "Please verifiy your emaill address in the email inbox.",
+    "insertAnImage": "Insert an image"
   }  
