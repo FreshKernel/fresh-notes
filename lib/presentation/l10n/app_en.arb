@@ -36,7 +36,7 @@
     "darkModeDuringDay": "Daytime Dark Mode",
     "darkModeDuringDayDesc": "Automatically switch to dark mode during the day or the opposite, as per your preference.",
     "auto": "Auto",
-    "large": "large",
+    "large": "Large",
     "small": "Small",
     "toggleGridItem": "Toggle Grid Item",
     "trash": "Trash",

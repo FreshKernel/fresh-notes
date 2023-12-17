@@ -46,6 +46,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   void clearData() {
     Hive.box(boxName).clear();
+    emit(const SettingsState());
   }
 
   @override
