@@ -46,8 +46,8 @@ app.*.map.json
 pubspec_overrides.yaml
 pubspec.lock
 
-# All env files
-*.env
+# Env files
+.env
 
 # Google && Firebase
 
