@@ -5,9 +5,10 @@ import '../../core/my_app.dart';
 import '../../data/notes/cloud/s_cloud_notes.dart';
 import '../../data/notes/universal/models/m_note.dart';
 import 'auth/profile/s_profile.dart';
+import 'note/s_note.dart';
 import 'onboarding/s_onboarding.dart';
-import 'save_note/s_save_note.dart';
 import 'settings/s_settings.dart';
+import 'story/s_story.dart';
 
 class AppRouter {
   const AppRouter._();
@@ -27,10 +28,10 @@ class AppRouter {
         builder: (context, state) => const SettingsScreen(),
       ),
       GoRoute(
-        path: SaveNoteScreen.routeName,
+        path: NoteScreen.routeName,
         builder: (context, state) {
-          final args = state.extra as SaveNoteScreenArgs;
-          return SaveNoteScreen(
+          final args = state.extra as NoteScreenArgs;
+          return NoteScreen(
             args: args,
           );
         },
@@ -40,7 +41,11 @@ class AppRouter {
         builder: (context, state) => const ProfileScreen(),
       ),
       GoRoute(
-        path: '${SaveNoteScreen.routeName}/:noteId',
+        path: StoryScreen.routeName,
+        builder: (context, state) => const StoryScreen(),
+      ),
+      GoRoute(
+        path: '${NoteScreen.routeName}/:noteId',
         builder: (context, state) {
           final noteId = state.pathParameters['noteId'];
           if (noteId == null) {
@@ -69,8 +74,8 @@ class AppRouter {
                   body: Center(child: Text('Note does not exists.')),
                 );
               }
-              return SaveNoteScreen(
-                args: SaveNoteScreenArgs(
+              return NoteScreen(
+                args: NoteScreenArgs(
                   isDeepLink: true,
                   note: UniversalNote.fromCloudNote(cloudNote),
                 ),

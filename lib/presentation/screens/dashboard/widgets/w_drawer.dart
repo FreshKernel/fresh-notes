@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../logic/auth/cubit/auth_cubit.dart';
 import '../../../components/auth/w_user_image.dart';
+import '../../../l10n/extensions/localizations.dart';
 import '../../settings/s_settings.dart';
+import '../../story/s_story.dart';
 
 class DashboardDrawer extends StatelessWidget {
   const DashboardDrawer({super.key});
@@ -52,8 +54,8 @@ class DashboardDrawer extends StatelessWidget {
             ),
             _buildItem(
               context: context,
-              title: 'Settings',
-              subtitle: 'Edit your settings',
+              title: context.loc.settings,
+              subtitle: context.loc.settingsDesc,
               icon: const Icon(Icons.settings),
               onTap: () {
                 context.push(
@@ -61,7 +63,18 @@ class DashboardDrawer extends StatelessWidget {
                 );
               },
             ),
-            const ListBody(),
+            _buildItem(
+              context: context,
+              title: context.loc.story,
+              subtitle: context.loc.storyDesc,
+              icon: const Icon(Icons.note),
+              onTap: () {
+                context.push(
+                  StoryScreen.routeName,
+                );
+              },
+            )
+            // const ListBody(),
           ],
         ),
       ),

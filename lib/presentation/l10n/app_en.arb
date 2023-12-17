@@ -112,5 +112,8 @@
     "profile": "Profile",
     "pleaseEnterYourName": "Please enter your name",
     "name": "Name",
-    "deleteAccount": "Delete Account"
+    "deleteAccount": "Delete Account",
+    "story": "Story",
+    "storyDesc": "Discover Our Journey",
+    "settingsDesc": "Customize Your Experience"
   }  

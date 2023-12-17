@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../logic/utils/extensions/string.dart';
 import '../../../l10n/extensions/localizations.dart';
-import '../../save_note/s_save_note.dart';
+import '../../note/s_note.dart';
 import 'note_tile_options.dart';
 
 class NoteGridTile extends StatelessWidget {
@@ -35,8 +35,8 @@ class NoteGridTile extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () => context.push(
-            SaveNoteScreen.routeName,
-            extra: SaveNoteScreenArgs(
+            NoteScreen.routeName,
+            extra: NoteScreenArgs(
               note: options.note,
             ),
           ),

@@ -19,8 +19,8 @@ import '../../components/note/editor/w_editor.dart';
 import '../../components/note/toolbar/w_note_toolbar.dart';
 import '../../utils/extensions/build_context_ext.dart';
 
-class SaveNoteScreenArgs {
-  const SaveNoteScreenArgs({
+class NoteScreenArgs {
+  const NoteScreenArgs({
     this.isDeepLink = false,
     this.note,
   });
@@ -29,21 +29,21 @@ class SaveNoteScreenArgs {
   final bool isDeepLink;
 }
 
-class SaveNoteScreen extends StatefulWidget {
-  const SaveNoteScreen({
+class NoteScreen extends StatefulWidget {
+  const NoteScreen({
     super.key,
-    this.args = const SaveNoteScreenArgs(),
+    this.args = const NoteScreenArgs(),
   });
 
   static const routeName = '/note';
 
-  final SaveNoteScreenArgs args;
+  final NoteScreenArgs args;
 
   @override
-  State<SaveNoteScreen> createState() => _SaveNoteScreenState();
+  State<NoteScreen> createState() => _NoteScreenState();
 }
 
-class _SaveNoteScreenState extends State<SaveNoteScreen> {
+class _NoteScreenState extends State<NoteScreen> {
   late final QuillController _controller;
 
   var _isReadOnly = false;

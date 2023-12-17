@@ -7,7 +7,7 @@ import '../../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../l10n/extensions/localizations.dart';
 import '../../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../note_list/w_notes_list.dart';
-import '../../save_note/s_save_note.dart';
+import '../../note/s_note.dart';
 
 class NotesListPage extends StatefulWidget {
   const NotesListPage({super.key});
@@ -57,8 +57,8 @@ class NotesListPage extends StatefulWidget {
   static Widget actionButtonBuilder(BuildContext context) {
     return FloatingActionButton(
       onPressed: () => context.push(
-        SaveNoteScreen.routeName,
-        extra: const SaveNoteScreenArgs(),
+        NoteScreen.routeName,
+        extra: const NoteScreenArgs(),
       ),
       child: const Icon(Icons.add),
     );

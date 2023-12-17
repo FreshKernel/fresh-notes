@@ -3,6 +3,9 @@
     "profile",
     "pleaseEnterYourName",
     "name",
-    "deleteAccount"
+    "deleteAccount",
+    "story",
+    "storyDesc",
+    "settingsDesc"
   ]
 }
