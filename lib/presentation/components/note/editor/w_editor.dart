@@ -59,7 +59,7 @@ class _NoteEditorState extends State<NoteEditor> {
             if (imageUrl.isHttpBasedUrl()) {
               await context.read<NoteCubit>().deleteNoteCloudImage(imageUrl);
               return;
-            } 
+            }
 
             if (PlatformChecker.defaultLogic().isWeb() ||
                 PlatformChecker.nativePlatform().isDesktop()) {
