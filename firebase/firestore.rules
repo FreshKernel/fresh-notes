@@ -60,7 +60,7 @@ service cloud.firestore {
      function isValidUpdateNoteInput() {
      	let resourceData = request.resource.data;
      	return isAccountVerified() &&
-      resource.data.userId != getUserId() &&
+      resource.data.userId == getUserId() &&
       resourceData.keys().toSet().hasOnly([
         'title',
         'text',

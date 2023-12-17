@@ -243,4 +243,22 @@ class AuthCubit extends Cubit<AuthState> {
       ));
     }
   }
+
+  Future<void> deleteTheUser() async {
+    try {
+      await AuthService.getInstance().deleteTheCurrentUser();
+      emit(
+        const AuthStateUnAuthenticated(
+          exception: null,
+        ),
+      );
+    } on Exception catch (e) {
+      emit(
+        AuthStateAuthenticated(
+          user: AuthService.getInstance().requireCurrentUser(),
+          exception: e,
+        ),
+      );
+    }
+  }
 }

@@ -108,5 +108,9 @@
     "create": "Create",
     "back": "Back",
     "manualSave": "Manual Save",
-    "manualSaveDesc": "Toggle to save notes manually"
+    "manualSaveDesc": "Toggle to save notes manually",
+    "profile": "Profile",
+    "pleaseEnterYourName": "Please enter your name",
+    "name": "Name",
+    "deleteAccount": "Delete Account"
   }  

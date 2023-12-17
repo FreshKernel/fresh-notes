@@ -6,8 +6,9 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_quill/flutter_quill.dart' show Document;
 import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
+import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../../../core/log/logger.dart';
@@ -61,8 +62,18 @@ class NoteCubit extends Cubit<NoteState> {
     }
   }
 
+  Future<Directory> _getNoteImageDirectory({required String noteId}) async {
+    return Directory(
+      path.join(
+        (await getApplicationDocumentsDirectory()).path,
+        'notes-images',
+        noteId,
+      ),
+    );
+  }
+
   /// Returns the note text document as json
-  Future<String> _saveNoteFiles({
+  Future<String> _saveNoteCachedImages({
     required String noteText,
     required String noteId,
     required bool isSyncWithCloud,
@@ -80,22 +91,20 @@ class NoteCubit extends Cubit<NoteState> {
     if (isSyncWithCloud) {
       // TODO: Upload with metadata in firebase storage
       final cloudPaths = await cloudStorageService.uploadMultipleFiles(
-        newFileNames.asMap().entries.map((e) {
-          final cachedImagePath = cachedImages[e.key];
+        newFileNames.asMap().entries.map((newFileName) {
+          final index = newFileName.key;
+          final cachedImagePath = cachedImages[index];
           final file = File(cachedImagePath);
-          return ('/notes/${e.value}', file);
+          return (
+            '/users/${AuthService.getInstance().requireCurrentUser().id}/$noteId/${newFileName.value}',
+            file
+          );
         }),
       );
       savedImages.addAll(cloudPaths);
     } else {
       final files = await localStorageService.copyMultipleFile(
-        directory: Directory(
-          join(
-            (await getApplicationDocumentsDirectory()).path,
-            'notes-images',
-            noteId,
-          ),
-        ),
+        directory: await _getNoteImageDirectory(noteId: noteId),
         files: cachedImages.map(File.new).toList(),
         names: newFileNames,
       );
@@ -114,7 +123,7 @@ class NoteCubit extends Cubit<NoteState> {
   Future<void> createNote(CreateNoteInput input) async {
     final currentNotes = [...state.notes];
     try {
-      final newNoteText = await _saveNoteFiles(
+      final newNoteText = await _saveNoteCachedImages(
         noteId: input.noteId,
         noteText: input.text,
         isSyncWithCloud: input.isSyncWithCloud,
@@ -204,31 +213,6 @@ class NoteCubit extends Cubit<NoteState> {
         document: Document.fromJson(jsonDecode(noteText)));
   }
 
-  Future<void> deleteAll() async {
-    final notes = [...state.notes];
-    emit(const NoteState(notes: []));
-    try {
-      for (final cloudNote
-          in await cloudNotesService.getAll(limit: -1, page: 1)) {
-        await _deleteNoteCloudFiles(
-          _getImageUtilitiesByNoteText(cloudNote.text),
-        );
-      }
-      for (final localNote
-          in await localNotesService.getAll(limit: -1, page: 1)) {
-        await _deleteNoteLocalFiles(
-          _getImageUtilitiesByNoteText(localNote.text),
-        );
-      }
-      await localNotesService.deleteAll();
-      await localNotesService.deleteAll();
-    } on Exception catch (e) {
-      emit(
-        NoteState(notes: notes, exception: e),
-      );
-    }
-  }
-
   Future<void> updateNote(UpdateNoteInput input) async {
     final noteIndex =
         state.notes.indexWhere((note) => note.noteId == input.noteId);
@@ -247,12 +231,40 @@ class NoteCubit extends Cubit<NoteState> {
           );
         }
 
-        final currentLocalNoteExistsInTheCloud =
-            await cloudNotesService.getOneById(currentLocalNote.noteId) != null;
+        final currentCloudNote =
+            await cloudNotesService.getOneById(currentLocalNote.noteId);
+        final currentLocalNoteExistsInTheCloud = currentCloudNote != null;
 
         // Create the note if it doesn't exist and the user wants to sync his offline
         // note so we needs to create it
         if (input.isSyncWithCloud && !currentLocalNoteExistsInTheCloud) {
+          // First let's upload the local images to the cloud
+          final localImages =
+              _getImageUtilitiesByNoteText(currentLocalNote.text)
+                  .getImagesPathsFromDocument(onlyLocalImages: true)
+                  .toList();
+
+          // The newly uploaded images
+          final cloudImages = (await cloudStorageService.uploadMultipleFiles(
+            localImages.map((localImage) {
+              final file = File(localImage);
+              final fileName = path.basename(localImage);
+              return (
+                '/users/${AuthService.getInstance().requireCurrentUser().id}/${input.noteId}/$fileName',
+                file
+              );
+            }),
+          ))
+              .toList();
+          localImages.asMap().forEach((index, localImage) {
+            input = input.copyWith(
+              text: input.text.replaceFirst(localImage, cloudImages[index]),
+            );
+          });
+
+          // Now let's delete the local images
+          await _deleteNoteLocalFiles(
+              _getImageUtilitiesByNoteText(currentLocalNote.text));
           await cloudNotesService.createOne(
             CreateNoteInput.fromUpdateInput(
               input,
@@ -262,8 +274,37 @@ class NoteCubit extends Cubit<NoteState> {
         } else if (!input.isSyncWithCloud && currentLocalNoteExistsInTheCloud) {
           // If the current note exist and the user wants to un-sync the note.
           await cloudNotesService.deleteOneById(currentLocalNote.noteId);
+
+          // Download the images locally before delete them in the cloud
+          final cloudImages =
+              _getImageUtilitiesByNoteText(currentLocalNote.text)
+                  .getImagesPathsFromDocument(onlyLocalImages: false)
+                  .where((note) => note.isHttpBasedUrl());
+          final localImages = <String>[];
+          for (final cloudImage in cloudImages) {
+            final response = await http.get(Uri.parse(cloudImage));
+            if (response.statusCode != 200) {
+              continue;
+            }
+            final directory =
+                await _getNoteImageDirectory(noteId: input.noteId);
+            final file = File(
+              path.join(
+                directory.path,
+                'note-image-${DateTime.now().toIso8601String()}.jpg',
+              ),
+            );
+            await file.writeAsBytes(response.bodyBytes);
+            localImages.add(file.path);
+            input = input.copyWith(
+              text: input.text.replaceFirst(cloudImage, file.path),
+            );
+          }
+
+          // Now we have downloaded the image locally, time to remove it in the cloud
           await _deleteNoteCloudFiles(
-              _getImageUtilitiesByNoteText(currentLocalNote.text));
+            _getImageUtilitiesByNoteText(currentLocalNote.text),
+          );
           input = input.copyWith(
             isSyncWithCloud: false,
           );
@@ -273,7 +314,7 @@ class NoteCubit extends Cubit<NoteState> {
         }
       }
 
-      final newNoteText = await _saveNoteFiles(
+      final newNoteText = await _saveNoteCachedImages(
         noteText: input.text,
         noteId: input.noteId,
         isSyncWithCloud: input.isSyncWithCloud,
@@ -399,6 +440,31 @@ class NoteCubit extends Cubit<NoteState> {
       await cloudNotesService.deleteByIds(allNotesIds);
     } on Exception catch (e) {
       emit(NoteState(notes: currentNotes, exception: e));
+    }
+  }
+
+  Future<void> deleteAll() async {
+    final notes = [...state.notes];
+    emit(const NoteState(notes: []));
+    try {
+      final cloudNotes = await cloudNotesService.getAll(limit: -1, page: 1);
+      for (final cloudNote in cloudNotes) {
+        await _deleteNoteCloudFiles(
+          _getImageUtilitiesByNoteText(cloudNote.text),
+        );
+      }
+      final localNotes = await localNotesService.getAll(limit: -1, page: 1);
+      for (final localNote in localNotes) {
+        await _deleteNoteLocalFiles(
+          _getImageUtilitiesByNoteText(localNote.text),
+        );
+      }
+      await localNotesService.deleteAll();
+      await cloudNotesService.deleteAll();
+    } on Exception catch (e) {
+      emit(
+        NoteState(notes: notes, exception: e),
+      );
     }
   }
 

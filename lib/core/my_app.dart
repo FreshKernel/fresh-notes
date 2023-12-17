@@ -18,7 +18,7 @@ import '../logic/settings/cubit/settings_data.dart';
 import '../presentation/l10n/extensions/localizations.dart';
 import '../presentation/screens/app_router.dart';
 import '../presentation/screens/auth/authentication/s_authentication.dart';
-import '../presentation/screens/auth/profile/s_save_profile.dart';
+import '../presentation/screens/auth/profile/s_profile.dart';
 import '../presentation/screens/auth/verify_account/s_verify_account.dart';
 import '../presentation/screens/dashboard/s_dashboard.dart';
 import '../presentation/screens/onboarding/s_onboarding.dart';
@@ -110,7 +110,7 @@ class MyHomeWidget extends StatelessWidget {
           if (state.user.data.hasUserData) {
             return const DashboardScreen();
           }
-          return const SaveProfileScreen();
+          return const ProfileScreen();
         }
         return const VerifyAccountScreen();
       case AuthStateUnAuthenticated():

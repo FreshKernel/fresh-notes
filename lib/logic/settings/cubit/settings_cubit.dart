@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
-// import 'package:hydrated_bloc/hydrated_bloc.dart' show HydratedMixin;
 
 import 'settings_data.dart';
 
@@ -11,21 +10,20 @@ part 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit() : super(const SettingsState()) {
-    Hive.openBox(boxName).then((value) {
-      final json = value.get(
-        'json',
-      );
-      if (json == null) {
-        return;
-      }
-      emit(
-        SettingsState.fromJson(
-          (json as Map<dynamic, dynamic>).map(
-            (key, value) => MapEntry(key.toString(), value),
-          ),
+    final settingsBox = Hive.box(boxName);
+    final json = settingsBox.get(
+      'json',
+    );
+    if (json == null) {
+      return;
+    }
+    emit(
+      SettingsState.fromJson(
+        (json as Map<dynamic, dynamic>).map(
+          (key, value) => MapEntry(key.toString(), value),
         ),
-      );
-    });
+      ),
+    );
   }
 
   static const boxName = 'settings';
@@ -47,19 +45,14 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void clearData() {
-    // clear();
     Hive.box(boxName).clear();
   }
 
-  // @override
-  // SettingsState? fromJson(Map<String, dynamic> json) {
-  //   return SettingsState.fromJson(json);
-  // }
-
-  // @override
-  // Map<String, dynamic>? toJson(SettingsState state) {
-  //   return state.toJson();
-  // }
+  @override
+  Future<void> close() async {
+    await Hive.box(boxName).close();
+    return super.close();
+  }
 
   static bool buildWhen(SettingsState previous, SettingsState current) {
     // Rebuild the whole app only if some values changes

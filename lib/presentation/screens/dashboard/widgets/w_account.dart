@@ -8,7 +8,7 @@ import '../../../../logic/auth/cubit/auth_cubit.dart';
 import '../../../components/auth/w_logout.dart';
 import '../../../components/auth/w_user_image.dart';
 import '../../../l10n/extensions/localizations.dart';
-import '../../auth/profile/s_save_profile.dart';
+import '../../auth/profile/s_profile.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -67,7 +67,7 @@ class AccountPage extends StatelessWidget {
           title: context.loc.accountData,
           desc: context.loc.accountDataDesc,
           iconData: Icons.account_circle,
-          onPressed: () => context.push(SaveProfileScreen.routeName),
+          onPressed: () => context.push(ProfileScreen.routeName),
         ),
         _buildItem(
           title: context.loc.privacyPolicy,
@@ -81,7 +81,9 @@ class AccountPage extends StatelessWidget {
           title: context.loc.socialMedia,
           desc: context.loc.socialMediaDesc,
           iconData: Icons.share,
-          onPressed: () {},
+          onPressed: () => launchUrl(
+            Uri.parse(UrlConstants.githubRepo),
+          ),
         ),
       ],
     );

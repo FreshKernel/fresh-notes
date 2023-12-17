@@ -726,21 +726,21 @@ packages:
       path: "/Users/ahmedhnewa/development/playground/framework_based/flutter/flutter-quill/"
       relative: false
     source: path
-    version: "9.0.2"
+    version: "9.0.3"
   flutter_quill_extensions:
     dependency: "direct main"
     description:
       path: "/Users/ahmedhnewa/development/playground/framework_based/flutter/flutter-quill/flutter_quill_extensions/"
       relative: false
     source: path
-    version: "9.0.2"
+    version: "9.0.3"
   flutter_quill_test:
     dependency: "direct dev"
     description:
       path: "/Users/ahmedhnewa/development/playground/framework_based/flutter/flutter-quill/flutter_quill_test/"
       relative: false
     source: path
-    version: "9.0.2"
+    version: "9.0.3"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -849,10 +849,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_sign_in
-      sha256: "23982b6a6b9e664bdc540488732d5760bc73e83ec74c2bd87cb690cfd357dd75"
+      sha256: "0b8787cb9c1a68ad398e8010e8c8766bfa33556d2ab97c439fb4137756d7308f"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "6.2.1"
   google_sign_in_android:
     dependency: transitive
     description:
@@ -918,7 +918,7 @@ packages:
     source: hosted
     version: "1.3.1"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: d4872660c46d929f6b8a9ef4e7a7eff7e49bbf0c4ec3f385ee32df5119175139
