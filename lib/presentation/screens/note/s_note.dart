@@ -181,7 +181,7 @@ class _NoteScreenState extends State<NoteScreen> {
             ),
           if (_isEditing)
             IconButton(
-              tooltip: 'Share',
+              tooltip: context.loc.share,
               onPressed: () async {
                 final messenger = context.messenger;
                 final plainText = _controller.document.toPlainText(

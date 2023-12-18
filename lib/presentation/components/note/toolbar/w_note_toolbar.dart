@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
-import '../../../l10n/extensions/localizations.dart';
 import 'buttons/checklist.dart';
 import 'buttons/insert_image.dart';
 import 'buttons/text_options/set_text_options.dart';

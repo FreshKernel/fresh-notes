@@ -25,9 +25,10 @@ it's known to be limited on AppleOS and it's closed so there is not much I can d
 
 ## Setup
 1. Setup Flutter, Android Studio, Xcode on your local machine
-2. Install the [Firebase CLI](https://firebase.google.com/docs/cli)
-3. Configure Firebase with your Flutter app using the offical [documentation](https://firebase.google.com/docs/flutter/setup), you are welcome to setup it manually, I prefer to do it manually but to make it faster to setup the app for new anyone I will use the automated CLI
-4. Create Firebase Firestore index
+2. Run the script `./scripts/fallbacks.sh`
+3. Install the [Firebase CLI](https://firebase.google.com/docs/cli)
+4. Configure Firebase with your Flutter app using the offical [documentation](https://firebase.google.com/docs/flutter/setup), you are welcome to setup it manually, I prefer to do it manually but to make it faster to setup the app for new anyone I will use the automated CLI
+5. Create Firebase Firestore index
 
     Composite indexes: <br>
     userId: Ascending  <br>
@@ -37,9 +38,9 @@ it's known to be limited on AppleOS and it's closed so there is not much I can d
     Instead of defining a composite index manually, try to run all the queries in the app by testing everything to get a links for generating the required index. and you will get a url to open Like:
     [https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?....](https://console.firebase.google.com/v1/r/project/mynotes-eb717/firestore/indexes?create_composite=Cktwcm9qZWN0cy9teW5vdGVzLWViNzE3L2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9ub3Rlcy9pbmRleGVzL18QARoKCgZ1c2VySWQQARoNCgl1cGRhdGVkQXQQAhoMCghfX25hbWVfXxAC)
 
-5. Configure App check in firebase for Android and iOS (optional)
-6. Setup App Links for Android and Universal Links for iOS (optional)
-7. Update the `constants.dart` in the scripts folder (optional)
+6. Configure App check in firebase for Android and iOS (optional)
+7. Setup App Links for Android and Universal Links for iOS (optional)
+8. Update the `constants.dart` in the scripts folder (optional)
 
 <!-- 1. Firebase: First setup firebase for both android/ios, register the apps and download the configurations and put
 them in the desire place, "google-services.json" for android, ios "GoogleService-Info.plist"

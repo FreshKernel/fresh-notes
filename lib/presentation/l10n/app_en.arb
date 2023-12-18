@@ -149,6 +149,10 @@
     "signOutDesc": "Are you sure you want to sign out?",
     "loggingOut": "Logging out...",
     "verifyYourEmailAddress": "Verify Your Email Address",
-    "pleaseVerifyYourEmailAddressMsg": "Please verifiy your emaill address in the email inbox.",
-    "insertAnImage": "Insert an image"
+    "pleaseVerifyYourEmailAddressMessage": "Please verifiy your emaill address in the email inbox.",
+    "insertAnImage": "Insert an image",
+    "yourAccountHasBeenDisabledMessage": "Your account has been disabled. Please contact the support for more information.",
+    "welcome": "Welcome",
+    "share": "Share",
+    "checklist": "Checklist"
   }  

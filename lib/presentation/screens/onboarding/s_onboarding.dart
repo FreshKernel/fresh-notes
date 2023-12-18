@@ -140,7 +140,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     ];
 
     return Semantics(
-      label: 'Welcome!',
+      label: context.loc.welcome,
       child: Scaffold(
         body: Column(
           children: [

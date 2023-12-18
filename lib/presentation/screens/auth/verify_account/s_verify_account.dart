@@ -92,7 +92,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
             break;
           case AuthErrorType.userAccountIsDisabled:
             messenger.showMessage(
-              'Your account has been disabled. Please contact the support for more information.',
+              context.loc.yourAccountHasBeenDisabledMessage,
               useSnackBar: false,
             );
             break;
@@ -126,7 +126,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
                   children: [
                     Center(
                       child: Text(
-                        context.loc.pleaseVerifyYourEmailAddressMsg,
+                        context.loc.pleaseVerifyYourEmailAddressMessage,
                       ),
                     ),
                     const SizedBox(height: 4),
