@@ -723,27 +723,25 @@ packages:
   flutter_quill:
     dependency: "direct main"
     description:
-      name: flutter_quill
-      sha256: a5881b00513be3d7d550dc45057de6e028cca8081675adcd1cffae77c28f8f4f
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.0.3"
+      path: "/Users/ellet/Developer/projects/flutter-quill/"
+      relative: false
+    source: path
+    version: "9.0.5"
   flutter_quill_extensions:
     dependency: "direct main"
     description:
-      name: flutter_quill_extensions
-      sha256: "43f2ee46a7c587d5b7c6e3b34b5d86d00240edbb69fc5ea28bc065beb2720a36"
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.0.3"
+      path: "/Users/ellet/Developer/projects/flutter-quill/flutter_quill_extensions"
+      relative: false
+    source: path
+    version: "9.0.5"
   flutter_quill_test:
     dependency: "direct dev"
     description:
       name: flutter_quill_test
-      sha256: "3342f19538d3f51dfc263cad9817da837f4dfdc42eac600e8963f4cedb2bcbb7"
+      sha256: "589fee8b588de7825f890f90aa05a68bf6df164f86f1f08f1264e104454350cc"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.3"
+    version: "9.0.5"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:

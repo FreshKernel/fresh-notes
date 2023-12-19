@@ -154,5 +154,9 @@
     "yourAccountHasBeenDisabledMessage": "Your account has been disabled. Please contact the support for more information.",
     "welcome": "Welcome",
     "share": "Share",
-    "checklist": "Checklist"
+    "checklist": "Checklist",
+    "link": "Link",
+    "text": "Text",
+    "shareNoteByLink": "Share note by link",
+    "shareNoteByText": "Share note by text"
   }  

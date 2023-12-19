@@ -8,6 +8,7 @@ import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
 
 import '../../../core/log/logger.dart';
+import '../../../data/constants/urls_constants.dart';
 import '../../../data/core/shared/data_utils.dart';
 import '../../../data/notes/universal/models/m_note.dart';
 import '../../../data/notes/universal/models/m_note_inputs.dart';
@@ -19,6 +20,7 @@ import '../../components/note/editor/w_editor.dart';
 import '../../components/note/toolbar/w_note_toolbar.dart';
 import '../../l10n/extensions/localizations.dart';
 import '../../utils/extensions/build_context_ext.dart';
+import 'w_share_dialog.dart';
 
 class NoteScreenArgs {
   const NoteScreenArgs({
@@ -57,6 +59,9 @@ class _NoteScreenState extends State<NoteScreen> {
 
   bool get _isEditing => _note != null;
   late final NoteCubit _noteBloc;
+
+  bool get isNoteOwner =>
+      widget.args.note?.userId == AuthService.getInstance().currentUser?.id;
 
   @override
   void initState() {
@@ -194,11 +199,33 @@ class _NoteScreenState extends State<NoteScreen> {
                   );
                   return;
                 }
-                await AppShareService.getInstance().shareText(plainText);
+                if (_isPrivate || !_isEditing) {
+                  await AppShareService.getInstance().shareText(plainText);
+                  return;
+                }
+                final shareOption = await showModalBottomSheet<ShareOption>(
+                  showDragHandle: true,
+                  context: context,
+                  constraints: const BoxConstraints(maxWidth: 640),
+                  builder: (context) => const NoteShareDialog(),
+                );
+                if (shareOption == null) {
+                  return;
+                }
+                switch (shareOption) {
+                  case ShareOption.link:
+                    await AppShareService.getInstance().shareText(
+                      '${UrlConstants.webUrl}/note/${_note?.noteId}',
+                    );
+                    break;
+                  case ShareOption.text:
+                    await AppShareService.getInstance().shareText(plainText);
+                    break;
+                }
               },
               icon: const Icon(Icons.share),
             ),
-          if (!widget.args.isDeepLink) ...[
+          if (isNoteOwner) ...[
             IconButton(
               tooltip: context.loc.syncWithCloud,
               onPressed: () =>
@@ -211,10 +238,10 @@ class _NoteScreenState extends State<NoteScreen> {
                 onPressed: () => setState(() => _isPrivate = !_isPrivate),
                 icon: Icon(_isPrivate ? Icons.lock : Icons.public),
               ),
-          ],
+          ]
         ],
       ),
-      floatingActionButton: widget.args.isDeepLink
+      floatingActionButton: !isNoteOwner
           ? const SizedBox.shrink()
           : FloatingActionButton(
               onPressed: () => setState(() => _isReadOnly = !_isReadOnly),
@@ -233,9 +260,6 @@ class _NoteScreenState extends State<NoteScreen> {
                       QuillToolbar.simple(
                         configurations: QuillSimpleToolbarConfigurations(
                           controller: _controller,
-                          // fontFamilyValues: const {
-                          //   'Ubuntu': 'Ubuntu',
-                          // },
                           showAlignmentButtons: true,
                           embedButtons: [
                             ...FlutterQuillEmbeds.toolbarButtons(
@@ -289,7 +313,7 @@ class _NoteScreenState extends State<NoteScreen> {
                 ),
               ),
             ),
-            NoteToolbar(controller: _controller),
+            if (!_isReadOnly) NoteToolbar(controller: _controller),
           ],
         ),
       ),

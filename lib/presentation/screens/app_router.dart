@@ -28,6 +28,14 @@ class AppRouter {
         builder: (context, state) => const SettingsScreen(),
       ),
       GoRoute(
+        path: ProfileScreen.routeName,
+        builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: StoryScreen.routeName,
+        builder: (context, state) => const StoryScreen(),
+      ),
+      GoRoute(
         path: NoteScreen.routeName,
         builder: (context, state) {
           final args = state.extra as NoteScreenArgs;
@@ -35,14 +43,6 @@ class AppRouter {
             args: args,
           );
         },
-      ),
-      GoRoute(
-        path: ProfileScreen.routeName,
-        builder: (context, state) => const ProfileScreen(),
-      ),
-      GoRoute(
-        path: StoryScreen.routeName,
-        builder: (context, state) => const StoryScreen(),
       ),
       GoRoute(
         path: '${NoteScreen.routeName}/:noteId',

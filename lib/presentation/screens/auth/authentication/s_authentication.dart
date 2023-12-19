@@ -27,8 +27,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const AppLogo(
-                size: 250,
+              Builder(
+                builder: (context) {
+                  final orientation = MediaQuery.orientationOf(context);
+                  if (orientation == Orientation.landscape) {
+                    return const AppLogo(
+                      size: 150,
+                    );
+                  }
+                  return const AppLogo(
+                    size: 250,
+                  );
+                },
               ),
               const SizedBox(height: 16),
               Text(
@@ -43,6 +53,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 height: 550,
                 child: AuthenticationForm(),
               ),
+              const SizedBox(height: 50),
             ],
           ),
         ),

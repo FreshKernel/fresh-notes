@@ -24,19 +24,17 @@ class NoteToolbar extends StatefulWidget {
 }
 
 class _NoteToolbarState extends State<NoteToolbar> {
+  Widget? _currentWidget;
+
   @override
   Widget build(BuildContext context) {
-    return QuillToolbar(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              constraints: const BoxConstraints(
-                maxHeight: 40,
-              ),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
+    return SizedBox(
+      width: double.infinity,
+      child: QuillToolbar(
+        child: _currentWidget ??
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
                 children: [
                   const SizedBox(
                     width: 10,
@@ -49,12 +47,14 @@ class _NoteToolbarState extends State<NoteToolbar> {
                   ),
                   NoteToolbarTextOptionsButton(
                     controller: widget._controller,
+                    onNavigate: (newWidget) {
+                      setState(() => _currentWidget = newWidget);
+                    },
+                    onNavigateBack: () => setState(() => _currentWidget = null),
                   )
                 ],
               ),
             ),
-          ],
-        ),
       ),
     );
   }

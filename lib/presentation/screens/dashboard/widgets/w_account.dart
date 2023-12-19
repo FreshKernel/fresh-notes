@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../data/constants/urls.dart';
+import '../../../../data/constants/urls_constants.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
 import '../../../components/auth/w_logout.dart';
 import '../../../components/auth/w_user_image.dart';

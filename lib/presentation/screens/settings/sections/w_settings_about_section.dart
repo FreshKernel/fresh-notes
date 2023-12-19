@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../data/constants/urls.dart';
+import '../../../../data/constants/urls_constants.dart';
 import '../../../../gen/pubspec.dart' as pubspec;
 import '../../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../components/others/w_app_logo.dart';
