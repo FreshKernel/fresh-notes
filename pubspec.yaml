@@ -116,6 +116,7 @@ flutter:
     - ./assets/lottie/error/
     - ./assets/lottie/no_data/
     - ./assets/lottie/no_internet/
+    - shorebird.yaml
 
   fonts:
     - family: Ubuntu
