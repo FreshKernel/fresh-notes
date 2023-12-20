@@ -133,7 +133,8 @@ class _NoteScreenState extends State<NoteScreen> {
     }
     try {
       _isLoading = true;
-      final userId = AuthService.getInstance().requireCurrentUser(null).id;
+      final userId = AuthService.getInstance().currentUser?.id ?? '';
+      final noteText = jsonEncode(document.toDelta().toJson());
       if (_isEditing) {
         await _noteBloc.updateNote(
           UpdateNoteInput(
@@ -141,10 +142,11 @@ class _NoteScreenState extends State<NoteScreen> {
                 (throw ArgumentError(
                     'The id is required for updating the note')),
             title: _titleController.text,
-            text: jsonEncode(document.toDelta().toJson()),
+            text: noteText,
             isSyncWithCloud: _isSyncWithCloud,
             isPrivate: _isPrivate,
             isTrash: false,
+            userId: userId,
           ),
         );
       } else {
@@ -152,7 +154,7 @@ class _NoteScreenState extends State<NoteScreen> {
           CreateNoteInput(
             noteId: generateRandomItemId(),
             title: _titleController.text,
-            text: jsonEncode(document.toDelta().toJson()),
+            text: noteText,
             isSyncWithCloud: _isSyncWithCloud,
             isPrivate: _isPrivate,
             userId: userId,
@@ -225,7 +227,8 @@ class _NoteScreenState extends State<NoteScreen> {
               },
               icon: const Icon(Icons.share),
             ),
-          if (isNoteOwner) ...[
+          if (AuthService.getInstance().isAuthenticated ||
+              (_isEditing && isNoteOwner)) ...[
             IconButton(
               tooltip: context.loc.syncWithCloud,
               onPressed: () =>

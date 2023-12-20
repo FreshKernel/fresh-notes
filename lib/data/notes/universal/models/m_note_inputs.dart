@@ -41,6 +41,7 @@ class CreateNoteInput with _$CreateNoteInput {
 class UpdateNoteInput with _$UpdateNoteInput {
   const factory UpdateNoteInput({
     required String noteId,
+    required String userId,
     required String text,
     required String title,
     required bool isSyncWithCloud,
@@ -56,6 +57,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
         isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         isTrash: false,
+        userId: input.userId,
       );
 
   factory UpdateNoteInput.fromUniversalNote(UniversalNote note) =>
@@ -66,6 +68,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
         text: note.text,
         title: note.title,
         isSyncWithCloud: note.isSyncWithCloud,
+        userId: note.userId,
       );
 
   factory UpdateNoteInput.fromLocalNote(LocalNote note) => UpdateNoteInput(
@@ -75,6 +78,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
         text: note.text,
         title: note.title,
         isSyncWithCloud: note.isSyncWithCloud,
+        userId: note.userId,
       );
 
   factory UpdateNoteInput.fromCloudNote(CloudNote note) => UpdateNoteInput(
@@ -84,5 +88,6 @@ class UpdateNoteInput with _$UpdateNoteInput {
         isSyncWithCloud: true,
         isPrivate: note.isPrivate,
         isTrash: note.isTrash,
+        userId: note.userId,
       );
 }

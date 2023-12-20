@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
 import 'buttons/checklist.dart';
 import 'buttons/insert_image.dart';
@@ -51,7 +52,28 @@ class _NoteToolbarState extends State<NoteToolbar> {
                       setState(() => _currentWidget = newWidget);
                     },
                     onNavigateBack: () => setState(() => _currentWidget = null),
-                  )
+                  ),
+                  QuillToolbarClearFormatButton(
+                    controller: widget._controller,
+                  ),
+                  QuillToolbarSearchButton(
+                    controller: widget._controller,
+                  ),
+                  QuillToolbarLinkStyleButton(
+                    controller: widget._controller,
+                  ),
+                  QuillToolbarVideoButton(controller: widget._controller),
+                  QuillToolbarHistoryButton(
+                    controller: widget._controller,
+                    isUndo: true,
+                  ),
+                  QuillToolbarHistoryButton(
+                    controller: widget._controller,
+                    isUndo: false,
+                  ),
+                  const SizedBox(
+                    width: 80,
+                  ),
                 ],
               ),
             ),

@@ -37,13 +37,14 @@ class DashboardDrawer extends StatelessWidget {
           children: [
             BlocBuilder<AuthCubit, AuthState>(
               builder: (context, state) {
-                if (state is! AuthStateAuthenticated) {
-                  return const Text('Authentication is required');
-                }
-                final user = state.user;
+                final user =
+                    state is AuthStateAuthenticated ? state.user : null;
                 return UserAccountsDrawerHeader(
-                  accountName: Text(user.data.displayName.toString()),
-                  accountEmail: Text(user.emailAddress.toString()),
+                  accountName: Text(
+                      user?.data.displayName.toString() ?? context.loc.guest),
+                  accountEmail: user?.emailAddress != null
+                      ? Text(user?.emailAddress.toString() ?? '')
+                      : const SizedBox.shrink(),
                   onDetailsPressed: () {},
                   currentAccountPicture: UserProfileImage(
                     user: user,

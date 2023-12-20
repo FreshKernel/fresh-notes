@@ -17,9 +17,6 @@ import '../logic/settings/cubit/settings_cubit.dart';
 import '../logic/settings/cubit/settings_data.dart';
 import '../presentation/l10n/extensions/localizations.dart';
 import '../presentation/screens/app_router.dart';
-import '../presentation/screens/auth/authentication/s_authentication.dart';
-import '../presentation/screens/auth/profile/s_profile.dart';
-import '../presentation/screens/auth/verify_account/s_verify_account.dart';
 import '../presentation/screens/dashboard/s_dashboard.dart';
 import '../presentation/screens/onboarding/s_onboarding.dart';
 import '../presentation/theme/color_schemes.g.dart';
@@ -103,50 +100,8 @@ class MyHomeWidget extends StatelessWidget {
 
   static const routeName = '/';
 
-  Widget _getScreenByAuthState(AuthState state) {
-    switch (state) {
-      case AuthStateAuthenticated():
-        if (state.user.isEmailVerified) {
-          if (state.user.data.hasUserData) {
-            return const DashboardScreen();
-          }
-          return const ProfileScreen();
-        }
-        return const VerifyAccountScreen();
-      case AuthStateUnAuthenticated():
-        return const AuthenticationScreen();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        final screen = _getScreenByAuthState(state);
-
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 330),
-          transitionBuilder: (child, animation) {
-            // This animation is from flutter.dev example
-            const begin = Offset(0.0, 1.0);
-            const end = Offset.zero;
-            const curve = Curves.ease;
-
-            final tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(
-              CurveTween(curve: curve),
-            );
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
-          child: screen,
-        );
-      },
-    );
+    return const DashboardScreen();
   }
 }

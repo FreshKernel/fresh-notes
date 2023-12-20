@@ -40,6 +40,7 @@ class $AssetsJsonGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
+  $AssetsLottieAuthGen get auth => const $AssetsLottieAuthGen();
   $AssetsLottieErrorGen get error => const $AssetsLottieErrorGen();
   $AssetsLottieNoDataGen get noData => const $AssetsLottieNoDataGen();
   $AssetsLottieNoInternetGen get noInternet =>
@@ -58,6 +59,17 @@ class $AssetsSvgGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [googleIcon];
+}
+
+class $AssetsLottieAuthGen {
+  const $AssetsLottieAuthGen();
+
+  /// File path: assets/lottie/auth/login.json
+  LottieGenImage get login =>
+      const LottieGenImage('assets/lottie/auth/login.json');
+
+  /// List of all assets
+  List<LottieGenImage> get values => [login];
 }
 
 class $AssetsLottieErrorGen {

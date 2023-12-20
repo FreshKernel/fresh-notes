@@ -5,6 +5,7 @@ import '../../core/my_app.dart';
 import '../../data/notes/cloud/s_cloud_notes.dart';
 import '../../data/notes/universal/models/m_note.dart';
 import 'auth/profile/s_profile.dart';
+import 'auth/w_dynamic_auth.dart';
 import 'note/s_note.dart';
 import 'onboarding/s_onboarding.dart';
 import 'settings/s_settings.dart';
@@ -15,6 +16,10 @@ class AppRouter {
 
   static GoRouter router = GoRouter(
     routes: [
+      GoRoute(
+        path: DynamicAuthWidget.routeName,
+        builder: (context, state) => const DynamicAuthWidget(),
+      ),
       GoRoute(
         path: MyHomeWidget.routeName,
         builder: (context, state) => const MyHomeWidget(),

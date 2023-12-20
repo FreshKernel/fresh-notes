@@ -160,6 +160,7 @@ class LocalNote with _$LocalNote {
       ...sharedInputData,
       LocalNoteProperties.updatedAt:
           SqlValue.string(DateTime.now().toIso8601String()),
+      LocalNoteProperties.userId: SqlValue.string(input.userId),
     };
   }
 

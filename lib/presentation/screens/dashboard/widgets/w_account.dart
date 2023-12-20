@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../data/constants/urls_constants.dart';
+import '../../../../gen/assets.gen.dart';
+import '../../../../logic/auth/auth_service.dart';
 import '../../../../logic/auth/cubit/auth_cubit.dart';
 import '../../../components/auth/w_logout.dart';
 import '../../../components/auth/w_user_image.dart';
 import '../../../l10n/extensions/localizations.dart';
+import '../../../utils/extensions/build_context_ext.dart';
 import '../../auth/profile/s_profile.dart';
+import '../../auth/w_dynamic_auth.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -42,7 +47,20 @@ class AccountPage extends StatelessWidget {
         BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
             if (state is! AuthStateAuthenticated) {
-              return const Text('Authentication is required');
+              return Column(
+                children: [
+                  Lottie.asset(
+                    Assets.lottie.auth.login.path,
+                    width: 250,
+                    height: 250,
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () => context.push(DynamicAuthWidget.routeName),
+                    child: Text(context.loc.signIn),
+                  )
+                ],
+              );
             }
             final user = state.user;
             final displayName = state.user.data.displayName;
@@ -54,6 +72,16 @@ class AccountPage extends StatelessWidget {
                   containerSize: 100,
                 ),
                 const SizedBox(height: 16),
+                if (!state.user.isEmailVerified)
+                  TextButton(
+                    onPressed: () => context.push(DynamicAuthWidget.routeName),
+                    child: Text(context.loc.verifyYourEmailAddress),
+                  ),
+                if (state.user.isEmailVerified && !state.user.data.hasUserData)
+                  TextButton(
+                    onPressed: () => context.push(DynamicAuthWidget.routeName),
+                    child: Text(context.loc.completeRegistration),
+                  ),
                 if (displayName != null)
                   Text(
                     displayName,
@@ -63,11 +91,18 @@ class AccountPage extends StatelessWidget {
             );
           },
         ),
+        const SizedBox(height: 8),
         _buildItem(
           title: context.loc.accountData,
           desc: context.loc.accountDataDesc,
           iconData: Icons.account_circle,
-          onPressed: () => context.push(ProfileScreen.routeName),
+          onPressed: () {
+            if (!AuthService.getInstance().isAuthenticated) {
+              context.messenger.showMessage(context.loc.pleaseLoginFirst);
+              return;
+            }
+            context.push(ProfileScreen.routeName);
+          },
         ),
         _buildItem(
           title: context.loc.privacyPolicy,

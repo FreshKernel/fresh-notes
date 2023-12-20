@@ -31,36 +31,23 @@ class _LogoutIconButtonState extends State<LogoutIconButton> {
       return;
     }
 
-    authBloc.logout();
     setState(() => _isLoading = true);
+    await authBloc.logout();
+    setState(() => _isLoading = false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is! AuthStateAuthenticated) {
-          return;
-        }
-        final e = state.exception;
-        if (e == null) {
-          return;
-        }
-        setState(() => _isLoading = false);
-
-        showErrorDialog(
-          context: context,
-          options: ErrorDialogOptions(
-            message: context.loc.unknownErrorWithMessage(e.toString()),
-            developerError: null,
-          ),
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        return IconButton(
+          tooltip: context.loc.signOut,
+          onPressed: _isLoading
+              ? null
+              : (state is AuthStateAuthenticated ? _onLogout : null),
+          icon: const Icon(Icons.logout),
         );
       },
-      child: IconButton(
-        tooltip: context.loc.signOut,
-        onPressed: _isLoading ? null : _onLogout,
-        icon: const Icon(Icons.logout),
-      ),
     );
   }
 }

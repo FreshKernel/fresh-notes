@@ -158,5 +158,10 @@
     "link": "Link",
     "text": "Text",
     "shareNoteByLink": "Share note by link",
-    "shareNoteByText": "Share note by text"
+    "shareNoteByText": "Share note by text",
+    "close": "Close",
+    "signIn": "Sign in",
+    "completeRegistration": "Complete Registration",
+    "guest": "Guest",
+    "pleaseLoginFirst": "Please login first"
   }  

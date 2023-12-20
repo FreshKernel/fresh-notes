@@ -44,7 +44,8 @@ class LocalNotesService extends LocalNotesRepository {
   }
 
   @override
-  Future<List<LocalNote>> createMultiples(List<CreateNoteInput> list) async {
+  Future<List<LocalNote>> createMultiples(
+      Iterable<CreateNoteInput> list) async {
     requireToBeInitialized();
     final notes = await _provider.createMultiples(list);
     return notes.cast();
@@ -68,7 +69,7 @@ class LocalNotesService extends LocalNotesRepository {
   }
 
   @override
-  Future<List<LocalNote>> getAllByIds(List<String> ids) async {
+  Future<List<LocalNote>> getAllByIds(Iterable<String> ids) async {
     requireToBeInitialized();
     final notes = await _provider.getAllByIds(ids);
     return notes.cast();
@@ -97,13 +98,13 @@ class LocalNotesService extends LocalNotesRepository {
   }
 
   @override
-  Future<void> deleteByIds(List<String> ids) async {
+  Future<void> deleteByIds(Iterable<String> ids) async {
     requireToBeInitialized();
     await _provider.deleteByIds(ids);
   }
 
   @override
-  Future<void> updateByIds(List<UpdateNoteInput> entities) async {
+  Future<void> updateByIds(Iterable<UpdateNoteInput> entities) async {
     requireToBeInitialized();
     await _provider.updateByIds(entities);
   }

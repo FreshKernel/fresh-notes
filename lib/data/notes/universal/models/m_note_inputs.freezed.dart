@@ -186,7 +186,7 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CreateNoteInputImpl &&
@@ -242,6 +242,7 @@ abstract class _CreateNoteInput implements CreateNoteInput {
 /// @nodoc
 mixin _$UpdateNoteInput {
   String get noteId => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
@@ -261,6 +262,7 @@ abstract class $UpdateNoteInputCopyWith<$Res> {
   @useResult
   $Res call(
       {String noteId,
+      String userId,
       String text,
       String title,
       bool isSyncWithCloud,
@@ -282,6 +284,7 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
   @override
   $Res call({
     Object? noteId = null,
+    Object? userId = null,
     Object? text = null,
     Object? title = null,
     Object? isSyncWithCloud = null,
@@ -292,6 +295,10 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
       noteId: null == noteId
           ? _value.noteId
           : noteId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
       text: null == text
           ? _value.text
@@ -327,6 +334,7 @@ abstract class _$$UpdateNoteInputImplCopyWith<$Res>
   @useResult
   $Res call(
       {String noteId,
+      String userId,
       String text,
       String title,
       bool isSyncWithCloud,
@@ -346,6 +354,7 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? noteId = null,
+    Object? userId = null,
     Object? text = null,
     Object? title = null,
     Object? isSyncWithCloud = null,
@@ -356,6 +365,10 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
       noteId: null == noteId
           ? _value.noteId
           : noteId // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
       text: null == text
           ? _value.text
@@ -386,6 +399,7 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
 class _$UpdateNoteInputImpl implements _UpdateNoteInput {
   const _$UpdateNoteInputImpl(
       {required this.noteId,
+      required this.userId,
       required this.text,
       required this.title,
       required this.isSyncWithCloud,
@@ -394,6 +408,8 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
 
   @override
   final String noteId;
+  @override
+  final String userId;
   @override
   final String text;
   @override
@@ -407,15 +423,16 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
 
   @override
   String toString() {
-    return 'UpdateNoteInput(noteId: $noteId, text: $text, title: $title, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isTrash: $isTrash)';
+    return 'UpdateNoteInput(noteId: $noteId, userId: $userId, text: $text, title: $title, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isTrash: $isTrash)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UpdateNoteInputImpl &&
             (identical(other.noteId, noteId) || other.noteId == noteId) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.isSyncWithCloud, isSyncWithCloud) ||
@@ -426,8 +443,8 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, noteId, text, title, isSyncWithCloud, isPrivate, isTrash);
+  int get hashCode => Object.hash(runtimeType, noteId, userId, text, title,
+      isSyncWithCloud, isPrivate, isTrash);
 
   @JsonKey(ignore: true)
   @override
@@ -440,6 +457,7 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
 abstract class _UpdateNoteInput implements UpdateNoteInput {
   const factory _UpdateNoteInput(
       {required final String noteId,
+      required final String userId,
       required final String text,
       required final String title,
       required final bool isSyncWithCloud,
@@ -448,6 +466,8 @@ abstract class _UpdateNoteInput implements UpdateNoteInput {
 
   @override
   String get noteId;
+  @override
+  String get userId;
   @override
   String get text;
   @override

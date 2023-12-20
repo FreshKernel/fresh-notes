@@ -20,10 +20,11 @@ class NoteToolbarTextOptionsButton extends StatelessWidget {
         onNavigate(
           _TextOptionsWidget(
             controller: _controller,
+            onNavigateBack: onNavigateBack,
           ),
         );
       },
-      tooltip: 'Text options',
+      // tooltip: 'Text options', TODO: Translate
       icon: const Icon(Icons.text_fields),
     );
   }
@@ -32,9 +33,11 @@ class NoteToolbarTextOptionsButton extends StatelessWidget {
 class _TextOptionsWidget extends StatelessWidget {
   const _TextOptionsWidget({
     required QuillController controller,
+    required this.onNavigateBack,
   }) : _controller = controller;
 
   final QuillController _controller;
+  final VoidCallback onNavigateBack;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,10 @@ class _TextOptionsWidget extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
+          IconButton(
+            onPressed: onNavigateBack,
+            icon: const Icon(Icons.close),
+          ),
           _ToggleStyleButton(
             iconData: Icons.format_list_bulleted,
             toggledIconData: Icons.format_list_bulleted_outlined,
@@ -128,6 +135,9 @@ class _TextOptionsWidget extends StatelessWidget {
                 );
               },
             ),
+          ),
+          const SizedBox(
+            width: 80,
           ),
         ],
       ),

@@ -37,16 +37,20 @@ class NoteCubit extends Cubit<NoteState> {
   final CloudNotesService cloudNotesService;
   final CloudStorageService cloudStorageService;
   final LocalStorageService localStorageService;
-  var _notesFutureLoadded = false;
 
   Future<List<UniversalNote>> getAllNotes() async {
     final localNotes = (await localNotesService.getAll(limit: -1, page: 1))
         .map(UniversalNote.fromLocalNote);
-    final cloudNotes = (await cloudNotesService.getAll(limit: -1, page: 1))
-        .map(UniversalNote.fromCloudNote);
+
+    final cloudNotes = AuthService.getInstance().isAuthenticated
+        ? (await cloudNotesService.getAll(limit: -1, page: 1))
+            .map(UniversalNote.fromCloudNote)
+        : <UniversalNote>{};
     final allNotes = <UniversalNote>{...localNotes, ...cloudNotes};
     return allNotes.toList();
   }
+
+  var _notesFutureLoadded = false;
 
   Future<void> loadAllNotes() async {
     try {
@@ -468,8 +472,31 @@ class NoteCubit extends Cubit<NoteState> {
     }
   }
 
+  Future<void> deleteAllCloudNotesLocally() async {
+    final notes = [...state.notes];
+    notes.removeWhere((element) => element.isSyncWithCloud);
+    emit(NoteState(notes: notes));
+    try {
+      final localNotes = (await localNotesService.getAll(limit: -1, page: 1))
+          .where((e) => e.isSyncWithCloud);
+      if (localNotes.isEmpty) {
+        return;
+      }
+      await localNotesService.deleteByIds(
+        localNotes.map((e) => e.noteId),
+      );
+    } on Exception catch (e) {
+      emit(
+        NoteState(notes: notes, exception: e),
+      );
+    }
+  }
+
   Future<void> syncLocalNotesFromCloud() async {
     try {
+      if (!AuthService.getInstance().isAuthenticated) {
+        return;
+      }
       final cloudNotes = await cloudNotesService.getAll(limit: -1, page: 1);
       if (cloudNotes.isEmpty) {
         return;

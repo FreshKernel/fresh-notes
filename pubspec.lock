@@ -726,14 +726,14 @@ packages:
       path: "/Users/ellet/Developer/projects/flutter-quill/"
       relative: false
     source: path
-    version: "9.0.5"
+    version: "9.1.0-dev.2"
   flutter_quill_extensions:
     dependency: "direct main"
     description:
       path: "/Users/ellet/Developer/projects/flutter-quill/flutter_quill_extensions"
       relative: false
     source: path
-    version: "9.0.5"
+    version: "9.1.0-dev.2"
   flutter_quill_test:
     dependency: "direct dev"
     description:

@@ -201,6 +201,8 @@ class AuthCubit extends Cubit<AuthState> {
     final currentUser = _authService.requireCurrentUser(null);
     try {
       await _authService.logout();
+      await noteCubit.deleteAllCloudNotesLocally();
+
       emit(const AuthStateUnAuthenticated(exception: null));
     } on Exception catch (e) {
       emit(AuthStateAuthenticated(user: currentUser, exception: e));
@@ -212,12 +214,14 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       await _authService.sendResetPasswordLinkToEmail(email: email);
-      emit(AuthStateUnAuthenticated(
-          exception: null,
-          lastAction:
-              AuthStateUnAuthenticatedAction.sendResetPasswordLinkToEmail,
-          message: DateTime.now().toIso8601String() // Workaround
-          ));
+      emit(
+        AuthStateUnAuthenticated(
+            exception: null,
+            lastAction:
+                AuthStateUnAuthenticatedAction.sendResetPasswordLinkToEmail,
+            message: DateTime.now().toIso8601String() // Workaround
+            ),
+      );
     } on Exception catch (e) {
       emit(AuthStateUnAuthenticated(exception: e));
     }

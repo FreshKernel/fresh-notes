@@ -48,7 +48,7 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   }
 
   @override
-  Future<void> deleteByIds(List<String> ids) async {
+  Future<void> deleteByIds(Iterable<String> ids) async {
     final batch = FirebaseFirestore.instance.batch();
     final notes = await _notesCollection
         .where(CloudNoteProperties.noteId, whereIn: ids)
@@ -60,7 +60,8 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   }
 
   @override
-  Future<List<CloudNote>> createMultiples(List<CreateNoteInput> list) async {
+  Future<List<CloudNote>> createMultiples(
+      Iterable<CreateNoteInput> list) async {
     final batch = FirebaseFirestore.instance.batch();
     final notes = list.map((createInput) {
       final documentId = _notesCollection.doc();
@@ -127,7 +128,7 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   }
 
   @override
-  Future<List<CloudNote>> getAllByIds(List<String> ids) async {
+  Future<List<CloudNote>> getAllByIds(Iterable<String> ids) async {
     if (ids.isEmpty) {
       return [];
     }
@@ -153,7 +154,7 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
     final notes = notesDocuments.docs.asMap().entries.map(
           (document) => CloudNote.fromFirebase(
             document.value.data(),
-            id: ids[document.key],
+            id: ids.toList()[document.key],
           ),
         );
     return notes.toList();
@@ -215,7 +216,7 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   }
 
   @override
-  Future<void> updateByIds(List<UpdateNoteInput> entities) async {
+  Future<void> updateByIds(Iterable<UpdateNoteInput> entities) async {
     final batch = FirebaseFirestore.instance.batch();
 
     for (final noteInput in entities) {

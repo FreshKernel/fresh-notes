@@ -89,7 +89,8 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<List<LocalNote>> createMultiples(List<CreateNoteInput> list) async {
+  Future<List<LocalNote>> createMultiples(
+      Iterable<CreateNoteInput> list) async {
     try {
       final notesFutures = list.map((createInput) async {
         final id = await _database!.insert(
@@ -133,15 +134,17 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   @override
   Future<void> deleteAll() async {
     try {
-      final currentUserId = AuthService.getInstance()
-          .requireCurrentUser(
-            'In order to insert note in local database, user must be authenticated.',
-          )
-          .id;
+      final currentUserId = AuthService.getInstance().currentUser?.id;
+      if (currentUserId != null) {
+        await _database!.delete(
+          LocalNote.sqlTableName,
+          where: '${LocalNoteProperties.userId} = ?',
+          whereArgs: [currentUserId],
+        );
+        return;
+      }
       await _database!.delete(
         LocalNote.sqlTableName,
-        where: '${LocalNoteProperties.userId} = ?',
-        whereArgs: [currentUserId],
       );
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(
@@ -158,17 +161,13 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       final hasNoLimit = limit == -1;
       final offset = (page - 1) * limit;
 
-      final currentUserId = AuthService.getInstance()
-          .requireCurrentUser(
-            'In order to insert note in local database, user must be authenticated.',
-          )
-          .id;
+      // final currentUserId = AuthService.getInstance().currentUser?.id;
 
       final results = await _database!.query(
         LocalNote.sqlTableName,
         orderBy: '${LocalNoteProperties.updatedAt} DESC',
         where: '${LocalNoteProperties.userId} = ?',
-        whereArgs: [currentUserId],
+        // whereArgs: [currentUserId],
         limit: hasNoLimit ? null : limit, // limit of each row
         offset: hasNoLimit ? null : offset, // rows to skip
       );
@@ -203,7 +202,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<List<LocalNote>> getAllByIds(List<String> ids) async {
+  Future<List<LocalNote>> getAllByIds(Iterable<String> ids) async {
     try {
       if (ids.isEmpty) {
         throw const DatabaseOperationInvalidParameterException(
@@ -260,7 +259,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<void> deleteByIds(List<String> ids) async {
+  Future<void> deleteByIds(Iterable<String> ids) async {
     try {
       if (ids.isEmpty) {
         throw const DatabaseOperationInvalidParameterException(
@@ -287,7 +286,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
   }
 
   @override
-  Future<void> updateByIds(List<UpdateNoteInput> entities) async {
+  Future<void> updateByIds(Iterable<UpdateNoteInput> entities) async {
     await _database!.transaction((txn) async {
       for (final noteInput in entities) {
         await txn.update(

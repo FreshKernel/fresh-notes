@@ -257,7 +257,7 @@ class _$LocalNoteImpl implements _LocalNote {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LocalNoteImpl &&

@@ -12,7 +12,7 @@ class UserProfileImage extends StatelessWidget {
     this.containerSize,
   });
 
-  final AuthUser user;
+  final AuthUser? user;
   final double? containerSize;
   final double iconSize;
   @override
@@ -21,12 +21,13 @@ class UserProfileImage extends StatelessWidget {
       width: containerSize,
       height: containerSize,
       child: CircleAvatar(
-        backgroundImage: (user.data.photoUrl != null)
+        backgroundImage: (user?.data.photoUrl != null)
             ? CachedNetworkImageProvider(
-                user.data.photoUrl.toString(),
+                user?.data.photoUrl.toString() ??
+                    (throw ArgumentError('Photo url should not be null')),
               )
             : null,
-        child: (user.data.photoUrl == null)
+        child: (user?.data.photoUrl == null)
             ? Icon(
                 Icons.person,
                 size: iconSize,

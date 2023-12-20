@@ -3,6 +3,11 @@
     "link",
     "text",
     "shareNoteByLink",
-    "shareNoteByText"
+    "shareNoteByText",
+    "close",
+    "signIn",
+    "completeRegistration",
+    "guest",
+    "pleaseLoginFirst"
   ]
 }

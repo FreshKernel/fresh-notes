@@ -15,7 +15,7 @@ class CloudNotesService extends CloudNotesRepository {
   final CloudNotesRepository _provider;
 
   @override
-  Future<List<CloudNote>> createMultiples(List<CreateNoteInput> list) =>
+  Future<List<CloudNote>> createMultiples(Iterable<CreateNoteInput> list) =>
       _provider.createMultiples(list);
 
   @override
@@ -26,7 +26,7 @@ class CloudNotesService extends CloudNotesRepository {
   Future<void> deleteAll() => _provider.deleteAll();
 
   @override
-  Future<void> deleteByIds(List<String> ids) => _provider.deleteByIds(ids);
+  Future<void> deleteByIds(Iterable<String> ids) => _provider.deleteByIds(ids);
 
   @override
   Future<void> deleteOneById(String id) => _provider.deleteOneById(id);
@@ -42,7 +42,7 @@ class CloudNotesService extends CloudNotesRepository {
       );
 
   @override
-  Future<List<CloudNote>> getAllByIds(List<String> ids) =>
+  Future<List<CloudNote>> getAllByIds(Iterable<String> ids) =>
       _provider.getAllByIds(ids);
 
   @override
@@ -53,6 +53,6 @@ class CloudNotesService extends CloudNotesRepository {
       _provider.updateOne(updateInput);
 
   @override
-  Future<void> updateByIds(List<UpdateNoteInput> entities) =>
+  Future<void> updateByIds(Iterable<UpdateNoteInput> entities) =>
       _provider.updateByIds(entities);
 }
