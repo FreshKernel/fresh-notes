@@ -90,7 +90,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   bool _isNavRailBar(Size size, AppLayoutMode layoutMode) {
     switch (layoutMode) {
-      // TODO: Might want to update this
+      //  Might want needs to be updated
       case AppLayoutMode.auto:
         return size.width >= 480;
       case AppLayoutMode.small:

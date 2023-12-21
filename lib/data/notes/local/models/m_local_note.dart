@@ -93,12 +93,10 @@ class LocalNote with _$LocalNote {
   factory LocalNote.fromJson(Map<String, Object?> json) =>
       _$LocalNoteFromJson(json);
 
-  // This time I decided to make life simple and easier by
-  // use the same exact name of the variable in sqlite and dart.
   factory LocalNote.fromSqlite(Map<String, Object?> map) => LocalNote(
         id: (map[LocalNoteProperties.entryId] as int).toString(),
         noteId: (map[LocalNoteProperties.noteId] as String).toString(),
-        userId: map[LocalNoteProperties.userId] as String,
+        userId: map[LocalNoteProperties.userId] as String?,
         title: map[LocalNoteProperties.title] as String,
         text: map[LocalNoteProperties.text] as String,
         isSyncWithCloud:

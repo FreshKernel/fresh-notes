@@ -6,8 +6,8 @@ import '../../../../logic/note/cubit/note_cubit.dart';
 import '../../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../l10n/extensions/localizations.dart';
 import '../../../utils/dialog/w_yes_cancel_dialog.dart';
-import '../../note_list/w_notes_list.dart';
 import '../../note/s_note.dart';
+import '../../note_list/w_notes_list.dart';
 
 class NotesListPage extends StatefulWidget {
   const NotesListPage({super.key});

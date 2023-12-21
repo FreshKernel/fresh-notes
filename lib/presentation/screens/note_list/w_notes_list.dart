@@ -7,6 +7,7 @@ import '../../../logic/note/cubit/note_cubit.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../components/others/w_error.dart';
 import '../../components/others/w_no_data.dart';
+import '../../l10n/extensions/localizations.dart';
 import '../../utils/extensions/build_context_ext.dart';
 import 'note_tile/note_tile_options.dart';
 import 'note_tile/w_note_grid_tile.dart';
@@ -50,7 +51,11 @@ class _NoteListContentState extends State<NoteListContent> {
 
           if (snapshot.hasError) {
             return Center(
-              child: Text(snapshot.error.toString()),
+              child: Text(
+                context.loc.unknownErrorWithMessage(
+                  snapshot.error.toString(),
+                ),
+              ),
             );
           }
 
@@ -83,17 +88,9 @@ class _NoteListContentState extends State<NoteListContent> {
               if (!settingsBloc.state.useNoteGridTile) {
                 return MasonryGridView.builder(
                   itemCount: notes.length,
-                  // gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                  //   // TODO: Update this
-                  //   crossAxisCount: context.withFormFactor(
-                  //     mobile: 2,
-                  //     tablet: 2,
-                  //     desktop: 4,
-                  //   ),
-                  // ),
                   gridDelegate:
                       const SliverSimpleGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 300,
+                    maxCrossAxisExtent: 400,
                   ),
                   itemBuilder: (context, index) {
                     final note = notes[index];

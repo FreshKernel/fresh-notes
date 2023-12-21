@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
             localNotesService: LocalNotesService.getInstance(),
             localStorageService: LocalStorageService.getInstance(),
             cloudStorageService: CloudStorageService.getInstance(),
+            authService: AuthService.getInstance(),
           ),
         ),
         BlocProvider(

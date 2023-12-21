@@ -16,7 +16,7 @@ extension AppThemeModeExt on AppThemeMode {
       case AppThemeMode.system:
         return ThemeMode.system;
       case AppThemeMode.auto:
-        // TODO: This logic could be improved much better
+        // Could be improved
         final date = DateTime.now();
         final hours = date.hour;
         if (hours >= 1 && hours <= 12) {
