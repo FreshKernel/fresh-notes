@@ -166,7 +166,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       final results = await _database!.query(
         LocalNote.sqlTableName,
         orderBy: '${LocalNoteProperties.updatedAt} DESC',
-        where: '${LocalNoteProperties.userId} = ?',
+        // where: '${LocalNoteProperties.userId} = ?',
         // whereArgs: [currentUserId],
         limit: hasNoLimit ? null : limit, // limit of each row
         offset: hasNoLimit ? null : offset, // rows to skip
@@ -243,14 +243,13 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       if (updatedItemsCount != 1) {
         return null;
       }
-      final currnetUser = AuthService.getInstance().requireCurrentUser(
-          'To update a note, the user must be authenticated');
+      final currentUserId = AuthService.getInstance().currentUser?.id ?? '';
       return LocalNote.fromUpdateNoteInput(
         input: updateInput,
         id: updateInput.noteId,
         createdAt: currentNote.createdAt,
         updatedAt: DateTime.now(),
-        userId: currnetUser.id,
+        userId: currentUserId,
       );
     } on DatabaseException catch (e) {
       throw UnknownLocalDatabaseErrorException(

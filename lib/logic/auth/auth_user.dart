@@ -20,6 +20,7 @@ class AuthUser {
           photoUrl: user.photoURL,
         ),
       );
+
   final String id;
   final bool isEmailVerified;
   final String? emailAddress;

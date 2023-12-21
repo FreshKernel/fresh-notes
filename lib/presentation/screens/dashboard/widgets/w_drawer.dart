@@ -43,7 +43,7 @@ class DashboardDrawer extends StatelessWidget {
                   accountName: Text(
                       user?.data.displayName.toString() ?? context.loc.guest),
                   accountEmail: user?.emailAddress != null
-                      ? Text(user?.emailAddress.toString() ?? '')
+                      ? Text(user?.emailAddress.toString() ?? context.loc.guest)
                       : const SizedBox.shrink(),
                   onDetailsPressed: () {},
                   currentAccountPicture: UserProfileImage(

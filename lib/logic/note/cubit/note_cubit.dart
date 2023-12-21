@@ -3,13 +3,15 @@ import 'dart:io' show Directory, File;
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart'
+    show FirebaseCrashlytics;
 import 'package:flutter_quill/flutter_quill.dart' show Document;
 import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
+import 'package:meta/meta.dart' show immutable;
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart'
+    show getApplicationDocumentsDirectory;
 
 import '../../../core/log/logger.dart';
 import '../../../data/core/cloud/storage/s_cloud_storage.dart';
@@ -328,7 +330,9 @@ class NoteCubit extends Cubit<NoteState> {
         text: newNoteText,
       );
 
-      await updateInTheCloud();
+      if (AuthService.getInstance().isAuthenticated) {
+        await updateInTheCloud();
+      }
 
       await localNotesService.updateOne(input);
 
@@ -336,7 +340,7 @@ class NoteCubit extends Cubit<NoteState> {
         input,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        userId: AuthService.getInstance().requireCurrentUser().id,
+        userId: AuthService.getInstance().currentUser?.id ?? '',
       );
 
       final notes = [...currentNotes];
@@ -504,9 +508,9 @@ class NoteCubit extends Cubit<NoteState> {
 
       final localNotes = await localNotesService.getAll(limit: -1, page: 1);
       final localNotesIdsWithSync = localNotes
-          .where((element) => element.isSyncWithCloud)
+          .where((note) => note.isSyncWithCloud)
           .map((e) => e.noteId)
-          .where((element) => element.trim().isNotEmpty)
+          .where((note) => note.trim().isNotEmpty)
           .toList();
 
       if (localNotesIdsWithSync.isNotEmpty) {

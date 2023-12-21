@@ -68,6 +68,9 @@ class _NoteScreenState extends State<NoteScreen> {
     super.initState();
     _setupNote();
     _noteBloc = context.read<NoteCubit>();
+    if (!AuthService.getInstance().isAuthenticated) {
+      _isSyncWithCloud = false;
+    }
   }
 
   void _setupNote() {

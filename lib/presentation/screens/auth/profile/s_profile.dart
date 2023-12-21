@@ -39,7 +39,8 @@ class _SaveProfileScreenBodyState extends State<SaveProfileScreenBody> {
     super.initState();
     final authState = context.read<AuthCubit>().state;
     if (authState is AuthStateAuthenticated) {
-      _nameController.text = authState.user.data.displayName ?? '';
+      _nameController.text =
+          authState.user.data.displayName ?? context.loc.guest;
     }
   }
 

@@ -65,7 +65,8 @@ class LocalNotesService extends LocalNotesRepository {
     requireToBeInitialized();
     final result = await _provider.getAll(limit: limit, page: page);
     final List<LocalNote> notes = result.cast();
-    return notes.where((localNote) => !localNote.isSyncWithCloud).toList();
+    // return notes.where((localNote) => !localNote.isSyncWithCloud).toList();
+    return notes;
   }
 
   @override
