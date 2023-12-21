@@ -70,7 +70,7 @@ class UniversalNote extends Equatable {
     UpdateNoteInput input, {
     required DateTime createdAt,
     required DateTime updatedAt,
-    required String userId,
+    required String? userId,
   }) =>
       UniversalNote(
         noteId: input.noteId,
@@ -85,7 +85,7 @@ class UniversalNote extends Equatable {
       );
 
   final String noteId;
-  final String userId;
+  final String? userId;
   final String title;
   final String text;
   final bool isSyncWithCloud;

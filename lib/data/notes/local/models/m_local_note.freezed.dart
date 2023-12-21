@@ -22,7 +22,7 @@ LocalNote _$LocalNoteFromJson(Map<String, dynamic> json) {
 mixin _$LocalNote {
   String get id => throw _privateConstructorUsedError;
   String get noteId => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
+  String? get userId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
@@ -45,7 +45,7 @@ abstract class $LocalNoteCopyWith<$Res> {
   $Res call(
       {String id,
       String noteId,
-      String userId,
+      String? userId,
       String title,
       String text,
       bool isSyncWithCloud,
@@ -70,7 +70,7 @@ class _$LocalNoteCopyWithImpl<$Res, $Val extends LocalNote>
   $Res call({
     Object? id = null,
     Object? noteId = null,
-    Object? userId = null,
+    Object? userId = freezed,
     Object? title = null,
     Object? text = null,
     Object? isSyncWithCloud = null,
@@ -88,10 +88,10 @@ class _$LocalNoteCopyWithImpl<$Res, $Val extends LocalNote>
           ? _value.noteId
           : noteId // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -135,7 +135,7 @@ abstract class _$$LocalNoteImplCopyWith<$Res>
   $Res call(
       {String id,
       String noteId,
-      String userId,
+      String? userId,
       String title,
       String text,
       bool isSyncWithCloud,
@@ -158,7 +158,7 @@ class __$$LocalNoteImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? noteId = null,
-    Object? userId = null,
+    Object? userId = freezed,
     Object? title = null,
     Object? text = null,
     Object? isSyncWithCloud = null,
@@ -176,10 +176,10 @@ class __$$LocalNoteImplCopyWithImpl<$Res>
           ? _value.noteId
           : noteId // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -235,7 +235,7 @@ class _$LocalNoteImpl implements _LocalNote {
   @override
   final String noteId;
   @override
-  final String userId;
+  final String? userId;
   @override
   final String title;
   @override
@@ -300,7 +300,7 @@ abstract class _LocalNote implements LocalNote {
   const factory _LocalNote(
       {required final String id,
       required final String noteId,
-      required final String userId,
+      required final String? userId,
       required final String title,
       required final String text,
       required final bool isSyncWithCloud,
@@ -317,7 +317,7 @@ abstract class _LocalNote implements LocalNote {
   @override
   String get noteId;
   @override
-  String get userId;
+  String? get userId;
   @override
   String get title;
   @override

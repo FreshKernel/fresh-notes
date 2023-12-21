@@ -21,7 +21,7 @@ mixin _$CreateNoteInput {
   String get text => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
+  String? get userId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CreateNoteInputCopyWith<CreateNoteInput> get copyWith =>
@@ -40,7 +40,7 @@ abstract class $CreateNoteInputCopyWith<$Res> {
       String text,
       bool isSyncWithCloud,
       bool isPrivate,
-      String userId});
+      String? userId});
 }
 
 /// @nodoc
@@ -61,7 +61,7 @@ class _$CreateNoteInputCopyWithImpl<$Res, $Val extends CreateNoteInput>
     Object? text = null,
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
-    Object? userId = null,
+    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       noteId: null == noteId
@@ -84,10 +84,10 @@ class _$CreateNoteInputCopyWithImpl<$Res, $Val extends CreateNoteInput>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -106,7 +106,7 @@ abstract class _$$CreateNoteInputImplCopyWith<$Res>
       String text,
       bool isSyncWithCloud,
       bool isPrivate,
-      String userId});
+      String? userId});
 }
 
 /// @nodoc
@@ -125,7 +125,7 @@ class __$$CreateNoteInputImplCopyWithImpl<$Res>
     Object? text = null,
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
-    Object? userId = null,
+    Object? userId = freezed,
   }) {
     return _then(_$CreateNoteInputImpl(
       noteId: null == noteId
@@ -148,10 +148,10 @@ class __$$CreateNoteInputImplCopyWithImpl<$Res>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -178,7 +178,7 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
   @override
   final bool isPrivate;
   @override
-  final String userId;
+  final String? userId;
 
   @override
   String toString() {
@@ -219,7 +219,7 @@ abstract class _CreateNoteInput implements CreateNoteInput {
       required final String text,
       required final bool isSyncWithCloud,
       required final bool isPrivate,
-      required final String userId}) = _$CreateNoteInputImpl;
+      required final String? userId}) = _$CreateNoteInputImpl;
 
   @override
   String get noteId;
@@ -232,7 +232,7 @@ abstract class _CreateNoteInput implements CreateNoteInput {
   @override
   bool get isPrivate;
   @override
-  String get userId;
+  String? get userId;
   @override
   @JsonKey(ignore: true)
   _$$CreateNoteInputImplCopyWith<_$CreateNoteInputImpl> get copyWith =>
@@ -242,7 +242,7 @@ abstract class _CreateNoteInput implements CreateNoteInput {
 /// @nodoc
 mixin _$UpdateNoteInput {
   String get noteId => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
+  String? get userId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
@@ -262,7 +262,7 @@ abstract class $UpdateNoteInputCopyWith<$Res> {
   @useResult
   $Res call(
       {String noteId,
-      String userId,
+      String? userId,
       String text,
       String title,
       bool isSyncWithCloud,
@@ -284,7 +284,7 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
   @override
   $Res call({
     Object? noteId = null,
-    Object? userId = null,
+    Object? userId = freezed,
     Object? text = null,
     Object? title = null,
     Object? isSyncWithCloud = null,
@@ -296,10 +296,10 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
           ? _value.noteId
           : noteId // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -334,7 +334,7 @@ abstract class _$$UpdateNoteInputImplCopyWith<$Res>
   @useResult
   $Res call(
       {String noteId,
-      String userId,
+      String? userId,
       String text,
       String title,
       bool isSyncWithCloud,
@@ -354,7 +354,7 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? noteId = null,
-    Object? userId = null,
+    Object? userId = freezed,
     Object? text = null,
     Object? title = null,
     Object? isSyncWithCloud = null,
@@ -366,10 +366,10 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
           ? _value.noteId
           : noteId // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -409,7 +409,7 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
   @override
   final String noteId;
   @override
-  final String userId;
+  final String? userId;
   @override
   final String text;
   @override
@@ -457,7 +457,7 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
 abstract class _UpdateNoteInput implements UpdateNoteInput {
   const factory _UpdateNoteInput(
       {required final String noteId,
-      required final String userId,
+      required final String? userId,
       required final String text,
       required final String title,
       required final bool isSyncWithCloud,
@@ -467,7 +467,7 @@ abstract class _UpdateNoteInput implements UpdateNoteInput {
   @override
   String get noteId;
   @override
-  String get userId;
+  String? get userId;
   @override
   String get text;
   @override

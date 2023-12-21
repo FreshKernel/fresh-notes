@@ -13,7 +13,7 @@ class CreateNoteInput with _$CreateNoteInput {
     required String text,
     required bool isSyncWithCloud,
     required bool isPrivate,
-    required String userId,
+    required String? userId,
   }) = _CreateNoteInput;
   factory CreateNoteInput.fromCloudNote(CloudNote note) => CreateNoteInput(
         noteId: note.noteId,
@@ -41,7 +41,7 @@ class CreateNoteInput with _$CreateNoteInput {
 class UpdateNoteInput with _$UpdateNoteInput {
   const factory UpdateNoteInput({
     required String noteId,
-    required String userId,
+    required String? userId,
     required String text,
     required String title,
     required bool isSyncWithCloud,

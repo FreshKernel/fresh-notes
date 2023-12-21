@@ -14,7 +14,7 @@ class LocalNote with _$LocalNote {
   const factory LocalNote({
     required String id,
     required String noteId,
-    required String userId,
+    required String? userId,
     required String title,
     required String text,
     required bool isSyncWithCloud,
@@ -27,7 +27,7 @@ class LocalNote with _$LocalNote {
   factory LocalNote._fromInputSharedLogic({
     required String id,
     required String noteId,
-    required String userId,
+    required String? userId,
     required String title,
     required String text,
     required bool isSyncWithCloud,
@@ -75,7 +75,7 @@ class LocalNote with _$LocalNote {
     required String id,
     required DateTime createdAt,
     required DateTime updatedAt,
-    required String userId,
+    required String? userId,
   }) =>
       LocalNote._fromInputSharedLogic(
         id: id,
@@ -170,7 +170,7 @@ class LocalNote with _$LocalNote {
     CREATE TABLE IF NOT EXISTS "$sqlTableName" (
       "${LocalNoteProperties.entryId}"	INTEGER NOT NULL UNIQUE,
       "${LocalNoteProperties.noteId}"	TEXT NOT NULL UNIQUE,
-      "${LocalNoteProperties.userId}"	TEXT NOT NULL,
+      "${LocalNoteProperties.userId}"	TEXT,
       "${LocalNoteProperties.title}"	TEXT NOT NULL,
       "${LocalNoteProperties.text}"	TEXT NOT NULL,
       "${LocalNoteProperties.isSyncWithCloud}" INTEGER NOT NULL,

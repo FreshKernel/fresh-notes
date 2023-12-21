@@ -12,7 +12,7 @@ class CloudNote with _$CloudNote {
   const factory CloudNote({
     required String id, // the document id
     required String noteId,
-    required String userId,
+    required String? userId,
     required String title,
     required String text,
     required bool isPrivate,
@@ -45,7 +45,7 @@ class CloudNote with _$CloudNote {
   factory CloudNote.fromUpdateNoteInput({
     required UpdateNoteInput input,
     required String cloudId,
-    required String userId,
+    required String? userId,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) =>

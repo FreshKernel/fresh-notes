@@ -243,7 +243,7 @@ class SqfliteLocalNotesImpl extends LocalNotesRepository {
       if (updatedItemsCount != 1) {
         return null;
       }
-      final currentUserId = AuthService.getInstance().currentUser?.id ?? '';
+      final currentUserId = AuthService.getInstance().currentUser?.id;
       return LocalNote.fromUpdateNoteInput(
         input: updateInput,
         id: updateInput.noteId,

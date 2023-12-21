@@ -136,7 +136,7 @@ class _NoteScreenState extends State<NoteScreen> {
     }
     try {
       _isLoading = true;
-      final userId = AuthService.getInstance().currentUser?.id ?? '';
+      final userId = AuthService.getInstance().currentUser?.id;
       final noteText = jsonEncode(document.toDelta().toJson());
       if (_isEditing) {
         await _noteBloc.updateNote(

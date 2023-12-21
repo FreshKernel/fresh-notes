@@ -1,13 +1,1 @@
-{
-  "ar": [
-    "link",
-    "text",
-    "shareNoteByLink",
-    "shareNoteByText",
-    "close",
-    "signIn",
-    "completeRegistration",
-    "guest",
-    "pleaseLoginFirst"
-  ]
-}
+{}

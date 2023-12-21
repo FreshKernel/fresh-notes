@@ -22,7 +22,7 @@ CloudNote _$CloudNoteFromJson(Map<String, dynamic> json) {
 mixin _$CloudNote {
   String get id => throw _privateConstructorUsedError; // the document id
   String get noteId => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
+  String? get userId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $CloudNoteCopyWith<$Res> {
   $Res call(
       {String id,
       String noteId,
-      String userId,
+      String? userId,
       String title,
       String text,
       bool isPrivate,
@@ -68,7 +68,7 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
   $Res call({
     Object? id = null,
     Object? noteId = null,
-    Object? userId = null,
+    Object? userId = freezed,
     Object? title = null,
     Object? text = null,
     Object? isPrivate = null,
@@ -85,10 +85,10 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
           ? _value.noteId
           : noteId // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -128,7 +128,7 @@ abstract class _$$CloudNoteImplCopyWith<$Res>
   $Res call(
       {String id,
       String noteId,
-      String userId,
+      String? userId,
       String title,
       String text,
       bool isPrivate,
@@ -150,7 +150,7 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? noteId = null,
-    Object? userId = null,
+    Object? userId = freezed,
     Object? title = null,
     Object? text = null,
     Object? isPrivate = null,
@@ -167,10 +167,10 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
           ? _value.noteId
           : noteId // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -222,7 +222,7 @@ class _$CloudNoteImpl implements _CloudNote {
   @override
   final String noteId;
   @override
-  final String userId;
+  final String? userId;
   @override
   final String title;
   @override
@@ -283,7 +283,7 @@ abstract class _CloudNote implements CloudNote {
   const factory _CloudNote(
       {required final String id,
       required final String noteId,
-      required final String userId,
+      required final String? userId,
       required final String title,
       required final String text,
       required final bool isPrivate,
@@ -299,7 +299,7 @@ abstract class _CloudNote implements CloudNote {
   @override // the document id
   String get noteId;
   @override
-  String get userId;
+  String? get userId;
   @override
   String get title;
   @override

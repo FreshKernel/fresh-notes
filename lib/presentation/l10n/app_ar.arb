@@ -139,5 +139,14 @@
   "yourAccountHasBeenDisabledMessage": "تم تعطيل حسابك. يرجى الاتصال بالدعم للمزيد من المعلومات.",
   "welcome": "مرحبا",
   "share": "مشاركة",
-  "checklist": "قائمة تحقق"
+  "checklist": "قائمة تحقق",
+  "link": "رابط",
+  "text": "نص",
+  "shareNoteByLink": "مشاركة المذكرة عبر الرابط",
+  "shareNoteByText": "مشاركة المذكرة عبر النص",
+  "close": "إغلاق",
+  "signIn": "تسجيل الدخول",
+  "completeRegistration": "استكمال التسجيل",
+  "guest": "زائر",
+  "pleaseLoginFirst": "الرجاء تسجيل الدخول أولا"
 }
