@@ -47,8 +47,8 @@ dependencies:
   gal: ^2.2.0
   uuid: ^4.2.1
   cross_file: ^0.3.3+8
-  home_widget: ^0.4.1
-  flutter_local_notifications: ^16.2.0 
+  # home_widget: ^0.4.1
+  # flutter_local_notifications: ^16.2.0 
 
   # Core packages
   path: ^1.8.3
