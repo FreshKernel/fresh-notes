@@ -1,5 +1,6 @@
 import 'dart:convert' show jsonEncode, jsonDecode;
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -218,24 +219,25 @@ class _NoteScreenState extends State<NoteScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            QuillToolbar.simple(
-              configurations: QuillSimpleToolbarConfigurations(
-                controller: _controller,
-                showAlignmentButtons: true,
-                embedButtons: [
-                  ...FlutterQuillEmbeds.toolbarButtons(
-                    imageButtonOptions: QuillToolbarImageButtonOptions(
-                      imageButtonConfigurations:
-                          const QuillToolbarImageConfigurations(),
-                      linkRegExp: RegExp(
-                        r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
-                        caseSensitive: false,
+            if (kDebugMode)
+              QuillToolbar.simple(
+                configurations: QuillSimpleToolbarConfigurations(
+                  controller: _controller,
+                  showAlignmentButtons: true,
+                  embedButtons: [
+                    ...FlutterQuillEmbeds.toolbarButtons(
+                      imageButtonOptions: QuillToolbarImageButtonOptions(
+                        imageButtonConfigurations:
+                            const QuillToolbarImageConfigurations(),
+                        linkRegExp: RegExp(
+                          r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
+                          caseSensitive: false,
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

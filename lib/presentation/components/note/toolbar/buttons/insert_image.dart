@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:flutter_quill/translations.dart';
 
 import '../../../../../logic/native/image/s_image_picker.dart';
 import '../../../../utils/extensions/build_context_ext.dart';
