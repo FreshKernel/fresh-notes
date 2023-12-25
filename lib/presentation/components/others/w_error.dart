@@ -41,7 +41,9 @@ class ErrorWithReport extends StatelessWidget {
             Assets.lottie.error.error1.path,
           ),
           const SizedBox(height: 8),
-          Text('${context.loc.error}: ${error.toString()}'),
+          Text(context.loc.unknownErrorWithMessage(
+            error.toString(),
+          )),
           const SizedBox(height: 4),
           ElevatedButton(
             onPressed: onReport,
