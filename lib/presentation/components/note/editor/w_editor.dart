@@ -20,23 +20,29 @@ class NoteEditor extends StatefulWidget {
   const NoteEditor({
     required this.onRequestingSaveNote,
     required this.configurations,
+    required FocusNode focusNode,
     super.key,
-  });
+  }) : _editorFocusNode = focusNode;
 
   final VoidCallback onRequestingSaveNote;
   final QuillEditorConfigurations configurations;
+  final FocusNode _editorFocusNode;
 
   @override
   State<NoteEditor> createState() => _NoteEditorState();
 }
 
 class _NoteEditorState extends State<NoteEditor> {
-  final _editorFocusNode = FocusNode();
-  final _editorScrollController = ScrollController();
+  late final ScrollController _editorScrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _editorScrollController = ScrollController();
+  }
 
   @override
   void dispose() {
-    _editorFocusNode.dispose();
     _editorScrollController.dispose();
     super.dispose();
   }
@@ -77,9 +83,9 @@ class _NoteEditorState extends State<NoteEditor> {
             AppLogger.log('Image does not exists');
           },
           shouldRemoveImageCallback: (imageFile) async {
-            final remove = await showYesCancelDialog(
+            final remove = await showOkCancelDialog(
               context: context,
-              options: YesOrCancelDialogOptions(
+              options: OkOrCancelDialogOptions(
                 title: context.loc.deleteAnImage,
                 message: context.loc.deleteAnImageDesc,
               ),
@@ -107,7 +113,7 @@ class _NoteEditorState extends State<NoteEditor> {
             unknownEmbedBuilder: QuillEditorUnknownEmbedBuilder(),
             keyboardAppearance: Theme.of(context).brightness, // for iOS
           ),
-          focusNode: _editorFocusNode,
+          focusNode: widget._editorFocusNode,
           scrollController: _editorScrollController,
         ),
       ),

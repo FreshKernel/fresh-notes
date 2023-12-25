@@ -28,9 +28,9 @@ class NoteTileOptions {
         context.read<SettingsCubit>().state.confirmMoveNoteToTrash;
     final confirmed =
         (note.isTrash ? shouldConfirmDelete : shouldConfirmMoveToTrash)
-            ? await showYesCancelDialog(
+            ? await showOkCancelDialog(
                 context: context,
-                options: YesOrCancelDialogOptions(
+                options: OkOrCancelDialogOptions(
                   title: !note.isTrash
                       ? context.loc.confirmMoveNoteToTrash
                       : context.loc.confirmDeleteNote,

@@ -11,13 +11,18 @@
 // import 'note_mock.dart';
 // import 'storage_mock.dart';
 
-// void main() {
-//   group('Note cubit test', () {
-//     final noteBloc = NoteCubit(
-//       cloudNotesService: CloudNotesService(CloudNotesMockImpl()),
-//       localNotesService: LocalNotesService(LocalNotesMockImpl()),
-//       localStorageService: LocalStorageService(LocalStorageMock()),
-//       cloudStorageService: CloudStorageService(CloudStorageMock()),
-//     );
-//   });
-// }
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  // group('Note cubit test', () {
+  //   final noteBloc = NoteCubit(
+  //     cloudNotesService: CloudNotesService(CloudNotesMockImpl()),
+  //     localNotesService: LocalNotesService(LocalNotesMockImpl()),
+  //     localStorageService: LocalStorageService(LocalStorageMock()),
+  //     cloudStorageService: CloudStorageService(CloudStorageMock()),
+  //   );
+  // });
+  group('No tests', () {
+    expect(null, null);
+  });
+}

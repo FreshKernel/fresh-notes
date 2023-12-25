@@ -26,9 +26,7 @@ class NoteToolbarImageButton extends StatelessWidget {
           showDragHandle: true,
           context: context,
           constraints: const BoxConstraints(maxWidth: 640),
-          builder: (context) => const FlutterQuillLocalizationsWidget(
-            child: SelectImageSourceDialog(),
-          ),
+          builder: (context) => const SelectImageSourceDialog(),
         );
         if (imageSource == null) {
           return;

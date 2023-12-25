@@ -35,7 +35,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
-      title: const Text('Forgot password'),
+      title: const Text('Forgot password'), // TODO: Translate
       content: Material(
         child: Form(
           key: _formKey,
@@ -53,7 +53,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
       actions: [
         AppDialogAction(
           onPressed: () => context.pop(null),
-          child: const Text('Cancel'),
+          child: Text(context.loc.cancel),
         ),
         AppDialogAction(
           onPressed: () {

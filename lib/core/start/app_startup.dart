@@ -7,6 +7,7 @@ import '../../logic/native/image/s_image_picker.dart';
 import '../log/logger.dart';
 import '../services/s_app.dart';
 import 'packages/firebase.dart';
+import 'packages/flutter_local_notifications.dart';
 import 'packages/hydrated_bloc.dart';
 
 class AppStartup extends AppService {
@@ -20,6 +21,7 @@ class AppStartup extends AppService {
     FirebaseService.getInstance(),
     AuthService.getInstance(),
     ImagePickerService.getInstance(),
+    FlutterLocalNotificationsService(),
   ];
 
   @override

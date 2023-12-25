@@ -17,9 +17,9 @@ class _LogoutIconButtonState extends State<LogoutIconButton> {
 
   Future<void> _onLogout() async {
     final authBloc = context.read<AuthCubit>();
-    final logoutConfirmed = await showYesCancelDialog(
+    final logoutConfirmed = await showOkCancelDialog(
       context: context,
-      options: YesOrCancelDialogOptions(
+      options: OkOrCancelDialogOptions(
         title: context.loc.signOut,
         message: context.loc.signOutDesc,
         yesLabel: context.loc.logout,

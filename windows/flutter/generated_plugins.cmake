@@ -11,6 +11,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   firebase_storage
   gal
   irondash_engine_context
+  printing
   share_plus
   super_native_extensions
   url_launcher_windows

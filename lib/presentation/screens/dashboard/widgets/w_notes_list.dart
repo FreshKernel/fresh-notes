@@ -34,9 +34,9 @@ class NotesListPage extends StatefulWidget {
                 ? null
                 : () async {
                     final noteBloc = context.read<NoteCubit>();
-                    final deletedAllConfirmed = await showYesCancelDialog(
+                    final deletedAllConfirmed = await showOkCancelDialog(
                       context: context,
-                      options: YesOrCancelDialogOptions(
+                      options: OkOrCancelDialogOptions(
                         title: context.loc.moveAllNotesToTrash,
                         message: context.loc.moveAllNotesToTrashDesc,
                         yesLabel: context.loc.deleteAll,

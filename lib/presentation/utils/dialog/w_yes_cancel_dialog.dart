@@ -4,8 +4,8 @@ import '../../l10n/extensions/localizations.dart';
 import 'w_app_dialog.dart';
 import 'w_dialog_action.dart';
 
-class YesOrCancelDialogOptions {
-  const YesOrCancelDialogOptions({
+class OkOrCancelDialogOptions {
+  const OkOrCancelDialogOptions({
     required this.title,
     required this.message,
     this.yesLabel,
@@ -17,13 +17,13 @@ class YesOrCancelDialogOptions {
   final String? cancelLabel;
 }
 
-class YesOrCancelDialog extends StatelessWidget {
-  const YesOrCancelDialog({
+class OkOrCancelDialog extends StatelessWidget {
+  const OkOrCancelDialog({
     required this.options,
     super.key,
   });
 
-  final YesOrCancelDialogOptions options;
+  final OkOrCancelDialogOptions options;
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +55,14 @@ class YesOrCancelDialog extends StatelessWidget {
   }
 }
 
-Future<bool> showYesCancelDialog({
+Future<bool> showOkCancelDialog({
   required BuildContext context,
-  required YesOrCancelDialogOptions options,
+  required OkOrCancelDialogOptions options,
   DialogOptions? dialogOptions,
 }) async {
   final result = await showAppDialog<bool>(
         context: context,
-        builder: (context) => YesOrCancelDialog(options: options),
+        builder: (context) => OkOrCancelDialog(options: options),
         options: dialogOptions,
       ) ??
       false;

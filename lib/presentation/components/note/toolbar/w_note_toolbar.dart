@@ -37,9 +37,7 @@ class _NoteToolbarState extends State<NoteToolbar> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   NoteToolbarImageButton(
                     controller: widget._controller,
                   ),
@@ -48,15 +46,11 @@ class _NoteToolbarState extends State<NoteToolbar> {
                   ),
                   NoteToolbarTextOptionsButton(
                     controller: widget._controller,
-                    onNavigate: (newWidget) {
-                      setState(() => _currentWidget = newWidget);
-                    },
+                    onNavigate: (newWidget) =>
+                        setState(() => _currentWidget = newWidget),
                     onNavigateBack: () => setState(() => _currentWidget = null),
                   ),
                   QuillToolbarClearFormatButton(
-                    controller: widget._controller,
-                  ),
-                  QuillToolbarSearchButton(
                     controller: widget._controller,
                   ),
                   QuillToolbarLinkStyleButton(
@@ -71,9 +65,10 @@ class _NoteToolbarState extends State<NoteToolbar> {
                     controller: widget._controller,
                     isUndo: false,
                   ),
-                  const SizedBox(
-                    width: 80,
+                  QuillToolbarSelectHeaderStyleDropdownButton(
+                    controller: widget._controller,
                   ),
+                  const SizedBox(width: 10),
                 ],
               ),
             ),
