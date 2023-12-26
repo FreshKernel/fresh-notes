@@ -3,11 +3,9 @@ import 'dart:convert' show jsonDecode;
 import 'package:flutter/material.dart';
 
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../logic/utils/extensions/string.dart';
 import '../../../l10n/extensions/localizations.dart';
-import '../../note/s_note.dart';
 import 'note_tile_options.dart';
 
 class NoteGridTile extends StatelessWidget {

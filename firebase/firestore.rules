@@ -21,7 +21,7 @@ service cloud.firestore {
     }
     match /notes/{noteId} {
     // To allow sharing public notes
-   	 allow get: if isAuthenticated() && resource.data != null && 
+   	 allow get: if resource.data != null && 
      resource.data.isPrivate == false;
 
      // For the user notes
@@ -42,6 +42,7 @@ service cloud.firestore {
       'title',
       'text',
       'isPrivate',
+      'isFavorite',
       'isTrash',
       'createdAt',
       'updatedAt'
@@ -54,6 +55,7 @@ service cloud.firestore {
       resourceData.title is string &&
       resourceData.text is string &&
       resourceData.isPrivate is bool &&
+      resourceData.isFavorite is bool &&
       resourceData.isTrash is bool;
      }
      
@@ -65,6 +67,7 @@ service cloud.firestore {
         'title',
         'text',
         'isPrivate',
+        'isFavorite',
         'isTrash',
         'updatedAt'
         ]) &&
@@ -72,6 +75,7 @@ service cloud.firestore {
       resourceData.title is string &&
       resourceData.text is string &&
       resourceData.isPrivate is bool &&
+      resourceData.isFavorite is bool &&
       resourceData.isTrash is bool;
      }
 

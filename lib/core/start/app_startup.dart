@@ -21,7 +21,7 @@ class AppStartup extends AppService {
     FirebaseService.getInstance(),
     AuthService.getInstance(),
     ImagePickerService.getInstance(),
-    FlutterLocalNotificationsService(),
+    FlutterLocalNotificationsService.getInstance(),
   ];
 
   @override

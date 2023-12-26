@@ -10,6 +10,7 @@ class SettingsState with _$SettingsState {
     @Default(true) bool onlySaveDataWhenClick,
     @Default(false) darkDuringDayInAutoMode,
     @Default(true) bool openOnBoardingScreen,
+    @Default(true) bool autoSaveNote,
     @Default(AppThemeMode.system) AppThemeMode themeMode,
     @Default(AppLanguague.system) AppLanguague appLanguague,
     @Default(AppThemeSystem.material3) AppThemeSystem themeSystem,

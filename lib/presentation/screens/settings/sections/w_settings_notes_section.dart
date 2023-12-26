@@ -56,6 +56,20 @@ class SettingsNotesSection extends StatelessWidget {
           subtitle: Text(context.loc.confirmDeleteNoteDesc),
           secondary: const Icon(Icons.delete_forever),
         ),
+        CheckboxListTile.adaptive(
+          value: state.autoSaveNote,
+          onChanged: (newValue) {
+            if (newValue == null) {
+              return;
+            }
+            context.read<SettingsCubit>().updateSettings(
+                  state.copyWith(autoSaveNote: newValue),
+                );
+          },
+          title: Text(context.loc.autoSave),
+          subtitle: Text(context.loc.autoSaveDesc),
+          secondary: const Icon(Icons.autorenew),
+        ),
       ],
     );
   }

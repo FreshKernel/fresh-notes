@@ -27,6 +27,7 @@ mixin _$SettingsState {
   bool get onlySaveDataWhenClick => throw _privateConstructorUsedError;
   dynamic get darkDuringDayInAutoMode => throw _privateConstructorUsedError;
   bool get openOnBoardingScreen => throw _privateConstructorUsedError;
+  bool get autoSaveNote => throw _privateConstructorUsedError;
   AppThemeMode get themeMode => throw _privateConstructorUsedError;
   AppLanguague get appLanguague => throw _privateConstructorUsedError;
   AppThemeSystem get themeSystem => throw _privateConstructorUsedError;
@@ -52,6 +53,7 @@ abstract class $SettingsStateCopyWith<$Res> {
       bool onlySaveDataWhenClick,
       dynamic darkDuringDayInAutoMode,
       bool openOnBoardingScreen,
+      bool autoSaveNote,
       AppThemeMode themeMode,
       AppLanguague appLanguague,
       AppThemeSystem themeSystem,
@@ -78,6 +80,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
     Object? onlySaveDataWhenClick = null,
     Object? darkDuringDayInAutoMode = freezed,
     Object? openOnBoardingScreen = null,
+    Object? autoSaveNote = null,
     Object? themeMode = null,
     Object? appLanguague = null,
     Object? themeSystem = null,
@@ -111,6 +114,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
       openOnBoardingScreen: null == openOnBoardingScreen
           ? _value.openOnBoardingScreen
           : openOnBoardingScreen // ignore: cast_nullable_to_non_nullable
+              as bool,
+      autoSaveNote: null == autoSaveNote
+          ? _value.autoSaveNote
+          : autoSaveNote // ignore: cast_nullable_to_non_nullable
               as bool,
       themeMode: null == themeMode
           ? _value.themeMode
@@ -148,6 +155,7 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
       bool onlySaveDataWhenClick,
       dynamic darkDuringDayInAutoMode,
       bool openOnBoardingScreen,
+      bool autoSaveNote,
       AppThemeMode themeMode,
       AppLanguague appLanguague,
       AppThemeSystem themeSystem,
@@ -172,6 +180,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
     Object? onlySaveDataWhenClick = null,
     Object? darkDuringDayInAutoMode = freezed,
     Object? openOnBoardingScreen = null,
+    Object? autoSaveNote = null,
     Object? themeMode = null,
     Object? appLanguague = null,
     Object? themeSystem = null,
@@ -205,6 +214,10 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
           ? _value.openOnBoardingScreen
           : openOnBoardingScreen // ignore: cast_nullable_to_non_nullable
               as bool,
+      autoSaveNote: null == autoSaveNote
+          ? _value.autoSaveNote
+          : autoSaveNote // ignore: cast_nullable_to_non_nullable
+              as bool,
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
@@ -236,6 +249,7 @@ class _$SettingsStateImpl implements _SettingsState {
       this.onlySaveDataWhenClick = true,
       this.darkDuringDayInAutoMode = false,
       this.openOnBoardingScreen = true,
+      this.autoSaveNote = true,
       this.themeMode = AppThemeMode.system,
       this.appLanguague = AppLanguague.system,
       this.themeSystem = AppThemeSystem.material3,
@@ -267,6 +281,9 @@ class _$SettingsStateImpl implements _SettingsState {
   final bool openOnBoardingScreen;
   @override
   @JsonKey()
+  final bool autoSaveNote;
+  @override
+  @JsonKey()
   final AppThemeMode themeMode;
   @override
   @JsonKey()
@@ -280,7 +297,7 @@ class _$SettingsStateImpl implements _SettingsState {
 
   @override
   String toString() {
-    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, confirmMoveNoteToTrash: $confirmMoveNoteToTrash, useNoteGridTile: $useNoteGridTile, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, openOnBoardingScreen: $openOnBoardingScreen, themeMode: $themeMode, appLanguague: $appLanguague, themeSystem: $themeSystem, layoutMode: $layoutMode)';
+    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, confirmMoveNoteToTrash: $confirmMoveNoteToTrash, useNoteGridTile: $useNoteGridTile, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, openOnBoardingScreen: $openOnBoardingScreen, autoSaveNote: $autoSaveNote, themeMode: $themeMode, appLanguague: $appLanguague, themeSystem: $themeSystem, layoutMode: $layoutMode)';
   }
 
   @override
@@ -303,6 +320,8 @@ class _$SettingsStateImpl implements _SettingsState {
                 other.darkDuringDayInAutoMode, darkDuringDayInAutoMode) &&
             (identical(other.openOnBoardingScreen, openOnBoardingScreen) ||
                 other.openOnBoardingScreen == openOnBoardingScreen) &&
+            (identical(other.autoSaveNote, autoSaveNote) ||
+                other.autoSaveNote == autoSaveNote) &&
             (identical(other.themeMode, themeMode) ||
                 other.themeMode == themeMode) &&
             (identical(other.appLanguague, appLanguague) ||
@@ -324,6 +343,7 @@ class _$SettingsStateImpl implements _SettingsState {
       onlySaveDataWhenClick,
       const DeepCollectionEquality().hash(darkDuringDayInAutoMode),
       openOnBoardingScreen,
+      autoSaveNote,
       themeMode,
       appLanguague,
       themeSystem,
@@ -352,6 +372,7 @@ abstract class _SettingsState implements SettingsState {
       final bool onlySaveDataWhenClick,
       final dynamic darkDuringDayInAutoMode,
       final bool openOnBoardingScreen,
+      final bool autoSaveNote,
       final AppThemeMode themeMode,
       final AppLanguague appLanguague,
       final AppThemeSystem themeSystem,
@@ -374,6 +395,8 @@ abstract class _SettingsState implements SettingsState {
   dynamic get darkDuringDayInAutoMode;
   @override
   bool get openOnBoardingScreen;
+  @override
+  bool get autoSaveNote;
   @override
   AppThemeMode get themeMode;
   @override

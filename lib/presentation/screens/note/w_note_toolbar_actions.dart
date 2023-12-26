@@ -70,42 +70,47 @@ List<Widget> noteScreenActions({
   required NoteScreenToolbarState toolbarState,
   required Function(NoteScreenToolbarState noteScreenToolbarState)
       onUpdateToolbarState,
+  required VoidCallback onRequestSaveNote,
 }) =>
     [
       QuillToolbarSearchButton(
         controller: controller,
         options: const QuillToolbarSearchButtonOptions(),
       ),
-      IconButton(
-        onPressed: () async {
-          tz.initializeTimeZones();
-          final time = await showTimePicker(
-            context: context,
-            initialTime: TimeOfDay.now(),
-          );
-          if (time == null) {
-            return;
-          }
-          await FlutterLocalNotificationsService.localNotificationsPlugin
-              .zonedSchedule(
-            0,
-            'scheduled title',
-            'scheduled body',
-            tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-            const NotificationDetails(
-              android: AndroidNotificationDetails(
-                'note_alarms',
-                'Note alarms',
-                channelDescription: 'Your note alarms',
-              ),
-            ),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-            uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.absoluteTime,
-          );
-        },
-        icon: const Icon(Icons.notification_add),
-      ),
+      if (note != null)
+        IconButton(
+          onPressed: () async {
+            tz.initializeTimeZones();
+            final time = await showTimePicker(
+              context: context,
+              initialTime: TimeOfDay.now(),
+            );
+            if (time == null) {
+              return;
+            }
+            await FlutterLocalNotificationsService.getInstance()
+                .requestPermission();
+            await FlutterLocalNotificationsService.getInstance()
+                .localNotificationsPlugin
+                .zonedSchedule(
+                  0,
+                  note.title,
+                  note.text,
+                  tz.TZDateTime.now(tz.local).add(const Duration(seconds: 2)),
+                  const NotificationDetails(
+                    android: AndroidNotificationDetails(
+                      'note_alarms',
+                      'Note alarms',
+                      channelDescription: 'Your note alarms',
+                    ),
+                  ),
+                  androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+                  uiLocalNotificationDateInterpretation:
+                      UILocalNotificationDateInterpretation.absoluteTime,
+                );
+          },
+          icon: const Icon(Icons.notification_add),
+        ),
       MenuAnchor(
         controller: _menuController,
         menuChildren: [
@@ -124,6 +129,12 @@ List<Widget> noteScreenActions({
               },
               child: Text(context.loc.print),
             ),
+          MenuItemButton(
+            child: Text(context.loc.save),
+            onPressed: () {
+              onRequestSaveNote();
+            },
+          ),
           SubmenuButton(
             menuChildren: [
               MenuItemButton(

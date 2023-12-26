@@ -4,8 +4,14 @@ import '../../errors/exceptions.dart';
 import '../../services/s_app.dart';
 
 class FlutterLocalNotificationsService extends AppService {
-  static FlutterLocalNotificationsPlugin? _localNotificationsPlugin;
-  static FlutterLocalNotificationsPlugin get localNotificationsPlugin =>
+  factory FlutterLocalNotificationsService.getInstance() => instance;
+  FlutterLocalNotificationsService._();
+
+  static final FlutterLocalNotificationsService instance =
+      FlutterLocalNotificationsService._();
+
+  FlutterLocalNotificationsPlugin? _localNotificationsPlugin;
+  FlutterLocalNotificationsPlugin get localNotificationsPlugin =>
       _localNotificationsPlugin ??
       (throw const AppException('The service has not started yet.'));
   @override
@@ -26,14 +32,25 @@ class FlutterLocalNotificationsService extends AppService {
         android: AndroidInitializationSettings('app_icon'),
       ),
     );
-    // _localNotificationsPlugin?.resolvePlatformSpecificImplementation<
-    //     AndroidFlutterLocalNotificationsPlugin>()
-    //   ?..requestNotificationsPermission()
-    //   ..requestExactAlarmsPermission();
-    // _localNotificationsPlugin
-    //     ?.resolvePlatformSpecificImplementation<
-    //         IOSFlutterLocalNotificationsPlugin>()
-    //     ?.requestPermissions();
+  }
+
+  Future<void> requestPermission() async {
+    await _localNotificationsPlugin
+        ?.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
+    await _localNotificationsPlugin
+        ?.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestExactAlarmsPermission();
+    await _localNotificationsPlugin
+        ?.resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions();
+    await _localNotificationsPlugin
+        ?.resolvePlatformSpecificImplementation<
+            MacOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions();
   }
 
   @override

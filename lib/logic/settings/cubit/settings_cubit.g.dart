@@ -16,6 +16,7 @@ _$SettingsStateImpl _$$SettingsStateImplFromJson(Map<String, dynamic> json) =>
       onlySaveDataWhenClick: json['onlySaveDataWhenClick'] as bool? ?? true,
       darkDuringDayInAutoMode: json['darkDuringDayInAutoMode'] ?? false,
       openOnBoardingScreen: json['openOnBoardingScreen'] as bool? ?? true,
+      autoSaveNote: json['autoSaveNote'] as bool? ?? true,
       themeMode:
           $enumDecodeNullable(_$AppThemeModeEnumMap, json['themeMode']) ??
               AppThemeMode.system,
@@ -39,6 +40,7 @@ Map<String, dynamic> _$$SettingsStateImplToJson(_$SettingsStateImpl instance) =>
       'onlySaveDataWhenClick': instance.onlySaveDataWhenClick,
       'darkDuringDayInAutoMode': instance.darkDuringDayInAutoMode,
       'openOnBoardingScreen': instance.openOnBoardingScreen,
+      'autoSaveNote': instance.autoSaveNote,
       'themeMode': _$AppThemeModeEnumMap[instance.themeMode]!,
       'appLanguague': _$AppLanguagueEnumMap[instance.appLanguague]!,
       'themeSystem': _$AppThemeSystemEnumMap[instance.themeSystem]!,

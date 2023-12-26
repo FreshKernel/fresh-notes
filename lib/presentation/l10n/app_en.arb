@@ -174,5 +174,12 @@
     "title": "Title",
     "enterTitleDesc": "Craft a captivating title for your thoughts.",
     "saveFileAs": "Save file as",
-    "image": "Image"
+    "image": "Image",
+    "save": "Save",
+    "noteHasBeenSavedMessage": "Your note has been saved",
+    "noteHasBeenSavedMessage2": "Your ideas secured. 🌟",
+    "noteHasBeenSavedMessage3": "Your thoughts has been saved",
+    "cannotSaveEmptyNote": "The note can't be empty",
+    "autoSave": "Auto save",
+    "autoSaveDesc": "Automatically save the note when you exit the screen."
   }  

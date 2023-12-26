@@ -1,4 +1,5 @@
 import 'dart:convert' show jsonEncode, jsonDecode;
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../components/note/editor/w_editor.dart';
 import '../../components/note/toolbar/w_note_toolbar.dart';
 import '../../l10n/extensions/localizations.dart';
+import '../../utils/extensions/build_context_ext.dart';
 import 'w_note_toolbar_actions.dart';
 
 class NoteScreenArgs {
@@ -60,6 +62,7 @@ class _NoteScreenState extends State<NoteScreen> {
 
   bool get _isEditing => _note != null;
   late final NoteCubit _noteBloc;
+  late final SettingsCubit _settingsCubit;
 
   bool get _isNoteOwner =>
       _note?.userId == AuthService.getInstance().currentUser?.id;
@@ -69,9 +72,10 @@ class _NoteScreenState extends State<NoteScreen> {
   @override
   void initState() {
     super.initState();
+    _noteBloc = context.read<NoteCubit>();
+    _settingsCubit = context.read<SettingsCubit>();
     _setupNote();
     _editorFocusNode = FocusNode();
-    _noteBloc = context.read<NoteCubit>();
     if (!AuthService.getInstance().isAuthenticated) {
       _toolbarState = _toolbarState.copyWith(isSyncWithCloud: false);
     }
@@ -104,8 +108,7 @@ class _NoteScreenState extends State<NoteScreen> {
 
     // For creating a note
     _toolbarState = _toolbarState.copyWith(
-      isSyncWithCloud:
-          context.read<SettingsCubit>().state.syncWithCloudDefaultValue,
+      isSyncWithCloud: _settingsCubit.state.syncWithCloudDefaultValue,
     );
     _titleController = TextEditingController();
     _controller = QuillController.basic();
@@ -113,8 +116,9 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   void dispose() {
-    // TODO: feat: Add disable auto save option in the settings.
-    _saveNote().then((value) => _controller.dispose());
+    if (_settingsCubit.state.autoSaveNote) {
+      _saveNote().then((value) => _controller.dispose());
+    }
     _editorFocusNode.dispose();
     super.dispose();
   }
@@ -209,6 +213,31 @@ class _NoteScreenState extends State<NoteScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: noteScreenActions(
+          onRequestSaveNote: () async {
+            final messenger = context.messenger;
+            final localizations = context.loc;
+            final isDocumentContentEmpty =
+                _controller.document.toPlainText().trim().isEmpty;
+            if (isDocumentContentEmpty) {
+              await messenger.showMessage(localizations.cannotSaveEmptyNote);
+              return;
+            }
+            try {
+              await _saveNote();
+              final messages = [
+                localizations.noteHasBeenSavedMessage,
+                localizations.noteHasBeenSavedMessage2,
+                localizations.noteHasBeenSavedMessage3,
+              ];
+              await messenger.showMessage(
+                messages[math.Random().nextInt(messages.length - 1)],
+              );
+            } catch (e) {
+              await messenger.showMessage(localizations.unknownErrorWithMessage(
+                e.toString(),
+              ));
+            }
+          },
           toolbarState: _toolbarState,
           onUpdateToolbarState: (noteScreenToolbarState) {
             setState(() {
