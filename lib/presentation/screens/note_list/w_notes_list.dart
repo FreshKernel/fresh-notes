@@ -135,7 +135,7 @@ class _NoteListContentState extends State<NoteListContent> {
               if (isTop) {
                 return true;
               }
-              context.read<NoteCubit>().loadMoreNotes();
+              // context.read<NoteCubit>().loadMoreNotes();
               return true;
             },
           );

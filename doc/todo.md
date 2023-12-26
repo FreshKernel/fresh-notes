@@ -3,3 +3,4 @@
 3. Add lock notes
 4. Add note to home screen
 5. Add alarm to notes
+6. The auto save conflicts with the manual save in note screen

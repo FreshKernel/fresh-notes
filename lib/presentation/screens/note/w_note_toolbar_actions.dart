@@ -1,5 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert' show jsonEncode;
+import 'dart:convert' show jsonDecode, jsonEncode;
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
@@ -81,13 +80,30 @@ List<Widget> noteScreenActions({
         IconButton(
           onPressed: () async {
             tz.initializeTimeZones();
-            final time = await showTimePicker(
+            final dateTime = await showDatePicker(
+              context: context,
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().add(const Duration(days: 5000)),
+              initialDate: DateTime.now(),
+            );
+            if (dateTime == null) {
+              return;
+            }
+            if (!context.mounted) {
+              return;
+            }
+            final timeOfDay = await showTimePicker(
               context: context,
               initialTime: TimeOfDay.now(),
             );
-            if (time == null) {
+            if (timeOfDay == null) {
               return;
             }
+            final newDate = dateTime.copyWith(
+                hour: timeOfDay.hour, minute: timeOfDay.minute);
+            final currentDate = DateTime.now();
+
+            final duration = newDate.difference(currentDate);
             await FlutterLocalNotificationsService.getInstance()
                 .requestPermission();
             await FlutterLocalNotificationsService.getInstance()
@@ -95,8 +111,8 @@ List<Widget> noteScreenActions({
                 .zonedSchedule(
                   0,
                   note.title,
-                  note.text,
-                  tz.TZDateTime.now(tz.local).add(const Duration(seconds: 2)),
+                  Document.fromJson(jsonDecode(note.text)).toPlainText(),
+                  tz.TZDateTime.now(tz.local).add(duration),
                   const NotificationDetails(
                     android: AndroidNotificationDetails(
                       'note_alarms',

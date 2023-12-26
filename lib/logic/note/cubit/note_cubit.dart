@@ -42,9 +42,6 @@ class NoteCubit extends Cubit<NoteState> {
   final LocalStorageService localStorageService;
   final AuthService authService;
 
-  var _page = 1;
-  final _limit = 6;
-
   Future<List<UniversalNote>> getNotes({
     int limit = -1,
     int page = 1,
@@ -69,7 +66,7 @@ class NoteCubit extends Cubit<NoteState> {
         return;
       }
       await localNotesService.initialize();
-      final allNotes = await getNotes(page: _page, limit: _limit);
+      final allNotes = await getNotes();
       emit(NoteState(notes: allNotes.toList()));
       _notesFutureLoadded = true;
     } on Exception catch (e) {
@@ -78,6 +75,8 @@ class NoteCubit extends Cubit<NoteState> {
   }
 
   var _reachedEnd = false;
+  var _page = 1;
+  static const _limit = 8;
 
   Future<void> loadMoreNotes() async {
     if (_reachedEnd) {
