@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert' show jsonEncode;
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -7,7 +9,6 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
 import 'package:gal/gal.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -27,17 +28,48 @@ import '../../utils/extensions/build_context_ext.dart';
 import '../note_list/note_tile/note_tile_options.dart';
 import 'w_share_dialog.dart';
 
+@immutable
+class NoteScreenToolbarState extends Equatable {
+  const NoteScreenToolbarState({
+    required this.isFavorite,
+    required this.isSyncWithCloud,
+    required this.isPrivate,
+  });
+
+  final bool isFavorite;
+  final bool isSyncWithCloud;
+  final bool isPrivate;
+
+  NoteScreenToolbarState copyWith({
+    bool? isFavorite,
+    bool? isSyncWithCloud,
+    bool? isPrivate,
+  }) {
+    return NoteScreenToolbarState(
+      isFavorite: isFavorite ?? this.isFavorite,
+      isSyncWithCloud: isSyncWithCloud ?? this.isSyncWithCloud,
+      isPrivate: isPrivate ?? this.isPrivate,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        isFavorite,
+        isSyncWithCloud,
+        isPrivate,
+      ];
+}
+
 final _menuController = MenuController();
 
 List<Widget> noteScreenActions({
   required BuildContext context,
   required QuillController controller,
-  required bool isSyncWithCloud,
-  required Function(bool newValue) onUpdateIsSyncWithCloud,
-  required bool isPrivate,
-  required Function(bool newValue) onUpdateIsPrivate,
   required UniversalNote? note,
   required ScreenshotController screenshotController,
+  required NoteScreenToolbarState toolbarState,
+  required Function(NoteScreenToolbarState noteScreenToolbarState)
+      onUpdateToolbarState,
 }) =>
     [
       QuillToolbarSearchButton(
@@ -130,35 +162,43 @@ List<Widget> noteScreenActions({
           if (AuthService.getInstance().isAuthenticated) ...[
             TextButton.icon(
               onPressed: () {
-                if (!isSyncWithCloud) {
-                  onUpdateIsPrivate(true);
+                if (!toolbarState.isSyncWithCloud) {
+                  onUpdateToolbarState(toolbarState.copyWith(isPrivate: true));
                 }
-                onUpdateIsSyncWithCloud(!isSyncWithCloud);
+                onUpdateToolbarState(toolbarState.copyWith(
+                  isSyncWithCloud: !toolbarState.isSyncWithCloud,
+                ));
               },
               icon: Icon(
-                isSyncWithCloud ? Icons.cloud : Icons.folder,
-                semanticLabel: isSyncWithCloud
+                toolbarState.isSyncWithCloud ? Icons.cloud : Icons.folder,
+                semanticLabel: toolbarState.isSyncWithCloud
                     ? context.loc.syncWithCloud
                     : context.loc.saveLocally,
               ),
               label: Text(
-                isSyncWithCloud
+                toolbarState.isSyncWithCloud
                     ? context.loc.syncWithCloud
                     : context.loc.saveLocally,
               ),
             ),
-            if (isSyncWithCloud)
+            if (toolbarState.isSyncWithCloud)
               TextButton.icon(
-                onPressed: isSyncWithCloud
-                    ? () => onUpdateIsPrivate(!isPrivate)
+                onPressed: toolbarState.isSyncWithCloud
+                    ? () => onUpdateToolbarState(
+                          toolbarState.copyWith(
+                              isPrivate: !toolbarState.isPrivate),
+                        )
                     : null,
                 icon: Icon(
-                  isPrivate ? Icons.lock : Icons.public,
-                  semanticLabel:
-                      isPrivate ? context.loc.private : context.loc.public,
+                  toolbarState.isPrivate ? Icons.lock : Icons.public,
+                  semanticLabel: toolbarState.isPrivate
+                      ? context.loc.private
+                      : context.loc.public,
                 ),
                 label: Text(
-                  isPrivate ? context.loc.private : context.loc.public,
+                  toolbarState.isPrivate
+                      ? context.loc.private
+                      : context.loc.public,
                 ),
               ),
           ],
@@ -178,7 +218,7 @@ List<Widget> noteScreenActions({
                     );
                     return;
                   }
-                  if (isPrivate || note == null) {
+                  if (toolbarState.isPrivate || note == null) {
                     await AppShareService.getInstance().shareText(plainText);
                     return;
                   }
@@ -219,8 +259,14 @@ List<Widget> noteScreenActions({
                   icon: const Icon(Icons.delete),
                 ),
               IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.star_border),
+                onPressed: () {
+                  onUpdateToolbarState(toolbarState.copyWith(
+                      isFavorite: !toolbarState.isFavorite));
+                  _menuController.close();
+                },
+                icon: Icon(
+                  toolbarState.isFavorite ? Icons.star : Icons.star_outline,
+                ),
               ),
             ],
           ),

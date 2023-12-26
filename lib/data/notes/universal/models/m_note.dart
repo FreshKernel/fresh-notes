@@ -15,6 +15,7 @@ class UniversalNote extends Equatable {
     required this.isSyncWithCloud,
     required this.isPrivate,
     required this.isTrash,
+    required this.isFavorite,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -29,6 +30,7 @@ class UniversalNote extends Equatable {
         isSyncWithCloud: note.isSyncWithCloud,
         isPrivate: note.isPrivate,
         isTrash: note.isTrash,
+        isFavorite: note.isFavorite,
         createdAt: note.createdAt,
         updatedAt: note.updatedAt,
       );
@@ -43,6 +45,7 @@ class UniversalNote extends Equatable {
         text: note.text,
         isSyncWithCloud: true,
         isPrivate: note.isPrivate,
+        isFavorite: note.isFavorite,
         isTrash: note.isTrash,
         createdAt: note.createdAt,
         updatedAt: note.updatedAt,
@@ -64,6 +67,7 @@ class UniversalNote extends Equatable {
         isTrash: false,
         createdAt: createdAt,
         updatedAt: updatedAt,
+        isFavorite: input.isFavorite,
       );
 
   factory UniversalNote.fromUpdateInput(
@@ -82,6 +86,7 @@ class UniversalNote extends Equatable {
         isTrash: false,
         createdAt: createdAt,
         updatedAt: updatedAt,
+        isFavorite: input.isFavorite,
       );
 
   final String noteId;
@@ -90,6 +95,7 @@ class UniversalNote extends Equatable {
   final String text;
   final bool isSyncWithCloud;
   final bool isPrivate;
+  final bool isFavorite;
   final bool isTrash;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -111,6 +117,7 @@ class UniversalNote extends Equatable {
     String? text,
     bool? isSyncWithCloud,
     bool? isPrivate,
+    bool? isFavorite,
     bool? isTrash,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -122,6 +129,7 @@ class UniversalNote extends Equatable {
       text: text ?? this.text,
       isSyncWithCloud: isSyncWithCloud ?? this.isSyncWithCloud,
       isPrivate: isPrivate ?? this.isPrivate,
+      isFavorite: isFavorite ?? this.isFavorite,
       isTrash: isTrash ?? this.isTrash,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -143,6 +151,7 @@ class UniversalNoteProperties {
   // static const cloudId = 'cloudId';
   static const isSyncWithCloud = 'isSyncWithCloud';
   static const isPrivate = 'isPrivate';
+  static const isFavorite = 'isFavorite';
   static const isTrash = 'isTrash';
   static const createdAt = 'createdAt';
   static const updatedAt = 'updatedAt';

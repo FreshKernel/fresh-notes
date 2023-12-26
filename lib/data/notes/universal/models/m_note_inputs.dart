@@ -13,6 +13,7 @@ class CreateNoteInput with _$CreateNoteInput {
     required String text,
     required bool isSyncWithCloud,
     required bool isPrivate,
+    required bool isFavorite,
     required String? userId,
   }) = _CreateNoteInput;
   factory CreateNoteInput.fromCloudNote(CloudNote note) => CreateNoteInput(
@@ -20,6 +21,7 @@ class CreateNoteInput with _$CreateNoteInput {
         title: note.title,
         text: note.text,
         isSyncWithCloud: true,
+        isFavorite: note.isFavorite,
         isPrivate: note.isPrivate,
         userId: note.userId,
       );
@@ -33,6 +35,7 @@ class CreateNoteInput with _$CreateNoteInput {
         text: input.text,
         isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
+        isFavorite: input.isFavorite,
         userId: userId,
       );
 }
@@ -46,6 +49,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
     required String title,
     required bool isSyncWithCloud,
     required bool isPrivate,
+    required bool isFavorite,
     required bool isTrash,
   }) = _UpdateNoteInput;
 
@@ -56,6 +60,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
         title: input.title,
         isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
+        isFavorite: input.isFavorite,
         isTrash: false,
         userId: input.userId,
       );
@@ -68,6 +73,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
         text: note.text,
         title: note.title,
         isSyncWithCloud: note.isSyncWithCloud,
+        isFavorite: note.isFavorite,
         userId: note.userId,
       );
 
@@ -79,6 +85,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
         title: note.title,
         isSyncWithCloud: note.isSyncWithCloud,
         userId: note.userId,
+        isFavorite: note.isFavorite,
       );
 
   factory UpdateNoteInput.fromCloudNote(CloudNote note) => UpdateNoteInput(
@@ -89,5 +96,6 @@ class UpdateNoteInput with _$UpdateNoteInput {
         isPrivate: note.isPrivate,
         isTrash: note.isTrash,
         userId: note.userId,
+        isFavorite: note.isFavorite,
       );
 }

@@ -28,6 +28,7 @@ mixin _$LocalNote {
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
   bool get isTrash => throw _privateConstructorUsedError;
+  bool get isFavorite => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
@@ -51,6 +52,7 @@ abstract class $LocalNoteCopyWith<$Res> {
       bool isSyncWithCloud,
       bool isPrivate,
       bool isTrash,
+      bool isFavorite,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -76,6 +78,7 @@ class _$LocalNoteCopyWithImpl<$Res, $Val extends LocalNote>
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
     Object? isTrash = null,
+    Object? isFavorite = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -112,6 +115,10 @@ class _$LocalNoteCopyWithImpl<$Res, $Val extends LocalNote>
           ? _value.isTrash
           : isTrash // ignore: cast_nullable_to_non_nullable
               as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -141,6 +148,7 @@ abstract class _$$LocalNoteImplCopyWith<$Res>
       bool isSyncWithCloud,
       bool isPrivate,
       bool isTrash,
+      bool isFavorite,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -164,6 +172,7 @@ class __$$LocalNoteImplCopyWithImpl<$Res>
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
     Object? isTrash = null,
+    Object? isFavorite = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -200,6 +209,10 @@ class __$$LocalNoteImplCopyWithImpl<$Res>
           ? _value.isTrash
           : isTrash // ignore: cast_nullable_to_non_nullable
               as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -224,6 +237,7 @@ class _$LocalNoteImpl implements _LocalNote {
       required this.isSyncWithCloud,
       required this.isPrivate,
       required this.isTrash,
+      required this.isFavorite,
       required this.createdAt,
       required this.updatedAt});
 
@@ -247,13 +261,15 @@ class _$LocalNoteImpl implements _LocalNote {
   @override
   final bool isTrash;
   @override
+  final bool isFavorite;
+  @override
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
 
   @override
   String toString() {
-    return 'LocalNote(id: $id, noteId: $noteId, userId: $userId, title: $title, text: $text, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isTrash: $isTrash, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'LocalNote(id: $id, noteId: $noteId, userId: $userId, title: $title, text: $text, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isTrash: $isTrash, isFavorite: $isFavorite, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -271,6 +287,8 @@ class _$LocalNoteImpl implements _LocalNote {
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
             (identical(other.isTrash, isTrash) || other.isTrash == isTrash) &&
+            (identical(other.isFavorite, isFavorite) ||
+                other.isFavorite == isFavorite) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -280,7 +298,7 @@ class _$LocalNoteImpl implements _LocalNote {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, noteId, userId, title, text,
-      isSyncWithCloud, isPrivate, isTrash, createdAt, updatedAt);
+      isSyncWithCloud, isPrivate, isTrash, isFavorite, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -306,6 +324,7 @@ abstract class _LocalNote implements LocalNote {
       required final bool isSyncWithCloud,
       required final bool isPrivate,
       required final bool isTrash,
+      required final bool isFavorite,
       required final DateTime createdAt,
       required final DateTime updatedAt}) = _$LocalNoteImpl;
 
@@ -328,6 +347,8 @@ abstract class _LocalNote implements LocalNote {
   bool get isPrivate;
   @override
   bool get isTrash;
+  @override
+  bool get isFavorite;
   @override
   DateTime get createdAt;
   @override

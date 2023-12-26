@@ -20,6 +20,7 @@ class LocalNote with _$LocalNote {
     required bool isSyncWithCloud,
     required bool isPrivate,
     required bool isTrash,
+    required bool isFavorite,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _LocalNote;
@@ -32,6 +33,7 @@ class LocalNote with _$LocalNote {
     required String text,
     required bool isSyncWithCloud,
     required bool isPrivate,
+    required bool isFavorite,
     required bool isTrash,
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -43,6 +45,7 @@ class LocalNote with _$LocalNote {
         title: title,
         text: text,
         isPrivate: isPrivate,
+        isFavorite: isFavorite,
         isTrash: isTrash,
         isSyncWithCloud: isSyncWithCloud,
         createdAt: createdAt,
@@ -64,6 +67,7 @@ class LocalNote with _$LocalNote {
         text: input.text,
         isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
+        isFavorite: input.isFavorite,
         isTrash: false,
         createdAt: createdAt,
         updatedAt: updatedAt,
@@ -85,6 +89,7 @@ class LocalNote with _$LocalNote {
         text: input.text,
         isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
+        isFavorite: input.isFavorite,
         isTrash: input.isTrash,
         createdAt: createdAt,
         updatedAt: updatedAt,
@@ -102,6 +107,7 @@ class LocalNote with _$LocalNote {
         isSyncWithCloud:
             (map[LocalNoteProperties.isSyncWithCloud] as int).toBoolean(),
         isPrivate: (map[LocalNoteProperties.isPrivate] as int).toBoolean(),
+        isFavorite: (map[LocalNoteProperties.isFavorite] as int).toBoolean(),
         isTrash: (map[LocalNoteProperties.isTrash] as int).toBoolean(),
         createdAt: DateTime.parse(map[LocalNoteProperties.createdAt] as String),
         updatedAt: DateTime.parse(map[LocalNoteProperties.updatedAt] as String),
@@ -114,6 +120,7 @@ class LocalNote with _$LocalNote {
     required String text,
     required bool isSyncWithCloud,
     required bool isPrivate,
+    required bool isFavorite,
     required bool isTrash,
   }) {
     return {
@@ -122,6 +129,7 @@ class LocalNote with _$LocalNote {
       LocalNoteProperties.isSyncWithCloud:
           SqlValue.num(isSyncWithCloud.toInt()),
       LocalNoteProperties.isPrivate: SqlValue.num(isPrivate.toInt()),
+      LocalNoteProperties.isFavorite: SqlValue.num(isFavorite.toInt()),
       LocalNoteProperties.isTrash: SqlValue.num(isTrash.toInt()),
     };
   }
@@ -135,6 +143,7 @@ class LocalNote with _$LocalNote {
       isSyncWithCloud: input.isSyncWithCloud,
       isPrivate: input.isPrivate,
       isTrash: false,
+      isFavorite: input.isFavorite,
     );
     final SqlMapData data = {
       ...sharedInputData,
@@ -153,6 +162,7 @@ class LocalNote with _$LocalNote {
       isSyncWithCloud: input.isSyncWithCloud,
       isPrivate: input.isPrivate,
       isTrash: input.isTrash,
+      isFavorite: input.isFavorite,
     );
     return {
       ...sharedInputData,
@@ -173,6 +183,7 @@ class LocalNote with _$LocalNote {
       "${LocalNoteProperties.text}"	TEXT NOT NULL,
       "${LocalNoteProperties.isSyncWithCloud}" INTEGER NOT NULL,
       "${LocalNoteProperties.isPrivate}"	INTEGER NOT NULL,
+      "${LocalNoteProperties.isFavorite}"	INTEGER NOT NULL,
       "${LocalNoteProperties.isTrash}"	INTEGER NOT NULL,
       "${LocalNoteProperties.createdAt}"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       "${LocalNoteProperties.updatedAt}"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

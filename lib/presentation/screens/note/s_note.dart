@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:screenshot/screenshot.dart';
+import 'package:screenshot/screenshot.dart'
+    show ScreenshotController, Screenshot;
 
 import '../../../data/core/shared/data_utils.dart';
 import '../../../data/notes/universal/models/m_note.dart';
@@ -46,8 +47,11 @@ class _NoteScreenState extends State<NoteScreen> {
   late final QuillController _controller;
 
   var _isReadOnly = false;
-  var _isPrivate = true;
-  var _isSyncWithCloud = false;
+  var _toolbarState = const NoteScreenToolbarState(
+    isFavorite: false,
+    isSyncWithCloud: false,
+    isPrivate: true,
+  );
   var _isLoading = false;
   late final TextEditingController _titleController;
   final _screenshotController = ScreenshotController();
@@ -69,7 +73,7 @@ class _NoteScreenState extends State<NoteScreen> {
     _editorFocusNode = FocusNode();
     _noteBloc = context.read<NoteCubit>();
     if (!AuthService.getInstance().isAuthenticated) {
-      _isSyncWithCloud = false;
+      _toolbarState = _toolbarState.copyWith(isSyncWithCloud: false);
     }
   }
 
@@ -90,14 +94,19 @@ class _NoteScreenState extends State<NoteScreen> {
       );
 
       // Default option is false
-      _isSyncWithCloud = noteToEdit.isSyncWithCloud;
-      _isPrivate = noteToEdit.isPrivate;
+      _toolbarState = _toolbarState.copyWith(
+        isSyncWithCloud: noteToEdit.isSyncWithCloud,
+        isPrivate: noteToEdit.isPrivate,
+        isFavorite: noteToEdit.isFavorite,
+      );
       return;
     }
 
     // For creating a note
-    _isSyncWithCloud =
-        context.read<SettingsCubit>().state.syncWithCloudDefaultValue;
+    _toolbarState = _toolbarState.copyWith(
+      isSyncWithCloud:
+          context.read<SettingsCubit>().state.syncWithCloudDefaultValue,
+    );
     _titleController = TextEditingController();
     _controller = QuillController.basic();
   }
@@ -132,8 +141,9 @@ class _NoteScreenState extends State<NoteScreen> {
     if (_isEditing &&
         newNoteText == _note?.text &&
         _titleController.text == _note?.title &&
-        _isPrivate == _note?.isPrivate &&
-        _isSyncWithCloud == _note?.isSyncWithCloud) {
+        _toolbarState.isPrivate == _note?.isPrivate &&
+        _toolbarState.isSyncWithCloud == _note?.isSyncWithCloud &&
+        _toolbarState.isFavorite == _note?.isFavorite) {
       return;
     }
     try {
@@ -148,9 +158,10 @@ class _NoteScreenState extends State<NoteScreen> {
                     'The id is required for updating the note')),
             title: _titleController.text,
             text: noteText,
-            isSyncWithCloud: _isSyncWithCloud,
-            isPrivate: _isPrivate,
+            isSyncWithCloud: _toolbarState.isSyncWithCloud,
+            isPrivate: _toolbarState.isPrivate,
             isTrash: false,
+            isFavorite: _toolbarState.isFavorite,
             userId: userId,
           ),
         );
@@ -160,8 +171,9 @@ class _NoteScreenState extends State<NoteScreen> {
             noteId: generateRandomItemId(),
             title: _titleController.text,
             text: noteText,
-            isSyncWithCloud: _isSyncWithCloud,
-            isPrivate: _isPrivate,
+            isSyncWithCloud: _toolbarState.isSyncWithCloud,
+            isPrivate: _toolbarState.isPrivate,
+            isFavorite: _toolbarState.isFavorite,
             userId: userId,
           ),
         );
@@ -197,22 +209,16 @@ class _NoteScreenState extends State<NoteScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: noteScreenActions(
+          toolbarState: _toolbarState,
+          onUpdateToolbarState: (noteScreenToolbarState) {
+            setState(() {
+              _toolbarState = noteScreenToolbarState;
+            });
+          },
           screenshotController: _screenshotController,
           context: context,
           controller: _controller,
-          isSyncWithCloud: _isSyncWithCloud,
-          isPrivate: _isPrivate,
           note: _note,
-          onUpdateIsPrivate: (newValue) {
-            setState(() {
-              _isPrivate = newValue;
-            });
-          },
-          onUpdateIsSyncWithCloud: (newValue) {
-            setState(() {
-              _isSyncWithCloud = newValue;
-            });
-          },
         ),
       ),
       floatingActionButton: floatingActionButton,

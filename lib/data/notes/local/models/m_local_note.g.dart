@@ -16,6 +16,7 @@ _$LocalNoteImpl _$$LocalNoteImplFromJson(Map<String, dynamic> json) =>
       isSyncWithCloud: json['isSyncWithCloud'] as bool,
       isPrivate: json['isPrivate'] as bool,
       isTrash: json['isTrash'] as bool,
+      isFavorite: json['isFavorite'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -30,6 +31,7 @@ Map<String, dynamic> _$$LocalNoteImplToJson(_$LocalNoteImpl instance) =>
       'isSyncWithCloud': instance.isSyncWithCloud,
       'isPrivate': instance.isPrivate,
       'isTrash': instance.isTrash,
+      'isFavorite': instance.isFavorite,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };

@@ -26,6 +26,7 @@ mixin _$CloudNote {
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
+  bool get isFavorite => throw _privateConstructorUsedError;
   bool get isTrash => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
@@ -48,6 +49,7 @@ abstract class $CloudNoteCopyWith<$Res> {
       String title,
       String text,
       bool isPrivate,
+      bool isFavorite,
       bool isTrash,
       DateTime createdAt,
       DateTime updatedAt});
@@ -72,6 +74,7 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
     Object? title = null,
     Object? text = null,
     Object? isPrivate = null,
+    Object? isFavorite = null,
     Object? isTrash = null,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -100,6 +103,10 @@ class _$CloudNoteCopyWithImpl<$Res, $Val extends CloudNote>
       isPrivate: null == isPrivate
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
       isTrash: null == isTrash
           ? _value.isTrash
@@ -132,6 +139,7 @@ abstract class _$$CloudNoteImplCopyWith<$Res>
       String title,
       String text,
       bool isPrivate,
+      bool isFavorite,
       bool isTrash,
       DateTime createdAt,
       DateTime updatedAt});
@@ -154,6 +162,7 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
     Object? title = null,
     Object? text = null,
     Object? isPrivate = null,
+    Object? isFavorite = null,
     Object? isTrash = null,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -183,6 +192,10 @@ class __$$CloudNoteImplCopyWithImpl<$Res>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
       isTrash: null == isTrash
           ? _value.isTrash
           : isTrash // ignore: cast_nullable_to_non_nullable
@@ -209,6 +222,7 @@ class _$CloudNoteImpl implements _CloudNote {
       required this.title,
       required this.text,
       required this.isPrivate,
+      required this.isFavorite,
       required this.isTrash,
       required this.createdAt,
       required this.updatedAt});
@@ -230,6 +244,8 @@ class _$CloudNoteImpl implements _CloudNote {
   @override
   final bool isPrivate;
   @override
+  final bool isFavorite;
+  @override
   final bool isTrash;
   @override
   final DateTime createdAt;
@@ -238,7 +254,7 @@ class _$CloudNoteImpl implements _CloudNote {
 
   @override
   String toString() {
-    return 'CloudNote(id: $id, noteId: $noteId, userId: $userId, title: $title, text: $text, isPrivate: $isPrivate, isTrash: $isTrash, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CloudNote(id: $id, noteId: $noteId, userId: $userId, title: $title, text: $text, isPrivate: $isPrivate, isFavorite: $isFavorite, isTrash: $isTrash, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -253,6 +269,8 @@ class _$CloudNoteImpl implements _CloudNote {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
+            (identical(other.isFavorite, isFavorite) ||
+                other.isFavorite == isFavorite) &&
             (identical(other.isTrash, isTrash) || other.isTrash == isTrash) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -263,7 +281,7 @@ class _$CloudNoteImpl implements _CloudNote {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, noteId, userId, title, text,
-      isPrivate, isTrash, createdAt, updatedAt);
+      isPrivate, isFavorite, isTrash, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -287,6 +305,7 @@ abstract class _CloudNote implements CloudNote {
       required final String title,
       required final String text,
       required final bool isPrivate,
+      required final bool isFavorite,
       required final bool isTrash,
       required final DateTime createdAt,
       required final DateTime updatedAt}) = _$CloudNoteImpl;
@@ -306,6 +325,8 @@ abstract class _CloudNote implements CloudNote {
   String get text;
   @override
   bool get isPrivate;
+  @override
+  bool get isFavorite;
   @override
   bool get isTrash;
   @override

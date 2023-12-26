@@ -21,6 +21,7 @@ mixin _$CreateNoteInput {
   String get text => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
+  bool get isFavorite => throw _privateConstructorUsedError;
   String? get userId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -40,6 +41,7 @@ abstract class $CreateNoteInputCopyWith<$Res> {
       String text,
       bool isSyncWithCloud,
       bool isPrivate,
+      bool isFavorite,
       String? userId});
 }
 
@@ -61,6 +63,7 @@ class _$CreateNoteInputCopyWithImpl<$Res, $Val extends CreateNoteInput>
     Object? text = null,
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
+    Object? isFavorite = null,
     Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -84,6 +87,10 @@ class _$CreateNoteInputCopyWithImpl<$Res, $Val extends CreateNoteInput>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
       userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -106,6 +113,7 @@ abstract class _$$CreateNoteInputImplCopyWith<$Res>
       String text,
       bool isSyncWithCloud,
       bool isPrivate,
+      bool isFavorite,
       String? userId});
 }
 
@@ -125,6 +133,7 @@ class __$$CreateNoteInputImplCopyWithImpl<$Res>
     Object? text = null,
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
+    Object? isFavorite = null,
     Object? userId = freezed,
   }) {
     return _then(_$CreateNoteInputImpl(
@@ -148,6 +157,10 @@ class __$$CreateNoteInputImplCopyWithImpl<$Res>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
       userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -165,6 +178,7 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
       required this.text,
       required this.isSyncWithCloud,
       required this.isPrivate,
+      required this.isFavorite,
       required this.userId});
 
   @override
@@ -178,11 +192,13 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
   @override
   final bool isPrivate;
   @override
+  final bool isFavorite;
+  @override
   final String? userId;
 
   @override
   String toString() {
-    return 'CreateNoteInput(noteId: $noteId, title: $title, text: $text, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, userId: $userId)';
+    return 'CreateNoteInput(noteId: $noteId, title: $title, text: $text, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isFavorite: $isFavorite, userId: $userId)';
   }
 
   @override
@@ -197,12 +213,14 @@ class _$CreateNoteInputImpl implements _CreateNoteInput {
                 other.isSyncWithCloud == isSyncWithCloud) &&
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
+            (identical(other.isFavorite, isFavorite) ||
+                other.isFavorite == isFavorite) &&
             (identical(other.userId, userId) || other.userId == userId));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, noteId, title, text, isSyncWithCloud, isPrivate, userId);
+  int get hashCode => Object.hash(runtimeType, noteId, title, text,
+      isSyncWithCloud, isPrivate, isFavorite, userId);
 
   @JsonKey(ignore: true)
   @override
@@ -219,6 +237,7 @@ abstract class _CreateNoteInput implements CreateNoteInput {
       required final String text,
       required final bool isSyncWithCloud,
       required final bool isPrivate,
+      required final bool isFavorite,
       required final String? userId}) = _$CreateNoteInputImpl;
 
   @override
@@ -231,6 +250,8 @@ abstract class _CreateNoteInput implements CreateNoteInput {
   bool get isSyncWithCloud;
   @override
   bool get isPrivate;
+  @override
+  bool get isFavorite;
   @override
   String? get userId;
   @override
@@ -247,6 +268,7 @@ mixin _$UpdateNoteInput {
   String get title => throw _privateConstructorUsedError;
   bool get isSyncWithCloud => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
+  bool get isFavorite => throw _privateConstructorUsedError;
   bool get isTrash => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -267,6 +289,7 @@ abstract class $UpdateNoteInputCopyWith<$Res> {
       String title,
       bool isSyncWithCloud,
       bool isPrivate,
+      bool isFavorite,
       bool isTrash});
 }
 
@@ -289,6 +312,7 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
     Object? title = null,
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
+    Object? isFavorite = null,
     Object? isTrash = null,
   }) {
     return _then(_value.copyWith(
@@ -316,6 +340,10 @@ class _$UpdateNoteInputCopyWithImpl<$Res, $Val extends UpdateNoteInput>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
       isTrash: null == isTrash
           ? _value.isTrash
           : isTrash // ignore: cast_nullable_to_non_nullable
@@ -339,6 +367,7 @@ abstract class _$$UpdateNoteInputImplCopyWith<$Res>
       String title,
       bool isSyncWithCloud,
       bool isPrivate,
+      bool isFavorite,
       bool isTrash});
 }
 
@@ -359,6 +388,7 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
     Object? title = null,
     Object? isSyncWithCloud = null,
     Object? isPrivate = null,
+    Object? isFavorite = null,
     Object? isTrash = null,
   }) {
     return _then(_$UpdateNoteInputImpl(
@@ -386,6 +416,10 @@ class __$$UpdateNoteInputImplCopyWithImpl<$Res>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
       isTrash: null == isTrash
           ? _value.isTrash
           : isTrash // ignore: cast_nullable_to_non_nullable
@@ -404,6 +438,7 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
       required this.title,
       required this.isSyncWithCloud,
       required this.isPrivate,
+      required this.isFavorite,
       required this.isTrash});
 
   @override
@@ -419,11 +454,13 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
   @override
   final bool isPrivate;
   @override
+  final bool isFavorite;
+  @override
   final bool isTrash;
 
   @override
   String toString() {
-    return 'UpdateNoteInput(noteId: $noteId, userId: $userId, text: $text, title: $title, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isTrash: $isTrash)';
+    return 'UpdateNoteInput(noteId: $noteId, userId: $userId, text: $text, title: $title, isSyncWithCloud: $isSyncWithCloud, isPrivate: $isPrivate, isFavorite: $isFavorite, isTrash: $isTrash)';
   }
 
   @override
@@ -439,12 +476,14 @@ class _$UpdateNoteInputImpl implements _UpdateNoteInput {
                 other.isSyncWithCloud == isSyncWithCloud) &&
             (identical(other.isPrivate, isPrivate) ||
                 other.isPrivate == isPrivate) &&
+            (identical(other.isFavorite, isFavorite) ||
+                other.isFavorite == isFavorite) &&
             (identical(other.isTrash, isTrash) || other.isTrash == isTrash));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, noteId, userId, text, title,
-      isSyncWithCloud, isPrivate, isTrash);
+      isSyncWithCloud, isPrivate, isFavorite, isTrash);
 
   @JsonKey(ignore: true)
   @override
@@ -462,6 +501,7 @@ abstract class _UpdateNoteInput implements UpdateNoteInput {
       required final String title,
       required final bool isSyncWithCloud,
       required final bool isPrivate,
+      required final bool isFavorite,
       required final bool isTrash}) = _$UpdateNoteInputImpl;
 
   @override
@@ -476,6 +516,8 @@ abstract class _UpdateNoteInput implements UpdateNoteInput {
   bool get isSyncWithCloud;
   @override
   bool get isPrivate;
+  @override
+  bool get isFavorite;
   @override
   bool get isTrash;
   @override

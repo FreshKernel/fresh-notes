@@ -16,6 +16,7 @@ class CloudNote with _$CloudNote {
     required String title,
     required String text,
     required bool isPrivate,
+    required bool isFavorite,
     required bool isTrash,
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -39,6 +40,7 @@ class CloudNote with _$CloudNote {
         createdAt: createdAt,
         updatedAt: updatedAt,
         isPrivate: input.isPrivate,
+        isFavorite: input.isFavorite,
         isTrash: false,
       );
 
@@ -58,6 +60,7 @@ class CloudNote with _$CloudNote {
         createdAt: createdAt,
         updatedAt: updatedAt,
         isPrivate: input.isPrivate,
+        isFavorite: input.isFavorite,
         isTrash: input.isTrash,
       );
 
@@ -72,6 +75,7 @@ class CloudNote with _$CloudNote {
         title: map[CloudNoteProperties.title] as String,
         text: map[CloudNoteProperties.text] as String,
         isPrivate: map[CloudNoteProperties.isPrivate] as bool,
+        isFavorite: map[CloudNoteProperties.isFavorite] as bool,
         isTrash: map[CloudNoteProperties.isTrash] as bool,
         createdAt: (map[CloudNoteProperties.createdAt] as Timestamp).toDate(),
         updatedAt: (map[CloudNoteProperties.updatedAt] as Timestamp).toDate(),
