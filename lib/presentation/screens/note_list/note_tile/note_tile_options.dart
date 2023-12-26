@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart' show BuildContext;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meta/meta.dart' show immutable;
 
 import '../../../../data/notes/universal/models/m_note.dart';
@@ -7,6 +8,7 @@ import '../../../../logic/note/cubit/note_cubit.dart';
 import '../../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../l10n/extensions/localizations.dart';
 import '../../../utils/dialog/w_yes_cancel_dialog.dart';
+import '../../note/s_note.dart';
 
 @immutable
 class NoteTileOptions {
@@ -18,8 +20,18 @@ class NoteTileOptions {
   final UniversalNote note;
   final int index;
 
-  Future<bool> sharedOnMoveToTrashPressed({
+  void sharedOnPressed({required BuildContext context}) {
+    context.push(
+      NoteScreen.routeName,
+      extra: NoteScreenArgs(
+        note: note,
+      ),
+    );
+  }
+
+  static Future<bool> sharedOnMoveToDeletePressed({
     required BuildContext context,
+    required UniversalNote note,
   }) async {
     final noteBloc = context.read<NoteCubit>();
     final shouldConfirmDelete =

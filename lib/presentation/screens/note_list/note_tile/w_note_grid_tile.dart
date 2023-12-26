@@ -34,12 +34,7 @@ class NoteGridTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: InkWell(
-          onTap: () => context.push(
-            NoteScreen.routeName,
-            extra: NoteScreenArgs(
-              note: options.note,
-            ),
-          ),
+          onTap: () => options.sharedOnPressed(context: context),
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -63,8 +58,10 @@ class NoteGridTile extends StatelessWidget {
                     ),
                     IconButton(
                       tooltip: context.loc.delete,
-                      onPressed: () => options.sharedOnMoveToTrashPressed(
+                      onPressed: () =>
+                          NoteTileOptions.sharedOnMoveToDeletePressed(
                         context: context,
+                        note: options.note,
                       ),
                       icon: Icon(
                         Icons.delete,

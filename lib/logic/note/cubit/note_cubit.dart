@@ -42,12 +42,16 @@ class NoteCubit extends Cubit<NoteState> {
   final LocalStorageService localStorageService;
   final AuthService authService;
 
-  Future<List<UniversalNote>> getAllNotes() async {
-    final localNotes = (await localNotesService.getAll(limit: -1, page: 1))
-        .map(UniversalNote.fromLocalNote);
+  Future<List<UniversalNote>> getNotes({
+    int limit = -1,
+    int page = 1,
+  }) async {
+    final localNotes =
+        (await localNotesService.getAll(limit: limit, page: page))
+            .map(UniversalNote.fromLocalNote);
 
     final cloudNotes = authService.isAuthenticated
-        ? (await cloudNotesService.getAll(limit: -1, page: 1))
+        ? (await cloudNotesService.getAll(limit: limit, page: page))
             .map(UniversalNote.fromCloudNote)
         : <UniversalNote>{};
     final allNotes = <UniversalNote>{...localNotes, ...cloudNotes};
@@ -62,7 +66,7 @@ class NoteCubit extends Cubit<NoteState> {
         return;
       }
       await localNotesService.initialize();
-      final allNotes = await getAllNotes();
+      final allNotes = await getNotes();
       emit(NoteState(notes: allNotes.toList()));
       _notesFutureLoadded = true;
     } on Exception catch (e) {
@@ -416,7 +420,7 @@ class NoteCubit extends Cubit<NoteState> {
         .toList();
     emit(NoteState(notes: newNotes));
     try {
-      final allNotes = await getAllNotes();
+      final allNotes = await getNotes();
       final updateInputs = allNotes
           .map(UpdateNoteInput.fromUniversalNote)
           .map((e) => e.copyWith(isTrash: true))
@@ -439,7 +443,7 @@ class NoteCubit extends Cubit<NoteState> {
       ..removeWhere((element) => element.isTrash);
     emit(NoteState(notes: newNotes));
     try {
-      final allTrashNotes = (await getAllNotes()).where((note) => note.isTrash);
+      final allTrashNotes = (await getNotes()).where((note) => note.isTrash);
       for (final trashNote in allTrashNotes) {
         if (trashNote.isSyncWithCloud) {
           await _deleteNoteCloudFiles(
@@ -532,7 +536,7 @@ class NoteCubit extends Cubit<NoteState> {
 
       await localNotesService.createMultiples(createInputs);
 
-      final notes = await getAllNotes();
+      final notes = await getNotes();
       emit(NoteState(notes: notes));
     } on Exception catch (e) {
       emit(state.copyWith(exception: e));

@@ -7,6 +7,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
 import 'package:gal/gal.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -23,6 +24,7 @@ import '../../../logic/native/share/s_app_share.dart';
 import '../../../logic/quill/delta_pdf.dart';
 import '../../l10n/extensions/localizations.dart';
 import '../../utils/extensions/build_context_ext.dart';
+import '../note_list/note_tile/note_tile_options.dart';
 import 'w_share_dialog.dart';
 
 final _menuController = MenuController();
@@ -202,10 +204,20 @@ List<Widget> noteScreenActions({
                 },
                 icon: const Icon(Icons.share),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.delete),
-              ),
+              if (note != null)
+                IconButton(
+                  onPressed: () async {
+                    _menuController.close();
+                    final navigator = context.navigator;
+                    final deleted =
+                        await NoteTileOptions.sharedOnMoveToDeletePressed(
+                            context: context, note: note);
+                    if (deleted) {
+                      navigator.pop();
+                    }
+                  },
+                  icon: const Icon(Icons.delete),
+                ),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.star_border),

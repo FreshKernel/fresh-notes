@@ -111,7 +111,7 @@
   "manualSave": "حفظ يدوي",
   "manualSaveDesc": "قم بالتبديل لحفظ الملاحظات يدويًا",
   "syncWithCloud": "مزامنة مع السحابة",
-  "unknownErrorWithMessage": "خطأ غير معروف مع الرسالة",
+  "unknownErrorWithMessage": "خطأ غير معروف: {errorMessage}",
   "tooManyRequestsMsg": "لقد قمت بإرسال العديد من الطلبات. يرجى المحاولة مرة أخرى لاحقًا.",
   "authErrorUnknownWithMessage": "خطأ مجهول في المصادقة مع الرسالة",
   "yourAccountIsStillNotVerified": "حسابك لا يزال غير متحقق",

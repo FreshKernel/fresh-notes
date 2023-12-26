@@ -26,8 +26,10 @@ class NoteTile extends StatelessWidget {
 
     return Dismissible(
       confirmDismiss: (direction) async {
-        final result =
-            await options.sharedOnMoveToTrashPressed(context: context);
+        final result = await NoteTileOptions.sharedOnMoveToDeletePressed(
+          context: context,
+          note: options.note,
+        );
         return result;
       },
       key: ValueKey(options.index),
@@ -43,12 +45,7 @@ class NoteTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
         ),
         child: ListTile(
-          onTap: () => context.push(
-            NoteScreen.routeName,
-            extra: NoteScreenArgs(
-              note: options.note,
-            ),
-          ),
+          onTap: () => options.sharedOnPressed(context: context),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
@@ -79,8 +76,10 @@ class NoteTile extends StatelessWidget {
             builder: (context, constraints) {
               if (constraints.maxWidth > 450) {
                 return TextButton.icon(
-                  onPressed: () =>
-                      options.sharedOnMoveToTrashPressed(context: context),
+                  onPressed: () => NoteTileOptions.sharedOnMoveToDeletePressed(
+                    context: context,
+                    note: options.note,
+                  ),
                   icon: const Icon(Icons.delete),
                   label: Text(context.loc.delete),
                   style: TextButton.styleFrom(
@@ -90,8 +89,10 @@ class NoteTile extends StatelessWidget {
               }
               return IconButton(
                 tooltip: context.loc.delete,
-                onPressed: () =>
-                    options.sharedOnMoveToTrashPressed(context: context),
+                onPressed: () => NoteTileOptions.sharedOnMoveToDeletePressed(
+                  context: context,
+                  note: options.note,
+                ),
                 icon: const Icon(Icons.delete),
                 color: materialTheme.colorScheme.error,
               );
