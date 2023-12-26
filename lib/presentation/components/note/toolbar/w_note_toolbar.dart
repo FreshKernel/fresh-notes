@@ -68,6 +68,9 @@ class _NoteToolbarState extends State<NoteToolbar> {
                   QuillToolbarSelectHeaderStyleDropdownButton(
                     controller: widget._controller,
                   ),
+                  QuillToolbarFontSizeButton(
+                    controller: widget._controller,
+                  ),
                   const SizedBox(width: 10),
                 ],
               ),

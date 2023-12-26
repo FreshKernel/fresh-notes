@@ -115,7 +115,6 @@ flutter:
   assets:
     - .env
     - ./assets/images/
-    - ./assets/json/
     - ./assets/svg/
     - ./assets/lottie/onboarding/
     - ./assets/lottie/page_not_found/

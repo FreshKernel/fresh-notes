@@ -72,19 +72,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ];
 
   var _selectedNavItemIndex = 0;
-  PageController? _pageController;
+  // PageController? _pageController;
   late final PageStorageBucket _pageStorageBucket;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    // _pageController = PageController();
     _pageStorageBucket = PageStorageBucket();
   }
 
   @override
   void dispose() {
-    _pageController?.dispose();
+    // _pageController?.dispose();
     super.dispose();
   }
 
@@ -101,9 +101,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _onDestinationSelected(int newPageIndex) {
-    if (_pageController?.hasClients ?? false) {
-      _pageController?.jumpToPage(newPageIndex);
-    }
+    // if (_pageController?.hasClients ?? false) {
+    //   _pageController?.jumpToPage(newPageIndex);
+    // }
     setState(() => _selectedNavItemIndex = newPageIndex);
   }
 

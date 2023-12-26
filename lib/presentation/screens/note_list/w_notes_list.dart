@@ -38,31 +38,31 @@ class _NoteListContentState extends State<NoteListContent> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollEndNotification>(
-      child: RefreshIndicator.adaptive(
-        onRefresh: () async {
-          await context.read<NoteCubit>().syncLocalNotesFromCloud();
-        },
-        child: FutureBuilder(
-          future: _loadAllNotes,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
+    return RefreshIndicator.adaptive(
+      onRefresh: () async {
+        await context.read<NoteCubit>().syncLocalNotesFromCloud();
+      },
+      child: FutureBuilder(
+        future: _loadAllNotes,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
 
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(
-                  context.loc.unknownErrorWithMessage(
-                    snapshot.error.toString(),
-                  ),
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                context.loc.unknownErrorWithMessage(
+                  snapshot.error.toString(),
                 ),
-              );
-            }
+              ),
+            );
+          }
 
-            return BlocConsumer<NoteCubit, NoteState>(
+          return NotificationListener<ScrollEndNotification>(
+            child: BlocConsumer<NoteCubit, NoteState>(
               listener: (context, state) {
                 final exception = state.exception;
                 if (exception != null) {
@@ -126,21 +126,21 @@ class _NoteListContentState extends State<NoteListContent> {
                   },
                 );
               },
-            );
-          },
-        ),
+            ),
+            onNotification: (scrollEnd) {
+              if (!scrollEnd.metrics.atEdge) {
+                return true;
+              }
+              final isTop = scrollEnd.metrics.pixels == 0;
+              if (isTop) {
+                return true;
+              }
+              context.read<NoteCubit>().loadMoreNotes();
+              return true;
+            },
+          );
+        },
       ),
-      onNotification: (scrollEnd) {
-        if (!scrollEnd.metrics.atEdge) {
-          return true;
-        }
-        final isTop = scrollEnd.metrics.pixels == 0;
-        if (isTop) {
-          return true;
-        }
-        // TODO: Implement pagination
-        return true;
-      },
     );
   }
 }

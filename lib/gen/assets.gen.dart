@@ -27,16 +27,6 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [appLogo, macosNotesCrash];
 }
 
-class $AssetsJsonGen {
-  const $AssetsJsonGen();
-
-  /// File path: assets/json/story.json
-  String get story => 'assets/json/story.json';
-
-  /// List of all assets
-  List<String> get values => [story];
-}
-
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
@@ -184,7 +174,6 @@ class Assets {
   Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
-  static const $AssetsJsonGen json = $AssetsJsonGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
 }

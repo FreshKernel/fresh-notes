@@ -7,7 +7,6 @@ import '../../data/notes/universal/models/m_note.dart';
 import 'auth/profile/s_profile.dart';
 import 'auth/w_dynamic_auth.dart';
 import 'note/s_note.dart';
-import 'note_list/note_tile/note_tile_options.dart';
 import 'onboarding/s_onboarding.dart';
 import 'settings/s_settings.dart';
 import 'story/s_story.dart';

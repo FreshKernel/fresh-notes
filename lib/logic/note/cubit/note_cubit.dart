@@ -42,6 +42,9 @@ class NoteCubit extends Cubit<NoteState> {
   final LocalStorageService localStorageService;
   final AuthService authService;
 
+  var _page = 1;
+  final _limit = 6;
+
   Future<List<UniversalNote>> getNotes({
     int limit = -1,
     int page = 1,
@@ -66,7 +69,7 @@ class NoteCubit extends Cubit<NoteState> {
         return;
       }
       await localNotesService.initialize();
-      final allNotes = await getNotes();
+      final allNotes = await getNotes(page: _page, limit: _limit);
       emit(NoteState(notes: allNotes.toList()));
       _notesFutureLoadded = true;
     } on Exception catch (e) {
@@ -74,7 +77,31 @@ class NoteCubit extends Cubit<NoteState> {
     }
   }
 
-  Future<Directory> _getNoteImageDirectory({required String noteId}) async {
+  var _reachedEnd = false;
+
+  Future<void> loadMoreNotes() async {
+    if (_reachedEnd) {
+      AppLogger.log('We have reached the end of the notes');
+      return;
+    }
+    try {
+      _page += 1;
+      final newNotes = await getNotes(limit: _limit, page: _page);
+      if (newNotes.isEmpty) {
+        _reachedEnd = true;
+        return;
+      }
+      emit(NoteState(notes: [
+        ...state.notes, // Current notes
+        ...newNotes, // New notes
+      ]));
+    } on Exception catch (e) {
+      emit(state.copyWith(exception: e));
+    }
+  }
+
+  Future<Directory> _getNoteLocalImagesDirectory(
+      {required String noteId}) async {
     return Directory(
       path.join(
         (await getApplicationDocumentsDirectory()).path,
@@ -116,7 +143,7 @@ class NoteCubit extends Cubit<NoteState> {
       savedImages.addAll(cloudPaths);
     } else {
       final files = await localStorageService.copyMultipleFile(
-        directory: await _getNoteImageDirectory(noteId: noteId),
+        directory: await _getNoteLocalImagesDirectory(noteId: noteId),
         files: cachedImages.map(File.new).toList(),
         names: newFileNames,
       );
@@ -301,7 +328,7 @@ class NoteCubit extends Cubit<NoteState> {
               continue;
             }
             final directory =
-                await _getNoteImageDirectory(noteId: input.noteId);
+                await _getNoteLocalImagesDirectory(noteId: input.noteId);
             final file = File(
               path.join(
                 directory.path,
