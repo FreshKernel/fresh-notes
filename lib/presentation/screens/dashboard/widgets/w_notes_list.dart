@@ -7,6 +7,7 @@ import '../../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../l10n/extensions/localizations.dart';
 import '../../../utils/dialog/w_yes_cancel_dialog.dart';
 import '../../note/s_note.dart';
+import '../../note_list/note_search_delegate.dart';
 import '../../note_list/w_notes_list.dart';
 
 class NotesListPage extends StatefulWidget {
@@ -14,6 +15,14 @@ class NotesListPage extends StatefulWidget {
 
   static List<Widget> actionsBuilder(BuildContext context) {
     return [
+      IconButton(
+        onPressed: () => showSearch(
+          context: context,
+          delegate: NoteSearchDelegate(),
+        ),
+        icon: const Icon(Icons.search),
+        tooltip: context.loc.search,
+      ),
       IconButton(
         tooltip: context.loc.toggleGridItem,
         onPressed: () {

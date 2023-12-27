@@ -72,6 +72,7 @@ dependencies:
 
   flutter_quill: ^9.1.0
   flutter_quill_extensions: ^9.1.0
+  quill_pdf_converter: ^9.1.0
 
   # Other packages
   lottie: ^2.7.0

@@ -3,6 +3,7 @@ import 'dart:convert' show jsonDecode, jsonEncode;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
@@ -11,6 +12,7 @@ import 'package:gal/gal.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:quill_pdf_converter/quill_pdf_converter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -21,7 +23,7 @@ import '../../../data/constants/urls_constants.dart';
 import '../../../data/notes/universal/models/m_note.dart';
 import '../../../logic/auth/auth_service.dart';
 import '../../../logic/native/share/s_app_share.dart';
-import '../../../logic/quill/delta_pdf.dart';
+import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../l10n/extensions/localizations.dart';
 import '../../utils/extensions/build_context_ext.dart';
 import '../note_list/note_tile/note_tile_options.dart';
@@ -145,30 +147,31 @@ List<Widget> noteScreenActions({
               },
               child: Text(context.loc.print),
             ),
-          MenuItemButton(
-            child: Text(context.loc.save),
-            onPressed: () {
-              onRequestSaveNote();
-            },
-          ),
+          if (!context.read<SettingsCubit>().state.autoSaveNote)
+            MenuItemButton(
+              child: Text(context.loc.save),
+              onPressed: () {
+                onRequestSaveNote();
+              },
+            ),
           SubmenuButton(
             menuChildren: [
               MenuItemButton(
                 onPressed: () async {
-                  final doc = pw.Document();
-                  final pdfWidget = await DeltaToPDF().deltaToPDF(
-                    controller.document.toDelta(),
-                  );
-                  doc.addPage(
-                    pw.Page(
+                  final pdfDocument = pw.Document();
+                  final pdfWidgets =
+                      await controller.document.toDelta().toPdf();
+                  pdfDocument.addPage(
+                    pw.MultiPage(
+                      maxPages: 200,
                       pageFormat: PdfPageFormat.a4,
                       build: (context) {
-                        return pdfWidget;
+                        return pdfWidgets;
                       },
                     ),
                   );
                   await Printing.layoutPdf(
-                    onLayout: (format) async => doc.save(),
+                    onLayout: (format) async => pdfDocument.save(),
                   );
                 },
                 child: const Text('PDF'),

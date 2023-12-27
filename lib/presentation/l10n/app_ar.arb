@@ -166,5 +166,6 @@
   "noteHasBeenSavedMessage3": "تم حفظ أفكارك",
   "cannotSaveEmptyNote": "لايمكن حفظ ملاحظة فارغة",
   "autoSave": "حفظ تلقائي",
-  "autoSaveDesc": "أحفظ الملاحظة تلقائيا عند الخروج"
+  "autoSaveDesc": "أحفظ الملاحظة تلقائيا عند الخروج",
+  "search": "بحث"
 }

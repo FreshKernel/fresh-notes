@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import '../../../gen/assets.gen.dart';
 import '../../l10n/extensions/localizations.dart';
 
+// Not completed
 class ErrorWithTryAgain extends StatelessWidget {
   const ErrorWithTryAgain({
     required this.onTryAgain,
@@ -15,8 +16,10 @@ class ErrorWithTryAgain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Lottie.asset(
-      Assets.lottie.error.error1.path,
+    return Center(
+      child: Lottie.asset(
+        Assets.lottie.error.error1.path,
+      ),
     );
   }
 }
@@ -60,8 +63,10 @@ class ErrorWithoutTryAgain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Lottie.asset(
-      Assets.lottie.error.error1.path,
+    return Center(
+      child: Lottie.asset(
+        Assets.lottie.error.error1.path,
+      ),
     );
   }
 }

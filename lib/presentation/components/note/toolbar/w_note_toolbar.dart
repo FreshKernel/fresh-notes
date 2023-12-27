@@ -71,6 +71,9 @@ class _NoteToolbarState extends State<NoteToolbar> {
                   QuillToolbarFontSizeButton(
                     controller: widget._controller,
                   ),
+                  QuillToolbarFontFamilyButton(
+                    controller: widget._controller,
+                  ),
                   const SizedBox(width: 10),
                 ],
               ),

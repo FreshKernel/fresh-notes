@@ -181,5 +181,6 @@
     "noteHasBeenSavedMessage3": "Your thoughts has been saved",
     "cannotSaveEmptyNote": "The note can't be empty",
     "autoSave": "Auto save",
-    "autoSaveDesc": "Automatically save the note when you exit the screen."
+    "autoSaveDesc": "Automatically save the note when you exit the screen.",
+    "search": "Search"
   }  
