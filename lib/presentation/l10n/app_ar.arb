@@ -167,5 +167,12 @@
   "cannotSaveEmptyNote": "لايمكن حفظ ملاحظة فارغة",
   "autoSave": "حفظ تلقائي",
   "autoSaveDesc": "أحفظ الملاحظة تلقائيا عند الخروج",
-  "search": "بحث"
+  "search": "بحث",
+  "pleaseEnterAPassword": "من فضلك أدخل كلمة مرور.",
+  "thePasswordShouldBeMoreThan6Characters": "يجب أن تكون كلمة المرور أكثر من 6 أحرف.",
+  "pleaseEnterAValidEmailAddress": "من فضلك أدخل عنوان بريد إلكتروني صحيح.",
+  "createFolder": "إنشاء مجلد",
+  "deleteFolder": "حذف المجلد",
+  "updateFolder": "تحديث المجلد",
+  "pleaseEnterANameForTheFolder": "الرجاء إدخال اسم للمجلد"
 }

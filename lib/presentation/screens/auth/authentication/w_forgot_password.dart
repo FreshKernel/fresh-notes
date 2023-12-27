@@ -35,7 +35,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
-      title: const Text('Forgot password'), // TODO: Translate
+      title: Text(context.loc.forgotPassword),
       content: Material(
         child: Form(
           key: _formKey,

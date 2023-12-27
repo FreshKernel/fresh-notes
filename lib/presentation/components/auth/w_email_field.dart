@@ -23,7 +23,12 @@ class EmailTextField extends StatelessWidget {
         labelText: context.loc.emailAddress,
       ),
       validator: (email) {
-        final errorMessage = AuthValidator.validateEmail(email ?? '');
+        final errorMessage = AuthValidator.validateEmail(
+          email ?? '',
+          pleaseEnterYourEmailAddress: context.loc.pleaseEnterYourEmailAddress,
+          pleaseEnterAValidEmailAddress:
+              context.loc.pleaseEnterAValidEmailAddress,
+        );
         if (errorMessage != null) {
           return errorMessage;
         }

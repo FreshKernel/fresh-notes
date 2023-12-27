@@ -3,8 +3,9 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
 import 'buttons/checklist.dart';
+import 'buttons/full_screen.dart';
 import 'buttons/insert_image.dart';
-import 'buttons/text_options/set_text_options.dart';
+import 'buttons/set_text_options.dart';
 
 enum InsertImageSource {
   gallery,
@@ -74,6 +75,7 @@ class _NoteToolbarState extends State<NoteToolbar> {
                   QuillToolbarFontFamilyButton(
                     controller: widget._controller,
                   ),
+                  const NoteToolbarFullScreenButton(),
                   const SizedBox(width: 10),
                 ],
               ),

@@ -1,7 +1,6 @@
 import 'dart:convert' show jsonEncode, jsonDecode;
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -254,7 +253,8 @@ class _NoteScreenState extends State<NoteScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            if (kDebugMode)
+            if (false)
+              // ignore: dead_code
               QuillToolbar.simple(
                 configurations: QuillSimpleToolbarConfigurations(
                   controller: _controller,

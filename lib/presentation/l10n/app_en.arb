@@ -182,5 +182,12 @@
     "cannotSaveEmptyNote": "The note can't be empty",
     "autoSave": "Auto save",
     "autoSaveDesc": "Automatically save the note when you exit the screen.",
-    "search": "Search"
+    "search": "Search",
+    "pleaseEnterAPassword": "Please enter a password.",
+    "thePasswordShouldBeMoreThan6Characters": "The password should be more than 6 characters.",
+    "pleaseEnterAValidEmailAddress": "Please enter a valid email address.",
+    "createFolder": "Create folder",
+    "deleteFolder": "Delete folder",
+    "updateFolder": "Update folder",
+    "pleaseEnterANameForTheFolder": "Please enter a name for the folder"
   }  

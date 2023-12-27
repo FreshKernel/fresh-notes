@@ -51,12 +51,10 @@ class NoteSearchDelegate extends SearchDelegate<UniversalNote> {
           itemBuilder: (context, index) {
             final item = list[index];
             return ListTile(
-              onTap: () {
-                context.push(
-                  NoteScreen.routeName,
-                  extra: NoteScreenArgs(note: item),
-                );
-              },
+              onTap: () => context.push(
+                NoteScreen.routeName,
+                extra: NoteScreenArgs(note: item),
+              ),
               title: Text(item.title),
               subtitle: Text(
                 Document.fromJson(jsonDecode(item.text)).toPlainText(),

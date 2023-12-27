@@ -40,6 +40,9 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       validator: (password) {
         final errorMessage = AuthValidator.validatePassword(
           password ?? '',
+          passwordShouldBeMoreThan6: context.loc.pleaseEnterAPassword,
+          pleaseEnterAPassword:
+              context.loc.thePasswordShouldBeMoreThan6Characters,
         );
         if (errorMessage != null) {
           return errorMessage;
