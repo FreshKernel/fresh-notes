@@ -2,6 +2,7 @@ import 'dart:convert' show jsonEncode, jsonDecode;
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemChrome, SystemUiMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
@@ -119,6 +120,7 @@ class _NoteScreenState extends State<NoteScreen> {
       _saveNote().then((value) => _controller.dispose());
     }
     _editorFocusNode.dispose();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
 

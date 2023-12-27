@@ -5,12 +5,12 @@ import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../../logic/settings/cubit/settings_data.dart';
 import '../../l10n/extensions/localizations.dart';
 import 'models/m_navigation_item.dart';
-import 'widgets/w_account.dart';
+import 'widgets/w_account_page.dart';
 import 'widgets/w_drawer.dart';
-import 'widgets/w_note_folders.dart';
+import 'widgets/w_note_folders_page.dart';
 import 'widgets/w_notes_list.dart';
-import 'widgets/w_settings.dart';
-import 'widgets/w_trash_list.dart';
+import 'widgets/w_settings_page.dart';
+import 'widgets/w_trash_list_page.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});

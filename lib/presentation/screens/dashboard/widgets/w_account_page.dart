@@ -120,6 +120,14 @@ class AccountPage extends StatelessWidget {
             Uri.parse(UrlConstants.githubRepo),
           ),
         ),
+        _buildItem(
+          title: context.loc.sourceCode,
+          desc: context.loc.sourceCodeDesc,
+          iconData: Icons.code,
+          onPressed: () => launchUrl(
+            Uri.parse(UrlConstants.sourceCode),
+          ),
+        ),
       ],
     );
   }

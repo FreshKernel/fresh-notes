@@ -174,5 +174,7 @@
   "createFolder": "إنشاء مجلد",
   "deleteFolder": "حذف المجلد",
   "updateFolder": "تحديث المجلد",
-  "pleaseEnterANameForTheFolder": "الرجاء إدخال اسم للمجلد"
+  "pleaseEnterANameForTheFolder": "الرجاء إدخال اسم للمجلد",
+  "sourceCode": "شفرة المصدر",
+  "sourceCodeDesc": "إذا كنت ترغب في استكشاف شفرة المصدر للتطبيق"
 }

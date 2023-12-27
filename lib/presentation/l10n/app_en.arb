@@ -189,5 +189,7 @@
     "createFolder": "Create folder",
     "deleteFolder": "Delete folder",
     "updateFolder": "Update folder",
-    "pleaseEnterANameForTheFolder": "Please enter a name for the folder"
+    "pleaseEnterANameForTheFolder": "Please enter a name for the folder",
+    "sourceCode": "Source Code",
+    "sourceCodeDesc": "If you want to explore the source code of the app"
   }  

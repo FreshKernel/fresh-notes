@@ -14,13 +14,6 @@ class _NoteToolbarFullScreenButtonState
   var _isFullScreen = false;
 
   @override
-  void dispose() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     if (_isFullScreen) {
       return IconButton.filled(
