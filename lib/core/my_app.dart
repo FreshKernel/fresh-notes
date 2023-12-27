@@ -8,12 +8,14 @@ import 'package:upgrader/upgrader.dart';
 import '../core/log/logger.dart';
 import '../data/core/cloud/storage/s_cloud_storage.dart';
 import '../data/core/local/storage/s_local_storage.dart';
+import '../data/note_folder/local/note_local_folder.dart';
 import '../data/notes/cloud/s_cloud_notes.dart';
 import '../data/notes/local/s_local_notes.dart';
 import '../logic/auth/auth_service.dart';
 import '../logic/auth/cubit/auth_cubit.dart';
 import '../logic/connection/cubit/connection_cubit.dart';
 import '../logic/note/cubit/note_cubit.dart';
+import '../logic/note_folder/cubit/note_folder_cubit.dart';
 import '../logic/settings/cubit/settings_cubit.dart';
 import '../logic/settings/cubit/settings_data.dart';
 import '../presentation/l10n/extensions/localizations.dart';
@@ -49,6 +51,11 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthCubit(
             authService: AuthService.getInstance(),
             noteCubit: context.read<NoteCubit>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => NoteFolderCubit(
+            noteFoldersService: LocalNoteFolderImpl(),
           ),
         ),
       ],

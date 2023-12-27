@@ -1,16 +1,23 @@
-import 'dart:io';
-
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+import 'package:path/path.dart' as path;
 
 import '../../notes/universal/models/m_note.dart';
 
-part 'm_note_folder.freezed.dart';
+@immutable
+class NoteFolder extends Equatable {
+  const NoteFolder({
+    required this.folderPath,
+    required this.subFolders,
+    required this.notes,
+  });
 
-@freezed
-class NoteFolder with _$NoteFolder {
-  const factory NoteFolder({
-    required String folderName,
-    required List<Directory> folders,
-    required List<UniversalNote> notes,
-  }) = _NoteFolder;
+  final String folderPath;
+  final List<NoteFolder> subFolders;
+  final List<UniversalNote> notes;
+
+  String get folderName => path.basename(folderPath);
+
+  @override
+  List<Object?> get props => [folderName, subFolders, notes];
 }
