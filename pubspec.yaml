@@ -1,7 +1,7 @@
 name: fresh_notes
 description: A cross-platform, open-source notes app.
 publish_to: 'none'
-version: 0.0.1-dev.6+9
+version: 0.0.1-dev.8+11
 repository: https://github.com/freshplatform/fresh-notes
 platforms:
   android:
@@ -70,9 +70,9 @@ dependencies:
         url: https://github.com/freshplatform/flutter-fresh-base-package.git
         ref: main
 
-  flutter_quill: ^9.1.0
-  flutter_quill_extensions: ^9.1.0
-  quill_pdf_converter: ^9.1.0
+  flutter_quill: ^9.1.1
+  flutter_quill_extensions: ^9.1.1
+  quill_pdf_converter: ^9.1.1
 
   # Other packages
   lottie: ^2.7.0
@@ -101,7 +101,7 @@ dev_dependencies:
   freezed: ^2.4.6
   json_serializable: ^6.7.1
   flutter_gen_runner: ^5.3.2
-  flutter_quill_test: ^9.1.0
+  flutter_quill_test: ^9.1.1
   bloc_test: ^9.1.5
 
   yaml: ^3.1.2
