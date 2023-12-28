@@ -86,6 +86,7 @@ class CloudNote with _$CloudNote {
   static Map<String, Object?> _toFirebaseMapSharedLogic({
     required bool isPrivate,
     required bool isTrash,
+    required bool isFavorite,
     required String title,
     required String text,
   }) {
@@ -94,6 +95,7 @@ class CloudNote with _$CloudNote {
       CloudNoteProperties.text: text,
       CloudNoteProperties.isPrivate: isPrivate,
       CloudNoteProperties.isTrash: isTrash,
+      CloudNoteProperties.isFavorite: isFavorite,
       CloudNoteProperties.updatedAt: FieldValue.serverTimestamp(),
     };
   }
@@ -105,6 +107,7 @@ class CloudNote with _$CloudNote {
       isPrivate: input.isPrivate,
       title: input.title,
       text: input.text,
+      isFavorite: input.isFavorite,
       isTrash: false,
     );
     return {
@@ -123,6 +126,7 @@ class CloudNote with _$CloudNote {
       title: input.title,
       text: input.text,
       isTrash: input.isTrash,
+      isFavorite: input.isFavorite,
     );
     return {
       ...sharedInputData,

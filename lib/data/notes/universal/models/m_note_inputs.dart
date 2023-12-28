@@ -53,7 +53,8 @@ class UpdateNoteInput with _$UpdateNoteInput {
     required bool isTrash,
   }) = _UpdateNoteInput;
 
-  factory UpdateNoteInput.fromCreateInput(CreateNoteInput input) =>
+  factory UpdateNoteInput.fromCreateInput(CreateNoteInput input,
+          {required bool isTrash}) =>
       UpdateNoteInput(
         noteId: input.noteId,
         text: input.text,
@@ -61,7 +62,7 @@ class UpdateNoteInput with _$UpdateNoteInput {
         isSyncWithCloud: input.isSyncWithCloud,
         isPrivate: input.isPrivate,
         isFavorite: input.isFavorite,
-        isTrash: false,
+        isTrash: isTrash,
         userId: input.userId,
       );
 
