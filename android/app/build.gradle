@@ -93,12 +93,12 @@ android {
         }
     }
 
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion "1.5.1"
-    }
+//    buildFeatures {
+//        compose true
+//    }
+//    composeOptions {
+//        kotlinCompilerExtensionVersion "1.5.1"
+//    }
 
 }
 
@@ -107,8 +107,8 @@ flutter {
 }
 
 dependencies {
-    implementation "androidx.glance:glance:1.0.0"
-    implementation "androidx.glance:glance-appwidget:1.0.0"
-    implementation "androidx.glance:glance-material3:1.0.0"
+//    implementation "androidx.glance:glance:1.0.0"
+//    implementation "androidx.glance:glance-appwidget:1.0.0"
+//    implementation "androidx.glance:glance-material3:1.0.0"
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
