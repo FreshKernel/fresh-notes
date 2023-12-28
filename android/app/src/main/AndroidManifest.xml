@@ -88,26 +88,13 @@
             </intent-filter>
         </receiver>
 
-        <!-- Super cliboard Plugin -->
+        <!-- Super clipboard Plugin -->
 
         <provider
             android:name="com.superlist.super_native_extensions.DataProvider"
             android:authorities="net.freshplatform.fresh_notes.SuperClipboardDataProvider"
             android:exported="true"
             android:grantUriPermissions="true" />
-
-        <!-- Note widget -->
-
-        <receiver
-            android:name=".home_widgets.NoteWidgetReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/note_widget_info" />
-        </receiver>
     </application>
 
 </manifest>
