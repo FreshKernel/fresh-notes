@@ -1,11 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:hive/hive.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../logic/settings/cubit/settings_cubit.dart';
 import '../../services/s_app.dart';
 
 class HydratedBlocService extends AppService {
@@ -13,8 +12,7 @@ class HydratedBlocService extends AppService {
 
   @override
   Future<void> deInitialize() async {
-    // HydratedBloc.storage = null;
-    Hive.close();
+    HydratedBloc.storage = null;
     _isInitialized = false;
   }
 
@@ -24,13 +22,8 @@ class HydratedBlocService extends AppService {
         ? Directory('')
         : Directory(
             join((await getApplicationDocumentsDirectory()).path, 'hydrated'));
-    // HydratedBloc.storage = await HydratedStorage.build(
-    //   storageDirectory: storageDirectory
-    // );
-    await Hive.openBox(
-      SettingsCubit.boxName,
-      path: storageDirectory.path,
-    );
+    HydratedBloc.storage =
+        await HydratedStorage.build(storageDirectory: storageDirectory);
     _isInitialized = true;
   }
 

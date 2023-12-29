@@ -1,6 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive/hive.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'settings_data.dart';
 
@@ -8,32 +7,13 @@ part 'settings_cubit.freezed.dart';
 part 'settings_cubit.g.dart';
 part 'settings_state.dart';
 
-class SettingsCubit extends Cubit<SettingsState> {
-  SettingsCubit() : super(const SettingsState()) {
-    final settingsBox = Hive.box(boxName);
-    final json = settingsBox.get(
-      'json',
-    );
-    if (json == null) {
-      return;
-    }
-    emit(
-      SettingsState.fromJson(
-        (json as Map<dynamic, dynamic>).map(
-          (key, value) => MapEntry(key.toString(), value),
-        ),
-      ),
-    );
-  }
+class SettingsCubit extends HydratedCubit<SettingsState> {
+  SettingsCubit() : super(const SettingsState());
 
   static const boxName = 'settings';
 
   void updateSettings(SettingsState newSettingsState) {
     emit(newSettingsState);
-    Hive.box(boxName).put(
-      'json',
-      state.toJson(),
-    );
   }
 
   void updateAppLanguague(AppLanguague newAppLanguague) {
@@ -45,14 +25,8 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void clearData() {
-    Hive.box(boxName).clear();
     emit(const SettingsState());
-  }
-
-  @override
-  Future<void> close() async {
-    await Hive.box(boxName).close();
-    return super.close();
+    clear();
   }
 
   static bool buildWhen(SettingsState previous, SettingsState current) {
@@ -63,5 +37,15 @@ class SettingsCubit extends Cubit<SettingsState> {
         previous.appLanguague != current.appLanguague ||
         previous.themeSystem != current.themeSystem ||
         previous.openOnBoardingScreen != current.openOnBoardingScreen;
+  }
+
+  @override
+  SettingsState? fromJson(Map<String, dynamic> json) {
+    return SettingsState.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(SettingsState state) {
+    return state.toJson();
   }
 }
