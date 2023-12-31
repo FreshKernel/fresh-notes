@@ -37,11 +37,13 @@ class _SaveProfileScreenBodyState extends State<SaveProfileScreenBody> {
   @override
   void initState() {
     super.initState();
-    final authState = context.read<AuthCubit>().state;
-    if (authState is AuthStateAuthenticated) {
-      _nameController.text =
-          authState.user.data.displayName ?? context.loc.guest;
-    }
+    Future.delayed(Duration.zero).then((value) {
+      final authState = context.read<AuthCubit>().state;
+      if (authState is AuthStateAuthenticated) {
+        _nameController.text =
+            authState.user.data.displayName ?? context.loc.guest;
+      }
+    });
   }
 
   @override

@@ -7,7 +7,7 @@ import '../../notes/universal/models/m_note.dart';
 import '../models/m_note_folder.dart';
 import '../note_folder_repository.dart';
 
-class LocalNoteFolderImpl extends NoteFolderRepository {
+class LocalNoteFolderImpl extends NotesFolderRepository {
   Future<Directory> _getNoteFoldersDirectory() async {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final noteFoldersDirectory =
@@ -16,7 +16,8 @@ class LocalNoteFolderImpl extends NoteFolderRepository {
   }
 
   @override
-  Future<NoteFolder> createFolder({required String folderName}) async {
+  Future<NoteFolder> createFolder(
+      {required String folderName, NoteFolder? currentFolder}) async {
     final newFolderPath =
         path.join((await _getNoteFoldersDirectory()).path, folderName);
     await Directory(newFolderPath).create(recursive: true);
@@ -32,7 +33,9 @@ class LocalNoteFolderImpl extends NoteFolderRepository {
 
   @override
   Future<List<NoteFolder>> getNoteFolders() async {
-    final folders = (await _getNoteFoldersDirectory())
+    final noteFoldersDirectory = await _getNoteFoldersDirectory();
+    await noteFoldersDirectory.create(recursive: true);
+    final folders = noteFoldersDirectory
         .listSync()
         .map(
           (event) => NoteFolder(

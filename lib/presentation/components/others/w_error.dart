@@ -44,9 +44,12 @@ class ErrorWithReport extends StatelessWidget {
             Assets.lottie.error.error1.path,
           ),
           const SizedBox(height: 8),
-          Text(context.loc.unknownErrorWithMessage(
-            error.toString(),
-          )),
+          Text(
+            context.loc.unknownErrorWithMessage(
+              error.toString(),
+            ),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 4),
           ElevatedButton(
             onPressed: onReport,
@@ -59,13 +62,30 @@ class ErrorWithReport extends StatelessWidget {
 }
 
 class ErrorWithoutTryAgain extends StatelessWidget {
-  const ErrorWithoutTryAgain({super.key});
+  const ErrorWithoutTryAgain({
+    required this.error,
+    super.key,
+  });
+
+  final String error;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Lottie.asset(
-        Assets.lottie.error.error1.path,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Lottie.asset(
+            Assets.lottie.error.error1.path,
+          ),
+          Text(
+            context.loc.unknownErrorWithMessage(
+              error.toString(),
+            ),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,4 @@
-import 'dart:io' show File;
+import 'package:cross_file/cross_file.dart';
 
 import '../../../core/app_module.dart';
 import 'image_picker.dart';
@@ -24,7 +24,7 @@ class ImagePickerService extends ImagePicker {
   bool get isInitialized => _picker.isInitialized;
 
   @override
-  Future<File?> pickImage(
+  Future<XFile?> pickImage(
           {required ImageSource source,
           double? maxWidth,
           double? maxHeight,

@@ -1,4 +1,4 @@
-import '../../core/services/s_app.dart';
+import '../../core/service/s_app.dart';
 import 'auth_custom_provider.dart';
 import 'auth_user.dart';
 

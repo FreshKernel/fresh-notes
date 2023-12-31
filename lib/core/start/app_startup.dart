@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart'
 import '../../logic/auth/auth_service.dart';
 import '../../logic/native/image/s_image_picker.dart';
 import '../log/logger.dart';
-import '../services/s_app.dart';
+import '../service/s_app.dart';
 import 'packages/firebase.dart';
 import 'packages/flutter_local_notifications.dart';
 import 'packages/hydrated_bloc.dart';

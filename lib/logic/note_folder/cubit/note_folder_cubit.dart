@@ -14,7 +14,7 @@ class NoteFolderCubit extends Cubit<NoteFolderState> {
     getFolders();
   }
 
-  final NoteFolderRepository noteFoldersService;
+  final NotesFolderRepository noteFoldersService;
 
   Future<void> getFolders() async {
     emit(
@@ -58,20 +58,21 @@ class NoteFolderCubit extends Cubit<NoteFolderState> {
 
     final parentFolderPath = path.dirname(currentFolder.folderPath);
 
-    NoteFolder? targetFolder;
-    NoteFolder searchingFolder = currentFolder;
-    for (final subFolder in searchingFolder.subFolders) {
-      if (subFolder.folderPath == parentFolderPath) {
-        targetFolder = subFolder;
-        break;
+    NoteFolder? parentFolder;
+
+    void search(List<NoteFolder> noteFolders) {
+      if (noteFolders.isEmpty) {
+        return;
       }
-      if (subFolder.subFolders.isEmpty) {
-        emit(state.copyWith(currentFolder: null));
-        break;
+      for (final folder in noteFolders) {
+        if (parentFolderPath == path.dirname(folder.folderPath)) {
+          parentFolder = folder;
+          break;
+        }
       }
-      searchingFolder = subFolder;
     }
 
-    emit(state.copyWith(currentFolder: targetFolder));
+    search(state.noteFolders);
+    emit(state.copyWith(currentFolder: parentFolder));
   }
 }

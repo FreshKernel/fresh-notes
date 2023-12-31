@@ -39,9 +39,10 @@ class _NoteToolbarState extends State<NoteToolbar> {
               child: Row(
                 children: [
                   const SizedBox(width: 10),
-                  NoteToolbarImageButton(
-                    controller: widget._controller,
-                  ),
+                  // NoteToolbarImageButton(
+                  //   controller: widget._controller,
+                  // ),
+                  QuillToolbarImageButton(controller: widget._controller),
                   NoteToolbarChecklistButton(
                     controller: widget._controller,
                   ),

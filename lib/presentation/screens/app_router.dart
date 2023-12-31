@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart' show GoRoute, GoRouter;
 
 import '../../core/my_app.dart';
 import '../../data/notes/cloud/s_cloud_notes.dart';
-import '../../data/notes/universal/models/m_note.dart';
 import 'auth/profile/s_profile.dart';
 import 'auth/w_dynamic_auth.dart';
 import 'note/s_note.dart';
@@ -57,7 +56,7 @@ class AppRouter {
             throw ArgumentError('The noteId should not be null');
           }
           return FutureBuilder(
-            future: CloudNotesService.getInstance().getOneById(noteId),
+            future: CloudNotesService.getInstance().getNoteById(noteId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Scaffold(
@@ -82,7 +81,7 @@ class AppRouter {
               return NoteScreen(
                 args: NoteScreenArgs(
                   isDeepLink: true,
-                  note: UniversalNote.fromCloudNote(cloudNote),
+                  note: cloudNote,
                 ),
               );
             },

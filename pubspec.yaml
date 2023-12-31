@@ -38,6 +38,7 @@ dependencies:
 
   # Other plugins
   image_picker: ^1.0.5
+  image_picker_platform_interface: ^2.9.1
   image_picker_android: ^0.8.9+1
   google_sign_in: ^6.2.1
   sign_in_with_apple: ^5.0.0

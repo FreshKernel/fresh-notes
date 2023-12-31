@@ -42,17 +42,30 @@ class NoteCubit extends Cubit<NoteState> {
   final LocalStorageService localStorageService;
   final AuthService authService;
 
-  Future<List<UniversalNote>> getNotes({
+  Future<Iterable<UniversalNote>> searchAllNotes(
+      {required String searchQuery}) async {
+    final localNotes = await localNotesService.searchAllNotes(
+      searchQuery: searchQuery,
+    );
+
+    final cloudNotes = authService.isAuthenticated
+        ? (await localNotesService.searchAllNotes(
+            searchQuery: searchQuery,
+          ))
+        : <UniversalNote>{};
+    final allNotes = <UniversalNote>{...localNotes, ...cloudNotes};
+    return allNotes.toList();
+  }
+
+  Future<Iterable<UniversalNote>> getAllNotes({
     int limit = -1,
     int page = 1,
   }) async {
     final localNotes =
-        (await localNotesService.getAll(limit: limit, page: page))
-            .map(UniversalNote.fromLocalNote);
+        await localNotesService.getAllNotes(limit: limit, page: page);
 
     final cloudNotes = authService.isAuthenticated
-        ? (await cloudNotesService.getAll(limit: limit, page: page))
-            .map(UniversalNote.fromCloudNote)
+        ? (await cloudNotesService.getAllNotes(limit: limit, page: page))
         : <UniversalNote>{};
     final allNotes = <UniversalNote>{...localNotes, ...cloudNotes};
     return allNotes.toList();
@@ -66,7 +79,7 @@ class NoteCubit extends Cubit<NoteState> {
         return;
       }
       await localNotesService.initialize();
-      final allNotes = await getNotes();
+      final allNotes = await getAllNotes();
       emit(NoteState(notes: allNotes.toList()));
       _notesFutureLoadded = true;
     } on Exception catch (e) {
@@ -85,7 +98,7 @@ class NoteCubit extends Cubit<NoteState> {
     }
     try {
       _page += 1;
-      final newNotes = await getNotes(limit: _limit, page: _page);
+      final newNotes = await getAllNotes(limit: _limit, page: _page);
       if (newNotes.isEmpty) {
         _reachedEnd = true;
         return;
@@ -175,13 +188,12 @@ class NoteCubit extends Cubit<NoteState> {
         input,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        isExistsInTheCloud: input.isSyncWithCloud,
       );
       emit(NoteState(notes: [note, ...state.notes]));
 
-      await localNotesService.createOne(input);
+      await localNotesService.insertNote(input);
       if (input.isSyncWithCloud) {
-        await cloudNotesService.createOne(input);
+        await cloudNotesService.insertNote(input);
       }
     } on Exception catch (e) {
       // Revert the creating back
@@ -202,17 +214,17 @@ class NoteCubit extends Cubit<NoteState> {
       ),
     );
     try {
-      final localNote = await localNotesService.getOneById(noteId);
+      final localNote = await localNotesService.getNoteById(noteId);
       if (localNote != null) {
-        await localNotesService.deleteOneById(noteId);
+        await localNotesService.deleteNoteById(noteId);
         _deleteNoteLocalFiles(
           _getImageUtilitiesByNoteText(localNote.text),
         );
       }
       if (authService.isAuthenticated) {
-        final cloudNote = await cloudNotesService.getOneById(noteId);
+        final cloudNote = await cloudNotesService.getNoteById(noteId);
         if (cloudNote != null) {
-          await cloudNotesService.deleteOneById(noteId);
+          await cloudNotesService.deleteNoteById(noteId);
           await _deleteNoteCloudFiles(
             _getImageUtilitiesByNoteText(cloudNote.text),
           );
@@ -264,7 +276,7 @@ class NoteCubit extends Cubit<NoteState> {
     try {
       Future<void> updateInTheCloud() async {
         final currentLocalNote =
-            await localNotesService.getOneById(input.noteId);
+            await localNotesService.getNoteById(input.noteId);
         if (currentLocalNote == null) {
           throw const DatabaseOperationCannotFindResourcesException(
             'The note must exists in order to update it.',
@@ -272,7 +284,7 @@ class NoteCubit extends Cubit<NoteState> {
         }
 
         final currentCloudNote =
-            await cloudNotesService.getOneById(currentLocalNote.noteId);
+            await cloudNotesService.getNoteById(currentLocalNote.noteId);
         final currentLocalNoteExistsInTheCloud = currentCloudNote != null;
 
         // Create the note if it doesn't exist and the user wants to sync his offline
@@ -305,7 +317,7 @@ class NoteCubit extends Cubit<NoteState> {
           // Now let's delete the local images
           await _deleteNoteLocalFiles(
               _getImageUtilitiesByNoteText(currentLocalNote.text));
-          await cloudNotesService.createOne(
+          await cloudNotesService.insertNote(
             CreateNoteInput.fromUpdateInput(
               input,
               userId: authService.requireCurrentUser().id,
@@ -313,7 +325,7 @@ class NoteCubit extends Cubit<NoteState> {
           );
         } else if (!input.isSyncWithCloud && currentLocalNoteExistsInTheCloud) {
           // If the current note exist and the user wants to un-sync the note.
-          await cloudNotesService.deleteOneById(currentLocalNote.noteId);
+          await cloudNotesService.deleteNoteById(currentLocalNote.noteId);
 
           // Download the images locally before delete them in the cloud
           final cloudImages =
@@ -350,7 +362,7 @@ class NoteCubit extends Cubit<NoteState> {
           );
         } else if (currentLocalNoteExistsInTheCloud) {
           // Update the note
-          await cloudNotesService.updateOne(input);
+          await cloudNotesService.updateNote(input);
         }
       }
 
@@ -368,7 +380,7 @@ class NoteCubit extends Cubit<NoteState> {
         await updateInTheCloud();
       }
 
-      await localNotesService.updateOne(input);
+      await localNotesService.updateNote(input);
 
       final newNote = UniversalNote.fromUpdateInput(
         input,
@@ -415,17 +427,18 @@ class NoteCubit extends Cubit<NoteState> {
     );
     emit(NoteState(notes: notes));
     try {
-      final localNote = await localNotesService.getOneById(noteId);
+      final localNote = await localNotesService.getNoteById(noteId);
       if (localNote != null) {
-        await localNotesService.updateOne(
-          UpdateNoteInput.fromLocalNote(localNote).copyWith(isTrash: true),
+        await localNotesService.updateNote(
+          UpdateNoteInput.fromUniversalNote(localNote).copyWith(isTrash: true),
         );
       }
       if (authService.isAuthenticated) {
-        final cloudNote = await cloudNotesService.getOneById(noteId);
+        final cloudNote = await cloudNotesService.getNoteById(noteId);
         if (cloudNote != null) {
-          await cloudNotesService.updateOne(
-            UpdateNoteInput.fromCloudNote(cloudNote).copyWith(isTrash: true),
+          await cloudNotesService.updateNote(
+            UpdateNoteInput.fromUniversalNote(cloudNote)
+                .copyWith(isTrash: true),
           );
         }
       }
@@ -446,14 +459,14 @@ class NoteCubit extends Cubit<NoteState> {
         .toList();
     emit(NoteState(notes: newNotes));
     try {
-      final allNotes = await getNotes();
+      final allNotes = await getAllNotes();
       final updateInputs = allNotes
           .map(UpdateNoteInput.fromUniversalNote)
           .map((e) => e.copyWith(isTrash: true))
           .toList();
-      await localNotesService.updateByIds(updateInputs);
+      await localNotesService.updateNotesByIds(updateInputs);
       if (authService.isAuthenticated) {
-        await cloudNotesService.updateByIds(updateInputs);
+        await cloudNotesService.updateNotesByIds(updateInputs);
       }
     } on Exception catch (e) {
       emit(NoteState(notes: currentNotes, exception: e));
@@ -469,7 +482,7 @@ class NoteCubit extends Cubit<NoteState> {
       ..removeWhere((element) => element.isTrash);
     emit(NoteState(notes: newNotes));
     try {
-      final allTrashNotes = (await getNotes()).where((note) => note.isTrash);
+      final allTrashNotes = (await getAllNotes()).where((note) => note.isTrash);
       for (final trashNote in allTrashNotes) {
         if (trashNote.isSyncWithCloud) {
           await _deleteNoteCloudFiles(
@@ -482,9 +495,9 @@ class NoteCubit extends Cubit<NoteState> {
         }
       }
       final allNotesIds = allTrashNotes.map((e) => e.noteId).toList();
-      await localNotesService.deleteByIds(allNotesIds);
+      await localNotesService.deleteNotesByIds(allNotesIds);
       if (authService.isAuthenticated) {
-        await cloudNotesService.deleteByIds(allNotesIds);
+        await cloudNotesService.deleteNotesByIds(allNotesIds);
       }
     } on Exception catch (e) {
       emit(NoteState(notes: currentNotes, exception: e));
@@ -495,20 +508,22 @@ class NoteCubit extends Cubit<NoteState> {
     final notes = [...state.notes];
     emit(const NoteState(notes: []));
     try {
-      final cloudNotes = await cloudNotesService.getAll(limit: -1, page: 1);
+      final cloudNotes =
+          await cloudNotesService.getAllNotes(limit: -1, page: 1);
       for (final cloudNote in cloudNotes) {
         await _deleteNoteCloudFiles(
           _getImageUtilitiesByNoteText(cloudNote.text),
         );
       }
-      final localNotes = await localNotesService.getAll(limit: -1, page: 1);
+      final localNotes =
+          await localNotesService.getAllNotes(limit: -1, page: 1);
       for (final localNote in localNotes) {
         await _deleteNoteLocalFiles(
           _getImageUtilitiesByNoteText(localNote.text),
         );
       }
-      await localNotesService.deleteAll();
-      await cloudNotesService.deleteAll();
+      await localNotesService.deleteAllNotes();
+      await cloudNotesService.deleteAllNotes();
     } on Exception catch (e) {
       emit(
         NoteState(notes: notes, exception: e),
@@ -521,12 +536,13 @@ class NoteCubit extends Cubit<NoteState> {
     notes.removeWhere((element) => element.isSyncWithCloud);
     emit(NoteState(notes: notes));
     try {
-      final localNotes = (await localNotesService.getAll(limit: -1, page: 1))
-          .where((e) => e.isSyncWithCloud);
+      final localNotes =
+          (await localNotesService.getAllNotes(limit: -1, page: 1))
+              .where((e) => e.isSyncWithCloud);
       if (localNotes.isEmpty) {
         return;
       }
-      await localNotesService.deleteByIds(
+      await localNotesService.deleteNotesByIds(
         localNotes.map((e) => e.noteId),
       );
     } on Exception catch (e) {
@@ -541,12 +557,14 @@ class NoteCubit extends Cubit<NoteState> {
       if (!authService.isAuthenticated) {
         return;
       }
-      final cloudNotes = await cloudNotesService.getAll(limit: -1, page: 1);
+      final cloudNotes =
+          await cloudNotesService.getAllNotes(limit: -1, page: 1);
       if (cloudNotes.isEmpty) {
         return;
       }
 
-      final localNotes = await localNotesService.getAll(limit: -1, page: 1);
+      final localNotes =
+          await localNotesService.getAllNotes(limit: -1, page: 1);
       final localNotesIdsWithSync = localNotes
           .where((note) => note.isSyncWithCloud)
           .map((e) => e.noteId)
@@ -554,16 +572,18 @@ class NoteCubit extends Cubit<NoteState> {
           .toList();
 
       if (localNotesIdsWithSync.isNotEmpty) {
-        await localNotesService.deleteByIds(localNotesIdsWithSync);
+        await localNotesService.deleteNotesByIds(localNotesIdsWithSync);
       }
 
       final createInputs =
-          cloudNotes.map(CreateNoteInput.fromCloudNote).toList();
+          cloudNotes.map(CreateNoteInput.fromUniversalNote).toList();
 
-      await localNotesService.createMultiples(createInputs);
+      await localNotesService.insertNotes(createInputs);
 
-      final notes = await getNotes();
-      emit(NoteState(notes: notes));
+      final notes = await getAllNotes();
+      emit(NoteState(
+        notes: notes.toList(),
+      ));
     } on Exception catch (e) {
       emit(state.copyWith(exception: e));
     }

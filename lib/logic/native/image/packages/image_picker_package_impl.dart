@@ -1,8 +1,7 @@
-import 'dart:io' show File;
-
+import 'package:cross_file/cross_file.dart';
 import 'package:image_picker/image_picker.dart' as image_picker_package;
 import 'package:image_picker_android/image_picker_android.dart';
-// ignore: depend_on_referenced_packages
+
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart'
     as image_picker_package_platform_interface;
 
@@ -30,7 +29,7 @@ class ImagePickerPackageImpl extends ImagePicker {
   bool get isInitialized => _imagePicker != null;
 
   @override
-  Future<File?> pickImage({
+  Future<XFile?> pickImage({
     required ImageSource source,
     double? maxWidth,
     double? maxHeight,
@@ -51,8 +50,7 @@ class ImagePickerPackageImpl extends ImagePicker {
       requestFullMetadata: requestFullMetadata,
     );
     if (xfile == null) return null;
-    final imageFile = File(xfile.path);
-    return imageFile;
+    return xfile;
   }
 }
 

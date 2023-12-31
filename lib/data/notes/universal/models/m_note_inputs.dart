@@ -38,6 +38,17 @@ class CreateNoteInput with _$CreateNoteInput {
         isFavorite: input.isFavorite,
         userId: userId,
       );
+
+  factory CreateNoteInput.fromUniversalNote(UniversalNote note) =>
+      CreateNoteInput(
+        isPrivate: note.isPrivate,
+        noteId: note.noteId,
+        text: note.text,
+        title: note.title,
+        isSyncWithCloud: note.isSyncWithCloud,
+        isFavorite: note.isFavorite,
+        userId: note.userId,
+      );
 }
 
 @freezed

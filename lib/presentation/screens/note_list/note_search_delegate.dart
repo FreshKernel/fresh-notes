@@ -26,9 +26,8 @@ class NoteSearchDelegate extends SearchDelegate<UniversalNote> {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: Could be improved
-    final future = context.read<NoteCubit>().getNotes();
-    return FutureBuilder<List<UniversalNote>>(
+    final future = context.read<NoteCubit>().searchAllNotes(searchQuery: query);
+    return FutureBuilder<Iterable<UniversalNote>>(
       future: future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -37,16 +36,11 @@ class NoteSearchDelegate extends SearchDelegate<UniversalNote> {
           );
         }
         if (snapshot.hasError) {
-          return const ErrorWithoutTryAgain();
+          return ErrorWithoutTryAgain(
+            error: snapshot.error.toString(),
+          );
         }
-        // TODO: Could be improved
-        final list = snapshot.requireData
-            .where(
-              (note) =>
-                  note.text.toLowerCase().contains(query) ||
-                  note.title.toLowerCase().contains(query),
-            )
-            .toList();
+        final list = snapshot.requireData.toList();
         return ListView.builder(
           itemBuilder: (context, index) {
             final item = list[index];

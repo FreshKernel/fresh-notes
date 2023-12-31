@@ -16,13 +16,6 @@ class NoteFoldersContent extends StatefulWidget {
 class _NoteFoldersContentState extends State<NoteFoldersContent> {
   @override
   Widget build(BuildContext context) {
-    // if (kReleaseMode) {
-    //   return Center(
-    //     child: Lottie.asset(
-    //       Assets.lottie.onboarding.underDevelopment.path,
-    //     ),
-    //   );
-    // }
     return BlocBuilder<NoteFolderCubit, NoteFolderState>(
       builder: (context, state) {
         if (state.isLoading) {
@@ -32,18 +25,15 @@ class _NoteFoldersContentState extends State<NoteFoldersContent> {
         final noteFolders =
             state.currentFolder?.subFolders ?? state.noteFolders;
 
-        return GridView.builder(
+        return GridView(
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent:
                 PlatformChecker.defaultLogic().isMobile() ? 180 : 400,
           ),
-          itemCount: noteFolders.length + 1,
-          itemBuilder: (context, index) {
-            if (index == noteFolders.length) {
-              return GestureDetector(
-                onTap: state.currentFolder != null
-                    ? () => context.read<NoteFolderCubit>().navigateBack()
-                    : null,
+          children: [
+            if (state.currentFolder != null)
+              GestureDetector(
+                onTap: context.read<NoteFolderCubit>().navigateBack,
                 child: Card(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -58,11 +48,9 @@ class _NoteFoldersContentState extends State<NoteFoldersContent> {
                     ],
                   ),
                 ),
-              );
-            }
-            final item = noteFolders[index];
-            return NoteFolderTile(noteFolder: item);
-          },
+              ),
+            ...noteFolders.map((item) => NoteFolderTile(noteFolder: item))
+          ],
         );
       },
     );

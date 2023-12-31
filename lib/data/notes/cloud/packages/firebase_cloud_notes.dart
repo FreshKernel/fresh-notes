@@ -2,33 +2,36 @@ import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
 
 import '../../../../logic/auth/auth_service.dart';
 import '../../../core/shared/database_operations_exceptions.dart';
+import '../../note_repository.dart';
+import '../../universal/models/m_note.dart';
 import '../../universal/models/m_note_inputs.dart';
-import '../models/cloud_note_repository.dart';
 import '../models/m_cloud_note.dart';
 
-class FirebaseCloudNotesImpl extends CloudNotesRepository {
+class FirebaseCloudNotesImpl extends NotesRepository {
   final _notesCollection = FirebaseFirestore.instance.collection(
     CloudNoteProperties.notes,
   );
 
   @override
-  Future<CloudNote> createOne(CreateNoteInput createInput) async {
+  Future<UniversalNote> insertNote(CreateNoteInput createInput) async {
     final result = await _notesCollection.add(
       CloudNote.toFirebaseMapFromCreateInput(
         input: createInput,
       ),
     );
     final currentDate = DateTime.now();
-    return CloudNote.fromCreateNoteInput(
-      input: createInput,
-      cloudId: result.id,
-      createdAt: currentDate,
-      updatedAt: currentDate,
+    return UniversalNote.fromCloudNote(
+      CloudNote.fromCreateNoteInput(
+        input: createInput,
+        cloudId: result.id,
+        createdAt: currentDate,
+        updatedAt: currentDate,
+      ),
     );
   }
 
   @override
-  Future<void> deleteAll() async {
+  Future<void> deleteAllNotes() async {
     final userId = AuthService.getInstance()
         .requireCurrentUser(
           'To delete all notes from the cloud, user must be authenticated.',
@@ -48,7 +51,7 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   }
 
   @override
-  Future<void> deleteByIds(Iterable<String> ids) async {
+  Future<void> deleteNotesByIds(Iterable<String> ids) async {
     final batch = FirebaseFirestore.instance.batch();
     final notes = await _notesCollection
         .where(CloudNoteProperties.noteId, whereIn: ids)
@@ -60,10 +63,10 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   }
 
   @override
-  Future<List<CloudNote>> createMultiples(
-      Iterable<CreateNoteInput> list) async {
+  Future<List<UniversalNote>> insertNotes(
+      Iterable<CreateNoteInput> inputs) async {
     final batch = FirebaseFirestore.instance.batch();
-    final notes = list.map((createInput) {
+    final notes = inputs.map((createInput) {
       final documentId = _notesCollection.doc();
       batch.set(
         documentId,
@@ -80,11 +83,11 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
       );
     });
     await batch.commit();
-    return notes.toList();
+    return notes.map(UniversalNote.fromCloudNote).toList();
   }
 
   @override
-  Future<void> deleteOneById(String id) async {
+  Future<void> deleteNoteById(String id) async {
     final userId = AuthService.getInstance().requireCurrentUser().id;
     final result = await _notesCollection
         .where(CloudNoteProperties.userId, isEqualTo: userId)
@@ -98,7 +101,7 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
   }
 
   @override
-  Future<List<CloudNote>> getAll({
+  Future<List<UniversalNote>> getAllNotes({
     required int limit,
     required int page,
   }) async {
@@ -118,17 +121,17 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
         )
         .get();
     if (documents.docs.isEmpty) {
-      return List.empty();
+      return [];
     }
     final notes = documents.docs.map((e) => CloudNote.fromFirebase(
           e.data(),
           id: e.id,
         ));
-    return notes.toList();
+    return notes.map(UniversalNote.fromCloudNote).toList();
   }
 
   @override
-  Future<List<CloudNote>> getAllByIds(Iterable<String> ids) async {
+  Future<List<UniversalNote>> getAllNotesByIds(Iterable<String> ids) async {
     if (ids.isEmpty) {
       return [];
     }
@@ -157,11 +160,11 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
             id: ids.toList()[document.key],
           ),
         );
-    return notes.toList();
+    return notes.map(UniversalNote.fromCloudNote).toList();
   }
 
   @override
-  Future<CloudNote?> getOneById(String id) async {
+  Future<UniversalNote?> getNoteById(String id) async {
     final userId = AuthService.getInstance().requireCurrentUser().id;
     final result = (await _notesCollection
             .where(CloudNoteProperties.userId, isEqualTo: userId)
@@ -175,17 +178,19 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
     }
     if (!result.exists) return null;
     final data = result.data();
-    return CloudNote.fromFirebase(
-      data,
-      id: result.id,
+    return UniversalNote.fromCloudNote(
+      CloudNote.fromFirebase(
+        data,
+        id: result.id,
+      ),
     );
   }
 
   @override
-  Future<CloudNote> updateOne(
+  Future<UniversalNote> updateNote(
     UpdateNoteInput updateInput,
   ) async {
-    final currentNote = await getOneById(updateInput.noteId);
+    final currentNote = await getNoteById(updateInput.noteId);
     if (currentNote == null) {
       throw const DatabaseOperationCannotFindResourcesException(
         'We could not find this note to update it.',
@@ -206,20 +211,19 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
         ),
       );
     }
-    return CloudNote.fromUpdateNoteInput(
-      input: updateInput,
-      cloudId: currentNote.id,
+    return UniversalNote.fromUpdateInput(
+      updateInput,
       createdAt: currentNote.createdAt,
       updatedAt: DateTime.now(),
-      userId: currentNote.userId,
+      userId: userId,
     );
   }
 
   @override
-  Future<void> updateByIds(Iterable<UpdateNoteInput> entities) async {
+  Future<void> updateNotesByIds(Iterable<UpdateNoteInput> inputs) async {
     final batch = FirebaseFirestore.instance.batch();
 
-    for (final noteInput in entities) {
+    for (final noteInput in inputs) {
       final noteDoc = (await _notesCollection
               .where(
                 CloudNoteProperties.noteId,
@@ -243,5 +247,33 @@ class FirebaseCloudNotesImpl extends CloudNotesRepository {
     }
 
     await batch.commit();
+  }
+
+  @override
+  Future<Iterable<UniversalNote>> searchAllNotes({
+    required String searchQuery,
+  }) async {
+    final results = await _notesCollection
+        .where(
+          CloudNoteProperties.text,
+          arrayContains: searchQuery,
+        )
+        .where(
+          CloudNoteProperties.title,
+          arrayContains: searchQuery,
+        )
+        .orderBy(
+          CloudNoteProperties.updatedAt,
+          descending: true,
+        )
+        .get();
+    if (results.docs.isEmpty) {
+      return [];
+    }
+    return results.docs.map(
+      (e) => UniversalNote.fromCloudNote(
+        CloudNote.fromFirebase(e.data(), id: e.id),
+      ),
+    );
   }
 }

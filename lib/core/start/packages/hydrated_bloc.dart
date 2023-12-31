@@ -5,7 +5,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../services/s_app.dart';
+import '../../service/s_app.dart';
 
 class HydratedBlocService extends AppService {
   var _isInitialized = false;

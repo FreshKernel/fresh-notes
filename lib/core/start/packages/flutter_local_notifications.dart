@@ -1,7 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../errors/exceptions.dart';
-import '../../services/s_app.dart';
+import '../../service/s_app.dart';
 
 class FlutterLocalNotificationsService extends AppService {
   factory FlutterLocalNotificationsService.getInstance() => instance;

@@ -39,7 +39,10 @@ Future<void> main() async {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(),
-          body: const Center(child: ErrorWithoutTryAgain()),
+          body: Center(
+              child: ErrorWithoutTryAgain(
+            error: e.toString(),
+          )),
         ),
       ),
     );

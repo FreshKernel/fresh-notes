@@ -55,7 +55,6 @@ class UniversalNote extends Equatable {
     CreateNoteInput input, {
     required DateTime createdAt,
     required DateTime updatedAt,
-    required bool isExistsInTheCloud,
   }) =>
       UniversalNote(
         noteId: input.noteId,

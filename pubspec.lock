@@ -814,14 +814,14 @@ packages:
       path: "/Users/ellet/Developer/projects/flutter-quill/"
       relative: false
     source: path
-    version: "9.1.1"
+    version: "9.2.0"
   flutter_quill_extensions:
     dependency: "direct main"
     description:
       path: "/Users/ellet/Developer/projects/flutter-quill/flutter_quill_extensions"
       relative: false
     source: path
-    version: "9.1.1"
+    version: "9.2.0"
   flutter_quill_test:
     dependency: "direct dev"
     description:
@@ -1119,7 +1119,7 @@ packages:
     source: hosted
     version: "0.2.1+1"
   image_picker_platform_interface:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image_picker_platform_interface
       sha256: ed9b00e63977c93b0d2d2b343685bed9c324534ba5abafbb3dfbd6a780b1b514

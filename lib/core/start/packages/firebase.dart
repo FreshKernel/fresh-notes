@@ -8,8 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
 import '../../../firebase_options.dart';
 import '../../log/logger.dart';
-import '../../services/exceptions.dart';
-import '../../services/s_app.dart';
+import '../../service/s_app.dart';
 
 class FirebaseService extends AppService {
   factory FirebaseService.getInstance() => _instance;

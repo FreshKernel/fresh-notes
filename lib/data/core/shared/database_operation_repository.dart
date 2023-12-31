@@ -7,6 +7,7 @@ abstract class DatabaseOperationRepository<Output, CreateInput, UpdateInput,
     required int limit,
     required int page,
   }); // Default -1, page 1
+  Future<List<Output>> searchAll({required String query});
   Future<List<Output>> getAllByIds(Iterable<EntityId> ids);
   Future<void> deleteByIds(Iterable<EntityId> ids);
   Future<void> updateByIds(Iterable<UpdateInput> entities);

@@ -1,112 +1,90 @@
 import '../../../core/app_module.dart';
-import '../../../core/log/logger.dart';
-import '../../core/local/database/local_database_repository.dart';
+import '../../../core/service/s_app.dart';
+import '../note_repository.dart';
+import '../universal/models/m_note.dart';
 import '../universal/models/m_note_inputs.dart';
-import 'local_notes_repository.dart';
-import 'models/m_local_note.dart';
-import 'packages/sqflite_local_notes.dart';
+import 'sqflite_local_notes.dart';
 
-class LocalNotesService extends LocalNotesRepository {
+class LocalNotesService extends NotesRepository implements AppService {
   LocalNotesService(this._provider);
 
   factory LocalNotesService.sqflite() =>
       LocalNotesService(SqfliteLocalNotesImpl());
   factory LocalNotesService.getInstance() => AppModule.localNotesService;
-  final LocalDatabaseRepository _provider;
+  final NotesRepository _provider;
 
   @override
   Future<void> initialize() async {
     if (isInitialized) {
-      AppLogger.log('Local database is already initialized.');
       return;
     }
-    AppLogger.log('Initializing the notes database...');
-    await _provider.initialize();
-    AppLogger.log('The notes database has been successfully Initialized.');
-  }
 
-  @override
-  bool get isInitialized => _provider.isInitialized;
+    if (_provider is SqfliteLocalNotesImpl) {
+      await _provider.initialize();
+    }
+  }
 
   @override
   Future<void> deInitialize() async {
-    requireToBeInitialized();
-    AppLogger.log('Closing the notes database...');
-    await _provider.deInitialize();
-    AppLogger.log('The notes database has been successfully closed.');
+    if (_provider is SqfliteLocalNotesImpl) {
+      await _provider.deInitialize();
+    }
   }
 
   @override
-  Future<LocalNote> createOne(CreateNoteInput createInput) async {
-    requireToBeInitialized();
-    final note = await _provider.createOne(createInput);
-    return note;
+  Future<void> deleteAllNotes() => _provider.deleteAllNotes();
+
+  @override
+  Future<void> deleteNoteById(String id) => _provider.deleteNoteById(id);
+
+  @override
+  Future<void> deleteNotesByIds(Iterable<String> ids) =>
+      _provider.deleteNotesByIds(ids);
+
+  @override
+  Future<Iterable<UniversalNote>> getAllNotes(
+          {required int limit, required int page}) =>
+      _provider.getAllNotes(limit: limit, page: page);
+
+  @override
+  Future<Iterable<UniversalNote>> getAllNotesByIds(Iterable<String> ids) =>
+      _provider.getAllNotesByIds(ids);
+
+  @override
+  Future<UniversalNote?> getNoteById(String id) => _provider.getNoteById(id);
+
+  @override
+  Future<UniversalNote> insertNote(CreateNoteInput createInput) =>
+      _provider.insertNote(createInput);
+
+  @override
+  Future<Iterable<UniversalNote>> insertNotes(
+          Iterable<CreateNoteInput> inputs) =>
+      _provider.insertNotes(inputs);
+
+  @override
+  bool get isInitialized {
+    if (_provider is SqfliteLocalNotesImpl) {
+      return _provider.isInitialized;
+    }
+    return false;
   }
 
   @override
-  Future<List<LocalNote>> createMultiples(
-      Iterable<CreateNoteInput> list) async {
-    requireToBeInitialized();
-    final notes = await _provider.createMultiples(list);
-    return notes.cast();
-  }
+  Future<Iterable<UniversalNote>> searchAllNotes(
+          {required String searchQuery}) =>
+      _provider.searchAllNotes(searchQuery: searchQuery);
 
   @override
-  Future<void> deleteOneById(String id) async {
-    requireToBeInitialized();
-    await _provider.deleteOneById(id);
-  }
+  Future<UniversalNote?> updateNote(UpdateNoteInput updateInput) =>
+      _provider.updateNote(updateInput);
 
   @override
-  Future<List<LocalNote>> getAll({
-    required int limit,
-    required int page,
-  }) async {
-    requireToBeInitialized();
-    final result = await _provider.getAll(limit: limit, page: page);
-    final List<LocalNote> notes = result.cast();
-    // return notes.where((localNote) => !localNote.isSyncWithCloud).toList();
-    return notes;
-  }
+  Future<void> updateNotesByIds(Iterable<UpdateNoteInput> inputs) =>
+      _provider.updateNotesByIds(inputs);
 
   @override
-  Future<List<LocalNote>> getAllByIds(Iterable<String> ids) async {
-    requireToBeInitialized();
-    final notes = await _provider.getAllByIds(ids);
-    return notes.cast();
-  }
-
-  @override
-  Future<LocalNote?> getOneById(String id) async {
-    requireToBeInitialized();
-    final note = await _provider.getOneById(id);
-    return note;
-  }
-
-  @override
-  Future<LocalNote?> updateOne(
-    UpdateNoteInput updateInput,
-  ) async {
-    requireToBeInitialized();
-    final note = await _provider.updateOne(updateInput);
-    return note;
-  }
-
-  @override
-  Future<void> deleteAll() async {
-    requireToBeInitialized();
-    await _provider.deleteAll();
-  }
-
-  @override
-  Future<void> deleteByIds(Iterable<String> ids) async {
-    requireToBeInitialized();
-    await _provider.deleteByIds(ids);
-  }
-
-  @override
-  Future<void> updateByIds(Iterable<UpdateNoteInput> entities) async {
-    requireToBeInitialized();
-    await _provider.updateByIds(entities);
+  void requireToBeInitialized({String? errorMessage}) {
+    throw UnimplementedError();
   }
 }

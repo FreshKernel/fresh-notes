@@ -1,10 +1,10 @@
 import '../../../core/app_module.dart';
+import '../note_repository.dart';
+import '../universal/models/m_note.dart';
 import '../universal/models/m_note_inputs.dart';
-import 'models/cloud_note_repository.dart';
-import 'models/m_cloud_note.dart';
 import 'packages/firebase_cloud_notes.dart';
 
-class CloudNotesService extends CloudNotesRepository {
+class CloudNotesService extends NotesRepository {
   CloudNotesService(this._provider);
 
   factory CloudNotesService.firebaseFirestore() => CloudNotesService(
@@ -12,47 +12,56 @@ class CloudNotesService extends CloudNotesRepository {
       );
   factory CloudNotesService.getInstance() => AppModule.cloudNotesService;
 
-  final CloudNotesRepository _provider;
+  final NotesRepository _provider;
 
   @override
-  Future<List<CloudNote>> createMultiples(Iterable<CreateNoteInput> list) =>
-      _provider.createMultiples(list);
+  Future<Iterable<UniversalNote>> insertNotes(
+          Iterable<CreateNoteInput> inputs) =>
+      _provider.insertNotes(inputs);
 
   @override
-  Future<CloudNote> createOne(CreateNoteInput createInput) =>
-      _provider.createOne(createInput);
+  Future<UniversalNote> insertNote(CreateNoteInput createInput) =>
+      _provider.insertNote(createInput);
 
   @override
-  Future<void> deleteAll() => _provider.deleteAll();
+  Future<void> deleteAllNotes() => _provider.deleteAllNotes();
 
   @override
-  Future<void> deleteByIds(Iterable<String> ids) => _provider.deleteByIds(ids);
+  Future<void> deleteNotesByIds(Iterable<String> ids) =>
+      _provider.deleteNotesByIds(ids);
 
   @override
-  Future<void> deleteOneById(String id) => _provider.deleteOneById(id);
+  Future<void> deleteNoteById(String id) => _provider.deleteNoteById(id);
 
   @override
-  Future<List<CloudNote>> getAll({
+  Future<Iterable<UniversalNote>> getAllNotes({
     required int limit,
     required int page,
   }) =>
-      _provider.getAll(
+      _provider.getAllNotes(
         limit: limit,
         page: page,
       );
 
   @override
-  Future<List<CloudNote>> getAllByIds(Iterable<String> ids) =>
-      _provider.getAllByIds(ids);
+  Future<Iterable<UniversalNote>> getAllNotesByIds(Iterable<String> ids) =>
+      _provider.getAllNotesByIds(ids);
 
   @override
-  Future<CloudNote?> getOneById(String id) => _provider.getOneById(id);
+  Future<UniversalNote?> getNoteById(String id) => _provider.getNoteById(id);
 
   @override
-  Future<CloudNote?> updateOne(UpdateNoteInput updateInput) =>
-      _provider.updateOne(updateInput);
+  Future<UniversalNote?> updateNote(UpdateNoteInput updateInput) =>
+      _provider.updateNote(updateInput);
 
   @override
-  Future<void> updateByIds(Iterable<UpdateNoteInput> entities) =>
-      _provider.updateByIds(entities);
+  Future<void> updateNotesByIds(Iterable<UpdateNoteInput> inputs) =>
+      _provider.updateNotesByIds(inputs);
+
+  @override
+  Future<Iterable<UniversalNote>> searchAllNotes(
+          {required String searchQuery}) =>
+      _provider.searchAllNotes(
+        searchQuery: searchQuery,
+      );
 }

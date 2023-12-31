@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'note_folder_cubit.dart';
 
 class NoteFolderState extends Equatable {
@@ -29,7 +30,7 @@ class NoteFolderState extends Equatable {
   }) {
     return NoteFolderState(
       noteFolders: noteFolders ?? this.noteFolders,
-      currentFolder: currentFolder ?? currentFolder,
+      currentFolder: currentFolder ?? this.currentFolder,
       exception: exception ?? this.exception,
       isLoading: isLoading ?? this.isLoading,
     );

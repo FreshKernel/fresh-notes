@@ -1,6 +1,6 @@
-import 'dart:io' show File;
+import 'package:cross_file/cross_file.dart' show XFile;
 
-import '../../../core/services/s_app.dart';
+import '../../../core/service/s_app.dart';
 
 import 'enums/camera_device.dart';
 import 'enums/image_source.dart';
@@ -9,7 +9,7 @@ export 'enums/camera_device.dart';
 export 'enums/image_source.dart';
 
 abstract class ImagePicker extends AppService {
-  Future<File?> pickImage({
+  Future<XFile?> pickImage({
     required ImageSource source,
     double? maxWidth,
     double? maxHeight,
