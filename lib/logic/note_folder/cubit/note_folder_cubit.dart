@@ -10,7 +10,6 @@ part 'note_folder_state.dart';
 class NoteFolderCubit extends Cubit<NoteFolderState> {
   NoteFolderCubit({required this.noteFoldersService})
       : super(const NoteFolderState(noteFolders: [], currentFolder: null)) {
-    emit(state.copyWith(isLoading: true));
     getFolders();
   }
 

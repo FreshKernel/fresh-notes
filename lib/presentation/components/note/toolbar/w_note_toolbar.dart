@@ -4,7 +4,6 @@ import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
 import 'buttons/checklist.dart';
 import 'buttons/full_screen.dart';
-import 'buttons/insert_image.dart';
 import 'buttons/set_text_options.dart';
 
 enum InsertImageSource {

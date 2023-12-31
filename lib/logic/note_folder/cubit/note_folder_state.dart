@@ -6,7 +6,7 @@ class NoteFolderState extends Equatable {
     required this.noteFolders,
     required this.currentFolder,
     this.exception,
-    this.isLoading = false,
+    this.isLoading = true,
   });
 
   final List<NoteFolder> noteFolders;

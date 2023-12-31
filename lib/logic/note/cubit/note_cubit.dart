@@ -34,7 +34,9 @@ class NoteCubit extends Cubit<NoteState> {
     required this.localStorageService,
     required this.cloudStorageService,
     required this.authService,
-  }) : super(NoteState.initial());
+  }) : super(NoteState.initial()) {
+    loadAllNotes();
+  }
 
   final LocalNotesService localNotesService;
   final CloudNotesService cloudNotesService;
@@ -80,7 +82,7 @@ class NoteCubit extends Cubit<NoteState> {
       }
       await localNotesService.initialize();
       final allNotes = await getAllNotes();
-      emit(NoteState(notes: allNotes.toList()));
+      emit(NoteState(notes: allNotes.toList(), isLoading: false));
       _notesFutureLoadded = true;
     } on Exception catch (e) {
       emit(state.copyWith(exception: e));
