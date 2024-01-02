@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,16 +34,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
           actionsBuilder: NotesListPage.actionsBuilder,
           actionButtonBuilder: NotesListPage.actionButtonBuilder,
         ),
-        NavigationItem(
-          title: context.loc.browse,
-          label: context.loc.folders,
-          icon: const Icon(Icons.folder),
-          body: const NoteFoldersPage(
-            key: PageStorageKey('NoteFoldersPage'),
+        if (kDebugMode)
+          NavigationItem(
+            title: context.loc.browse,
+            label: context.loc.folders,
+            icon: const Icon(Icons.folder),
+            body: const NoteFoldersPage(
+              key: PageStorageKey('NoteFoldersPage'),
+            ),
+            actionsBuilder: NoteFoldersPage.actionsBuilder,
+            actionButtonBuilder: NoteFoldersPage.actionButtonBuilder,
           ),
-          actionsBuilder: NoteFoldersPage.actionsBuilder,
-          actionButtonBuilder: NoteFoldersPage.actionButtonBuilder,
-        ),
         NavigationItem(
           title: context.loc.trash,
           label: context.loc.trash,

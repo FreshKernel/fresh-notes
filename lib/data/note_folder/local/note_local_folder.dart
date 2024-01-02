@@ -17,9 +17,15 @@ class LocalNoteFolderImpl extends NotesFolderRepository {
 
   @override
   Future<NoteFolder> createFolder(
-      {required String folderName, NoteFolder? currentFolder}) async {
-    final newFolderPath =
-        path.join((await _getNoteFoldersDirectory()).path, folderName);
+      {required String folderName, required NoteFolder? currentFolder}) async {
+    final documentsDirectory = (await _getNoteFoldersDirectory()).path;
+    final newFolderPath = currentFolder == null
+        ? path.join(documentsDirectory, folderName)
+        : path.join(
+            documentsDirectory,
+            currentFolder.folderName,
+            folderName,
+          );
     await Directory(newFolderPath).create(recursive: true);
     return NoteFolder(
       folderPath: newFolderPath,
@@ -35,30 +41,38 @@ class LocalNoteFolderImpl extends NotesFolderRepository {
   Future<List<NoteFolder>> getNoteFolders() async {
     final noteFoldersDirectory = await _getNoteFoldersDirectory();
     await noteFoldersDirectory.create(recursive: true);
-    final folders = noteFoldersDirectory
-        .listSync()
-        .map(
-          (event) => NoteFolder(
-            folderPath: event.path,
-            subFolders: const [],
-            notes: [
-              // Dump note
-              UniversalNote(
-                noteId: 'noteId',
-                userId: 'userId',
-                title: 'title',
-                text: 'text',
-                isSyncWithCloud: true,
-                isPrivate: false,
-                isTrash: false,
-                isFavorite: false,
-                createdAt: DateTime.now(),
-                updatedAt: DateTime.now(),
-              )
-            ],
-          ),
-        )
-        .toList();
+
+    final List<NoteFolder> folders = [
+      const NoteFolder(
+        folderPath: 'Empty folder',
+        subFolders: [],
+        notes: [],
+      ),
+      const NoteFolder(
+        folderPath: 'V',
+        subFolders: [
+          NoteFolder(folderPath: 'Adam Smasher', subFolders: [
+            NoteFolder(folderPath: 'Arasaka', subFolders: [], notes: [])
+          ], notes: []),
+          NoteFolder(folderPath: 'Kurt hansan', subFolders: [], notes: []),
+        ],
+        notes: [],
+      )
+    ];
+
+    // folders.clear();
+    // for (final entity in noteFoldersDirectory.listSync()) {
+    //   if (entity is Directory) {
+    //     folders.add(
+    //       NoteFolder(
+    //         folderPath: entity.path,
+    //         subFolders: const [],
+    //         notes: const [],
+    //       ),
+    //     );
+    //   } else if (entity is File) {}
+    // }
+
     return folders;
   }
 

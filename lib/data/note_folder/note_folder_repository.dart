@@ -3,7 +3,7 @@ import 'models/m_note_folder.dart';
 
 abstract class NotesFolderRepository {
   Future<NoteFolder> createFolder(
-      {required String folderName, NoteFolder? currentFolder});
+      {required String folderName, required NoteFolder? currentFolder});
   Future<void> deleteFolder({required String folderName});
   Future<void> updateFolder({
     required String folderName,

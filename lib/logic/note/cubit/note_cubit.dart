@@ -35,6 +35,7 @@ class NoteCubit extends Cubit<NoteState> {
     required this.cloudStorageService,
     required this.authService,
   }) : super(NoteState.initial()) {
+    emit(state.copyWith(isLoading: true));
     loadAllNotes();
   }
 
@@ -392,8 +393,7 @@ class NoteCubit extends Cubit<NoteState> {
       );
 
       final notes = [...currentNotes];
-      notes.removeAt(noteIndex);
-      notes.insert(noteIndex, newNote);
+      notes[noteIndex] = newNote;
 
       emit(
         NoteState(

@@ -23,7 +23,7 @@ class _NoteFoldersContentState extends State<NoteFoldersContent> {
         }
 
         final noteFolders =
-            state.currentFolder?.subFolders ?? state.noteFolders;
+            state.navigationStack.lastOrNull?.subFolders ?? state.noteFolders;
 
         return GridView(
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -31,7 +31,7 @@ class _NoteFoldersContentState extends State<NoteFoldersContent> {
                 PlatformChecker.defaultLogic().isMobile() ? 180 : 400,
           ),
           children: [
-            if (state.currentFolder != null)
+            if (state.navigationStack.lastOrNull != null)
               GestureDetector(
                 onTap: context.read<NoteFolderCubit>().navigateBack,
                 child: Card(

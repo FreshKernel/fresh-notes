@@ -20,6 +20,7 @@ SettingsState _$SettingsStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SettingsState {
+  bool get isAnimationsEnabled => throw _privateConstructorUsedError;
   bool get confirmDeleteNote => throw _privateConstructorUsedError;
   bool get confirmMoveNoteToTrash => throw _privateConstructorUsedError;
   bool get useNoteGridTile => throw _privateConstructorUsedError;
@@ -46,7 +47,8 @@ abstract class $SettingsStateCopyWith<$Res> {
       _$SettingsStateCopyWithImpl<$Res, SettingsState>;
   @useResult
   $Res call(
-      {bool confirmDeleteNote,
+      {bool isAnimationsEnabled,
+      bool confirmDeleteNote,
       bool confirmMoveNoteToTrash,
       bool useNoteGridTile,
       bool syncWithCloudDefaultValue,
@@ -73,6 +75,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? isAnimationsEnabled = null,
     Object? confirmDeleteNote = null,
     Object? confirmMoveNoteToTrash = null,
     Object? useNoteGridTile = null,
@@ -87,6 +90,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
     Object? layoutMode = null,
   }) {
     return _then(_value.copyWith(
+      isAnimationsEnabled: null == isAnimationsEnabled
+          ? _value.isAnimationsEnabled
+          : isAnimationsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
       confirmDeleteNote: null == confirmDeleteNote
           ? _value.confirmDeleteNote
           : confirmDeleteNote // ignore: cast_nullable_to_non_nullable
@@ -148,7 +155,8 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {bool confirmDeleteNote,
+      {bool isAnimationsEnabled,
+      bool confirmDeleteNote,
       bool confirmMoveNoteToTrash,
       bool useNoteGridTile,
       bool syncWithCloudDefaultValue,
@@ -173,6 +181,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? isAnimationsEnabled = null,
     Object? confirmDeleteNote = null,
     Object? confirmMoveNoteToTrash = null,
     Object? useNoteGridTile = null,
@@ -187,6 +196,10 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
     Object? layoutMode = null,
   }) {
     return _then(_$SettingsStateImpl(
+      isAnimationsEnabled: null == isAnimationsEnabled
+          ? _value.isAnimationsEnabled
+          : isAnimationsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
       confirmDeleteNote: null == confirmDeleteNote
           ? _value.confirmDeleteNote
           : confirmDeleteNote // ignore: cast_nullable_to_non_nullable
@@ -242,7 +255,8 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SettingsStateImpl implements _SettingsState {
   const _$SettingsStateImpl(
-      {this.confirmDeleteNote = true,
+      {this.isAnimationsEnabled = true,
+      this.confirmDeleteNote = true,
       this.confirmMoveNoteToTrash = false,
       this.useNoteGridTile = true,
       this.syncWithCloudDefaultValue = false,
@@ -258,6 +272,9 @@ class _$SettingsStateImpl implements _SettingsState {
   factory _$SettingsStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$SettingsStateImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final bool isAnimationsEnabled;
   @override
   @JsonKey()
   final bool confirmDeleteNote;
@@ -297,7 +314,7 @@ class _$SettingsStateImpl implements _SettingsState {
 
   @override
   String toString() {
-    return 'SettingsState(confirmDeleteNote: $confirmDeleteNote, confirmMoveNoteToTrash: $confirmMoveNoteToTrash, useNoteGridTile: $useNoteGridTile, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, openOnBoardingScreen: $openOnBoardingScreen, autoSaveNote: $autoSaveNote, themeMode: $themeMode, appLanguague: $appLanguague, themeSystem: $themeSystem, layoutMode: $layoutMode)';
+    return 'SettingsState(isAnimationsEnabled: $isAnimationsEnabled, confirmDeleteNote: $confirmDeleteNote, confirmMoveNoteToTrash: $confirmMoveNoteToTrash, useNoteGridTile: $useNoteGridTile, syncWithCloudDefaultValue: $syncWithCloudDefaultValue, onlySaveDataWhenClick: $onlySaveDataWhenClick, darkDuringDayInAutoMode: $darkDuringDayInAutoMode, openOnBoardingScreen: $openOnBoardingScreen, autoSaveNote: $autoSaveNote, themeMode: $themeMode, appLanguague: $appLanguague, themeSystem: $themeSystem, layoutMode: $layoutMode)';
   }
 
   @override
@@ -305,6 +322,8 @@ class _$SettingsStateImpl implements _SettingsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SettingsStateImpl &&
+            (identical(other.isAnimationsEnabled, isAnimationsEnabled) ||
+                other.isAnimationsEnabled == isAnimationsEnabled) &&
             (identical(other.confirmDeleteNote, confirmDeleteNote) ||
                 other.confirmDeleteNote == confirmDeleteNote) &&
             (identical(other.confirmMoveNoteToTrash, confirmMoveNoteToTrash) ||
@@ -336,6 +355,7 @@ class _$SettingsStateImpl implements _SettingsState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      isAnimationsEnabled,
       confirmDeleteNote,
       confirmMoveNoteToTrash,
       useNoteGridTile,
@@ -365,7 +385,8 @@ class _$SettingsStateImpl implements _SettingsState {
 
 abstract class _SettingsState implements SettingsState {
   const factory _SettingsState(
-      {final bool confirmDeleteNote,
+      {final bool isAnimationsEnabled,
+      final bool confirmDeleteNote,
       final bool confirmMoveNoteToTrash,
       final bool useNoteGridTile,
       final bool syncWithCloudDefaultValue,
@@ -381,6 +402,8 @@ abstract class _SettingsState implements SettingsState {
   factory _SettingsState.fromJson(Map<String, dynamic> json) =
       _$SettingsStateImpl.fromJson;
 
+  @override
+  bool get isAnimationsEnabled;
   @override
   bool get confirmDeleteNote;
   @override

@@ -58,6 +58,14 @@ class _NoteToolbarState extends State<NoteToolbar> {
                     controller: widget._controller,
                   ),
                   QuillToolbarVideoButton(controller: widget._controller),
+                  QuillToolbarColorButton(
+                    controller: widget._controller,
+                    isBackground: true,
+                  ),
+                  QuillToolbarColorButton(
+                    controller: widget._controller,
+                    isBackground: false,
+                  ),
                   QuillToolbarHistoryButton(
                     controller: widget._controller,
                     isUndo: true,

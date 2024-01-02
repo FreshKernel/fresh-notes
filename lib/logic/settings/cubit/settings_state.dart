@@ -3,6 +3,7 @@ part of 'settings_cubit.dart';
 @freezed
 class SettingsState with _$SettingsState {
   const factory SettingsState({
+    @Default(true) bool isAnimationsEnabled,
     @Default(true) bool confirmDeleteNote,
     @Default(false) bool confirmMoveNoteToTrash,
     @Default(true) bool useNoteGridTile,

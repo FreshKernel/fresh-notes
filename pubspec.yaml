@@ -71,13 +71,13 @@ dependencies:
         url: https://github.com/freshplatform/flutter-fresh-base-package.git
         ref: main
 
-  flutter_quill: ^9.1.1
-  flutter_quill_extensions: ^9.1.1
-  quill_pdf_converter: ^9.1.1
+  flutter_quill: ^9.2.1
+  flutter_quill_extensions: ^9.2.1
+  quill_pdf_converter: ^9.2.1
 
   # Other packages
   lottie: ^2.7.0
-  cached_network_image: ^3.3.0
+  cached_network_image: ^3.3.1
   upgrader: ^8.4.0
   # hive: ^2.2.3
   flutter_svg: ^2.0.9
@@ -102,7 +102,7 @@ dev_dependencies:
   freezed: ^2.4.6
   json_serializable: ^6.7.1
   flutter_gen_runner: ^5.3.2
-  flutter_quill_test: ^9.1.1
+  flutter_quill_test: ^9.2.1
   bloc_test: ^9.1.5
 
   yaml: ^3.1.2

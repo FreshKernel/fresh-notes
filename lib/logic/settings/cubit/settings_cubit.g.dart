@@ -8,6 +8,7 @@ part of 'settings_cubit.dart';
 
 _$SettingsStateImpl _$$SettingsStateImplFromJson(Map<String, dynamic> json) =>
     _$SettingsStateImpl(
+      isAnimationsEnabled: json['isAnimationsEnabled'] as bool? ?? true,
       confirmDeleteNote: json['confirmDeleteNote'] as bool? ?? true,
       confirmMoveNoteToTrash: json['confirmMoveNoteToTrash'] as bool? ?? false,
       useNoteGridTile: json['useNoteGridTile'] as bool? ?? true,
@@ -33,6 +34,7 @@ _$SettingsStateImpl _$$SettingsStateImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$SettingsStateImplToJson(_$SettingsStateImpl instance) =>
     <String, dynamic>{
+      'isAnimationsEnabled': instance.isAnimationsEnabled,
       'confirmDeleteNote': instance.confirmDeleteNote,
       'confirmMoveNoteToTrash': instance.confirmMoveNoteToTrash,
       'useNoteGridTile': instance.useNoteGridTile,

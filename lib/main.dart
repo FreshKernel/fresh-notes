@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart' show AppBar, MaterialApp, Scaffold;
 import 'package:flutter/widgets.dart'
     show Center, WidgetsFlutterBinding, runApp;
@@ -14,7 +14,7 @@ import 'presentation/components/others/w_error.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    if (!kReleaseMode) {
+    if (kDebugMode) {
       Logger.root.level = Level.ALL; // defaults to Level.INFO
       Logger.root.onRecord.listen((record) {
         if (kDebugMode) {

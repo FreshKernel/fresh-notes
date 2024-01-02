@@ -1,22 +1,21 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'note_folder_cubit.dart';
 
 class NoteFolderState extends Equatable {
   const NoteFolderState({
     required this.noteFolders,
-    required this.currentFolder,
+    required this.navigationStack,
     this.exception,
     this.isLoading = true,
   });
 
   final List<NoteFolder> noteFolders;
-  final NoteFolder? currentFolder;
+  final List<NoteFolder> navigationStack;
   final Exception? exception;
   final bool isLoading;
 
   @override
   List<Object?> get props => [
-        currentFolder,
+        navigationStack,
         noteFolders,
         exception,
         isLoading,
@@ -24,13 +23,13 @@ class NoteFolderState extends Equatable {
 
   NoteFolderState copyWith({
     List<NoteFolder>? noteFolders,
-    NoteFolder? currentFolder,
+    List<NoteFolder>? navigationStack,
     Exception? exception,
     bool? isLoading,
   }) {
     return NoteFolderState(
       noteFolders: noteFolders ?? this.noteFolders,
-      currentFolder: currentFolder ?? this.currentFolder,
+      navigationStack: navigationStack ?? this.navigationStack,
       exception: exception ?? this.exception,
       isLoading: isLoading ?? this.isLoading,
     );

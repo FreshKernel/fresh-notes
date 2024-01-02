@@ -114,6 +114,20 @@ class SettingsGeneralSection extends StatelessWidget {
               );
             },
           ),
+        CheckboxListTile.adaptive(
+          title: Text(context.loc.animations),
+          subtitle: Text(context.loc.animationsDesc),
+          secondary: const Icon(Icons.play_circle_fill),
+          value: state.isAnimationsEnabled,
+          onChanged: (value) {
+            final settingsBloc = context.read<SettingsCubit>();
+            settingsBloc.updateSettings(
+              settingsBloc.state.copyWith(
+                isAnimationsEnabled: value ?? false,
+              ),
+            );
+          },
+        ),
         ListTile(
           title: Text(context.loc.layoutMode),
           subtitle: Text(context.loc.layoutModeDesc),

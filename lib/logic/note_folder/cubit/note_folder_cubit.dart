@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:path/path.dart' as path;
 
 import '../../../data/note_folder/models/m_note_folder.dart';
 import '../../../data/note_folder/note_folder_repository.dart';
@@ -9,7 +8,10 @@ part 'note_folder_state.dart';
 
 class NoteFolderCubit extends Cubit<NoteFolderState> {
   NoteFolderCubit({required this.noteFoldersService})
-      : super(const NoteFolderState(noteFolders: [], currentFolder: null)) {
+      : super(const NoteFolderState(
+          noteFolders: [],
+          navigationStack: [],
+        )) {
     getFolders();
   }
 
@@ -26,52 +28,60 @@ class NoteFolderCubit extends Cubit<NoteFolderState> {
 
   Future<void> createNote(String folderName) async {
     try {
-      final folder =
-          await noteFoldersService.createFolder(folderName: folderName);
-      emit(
-        state.copyWith(
-          noteFolders: [
-            ...state.noteFolders,
-            folder,
-          ],
-        ),
-      );
+      // final folder = await noteFoldersService.createFolder(
+      //   folderName: folderName,
+      //   currentFolder: state.navigationStack.lastOrNull,
+      // );
+
+      // final newFolder = NoteFolder(
+      //   folderPath: folderName,
+      //   subFolders: const [],
+      //   notes: const [],
+      // );
+      // final currentFolder = state.navigationStack.lastOrNull;
+      // if (currentFolder != null) {
+      //   final noteFolders = [...state.noteFolders];
+      //   final index = noteFolders.indexOf(currentFolder);
+      //   noteFolders.removeAt(index);
+      //   noteFolders.insert(
+      //     index,
+      //     currentFolder.copyWith(
+      //       subFolders: [...currentFolder.subFolders, newFolder],
+      //     ),
+      //   );
+      //   emit(
+      //     state.copyWith(
+      //       noteFolders: noteFolders,
+      //     ),
+      //   );
+      //   return;
+      // }
+      // emit(state.copyWith(
+      //   noteFolders: [
+      //     ...state.noteFolders,
+      //   ],
+      // ));
     } on Exception catch (e) {
       emit(state.copyWith(exception: e));
     }
   }
 
   void navigateToFolder(NoteFolder folder) {
-    emit(state.copyWith(currentFolder: folder));
+    emit(state.copyWith(navigationStack: [
+      ...state.navigationStack,
+      folder,
+    ]));
   }
 
   void navigateBack() {
     assert(
-      state.currentFolder != null,
-      'The current folder should not be null to navigate back',
+      state.navigationStack.isNotEmpty,
+      'The navigation stack should not be empty to navigate back',
     );
-    final currentFolder = state.currentFolder;
-    if (currentFolder == null) {
-      return;
-    }
-
-    final parentFolderPath = path.dirname(currentFolder.folderPath);
-
-    NoteFolder? parentFolder;
-
-    void search(List<NoteFolder> noteFolders) {
-      if (noteFolders.isEmpty) {
-        return;
-      }
-      for (final folder in noteFolders) {
-        if (parentFolderPath == path.dirname(folder.folderPath)) {
-          parentFolder = folder;
-          break;
-        }
-      }
-    }
-
-    search(state.noteFolders);
-    emit(state.copyWith(currentFolder: parentFolder));
+    final navigationStack = [...state.navigationStack];
+    navigationStack.removeLast();
+    emit(state.copyWith(
+      navigationStack: navigationStack,
+    ));
   }
 }

@@ -191,5 +191,7 @@
     "updateFolder": "Update folder",
     "pleaseEnterANameForTheFolder": "Please enter a name for the folder",
     "sourceCode": "Source Code",
-    "sourceCodeDesc": "If you want to explore the source code of the app"
+    "sourceCodeDesc": "If you want to explore the source code of the app",
+    "animations": "Animations",
+    "animationsDesc": "Enable animations in the app"
   }  

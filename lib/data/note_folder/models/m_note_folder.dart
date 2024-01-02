@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as path;
@@ -20,4 +21,16 @@ class NoteFolder extends Equatable {
 
   @override
   List<Object?> get props => [folderName, subFolders, notes];
+
+  NoteFolder copyWith({
+    String? folderPath,
+    List<NoteFolder>? subFolders,
+    List<UniversalNote>? notes,
+  }) {
+    return NoteFolder(
+      folderPath: folderPath ?? this.folderPath,
+      subFolders: subFolders ?? this.subFolders,
+      notes: notes ?? this.notes,
+    );
+  }
 }

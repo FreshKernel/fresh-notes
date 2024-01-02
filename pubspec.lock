@@ -173,26 +173,26 @@ packages:
     dependency: "direct main"
     description:
       name: cached_network_image
-      sha256: f98972704692ba679db144261172a8e20feb145636c617af0eb4022132a6797f
+      sha256: "28ea9690a8207179c319965c13cd8df184d5ee721ae2ce60f398ced1219cea1f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0"
+    version: "3.3.1"
   cached_network_image_platform_interface:
     dependency: transitive
     description:
       name: cached_network_image_platform_interface
-      sha256: "56aa42a7a01e3c9db8456d9f3f999931f1e05535b5a424271e9a38cabf066613"
+      sha256: "9e90e78ae72caa874a323d78fa6301b3fb8fa7ea76a8f96dc5b5bf79f283bf2f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "4.0.0"
   cached_network_image_web:
     dependency: transitive
     description:
       name: cached_network_image_web
-      sha256: "759b9a9f8f6ccbb66c185df805fac107f05730b1dab9c64626d1008cca532257"
+      sha256: "42a835caa27c220d1294311ac409a43361088625a4f23c820b006dd9bffb3316"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   characters:
     dependency: transitive
     description:
@@ -814,22 +814,22 @@ packages:
       path: "/Users/ellet/Developer/projects/flutter-quill/"
       relative: false
     source: path
-    version: "9.2.0"
+    version: "9.2.1"
   flutter_quill_extensions:
     dependency: "direct main"
     description:
       path: "/Users/ellet/Developer/projects/flutter-quill/flutter_quill_extensions"
       relative: false
     source: path
-    version: "9.2.0"
+    version: "9.2.1"
   flutter_quill_test:
     dependency: "direct dev"
     description:
       name: flutter_quill_test
-      sha256: "652b29a30af9d14d6937ffe3e1312e3b801918ad8fecd1c1bb242156dc1e7925"
+      sha256: "8c68c02ffea37e7c35bfa677c12538274733b416cda3fab77f0412bbf7ed6664"
       url: "https://pub.dev"
     source: hosted
-    version: "9.1.1"
+    version: "9.2.1"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -1519,10 +1519,10 @@ packages:
     dependency: "direct main"
     description:
       name: quill_pdf_converter
-      sha256: fb601246831fb0a88115c11e9bc9419f2f49160d75ac4d70f10df42d745a8788
+      sha256: "5a620c8ed3e52985d9ddd53d7f3157b802e1675b77c066ccf73f3121cc4366d7"
       url: "https://pub.dev"
     source: hosted
-    version: "9.1.1"
+    version: "9.2.1"
   quiver:
     dependency: transitive
     description:

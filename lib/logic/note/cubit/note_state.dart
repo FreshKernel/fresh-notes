@@ -5,7 +5,7 @@ part of 'note_cubit.dart';
 class NoteState extends Equatable {
   const NoteState({
     required this.notes,
-    this.isLoading = true,
+    this.isLoading = false,
     this.message = '',
     this.exception,
   });
