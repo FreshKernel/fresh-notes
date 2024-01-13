@@ -5,9 +5,10 @@ import '../extensions/uri.dart';
 @immutable
 class GlobalValidator {
   const GlobalValidator._();
-  static String? validateTextIsEmpty(String text, {String? errorMessage}) {
+  static String? validateTextIsEmpty(String text,
+      {required String errorMessage}) {
     if (text.trim().isEmpty) {
-      return errorMessage ?? 'Please enter a valid text.';
+      return errorMessage;
     }
     return null;
   }

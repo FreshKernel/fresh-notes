@@ -34,7 +34,6 @@ linter:
     avoid_types_on_closure_parameters: true
     avoid_void_async: true
     directives_ordering: true
-    # - lines_longer_than_80_chars
     prefer_const_constructors_in_immutables: true
     prefer_const_declarations: true
     prefer_final_fields: true
