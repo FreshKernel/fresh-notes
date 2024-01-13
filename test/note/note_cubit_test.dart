@@ -23,6 +23,6 @@ void main() {
   //   );
   // });
   group('No tests', () {
-    expect(null, null);
+    expect(true, true);
   });
 }
