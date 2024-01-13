@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart'
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
 import 'package:logging/logging.dart' show Logger;
 
-import 'core/flavor_config.dart';
 import 'core/log/logger.dart';
 import 'core/my_app.dart';
 import 'core/start/app_startup.dart';
@@ -22,12 +21,6 @@ Future<void> main() async {
         }
       });
     }
-
-    FlavorConfig.setup(
-      appStore: const String.fromEnvironment('APP_STORE', defaultValue: ''),
-      isShouldCheckForUpdates:
-          const bool.fromEnvironment('UPDATE_CHECK', defaultValue: false),
-    );
 
     await dotenv.load(fileName: '.env');
     await AppStartup.getInstance().initialize();
