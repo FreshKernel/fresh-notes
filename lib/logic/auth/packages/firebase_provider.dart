@@ -370,7 +370,8 @@ class FirebaseAuthProviderImpl extends AuthRepository {
           return AuthUser.fromFirebase(user);
         case AppleAuthCustomProvider():
           final identityToken = authCustomProvider.identityToken;
-          final oAuthProvider = OAuthProvider('apple.com');
+          final oAuthProvider =
+              OAuthProvider(authCustomProvider.providerId); // apple.com
 
           final result = identityToken != null
               ? await FirebaseAuth.instance.signInWithCredential(

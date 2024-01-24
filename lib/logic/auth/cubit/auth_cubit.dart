@@ -121,7 +121,7 @@ class AuthCubit extends Cubit<AuthState> {
             return;
           }
           if (!PlatformChecker.nativePlatform().isAppleSystem()) {
-            // Let firebase handle the process for other platform using web page
+            // Let firebase handle the process for other platforms using web page
             authCustomProvider = const AppleAuthCustomProvider(
               identityToken: null,
               authorizationCode: null,

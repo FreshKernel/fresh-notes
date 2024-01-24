@@ -105,7 +105,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
           return;
         }
 
-        var error = '${context.loc.unknownError}. ${e.toString()}';
+        var error = context.loc.unknownErrorWithMessage(e.toString());
         var isDevError = true;
         if (e is AuthException) {
           switch (e.type) {
