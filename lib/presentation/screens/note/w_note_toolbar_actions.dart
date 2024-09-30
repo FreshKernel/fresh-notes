@@ -1,29 +1,24 @@
-import 'dart:convert' show jsonDecode, jsonEncode;
+import 'dart:convert' show jsonEncode;
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
+import 'package:flutter_quill_to_pdf/flutter_quill_to_pdf.dart';
 import 'package:gal/gal.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:quill_pdf_converter/quill_pdf_converter.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 import '../../../core/log/logger.dart';
-import '../../../core/start/packages/flutter_local_notifications.dart';
 import '../../../data/constants/urls_constants.dart';
 import '../../../data/notes/universal/models/m_note.dart';
 import '../../../logic/auth/auth_service.dart';
 import '../../../logic/native/share/s_app_share.dart';
 import '../../../logic/settings/cubit/settings_cubit.dart';
+import '../../../logic/utils/quill_image_utils.dart';
 import '../../l10n/extensions/localizations.dart';
 import '../../utils/extensions/build_context_ext.dart';
 import '../note_list/note_tile/note_tile_options.dart';
@@ -78,57 +73,6 @@ List<Widget> noteScreenActions({
         controller: controller,
         options: const QuillToolbarSearchButtonOptions(),
       ),
-      if (note != null)
-        IconButton(
-          onPressed: () async {
-            tz.initializeTimeZones();
-            final dateTime = await showDatePicker(
-              context: context,
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 5000)),
-              initialDate: DateTime.now(),
-            );
-            if (dateTime == null) {
-              return;
-            }
-            if (!context.mounted) {
-              return;
-            }
-            final timeOfDay = await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.now(),
-            );
-            if (timeOfDay == null) {
-              return;
-            }
-            final newDate = dateTime.copyWith(
-                hour: timeOfDay.hour, minute: timeOfDay.minute);
-            final currentDate = DateTime.now();
-
-            final duration = newDate.difference(currentDate);
-            await FlutterLocalNotificationsService.getInstance()
-                .requestPermission();
-            await FlutterLocalNotificationsService.getInstance()
-                .localNotificationsPlugin
-                .zonedSchedule(
-                  0,
-                  note.title,
-                  Document.fromJson(jsonDecode(note.text)).toPlainText(),
-                  tz.TZDateTime.now(tz.local).add(duration),
-                  const NotificationDetails(
-                    android: AndroidNotificationDetails(
-                      'note_alarms',
-                      'Note alarms',
-                      channelDescription: 'Your note alarms',
-                    ),
-                  ),
-                  androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-                  uiLocalNotificationDateInterpretation:
-                      UILocalNotificationDateInterpretation.absoluteTime,
-                );
-          },
-          icon: const Icon(Icons.notification_add),
-        ),
       MenuAnchor(
         controller: _menuController,
         menuChildren: [
@@ -141,6 +85,7 @@ List<Widget> noteScreenActions({
                   ),
                 );
                 AppLogger.log(
+                  // ignore: deprecated_member_use_from_same_package
                   QuillImageUtilities(document: controller.document)
                       .getImagesPathsFromDocument(onlyLocalImages: false),
                 );
@@ -158,18 +103,21 @@ List<Widget> noteScreenActions({
             menuChildren: [
               MenuItemButton(
                 onPressed: () async {
-                  final pdfDocument = pw.Document();
-                  final pdfWidgets =
-                      await controller.document.toDelta().toPdf();
-                  pdfDocument.addPage(
-                    pw.MultiPage(
-                      maxPages: 200,
-                      pageFormat: PdfPageFormat.a4,
-                      build: (context) {
-                        return pdfWidgets;
-                      },
+                  final PDFConverter pdfConverter = PDFConverter(
+                    fallbacks: [pw.Font.courier()],
+                    textDirection: Directionality.of(
+                      context,
                     ),
+                    document: controller.document.toDelta(),
+                    pageFormat: PDFPageFormat.all(width: 250, height: 250),
                   );
+
+                  final pdfDocument = await pdfConverter.createDocument();
+                  if (pdfDocument == null) {
+                    throw StateError(
+                      'Pdf document is expected to be not null.',
+                    );
+                  }
                   await Printing.layoutPdf(
                     onLayout: (format) async => pdfDocument.save(),
                   );
@@ -240,7 +188,6 @@ List<Widget> noteScreenActions({
                   final messenger = context.messenger;
                   final plainText = controller.document.toPlainText(
                     FlutterQuillEmbeds.defaultEditorBuilders(),
-                    QuillEditorUnknownEmbedBuilder(),
                   );
                   if (plainText.trim().isEmpty) {
                     messenger.showMessage(

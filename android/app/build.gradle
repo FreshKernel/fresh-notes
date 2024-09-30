@@ -1,25 +1,8 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
-}
-
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
 }
 
 def keystoreProperties = new Properties()
@@ -30,39 +13,29 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "net.freshplatform.fresh_notes"
-//    compileSdkVersion flutter.compileSdkVersion
-    compileSdkVersion 34
-    ndkVersion flutter.ndkVersion
-    // One or more plugins require a higher Android NDK version.
-    ndkVersion "25.1.8937393"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    androidResources {
-//        generateLocaleConfig = true
-    }
-
     defaultConfig {
         applicationId "net.freshplatform.fresh_notes"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 23
-        targetSdkVersion 34
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        // TODO: Use flutter.minSdkVersion once remove super_clipboard
+        minSdk = 23
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
     }
 
     signingConfigs {
@@ -93,29 +66,10 @@ android {
         }
     }
 
-//    buildFeatures {
-//        compose true
-//    }
-//    composeOptions {
-//        kotlinCompilerExtensionVersion "1.5.1"
-//    }
-
 }
 
 flutter {
     source '../..'
 }
 
-dependencies {
-//    implementation "androidx.glance:glance:1.0.0"
-//    implementation "androidx.glance:glance-appwidget:1.0.0"
-//    implementation "androidx.glance:glance-material3:1.0.0"
-
-    // Flutter local notifications:
-    //noinspection GradleDependency
-    implementation 'androidx.window:window:1.0.0'
-    //noinspection GradleDependency
-    implementation 'androidx.window:window-java:1.0.0'
-    //noinspection GradleDependency
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
-}
+dependencies {}

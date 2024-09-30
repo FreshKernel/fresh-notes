@@ -16,12 +16,7 @@ enum AppLanguague {
   final String valueName;
 }
 
-enum AppThemeSystem {
-  material3,
-  material2,
-  cupertino,
-  fluentUi,
-}
+enum AppThemeSystem { material3, material2, cupertino }
 
 enum AppLayoutMode {
   auto,

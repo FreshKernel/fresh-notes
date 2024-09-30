@@ -1,14 +1,14 @@
 import '../../../core/app_module.dart';
 import 'connection_checker.dart';
 import 'connection_type.dart';
-import 'packages/connectivity_plus_impl.dart';
+import 'fake_connection_checker.dart';
 
 class ConnectionCheckerService extends ConnectionChecker {
   const ConnectionCheckerService(this._connectionChecker);
 
   factory ConnectionCheckerService.connectivityPlus() =>
       ConnectionCheckerService(
-        ConnectionCheckerConnectivityPlusImpl(),
+        FakeConnectionChecker(),
       );
 
   factory ConnectionCheckerService.getInstance() =>

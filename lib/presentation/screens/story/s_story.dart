@@ -20,7 +20,12 @@ class _StoryScreenState extends State<StoryScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = QuillController.basic();
+    _controller = QuillController(
+      configurations: const QuillControllerConfigurations(),
+      document: Document(),
+      selection: const TextSelection.collapsed(offset: 0),
+      readOnly: true,
+    );
   }
 
   @override
@@ -63,7 +68,6 @@ class _StoryScreenState extends State<StoryScreen> {
           configurations: QuillEditorConfigurations(
             padding: const EdgeInsets.all(16),
             controller: _controller,
-            readOnly: true,
             embedBuilders: FlutterQuillEmbeds.defaultEditorBuilders(),
           ),
         ),

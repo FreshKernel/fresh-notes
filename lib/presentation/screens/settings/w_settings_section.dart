@@ -41,11 +41,9 @@ class SettingsSection extends StatelessWidget {
             ),
           ),
         ),
-        // margin: const EdgeInsets.all(12),
         children: tiles,
       );
     }
-    // final materialTheme = Theme.of(context);
 
     final tileList = buildTileList();
 

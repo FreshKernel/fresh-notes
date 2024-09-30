@@ -29,16 +29,6 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     clear();
   }
 
-  static bool buildWhen(SettingsState previous, SettingsState current) {
-    // Rebuild the whole app only if some values changes
-
-    return previous.themeMode != current.themeMode ||
-        previous.darkDuringDayInAutoMode != current.darkDuringDayInAutoMode ||
-        previous.appLanguague != current.appLanguague ||
-        previous.themeSystem != current.themeSystem ||
-        previous.openOnBoardingScreen != current.openOnBoardingScreen;
-  }
-
   @override
   SettingsState? fromJson(Map<String, dynamic> json) {
     return SettingsState.fromJson(json);

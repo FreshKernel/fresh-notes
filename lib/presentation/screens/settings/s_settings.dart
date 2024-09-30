@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/extensions/localizations.dart';
 import 'w_settings.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -11,7 +12,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(context.loc.settings),
       ),
       body: const SafeArea(
         child: SettingsContent(),

@@ -176,5 +176,7 @@
   "updateFolder": "تحديث المجلد",
   "pleaseEnterANameForTheFolder": "الرجاء إدخال اسم للمجلد",
   "sourceCode": "شفرة المصدر",
-  "sourceCodeDesc": "إذا كنت ترغب في استكشاف شفرة المصدر للتطبيق"
+  "sourceCodeDesc": "إذا كنت ترغب في استكشاف شفرة المصدر للتطبيق",
+  "animations": "الرسوم المتحركة",
+  "animationsDesc": "تمكين الرسوم المتحركة في التطبيق"
 }

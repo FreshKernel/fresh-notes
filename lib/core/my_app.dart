@@ -3,7 +3,6 @@ import 'package:flutter/material.dart'
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/translations.dart' show FlutterQuillLocalizations;
-import 'package:upgrader/upgrader.dart';
 
 import '../core/log/logger.dart';
 import '../data/core/cloud/storage/s_cloud_storage.dart';
@@ -60,7 +59,13 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(
-        buildWhen: SettingsCubit.buildWhen,
+        buildWhen: (previous, current) =>
+            previous.themeMode != current.themeMode ||
+            previous.darkDuringDayInAutoMode !=
+                current.darkDuringDayInAutoMode ||
+            previous.appLanguague != current.appLanguague ||
+            previous.themeSystem != current.themeSystem ||
+            previous.openOnBoardingScreen != current.openOnBoardingScreen,
         builder: (context, state) {
           AppLogger.log('Building the App widget...');
           return MaterialApp.router(
@@ -88,11 +93,7 @@ class MyApp extends StatelessWidget {
               if (state.openOnBoardingScreen) {
                 return const OnBoardingScreen();
               }
-              return UpgradeAlert(
-                navigatorKey: AppRouter.router.routerDelegate.navigatorKey,
-                child:
-                    child ?? (throw ArgumentError('Child should not be null')),
-              );
+              return child ?? (throw ArgumentError('Child should not be null'));
             },
             localizationsDelegates: const [
               ...AppLocalizations.localizationsDelegates,

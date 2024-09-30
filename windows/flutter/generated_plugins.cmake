@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   cloud_firestore
-  connectivity_plus
   file_selector_windows
   firebase_auth
   firebase_core
@@ -12,7 +11,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   gal
   irondash_engine_context
   printing
-  share_plus
   super_native_extensions
   url_launcher_windows
 )

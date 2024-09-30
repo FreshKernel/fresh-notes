@@ -2,13 +2,12 @@ import 'dart:ui';
 
 import '../../../core/app_module.dart';
 import 'app_share.dart';
-import 'packages/share_plus_impl.dart';
+import 'fake_app_share.dart';
 
 class AppShareService extends AppShare {
   AppShareService(this._provider);
 
-  factory AppShareService.sharePlus() =>
-      AppShareService(AppShareSharePlusImpl());
+  factory AppShareService.sharePlus() => AppShareService(FakeAppShare());
 
   factory AppShareService.getInstance() => AppModule.appShareService;
 

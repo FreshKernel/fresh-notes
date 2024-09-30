@@ -1,8 +1,8 @@
 name: fresh_notes
 description: A cross-platform, open-source notes app.
 publish_to: 'none'
-version: 0.0.1-dev.10+13
-repository: https://github.com/freshplatform/fresh-notes
+version: 0.0.2-dev.1+17
+repository: https://github.com/FreshKernel/fresh-notes
 platforms:
   android:
   ios:
@@ -21,93 +21,90 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.8
 
   # Firebase packages && plugins
-  firebase_core: ^2.24.2
-  firebase_app_check: ^0.2.1+8
-  firebase_auth: ^4.15.3
-  cloud_firestore: ^4.13.6
-  firebase_storage: ^11.5.6
-  firebase_analytics: ^10.7.4
-  firebase_crashlytics: ^3.4.8
+  firebase_core: ^3.6.0
+  firebase_app_check: ^0.3.1
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.3
+  firebase_storage: ^12.3.2
+  firebase_analytics: ^11.3.3
+  firebase_crashlytics: ^4.1.3
 
   # Core plugins
-  path_provider: ^2.1.1
-  sqflite: ^2.3.0
+  path_provider: ^2.1.4
+  sqflite: ^2.3.3
 
   # Other plugins
-  image_picker: ^1.0.5
-  image_picker_platform_interface: ^2.9.1
+  image_picker: ^1.1.2
+  image_picker_platform_interface: ^2.10.0
   image_picker_android: ^0.8.9+1
   google_sign_in: ^6.2.1
-  sign_in_with_apple: ^5.0.0
-  share_plus: ^7.2.1
-  url_launcher: ^6.2.2
-  connectivity_plus: ^5.0.2
-  gal: ^2.2.0
+  sign_in_with_apple: ^6.1.2
+  url_launcher: ^6.3.0
+  gal: ^2.3.0
   uuid: ^4.2.1
-  cross_file: ^0.3.3+8
+  cross_file: ^0.3.4
   # home_widget: ^0.4.1
-  flutter_local_notifications: ^16.2.0
-  printing: ^5.11.1
+  printing: ^5.13.3
 
   # Core packages
   path: ^1.8.3
   logging: ^1.2.0
   bloc: ^8.1.2
-  flutter_bloc: ^8.1.3
-  hydrated_bloc: ^9.1.3
-  intl: ^0.18.1
+  flutter_bloc: ^8.1.6
+  hydrated_bloc: ^9.1.5
+  intl: ^0.19.0
   meta: ^1.10.0
   freezed_annotation: ^2.4.1
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
   equatable: ^2.0.5
-  go_router: ^13.0.0
-  http: ^1.1.2
+  go_router: ^14.2.8
+  http: ^1.2.2
 
   fresh_base_package:
     git:
         url: https://github.com/freshplatform/flutter-fresh-base-package.git
         ref: main
 
-  flutter_quill: ^9.2.1
-  flutter_quill_extensions: ^9.2.1
-  quill_pdf_converter: ^9.2.1
+  flutter_quill: ^10.8.1
+  flutter_quill_extensions: ^10.8.1
+  flutter_quill_to_pdf: ^2.2.5
 
   # Other packages
-  lottie: ^2.7.0
-  cached_network_image: ^3.3.1
-  upgrader: ^8.4.0
-  # hive: ^2.2.3
+  lottie: ^3.1.2
+  cached_network_image: ^3.4.1
   flutter_svg: ^2.0.9
   flutter_dotenv: ^5.1.0
   mime: ^1.0.4
   pdf: ^3.10.7
-  timezone: ^0.9.2
-  screenshot: ^2.1.0
+  screenshot: ^3.0.0
 
   # Other ui packages
   smooth_page_indicator: ^1.1.0
   flutter_staggered_grid_view: ^0.7.0
   auto_size_text: ^3.0.0
 
+dependency_overrides:
+  # TODO: To fix related build failure
+  win32: ^5.5.4
+
 dev_dependencies:
   test: ^1.24.9
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.1
+  flutter_lints: ^5.0.0
   build_runner: ^2.4.7
   freezed: ^2.4.6
   json_serializable: ^6.7.1
   flutter_gen_runner: ^5.3.2
-  flutter_quill_test: ^9.2.1
+  flutter_quill_test: ^10.8.1
   bloc_test: ^9.1.5
 
   yaml: ^3.1.2
-  auto_screenshot: ^0.0.2
-  icons_launcher: ^2.1.6
+  icons_launcher: ^3.0.0
 
 flutter:
 
@@ -126,23 +123,10 @@ flutter:
     - ./assets/lottie/auth/
     - shorebird.yaml
 
-  # fonts:
-  #   - family: Ubuntu
-  #     fonts:
-  #       - asset: assets/fonts/UbuntuMono-Regular.ttf
-  #       - asset: assets/fonts/UbuntuMono-Italic.ttf
-  #         style: italic
-  #       - asset: assets/fonts/UbuntuMono-Bold.ttf
-  #         weight: 700
-  #       - asset: assets/fonts/UbuntuMono-BoldItalic.ttf
-  #         weight: 700
-
 flutter_gen:
 
   integrations:
     flutter_svg: true
-    # flare_flutter: true
-    # rive: true
     lottie: true
 
 
@@ -161,23 +145,3 @@ icons_launcher:
       enable: true
     web:
       enable: true
-
-auto_screenshot:
-  bundle_id: 
-    android: net.freshplatform.fresh_notes
-    ios: net.freshplatform.freshNotes
-  devices:
-    - iPhone 8 Plus
-    - iPhone 13 Pro Max
-    - iPad Pro (12.9-inch) (2nd generation)
-    - iPad Pro (12.9-inch) (5th generation)
-    - Pixel_3a_API_33_arm64-v8a
-    - Pixel_5_API_33
-  base_url:
-    android: https://notes.freshplatform.net/
-    ios: https://notes.freshplatform.net/
-  screenshot:
-    - /
-    - /trash
-    - /settings
-    - /ob-boarding

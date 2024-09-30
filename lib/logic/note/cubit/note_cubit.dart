@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart'
     show FirebaseCrashlytics;
 import 'package:flutter_quill/flutter_quill.dart' show Document;
-import 'package:flutter_quill_extensions/utils/quill_image_utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart' show immutable;
 import 'package:path/path.dart' as path;
@@ -24,6 +23,7 @@ import '../../../data/notes/universal/models/m_note_inputs.dart';
 import '../../auth/auth_service.dart';
 import '../../utils/extensions/string.dart';
 import '../../utils/io/file_utilities.dart';
+import '../../utils/quill_image_utils.dart';
 
 part 'note_state.dart';
 
@@ -249,6 +249,7 @@ class NoteCubit extends Cubit<NoteState> {
     await cloudStorageService.deleteFileByDownloadUrl(imageUrl);
   }
 
+  // ignore: deprecated_member_use_from_same_package
   Future<void> _deleteNoteCloudFiles(QuillImageUtilities imageUtilities) async {
     final images =
         imageUtilities.getImagesPathsFromDocument(onlyLocalImages: false).where(
@@ -259,11 +260,14 @@ class NoteCubit extends Cubit<NoteState> {
     }
   }
 
+  // ignore: deprecated_member_use_from_same_package
   Future<void> _deleteNoteLocalFiles(QuillImageUtilities imageUtilities) async {
     await imageUtilities.deleteAllLocalImages();
   }
 
+  // ignore: deprecated_member_use_from_same_package
   QuillImageUtilities _getImageUtilitiesByNoteText(String noteText) {
+    // ignore: deprecated_member_use_from_same_package
     return QuillImageUtilities(
         document: Document.fromJson(jsonDecode(noteText)));
   }

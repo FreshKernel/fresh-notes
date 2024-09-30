@@ -50,10 +50,6 @@ extension BuildContextExt on BuildContext {
     return themeSystem == AppThemeSystem.cupertino;
   }
 
-  bool get isFluentUi {
-    return themeSystem == AppThemeSystem.fluentUi;
-  }
-
   ThemeData get materialTheme {
     return Theme.of(this);
   }

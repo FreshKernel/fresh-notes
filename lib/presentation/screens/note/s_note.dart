@@ -48,7 +48,6 @@ class NoteScreen extends StatefulWidget {
 class _NoteScreenState extends State<NoteScreen> {
   late final QuillController _controller;
 
-  var _isReadOnly = false;
   var _toolbarState = const NoteScreenToolbarState(
     isFavorite: false,
     isSyncWithCloud: false,
@@ -83,7 +82,7 @@ class _NoteScreenState extends State<NoteScreen> {
 
   void _setupNote() {
     if (widget.args.isDeepLink) {
-      _isReadOnly = true;
+      _controller.readOnly = true;
     }
     final noteToEdit = _note;
 
@@ -195,15 +194,16 @@ class _NoteScreenState extends State<NoteScreen> {
       }
     }
     return Padding(
-      padding: !_isReadOnly
+      padding: !_controller.readOnly
           ? const EdgeInsets.only(
               bottom: 40,
             )
           : const EdgeInsets.only(),
       child: FloatingActionButton(
-        onPressed: () => setState(() => _isReadOnly = !_isReadOnly),
+        onPressed: () =>
+            setState(() => _controller.readOnly = !_controller.readOnly),
         child: Icon(
-          _isReadOnly ? Icons.lock_rounded : Icons.edit,
+          _controller.readOnly ? Icons.lock_rounded : Icons.edit,
         ),
       ),
     );
@@ -285,7 +285,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         textInputAction: TextInputAction.next,
                         onEditingComplete: _editorFocusNode.requestFocus,
                         onSubmitted: (value) => _editorFocusNode.requestFocus(),
-                        readOnly: _isReadOnly,
+                        readOnly: _controller.readOnly,
                         decoration: InputDecoration(
                           labelText: context.loc.title,
                           hintText: context.loc.enterTitleDesc,
@@ -300,7 +300,6 @@ class _NoteScreenState extends State<NoteScreen> {
                         focusNode: _editorFocusNode,
                         onRequestingSaveNote: _saveNote,
                         configurations: QuillEditorConfigurations(
-                          readOnly: _isReadOnly,
                           controller: _controller,
                           sharedConfigurations: const QuillSharedConfigurations(
                             extraConfigurations: {
@@ -320,7 +319,7 @@ class _NoteScreenState extends State<NoteScreen> {
           ],
         ),
       ),
-      bottomSheet: !_isReadOnly
+      bottomSheet: !_controller.readOnly
           ? SizedBox(
               height: 50,
               child: NoteToolbar(controller: _controller),

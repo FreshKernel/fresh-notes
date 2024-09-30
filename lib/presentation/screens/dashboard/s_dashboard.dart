@@ -34,6 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           actionsBuilder: NotesListPage.actionsBuilder,
           actionButtonBuilder: NotesListPage.actionButtonBuilder,
         ),
+        // TODO: This feature is not ready
         if (kDebugMode)
           NavigationItem(
             title: context.loc.browse,
