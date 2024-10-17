@@ -11,5 +11,7 @@ class FakeConnectionChecker extends ConnectionChecker {
   }
 
   @override
-  Stream<ConnectionType> monitorInternetConnectionStatus() async* {}
+  Stream<ConnectionType> monitorInternetConnectionStatus() async* {
+    yield const WifiConnectionType(true);
+  }
 }
