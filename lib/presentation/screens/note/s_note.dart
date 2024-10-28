@@ -257,15 +257,14 @@ class _NoteScreenState extends State<NoteScreen> {
           children: [
             if (false)
               // ignore: dead_code
-              QuillToolbar.simple(
-                configurations: QuillSimpleToolbarConfigurations(
-                  controller: _controller,
+              QuillSimpleToolbar(
+                controller: _controller,
+                config: QuillSimpleToolbarConfig(
                   showAlignmentButtons: true,
                   embedButtons: [
                     ...FlutterQuillEmbeds.toolbarButtons(
                       imageButtonOptions: QuillToolbarImageButtonOptions(
-                        imageButtonConfigurations:
-                            const QuillToolbarImageConfigurations(),
+                        imageButtonConfig: const QuillToolbarImageConfig(),
                         linkRegExp: RegExp(
                           r'https://.*?\.(?:png|jpe?g|gif|bmp|webp|tiff?)',
                           caseSensitive: false,
@@ -297,19 +296,10 @@ class _NoteScreenState extends State<NoteScreen> {
                     Screenshot(
                       controller: _screenshotController,
                       child: NoteEditor(
+                        controller: _controller,
                         focusNode: _editorFocusNode,
                         onRequestingSaveNote: _saveNote,
-                        configurations: QuillEditorConfigurations(
-                          controller: _controller,
-                          sharedConfigurations: const QuillSharedConfigurations(
-                            extraConfigurations: {
-                              QuillSharedExtensionsConfigurations.key:
-                                  QuillSharedExtensionsConfigurations(
-                                assetsPrefix: 'assets', // Defaults to assets
-                              ),
-                            },
-                          ),
-                        ),
+                        config: const QuillEditorConfig(),
                       ),
                     ),
                   ],

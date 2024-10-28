@@ -2,7 +2,8 @@ import 'package:flutter/material.dart'
     show Brightness, MaterialApp, ThemeData, VisualDensity;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/translations.dart' show FlutterQuillLocalizations;
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 
 import '../core/log/logger.dart';
 import '../data/core/cloud/storage/s_cloud_storage.dart';
@@ -96,7 +97,10 @@ class MyApp extends StatelessWidget {
               return child ?? (throw ArgumentError('Child should not be null'));
             },
             localizationsDelegates: const [
-              ...AppLocalizations.localizationsDelegates,
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              AppLocalizations.delegate,
               FlutterQuillLocalizations.delegate,
             ],
             supportedLocales: AppLocalizations.supportedLocales,

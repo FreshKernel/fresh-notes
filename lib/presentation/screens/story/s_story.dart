@@ -21,7 +21,7 @@ class _StoryScreenState extends State<StoryScreen> {
   void initState() {
     super.initState();
     _controller = QuillController(
-      configurations: const QuillControllerConfigurations(),
+      config: const QuillControllerConfig(),
       document: Document(),
       selection: const TextSelection.collapsed(offset: 0),
       readOnly: true,
@@ -65,10 +65,18 @@ class _StoryScreenState extends State<StoryScreen> {
       ),
       body: SafeArea(
         child: QuillEditor.basic(
-          configurations: QuillEditorConfigurations(
+          controller: _controller,
+          config: QuillEditorConfig(
             padding: const EdgeInsets.all(16),
-            controller: _controller,
-            embedBuilders: FlutterQuillEmbeds.defaultEditorBuilders(),
+            embedBuilders: FlutterQuillEmbeds.editorBuilders(
+                imageEmbedConfig: QuillEditorImageEmbedConfig(
+              imageProviderBuilder: (context, imageUrl) {
+                if (imageUrl.startsWith('assets/')) {
+                  return AssetImage(imageUrl);
+                }
+                return null;
+              },
+            )),
           ),
         ),
       ),

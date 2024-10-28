@@ -3,7 +3,6 @@ import 'package:flutter/material.dart' show AppBar, MaterialApp, Scaffold;
 import 'package:flutter/widgets.dart'
     show Center, WidgetsFlutterBinding, runApp;
 import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
-import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:logging/logging.dart' show Logger;
 
 import 'core/log/logger.dart';
@@ -25,8 +24,6 @@ Future<void> main() async {
 
     await dotenv.load(fileName: '.env');
     await AppStartup.getInstance().initialize();
-    // ignore: deprecated_member_use
-    FlutterQuillExtensions.useSuperClipboardPlugin();
     runApp(const MyApp());
   } catch (e) {
     AppLogger.error(e);

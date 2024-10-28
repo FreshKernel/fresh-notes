@@ -14,7 +14,7 @@ extension StringExtensions on String {
     return input.replaceAll(RegExp(r'\s+'), ' ');
   }
 
-  bool isHttpBasedUrl() {
+  bool isHttpUrl() {
     try {
       final url = this;
       final uri = Uri.parse(url.trim());

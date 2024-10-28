@@ -31,64 +31,62 @@ class _NoteToolbarState extends State<NoteToolbar> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: QuillToolbar(
-        child: _currentWidget ??
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  const SizedBox(width: 10),
-                  // NoteToolbarImageButton(
-                  //   controller: widget._controller,
-                  // ),
-                  QuillToolbarImageButton(controller: widget._controller),
-                  NoteToolbarChecklistButton(
-                    controller: widget._controller,
-                  ),
-                  NoteToolbarTextOptionsButton(
-                    controller: widget._controller,
-                    onNavigate: (newWidget) =>
-                        setState(() => _currentWidget = newWidget),
-                    onNavigateBack: () => setState(() => _currentWidget = null),
-                  ),
-                  QuillToolbarClearFormatButton(
-                    controller: widget._controller,
-                  ),
-                  QuillToolbarLinkStyleButton(
-                    controller: widget._controller,
-                  ),
-                  QuillToolbarVideoButton(controller: widget._controller),
-                  QuillToolbarColorButton(
-                    controller: widget._controller,
-                    isBackground: true,
-                  ),
-                  QuillToolbarColorButton(
-                    controller: widget._controller,
-                    isBackground: false,
-                  ),
-                  QuillToolbarHistoryButton(
-                    controller: widget._controller,
-                    isUndo: true,
-                  ),
-                  QuillToolbarHistoryButton(
-                    controller: widget._controller,
-                    isUndo: false,
-                  ),
-                  QuillToolbarSelectHeaderStyleDropdownButton(
-                    controller: widget._controller,
-                  ),
-                  QuillToolbarFontSizeButton(
-                    controller: widget._controller,
-                  ),
-                  QuillToolbarFontFamilyButton(
-                    controller: widget._controller,
-                  ),
-                  const NoteToolbarFullScreenButton(),
-                  const SizedBox(width: 10),
-                ],
-              ),
+      child: _currentWidget ??
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                const SizedBox(width: 10),
+                // NoteToolbarImageButton(
+                //   controller: widget._controller,
+                // ),
+                QuillToolbarImageButton(controller: widget._controller),
+                NoteToolbarChecklistButton(
+                  controller: widget._controller,
+                ),
+                NoteToolbarTextOptionsButton(
+                  controller: widget._controller,
+                  onNavigate: (newWidget) =>
+                      setState(() => _currentWidget = newWidget),
+                  onNavigateBack: () => setState(() => _currentWidget = null),
+                ),
+                QuillToolbarClearFormatButton(
+                  controller: widget._controller,
+                ),
+                QuillToolbarLinkStyleButton(
+                  controller: widget._controller,
+                ),
+                QuillToolbarVideoButton(controller: widget._controller),
+                QuillToolbarColorButton(
+                  controller: widget._controller,
+                  isBackground: true,
+                ),
+                QuillToolbarColorButton(
+                  controller: widget._controller,
+                  isBackground: false,
+                ),
+                QuillToolbarHistoryButton(
+                  controller: widget._controller,
+                  isUndo: true,
+                ),
+                QuillToolbarHistoryButton(
+                  controller: widget._controller,
+                  isUndo: false,
+                ),
+                QuillToolbarSelectHeaderStyleDropdownButton(
+                  controller: widget._controller,
+                ),
+                QuillToolbarFontSizeButton(
+                  controller: widget._controller,
+                ),
+                QuillToolbarFontFamilyButton(
+                  controller: widget._controller,
+                ),
+                const NoteToolbarFullScreenButton(),
+                const SizedBox(width: 10),
+              ],
             ),
-      ),
+          ),
     );
   }
 }

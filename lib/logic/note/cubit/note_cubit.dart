@@ -253,7 +253,7 @@ class NoteCubit extends Cubit<NoteState> {
   Future<void> _deleteNoteCloudFiles(QuillImageUtilities imageUtilities) async {
     final images =
         imageUtilities.getImagesPathsFromDocument(onlyLocalImages: false).where(
-              (e) => e.isHttpBasedUrl(),
+              (e) => e.isHttpUrl(),
             );
     for (final imageUrl in images) {
       await deleteNoteCloudImage(imageUrl);
@@ -338,7 +338,7 @@ class NoteCubit extends Cubit<NoteState> {
           final cloudImages =
               _getImageUtilitiesByNoteText(currentLocalNote.text)
                   .getImagesPathsFromDocument(onlyLocalImages: false)
-                  .where((note) => note.isHttpBasedUrl());
+                  .where((note) => note.isHttpUrl());
           final localImages = <String>[];
           for (final cloudImage in cloudImages) {
             final response = await http.get(Uri.parse(cloudImage));

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/translations.dart';
+import 'package:flutter_quill/internal.dart';
 import 'package:go_router/go_router.dart';
 
 import 'w_note_toolbar.dart';

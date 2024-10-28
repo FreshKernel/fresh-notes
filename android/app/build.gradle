@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         applicationId "net.freshplatform.fresh_notes"
-        // TODO: Use flutter.minSdkVersion once remove super_clipboard
+        // Required by firebase_auth
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

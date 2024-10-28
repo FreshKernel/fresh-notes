@@ -19,14 +19,16 @@ import '../../base/w_app_scroll_bar.dart';
 class NoteEditor extends StatefulWidget {
   const NoteEditor({
     required this.onRequestingSaveNote,
-    required this.configurations,
+    required this.config,
     required FocusNode focusNode,
+    required this.controller,
     super.key,
   }) : _editorFocusNode = focusNode;
 
   final VoidCallback onRequestingSaveNote;
-  final QuillEditorConfigurations configurations;
+  final QuillEditorConfig config;
   final FocusNode _editorFocusNode;
+  final QuillController controller;
 
   @override
   State<NoteEditor> createState() => _NoteEditorState();
@@ -53,15 +55,15 @@ class _NoteEditorState extends State<NoteEditor> {
     }
     return [
       ...FlutterQuillEmbeds.editorBuilders(
-        imageEmbedConfigurations: QuillEditorImageEmbedConfigurations(
+        imageEmbedConfig: QuillEditorImageEmbedConfig(
           imageProviderBuilder: (context, imageUrl) {
-            if (isHttpBasedUrl(imageUrl)) {
+            if (imageUrl.isHttpUrl()) {
               return CachedNetworkImageProvider(imageUrl);
             }
             return FileImage(File(imageUrl));
           },
           onImageRemovedCallback: (imageUrl) async {
-            if (imageUrl.isHttpBasedUrl()) {
+            if (imageUrl.isHttpUrl()) {
               await context.read<NoteCubit>().deleteNoteCloudImage(imageUrl);
               return;
             }
@@ -102,7 +104,8 @@ class _NoteEditorState extends State<NoteEditor> {
     return AppScrollBar(
       child: SingleChildScrollView(
         child: QuillEditor(
-          configurations: widget.configurations.copyWith(
+          controller: widget.controller,
+          config: widget.config.copyWith(
             placeholder: context.loc.noteEditorPlaceholder,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             minHeight: 1000,
