@@ -1,7 +1,7 @@
 name: fresh_notes
 description: A cross-platform, open-source notes app.
 publish_to: 'none'
-version: 0.0.2-dev.2+18
+version: 0.0.2-dev.3+19
 repository: https://github.com/FreshKernel/fresh-notes
 platforms:
   android:
@@ -77,7 +77,7 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_svg: ^2.0.9
   flutter_dotenv: ^5.1.0
-  mime: ^1.0.4
+  mime: ^2.0.0
   pdf: ^3.10.7
   screenshot: ^3.0.0
 
@@ -107,7 +107,6 @@ dev_dependencies:
   icons_launcher: ^3.0.0
 
 flutter:
-
   generate: true
   uses-material-design: true
 
@@ -124,11 +123,9 @@ flutter:
     - shorebird.yaml
 
 flutter_gen:
-
   integrations:
     flutter_svg: true
     lottie: true
-
 
 icons_launcher:
   image_path: "doc/assets/app_logo.png"
